@@ -3,8 +3,6 @@
  */
 
 export default {
-  opacityTestDefaultLight: 0.6,
-  opacityTestDefaultDark: 0.6,
   opacityContentSecondaryLight: 0.6,
   opacityContentSecondaryDark: 0.6,
   opacityOverlayLight: 0.12,
