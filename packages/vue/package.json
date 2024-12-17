@@ -1,0 +1,36 @@
+{
+  "name": "@xsolla-zk-ui/vue",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/vue"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "lint": "eslint ./src",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6007",
+    "storybook:build": "storybook build"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-onboarding": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/test": "^8.4.7",
+    "@storybook/vue3": "^8.4.7",
+    "@storybook/vue3-vite": "^8.4.7",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "storybook": "^8.4.7",
+    "typescript": "5.7.2",
+    "vite": "^6.0.1",
+    "vue-tsc": "^2.1.10"
+  }
+}

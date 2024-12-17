@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Subrepo folder
+SUBMODULE_DIR="design-tokens"
+
+# Get the name of the current branch in the main repository
+main_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Get the branch name in the subrepository
+subrepo_branch=$(cd "$SUBMODULE_DIR" && git rev-parse --abbrev-ref HEAD)
+
+if [ "$subrepo_branch" == "HEAD" ]; then
+  echo "Warning: Subrepo is in detached HEAD state, attempting to switch to the correct branch"
+  git checkout "$main_branch"
+  subrepo_branch=$(git rev-parse --abbrev-ref HEAD)
+fi
+
+if [ "$main_branch" != "$subrepo_branch" ]; then
+  echo "Error: Branch names do not match!"
+  echo "Main repo branch: $main_branch"
+  echo "Subrepo branch: $subrepo_branch"
+  exit 1
+fi
+
+# Check if there are any uncommitted changes in the subrepository
+cd "$SUBMODULE_DIR" && git fetch origin
+
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse @{u})
+
+if [ "$LOCAL" != "$REMOTE" ]; then
+  echo "❌ Subrepo $SUBMODULE_DIR is out of date. There are new changes to pull in."
+  echo "Please run 'pnpm update-$SUBMODULE_DIR'"
+  exit 1
+fi
+
+cd - >/dev/null || exit 1
+
+# All checks passed
+exit 0

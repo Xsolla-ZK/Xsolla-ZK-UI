@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "paths": {
+      "@xsolla-zk-ui/react": ["./packages/react/src"],
+      "@xsolla-zk-ui/react/*": ["./packages/react/src/*"],
+      "@xsolla-zk-ui/vue": ["./packages/vue/src"],
+      "@xsolla-zk-ui/vue/*": ["./packages/vue/src/*"],
+      "@xsolla-zk-ui/tokens": ["./tokens"],
+      "@xsolla-zk-ui/tokens/*": ["./tokens/*"],
+    },
+  },
+  "exclude": ["**/.*", "**/build", "**/node_modules"],
+}
