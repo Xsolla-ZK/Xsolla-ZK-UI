@@ -1,10 +1,9 @@
 import { create } from '@storybook/theming/create';
-import themes from '../../../tokens/js/themes';
 
 export default create({
-  base: 'dark',
+  base: 'light',
   // // Typography
-  fontBase: themes.dark.typography.typographyFontBrand,
+  // fontBase: themes.dark.typography.typographyFontBrand,
   // fontCode: 'monospace',
 
   brandTitle: 'XSolla-ZK UI-Kit',
@@ -17,9 +16,9 @@ export default create({
   // colorSecondary: '#585C6D',
 
   // // UI
-  // appBg: '#ffffff',
-  // appContentBg: '#ffffff',
-  // appPreviewBg: '#ffffff',
+  // appBg: '#e5e5e5',
+  // appContentBg: '#e5e5e5',
+  // appPreviewBg: '#e5e5e5',
   // appBorderColor: '#585C6D',
   // appBorderRadius: 4,
 

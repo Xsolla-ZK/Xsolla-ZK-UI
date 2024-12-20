@@ -1,7 +1,6 @@
 import { fn } from '@storybook/test';
-import type { Meta, StoryObj } from '@storybook/vue3';
-
 import Button from './Button.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {

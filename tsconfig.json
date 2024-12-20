@@ -18,8 +18,6 @@
       "@xsolla-zk-ui/react/*": ["./packages/react/src/*"],
       "@xsolla-zk-ui/vue": ["./packages/vue/src"],
       "@xsolla-zk-ui/vue/*": ["./packages/vue/src/*"],
-      "@xsolla-zk-ui/tokens": ["./tokens"],
-      "@xsolla-zk-ui/tokens/*": ["./tokens/*"],
     },
   },
   "exclude": ["**/.*", "**/build", "**/node_modules"],

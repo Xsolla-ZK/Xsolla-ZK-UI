@@ -45,6 +45,15 @@ function getRelativePath(from, to) {
   return path.relative(path.dirname(from), to);
 }
 
+function pickByDotNotation(obj, path) {
+  return path.split('.').reduce((acc, key) => {
+    if (acc && Object.hasOwn(acc, key)) {
+      return acc[key];
+    }
+    return undefined;
+  }, obj);
+}
+
 async function formatJS(content, ts) {
   return await prettier.format(content, {
     semi: prettierConfig.semi,
@@ -68,26 +77,42 @@ async function getGroupMap(metadata) {
   }, {});
 
   const pathsGroupData = metadata.tokenSetOrder.reduce(
-    (acc, curr) => {
+    (acc, curr, _idx, data) => {
       let injected = false;
+      const currPathParts = curr.split('/');
+      const currKey = currPathParts.pop();
 
       for (const [group, names] of Object.entries(groupMap)) {
         const name = names.find((n) => curr.includes(n));
-        if (!name) continue;
+        if (!name && group === 'theme') {
+          const refWithTheme = data.filter((path) => path.includes(currPathParts.join('/')));
 
-        const mainKey = group === 'theme' ? group + '_' + name : group;
-        const key = group === 'theme' ? curr.replace(`/${name}`, '').split('/').pop() : name;
+          if (refWithTheme.length > names.length) {
+            names.forEach((name) => {
+              const mainKey = group + '_' + name;
+              acc[mainKey] ??= { [currKey]: curr };
+              acc[mainKey][currKey] = curr;
+            });
+            injected = true;
+            break;
+          }
+          continue;
+        }
 
-        acc[mainKey] ??= { [key]: curr };
-        acc[mainKey][key] = curr;
+        if (name) {
+          const mainKey = group === 'theme' ? group + '_' + name : group;
+          const key = group === 'theme' ? curr.replace(`/${name}`, '').split('/').pop() : name;
 
-        injected = true;
-        break;
+          acc[mainKey] ??= { [key]: curr };
+          acc[mainKey][key] = curr;
+
+          injected = true;
+          break;
+        }
       }
 
       if (!injected) {
-        const key = curr.split('/').pop();
-        acc.common[key] = curr;
+        acc.common[currKey] = curr;
       }
 
       return acc;
@@ -103,9 +128,9 @@ async function getGroupMap(metadata) {
   return globalGroup;
 }
 
-function injectImportGroup(data, theme) {
+function injectImportGroup(data, path) {
   return Object.keys(data)
-    .map((key) => `import ${camelize(key)} from './${theme}/${key}';`)
+    .map((key) => `import ${camelize(key)} from './${path}/${key}';`)
     .join('\n');
 }
 
@@ -113,11 +138,11 @@ async function createThemeFiles(metadata) {
   const { groupMap, pathsGroupData } = await getGroupMap(metadata);
 
   groupMap.theme.forEach(async (theme) => {
-    const commonImports = injectImportGroup(pathsGroupData.common, theme);
+    // const commonImports = injectImportGroup(pathsGroupData.common, 'common');
     const currentThemeImports = injectImportGroup(pathsGroupData[`theme_${theme}`], theme);
     const layoutImports = injectImportGroup(pathsGroupData.layout, theme);
 
-    const base = [Object.keys(pathsGroupData.common), Object.keys(pathsGroupData[`theme_${theme}`])]
+    const base = [Object.keys(pathsGroupData[`theme_${theme}`])]
       .flat()
       .map((item) => camelize(item))
       .join(',\n');
@@ -128,8 +153,6 @@ async function createThemeFiles(metadata) {
     const name = `tokens${capitalizeFirstLetter(theme)}`;
 
     const content = `
-      // common
-      ${commonImports}
       // theme
       ${currentThemeImports}
       // semantic
@@ -145,7 +168,7 @@ async function createThemeFiles(metadata) {
       export default ${name};
     `;
 
-    fse.outputFile(`./tokens/js/${theme}.ts`, await formatJS(content, true));
+    fse.outputFile(`${getBuildPath()}/${theme}.js`, await formatJS(content));
   });
 
   const themeContent = `
@@ -155,75 +178,89 @@ async function createThemeFiles(metadata) {
       ${groupMap.theme.join(',\n')}
     };
 
-    export type XZKUITheme = typeof tokensThemes['dark'];
-    export type XZKUIThemesUnion = keyof typeof tokensThemes;
-
     export default tokensThemes;
   `;
 
-  fse.outputFile('./tokens/js/themes.ts', await formatJS(themeContent, true));
+  fse.outputFile(`${getBuildPath()}/themes.js`, await formatJS(themeContent));
+}
+
+function configJSTemplate(data, buildPathKey, buildGroup) {
+  const selectedData = Array.isArray(buildGroup)
+    ? buildGroup
+        .map((key) => {
+          const picked = pickByDotNotation(data, key);
+          return typeof picked === 'string' ? picked : Object.values(picked);
+        })
+        .flat()
+    : Object.values(data[buildGroup]);
+  if (!selectedData.length) return;
+
+  const key = Array.isArray(buildGroup) ? buildGroup[buildGroup.length - 1] : buildGroup;
+  const pickedFiles = pickByDotNotation(data, key);
+  const files =
+    typeof pickedFiles === 'string'
+      ? { [key.includes('.') ? key.split('.').slice(1).join() : key]: pickedFiles }
+      : pickedFiles;
+
+  return {
+    source: selectedData.map((path) => getDesignTokensPath(path)),
+    // log: {
+    //   warnings: 'warn',
+    //   verbosity: 'default',
+    //   errors: {
+    //     brokenReferences: 'console',
+    //   },
+    // },
+    preprocessors: ['tokens-studio'],
+    platforms: {
+      js: {
+        transformGroup: 'tokens-studio',
+        transforms: ['ts/resolveMath', 'dimension/size/px'],
+        buildPath: `${getBuildPath()}/${buildPathKey}/`,
+        files: Object.keys(files).map((key) => ({
+          destination: `${key}.js`,
+          format: 'js/object/prettier',
+          options: {
+            categorySelector: files[key],
+            categorySelectorKey: key,
+          },
+        })),
+      },
+    },
+  };
+}
+
+function getBuildPath() {
+  const args = process.argv.slice(2);
+  if (args.includes('--react')) {
+    return './packages/react/src/tokens';
+  }
+
+  return './tokens';
 }
 
 async function run() {
   const $metadata = JSON.parse(await promises.readFile(getDesignTokensPath('$metadata'), 'utf-8'));
   const { groupMap, pathsGroupData } = await getGroupMap($metadata);
 
-  const configs = groupMap.theme.reduce((acc, theme) => {
-    const themeKey = `theme_${theme}`;
-    groupMap.layout.forEach((layoutKey) => {
-      const data = {
-        files: [
-          Object.keys(pathsGroupData.common),
-          Object.keys(pathsGroupData[themeKey]),
-          layoutKey,
-        ].flat(),
-        source: [
-          Object.values(pathsGroupData.common),
-          Object.values(pathsGroupData[themeKey]),
-          pathsGroupData.layout[layoutKey],
-        ].flat(),
-      };
+  const configs = [configJSTemplate(pathsGroupData, 'common', 'common')];
 
-      acc.push({
-        source: data.source.map((path) => getDesignTokensPath(path)),
-        log: {
-          warnings: 'warn',
-          verbosity: 'default',
-          errors: {
-            brokenReferences: 'console',
-          },
-        },
-        preprocessors: ['tokens-studio'],
-        platforms: {
-          js: {
-            transformGroup: 'tokens-studio',
-            transforms: [
-              'ts/resolveMath',
-              'dimension/size/px',
-              // 'ts/size/px',
-              // 'ts/opacity',
-              // 'ts/size/lineheight',
-              // 'ts/typography/fontWeight',
-              // 'ts/size/css/letterspacing',
-            ],
-            buildPath: `tokens/js/${theme}/`,
-            files: data.files.map((path, idx) => ({
-              destination: `${path}.js`,
-              format: 'js/object/prettier',
-              options: {
-                categorySelector: data.source[idx],
-              },
-            })),
-          },
-        },
-      });
+  groupMap.theme.forEach((theme) => {
+    const themeKey = `theme_${theme}`;
+
+    configs.push(configJSTemplate(pathsGroupData, theme, ['common', themeKey]));
+
+    groupMap.layout.forEach((layoutKey) => {
+      configs.push(
+        configJSTemplate(pathsGroupData, theme, ['common', themeKey, `layout.${layoutKey}`]),
+      );
     });
-    return acc;
-  }, []);
+  });
 
   async function cleanAndBuild(cfg) {
     const sd = new StyleDictionary(cfg);
-    await sd.cleanAllPlatforms();
+    await fse.remove(getBuildPath());
+    // await sd.cleanAllPlatforms();
     await sd.buildAllPlatforms();
   }
 
@@ -234,14 +271,6 @@ async function run() {
 // sd-transforms, 2nd parameter for options can be added
 // See docs: https://github.com/tokens-studio/sd-transforms
 register(StyleDictionary);
-
-StyleDictionary.registerFilter({
-  name: 'namespace',
-  filter: (token, options) => {
-    console.log(token.filePath, options.categorySelector);
-    return token.filePath === options.categorySelector;
-  },
-});
 
 StyleDictionary.registerTransform({
   name: 'dimension/size/px',
@@ -273,12 +302,14 @@ StyleDictionary.registerFormat({
     const content = [
       header,
       'export default {',
-      selectedTokens.map(
-        (token) =>
-          `${camelize(token.name)}: ${compileTokenValue(token)},${
-            token.comment ? ` // ${token.comment}` : ''
-          }`,
-      ),
+      selectedTokens.map((token) => {
+        const key = camelize(
+          options.categorySelectorKey
+            ? token.path.filter((value) => value !== options.categorySelectorKey).join('-')
+            : token.name,
+        );
+        return `${key}: ${compileTokenValue(token)},${token.comment ? ` // ${token.comment}` : ''}`;
+      }),
       '}',
     ]
       .flat()

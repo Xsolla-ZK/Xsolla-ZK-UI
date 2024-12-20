@@ -1,10 +1,10 @@
 import { useCallback, createContext, useContext, useMemo, useState } from 'react';
-import type { XZKUIThemesUnion } from '@xsolla-zk-ui/tokens/js/themes';
+import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 import type { PropsWithChildren } from 'react';
 
 interface XZKUIThemeSwitchContextValues {
-  theme: XZKUIThemesUnion;
-  changeTheme: (value: XZKUIThemesUnion) => void;
+  theme: XZKUIThemeModeUnion;
+  changeTheme: (value: XZKUIThemeModeUnion) => void;
 }
 
 const XZKUIThemeSwitchContext = createContext<XZKUIThemeSwitchContextValues | null>(null);

@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "main": "./src/index.js",
   "publishConfig": {
-    "access": "restricted",
     "registry": "https://npm.pkg.github.com",
     "directory": "build"
   },
@@ -17,7 +16,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint ./src",
-    "release": "pnpm build && pnpm publish --access restricted",
+    "release": "pnpm build && pnpm publish",
     "test:storybook": "vitest",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -36,6 +35,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/base": "5.0.0-beta.64",
     "@react-spring/web": "^9.7.5",
+    "color": "^4.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -49,6 +49,7 @@
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
     "@storybook/theming": "^8.4.7",
+    "@types/color": "^4.2.0",
     "@types/deepmerge": "^2.2.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -62,9 +63,12 @@
     "eslint-plugin-storybook": "^0.11.1",
     "globals": "^15.12.0",
     "playwright": "^1.49.0",
+    "react-docgen-typescript": "^2.2.2",
+    "storybook": "^8.4.7",
     "typescript": "5.7.2",
     "typescript-eslint": "8.18.0",
     "vite": "^6.0.1",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   }
 }

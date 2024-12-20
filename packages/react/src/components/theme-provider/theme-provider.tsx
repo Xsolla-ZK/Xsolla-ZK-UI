@@ -1,28 +1,31 @@
 import { ThemeProvider } from '@emotion/react';
-import tokensThemes from '@xsolla-zk-ui/tokens/js/themes';
+import theme from '@xsolla-zk-ui/react/utils/theme';
 import deepmerge from 'deepmerge';
 import XZKUIThemeSwitchProvider, { useSwitchTheme } from './theme-provider.context';
 import type { XZKUIThemeProviderProps } from './theme-provider.types';
-import type { XZKUIThemesUnion } from '@xsolla-zk-ui/tokens/js/themes';
+import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 import type { PropsWithChildren } from 'react';
 
-const getTheme = (theme: XZKUIThemesUnion, themes: XZKUIThemeProviderProps['themes']) =>
-  themes?.[theme]
-    ? deepmerge(themes[theme], tokensThemes[theme])
-    : Object.assign({}, themes, tokensThemes)[theme];
+const getTheme = (mode: XZKUIThemeModeUnion, themes: XZKUIThemeProviderProps['themes']) => {
+  const currentTheme = theme(mode);
+  return themes ? deepmerge(currentTheme, themes) : currentTheme;
+};
 
-function XZKUIThemeProviderBase({ children }: PropsWithChildren) {
-  return <XZKUIThemeSwitchProvider>{children}</XZKUIThemeSwitchProvider>;
-}
-
-function XZKUIThemeProvider({ themes, children }: XZKUIThemeProviderProps) {
+function XZKUIThemeProviderBase({
+  themes,
+  children,
+}: PropsWithChildren<Pick<XZKUIThemeProviderProps, 'themes'>>) {
   const { theme } = useSwitchTheme();
   const currentTheme = getTheme(theme, themes);
 
+  return <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>;
+}
+
+function XZKUIThemeProvider({ themeMode, themes, children }: XZKUIThemeProviderProps) {
   return (
-    <XZKUIThemeProviderBase>
-      <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
-    </XZKUIThemeProviderBase>
+    <XZKUIThemeSwitchProvider defaultTheme={themeMode}>
+      <XZKUIThemeProviderBase themes={themes}>{children}</XZKUIThemeProviderBase>
+    </XZKUIThemeSwitchProvider>
   );
 }
 

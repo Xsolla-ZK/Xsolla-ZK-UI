@@ -1,7 +1,8 @@
-import type { XZKUITheme } from '@xsolla-zk-ui/tokens/js/themes';
+import type { XZKUITheme, XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 import type { ReactNode } from 'react';
 
 export interface XZKUIThemeProviderProps {
-  themes: Record<string, XZKUITheme>;
+  themeMode?: XZKUIThemeModeUnion;
+  themes?: Record<string, XZKUITheme>;
   children: ReactNode;
 }

@@ -8,6 +8,7 @@
     "build:vue": "pnpm --filter @xsolla-zk-ui/vue build",
     "generate:icons:react": "npx @svgr/cli@8.0.1 --no-index --config-file ./tools/svgr/react/svgr.config.js -- ./raw-icons",
     "generate:tokens": "node ./tools/tokens-studio/build.mjs",
+    "generate:tokens:react": "pnpm generate:tokens --react",
     "hygen": "cross-env HYGEN_TMPLS=tools/hygen npx hygen",
     "hygen:react": "pnpm hygen react new --name",
     "hygen:vue": "pnpm hygen vue new --name",
@@ -18,6 +19,7 @@
     "prepare": "git submodule update --init && git config --local core.hooksPath .githooks",
     "publish": "pnpm workspaces foreach --topological-dev run publish",
     "release": "pnpm build && pnpm publish",
+    "storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook",
     "update-design-tokens": "git submodule update --remote --merge"
   },
   "devDependencies": {
@@ -39,7 +41,8 @@
     "style-dictionary": "^4.0.0",
     "typescript": "5.7.2",
     "typescript-eslint": "8.18.0",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {

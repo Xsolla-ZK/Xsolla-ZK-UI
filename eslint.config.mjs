@@ -17,7 +17,7 @@ export default tseslint.config(
       '**/*.(s[ac]ss|css)',
       'raw-icons',
       // 'tools',
-      'tokens',
+      '**/tokens',
     ],
   },
   eslint.configs.recommended,
