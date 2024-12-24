@@ -3,11 +3,8 @@
  */
 
 export default {
-  minWidth: '360px',
-  maxWidth: '1920px',
-  breakpointSm: '576px',
-  breakpointMd: '768px',
-  breakpointLg: '992px',
-  breakpointXl: '1200px',
-  colNumber: '12px',
+  'min-width': '360px',
+  'max-width': '1920px',
+  breakpoint: { sm: '576px', md: '768px', lg: '992px', xl: '1200px' },
+  'col-number': '12px',
 };

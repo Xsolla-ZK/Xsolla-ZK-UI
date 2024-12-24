@@ -1,6 +1,28 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
-import XZKUIThemeProvider from '../src/components/theme-provider/theme-provider';
+import { withThemeFromJSXProvider } from '@storybook/addon-themes';
+import { css, Global, ThemeProvider, useTheme } from '@emotion/react';
+import tokensThemes from '../src/tokens/themes';
+import theme from '../src/utils/theme';
+import { XZKUITheme } from '../src/types/theme';
+
+const GlobalStyles = () => {
+  const currentTheme = useTheme() as XZKUITheme;
+  return (
+    <Global styles={css`
+      .sb-show-main,
+      .docs-story {
+        background: ${currentTheme.theme.background['neutral-low']};
+      }
+      #storybook-root,
+      .docs-story {
+        * {
+          font-family: ${currentTheme.common.typography.font.text};
+        }
+      }
+    `} />
+  );
+}
 
 const preview: Preview = {
   tags: ['autodocs'],
@@ -10,6 +32,12 @@ const preview: Preview = {
     //     code: CodeBlock,
     //   },
     // },
+    backgrounds: {
+      values: Object.entries(tokensThemes).map(([key, value]) => ({
+        name: key,
+        value: value.theme.background['neutral-low'],
+      }))
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -18,42 +46,16 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story) => (
-      <XZKUIThemeProvider themeMode="light">
-        <Story />
-      </XZKUIThemeProvider>
-    ),
+    withThemeFromJSXProvider({
+      themes: Object.keys(tokensThemes).reduce((acc, curr) => {
+        acc[curr] = theme(curr as keyof typeof tokensThemes);
+        return acc;
+      }, {}),
+      defaultTheme: 'light',
+      Provider: ThemeProvider,
+      GlobalStyles,
+    }),
   ],
-  // decorators: [
-  //   (Story, { parameters }) => {
-  //     const { pageLayout } = parameters;
-
-  //     switch (pageLayout) {
-  //       case 'page':
-  //         return (
-  //           <div className="page-layout">
-  //               <XZKUIThemeProvider themes={{}}>
-  //               <Story />
-  //           </XZKUIThemeProvider>
-  //             </div>
-  //         );
-  //       case 'page-mobile':
-  //         return (
-  //           <div className="page-mobile-layout">
-  //               <XZKUIThemeProvider themes={{}}>
-  //               <Story />
-  //           </XZKUIThemeProvider>
-  //             </div>
-  //         );
-  //       default:
-  //         return
-  //         <XZKUIThemeProvider themes={{}}>
-
-  //           <Story />
-  //         </XZKUIThemeProvider>
-  //     }
-  //   },
-  // ],
 };
 
 export default preview;

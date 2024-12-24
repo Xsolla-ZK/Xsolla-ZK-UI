@@ -1,14 +1,14 @@
 import { create } from '@storybook/theming/create';
 
 export default create({
-  base: 'light',
+  base: 'dark',
   // // Typography
-  // fontBase: themes.dark.typography.typographyFontBrand,
+  // fontBase: '',
   // fontCode: 'monospace',
 
   brandTitle: 'XSolla-ZK UI-Kit',
-  brandUrl: 'https://example.com',
-  brandImage: 'https://storybook.js.org/images/placeholders/350x150.png',
+  brandUrl: 'https://ui-kit.xsollazk.com/',
+  brandImage: 'https://avatars.githubusercontent.com/u/189876973?s=200&v=4',
   brandTarget: '_self',
 
   // //

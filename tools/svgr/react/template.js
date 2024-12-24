@@ -12,6 +12,7 @@ const ${variables.componentName} = memo(
   ${variables.jsx}
 )));
 
+${variables.componentName}.displayName = '${variables.componentName}';
 export default ${variables.componentName};
 `;
 

@@ -15,5 +15,5 @@ module.exports = {
   ext: 'tsx',
   svgoConfig: require('./svgo.json'),
   template: require('./template.js'),
-  // indexTemplate: require('./index-template.js'),
+  indexTemplate: require('./index-template.js'),
 };

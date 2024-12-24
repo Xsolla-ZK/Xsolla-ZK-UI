@@ -3,12 +3,14 @@
  */
 
 export default {
-  mainLayoutMinWidth: '360px',
-  mainLayoutMaxWidth: '767px',
-  mainLayoutWidth: '375px',
-  mainLayoutHeight: '812px',
-  mainLayoutColumns: '12px',
-  mainLayoutGutter: '16px',
-  mainLayoutMarginHorizontal: '20px',
-  mainLayoutBreakpoint: 'mobile',
+  'main-layout': {
+    'min-width': '360px',
+    'max-width': '767px',
+    width: '375px',
+    height: '812px',
+    columns: '12px',
+    gutter: '16px',
+    'margin-horizontal': '20px',
+    breakpoint: 'mobile',
+  },
 };

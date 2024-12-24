@@ -3,25 +3,21 @@
  */
 
 export default {
-  contentSecondaryLight: 0.6,
-  contentSecondaryDark: 0.6,
-  overlayLight: 0.12,
-  overlayDark: 0.04,
-  overlayStatic: 0.6,
-  borderPrimaryLight: 1,
-  borderPrimaryDark: 1,
-  borderSecondaryLight: 0.16,
-  borderSecondaryDark: 0.12,
-  borderTertiaryLight: 0.08,
-  borderTertiaryDark: 0.06,
-  layerFloorScrimLight: 0.6,
-  layerFloorScrimDark: 0.6,
-  layerFloorOverlayLight: 0.8,
-  layerFloorOverlayDark: 0.8,
-  effectShadowLight100: 0.1,
-  effectShadowLight500: 0.16,
-  effectShadowLight900: 0.32,
-  effectShadowDark100: 0.2,
-  effectShadowDark500: 0.4,
-  effectShadowDark900: 0.64,
+  content: { secondary: { light: '0.6', dark: '0.6' } },
+  overlay: { light: '0.12', dark: '0.04', static: '0.6' },
+  border: {
+    primary: { light: '1', dark: '1' },
+    secondary: { light: '0.16', dark: '0.12' },
+    tertiary: { light: '0.08', dark: '0.06' },
+  },
+  layer: {
+    'floor-scrim': { light: '0.6', dark: '0.6' },
+    'floor-overlay': { light: '0.8', dark: '0.8' },
+  },
+  effect: {
+    shadow: {
+      light: { 100: '0.1', 500: '0.16', 900: '0.32' },
+      dark: { 100: '0.2', 500: '0.4', 900: '0.64' },
+    },
+  },
 };

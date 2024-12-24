@@ -181,7 +181,20 @@ async function createThemeFiles(metadata) {
     export default tokensThemes;
   `;
 
+  const commonContent = `
+    ${Object.keys(pathsGroupData.common)
+      .map((name) => `import ${name} from './${name}';`)
+      .join('\n')}
+
+    const tokensCommon = {
+      ${Object.keys(pathsGroupData.common).join(',\n')}
+    };
+
+    export default tokensCommon;
+  `;
+
   fse.outputFile(`${getBuildPath()}/themes.js`, await formatJS(themeContent));
+  fse.outputFile(`${getBuildPath()}/common/index.js`, await formatJS(commonContent));
 }
 
 function configJSTemplate(data, buildPathKey, buildGroup) {
@@ -228,6 +241,35 @@ function configJSTemplate(data, buildPathKey, buildGroup) {
       },
     },
   };
+}
+
+/** @param {import('style-dictionary').TransformedToken} token */
+/** @param {import('style-dictionary').Config} options */
+function compileTokenValue(token, options) {
+  const { usesDtcg } = options;
+  let value = `${usesDtcg ? token.$value : token.value}`;
+  // const originalValue = `${usesDtcg ? token.original.$value : token.original.value}`;
+
+  return isNumeric(value) ? value : `${value}`;
+}
+
+function arrayToNestedObject(arr, options) {
+  const result = {};
+
+  arr.forEach((token) => {
+    const path = options.categorySelectorKey
+      ? token.path.filter((value) => value !== options.categorySelectorKey)
+      : token.path;
+
+    const value = `${compileTokenValue(token, options)}${token.comment ? ` // ${token.comment}` : ''}`;
+
+    path.reduce(
+      (acc, curr, index) => (acc[curr] ??= index === path.length - 1 ? value : {}),
+      result,
+    );
+  });
+
+  return result;
 }
 
 function getBuildPath() {
@@ -284,16 +326,6 @@ StyleDictionary.registerTransform({
 StyleDictionary.registerFormat({
   name: `js/object/prettier`,
   format: async function ({ dictionary, _platform, options, file }) {
-    const { usesDtcg } = options;
-
-    /** @param {import('style-dictionary').TransformedToken} token */
-    const compileTokenValue = (token) => {
-      let value = `${usesDtcg ? token.$value : token.value}`;
-      // const originalValue = `${usesDtcg ? token.original.$value : token.original.value}`;
-
-      return isNumeric(value) ? value : `'${value}'`;
-    };
-
     const selectedTokens = dictionary.allTokens.filter((token) =>
       token.filePath.includes(options.categorySelector),
     );
@@ -301,16 +333,8 @@ StyleDictionary.registerFormat({
     const header = await fileHeader({ file, options });
     const content = [
       header,
-      'export default {',
-      selectedTokens.map((token) => {
-        const key = camelize(
-          options.categorySelectorKey
-            ? token.path.filter((value) => value !== options.categorySelectorKey).join('-')
-            : token.name,
-        );
-        return `${key}: ${compileTokenValue(token)},${token.comment ? ` // ${token.comment}` : ''}`;
-      }),
-      '}',
+      'export default',
+      JSON.stringify(arrayToNestedObject(selectedTokens, options)),
     ]
       .flat()
       .join('\n');

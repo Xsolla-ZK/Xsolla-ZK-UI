@@ -21,9 +21,9 @@ function XZKUIThemeProviderBase({
   return <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>;
 }
 
-function XZKUIThemeProvider({ themeMode, themes, children }: XZKUIThemeProviderProps) {
+function XZKUIThemeProvider({ defaultTheme, themes, children }: XZKUIThemeProviderProps) {
   return (
-    <XZKUIThemeSwitchProvider defaultTheme={themeMode}>
+    <XZKUIThemeSwitchProvider defaultTheme={defaultTheme}>
       <XZKUIThemeProviderBase themes={themes}>{children}</XZKUIThemeProviderBase>
     </XZKUIThemeSwitchProvider>
   );

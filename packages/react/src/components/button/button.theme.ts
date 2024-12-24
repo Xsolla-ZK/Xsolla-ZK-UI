@@ -52,13 +52,13 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
     // ),
     variants: {
       primary: css({
-        backgroundColor: selectedTheme.theme.backgroundBrandHigh,
-        color: selectedTheme.theme.contentStaticDarkPrimary,
+        backgroundColor: selectedTheme.theme.background['brand-high'],
+        color: selectedTheme.theme.content['static-dark-primary'],
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
-              selectedTheme.theme.backgroundBrandHigh,
-              selectedTheme.theme.backgroundNeutralHigh,
+              selectedTheme.theme.background['brand-high'],
+              selectedTheme.theme.background['neutral-high'],
               'color-dodge',
             ),
           },
@@ -66,25 +66,25 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
 
         [`&.${buttonClasses.active}`]: {
           backgroundColor: colorBlend(
-            selectedTheme.theme.backgroundBrandHigh,
-            selectedTheme.theme.backgroundNeutralHigh,
+            selectedTheme.theme.background['brand-high'],
+            selectedTheme.theme.background['neutral-high'],
             'overlay',
           ),
         },
 
         [`&.${buttonClasses.disabled}`]: {
-          backgroundColor: selectedTheme.theme.overlayNeutral,
-          color: selectedTheme.theme.contentNeutralTertiary,
+          backgroundColor: selectedTheme.theme.overlay.neutral,
+          color: selectedTheme.theme.content['neutral-tertiary'],
         },
       }),
       secondary: css({
-        backgroundColor: selectedTheme.theme.overlayNeutral,
-        color: selectedTheme.theme.contentNeutralPrimary,
+        backgroundColor: selectedTheme.theme.overlay.neutral,
+        color: selectedTheme.theme.content['neutral-primary'],
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
-              selectedTheme.theme.overlayNeutral,
-              selectedTheme.theme.backgroundNeutralHigh,
+              selectedTheme.theme.overlay.neutral,
+              selectedTheme.theme.background['neutral-high'],
               'color-dodge',
             ),
           },
@@ -92,24 +92,24 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
 
         [`&.${buttonClasses.active}`]: {
           backgroundColor: colorBlend(
-            selectedTheme.theme.overlayNeutral,
-            selectedTheme.theme.backgroundNeutralHigh,
+            selectedTheme.theme.overlay.neutral,
+            selectedTheme.theme.background['neutral-high'],
             'overlay',
           ),
         },
 
         [`&.${buttonClasses.disabled}`]: {
-          backgroundColor: selectedTheme.theme.overlayNeutral,
-          color: selectedTheme.theme.contentNeutralTertiary,
+          backgroundColor: selectedTheme.theme.overlay.neutral,
+          color: selectedTheme.theme.content['neutral-tertiary'],
         },
       }),
       primaryGhost: css({
-        color: selectedTheme.theme.contentBrandPrimary,
+        color: selectedTheme.theme.content['brand-primary'],
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
-              selectedTheme.palette.goose200,
-              selectedTheme.theme.backgroundNeutralHigh,
+              selectedTheme.palette.goose[200],
+              selectedTheme.theme.background['neutral-high'],
               'color-dodge',
             ),
           },
@@ -117,14 +117,14 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
 
         [`&.${buttonClasses.active}`]: {
           backgroundColor: colorBlend(
-            selectedTheme.palette.goose200,
-            selectedTheme.theme.backgroundNeutralHigh,
+            selectedTheme.palette.goose[200],
+            selectedTheme.theme.background['neutral-high'],
             'overlay',
           ),
         },
 
         [`&.${buttonClasses.disabled}`]: {
-          color: selectedTheme.theme.contentNeutralTertiary,
+          color: selectedTheme.theme.content['neutral-tertiary'],
         },
       }),
     },

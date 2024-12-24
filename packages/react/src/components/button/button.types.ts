@@ -8,22 +8,8 @@ type Variants = keyof ReturnType<typeof buttonTheme>['variants'];
 
 export type XZKUIButtonProps<T extends ElementType = 'button'> = MuiButtonProps &
   ComponentPropsWithoutRef<T> & {
+    // Omit<JSX.IntrinsicElements['button'], 'ref'> & {
     as?: T;
     size?: Sizes;
     variant?: Variants;
   };
-// {
-//   // size?: ButtonSizes;
-//   // variant?: keyof TTheme['button'];
-//   Style="Primary";
-//   Size="700 [64]";
-//   State="Default";
-//   has Background=True;
-//   has Label=true;
-//   has Icon Left=true;
-//   has Icon Right=false;
-//   Label="Label";
-//   iconLeft="plus";
-//   iconRight="plus";
-
-// }
