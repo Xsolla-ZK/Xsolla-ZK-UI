@@ -30,7 +30,7 @@ export default defineWorkspace([
       // https://vitest.dev/config/#isolate
       // Consider removing this if you have flaky tests
       isolate: false,
-      setupFiles: '.storybook/vitest.setup.ts',
+      setupFiles: ['./.storybook/vitest.setup.ts'],
     },
   },
 ]);

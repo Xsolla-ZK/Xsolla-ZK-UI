@@ -1,15 +1,19 @@
 import buttonTheme from '../components/button/button.theme';
+import dropdownTheme from '../components/dropdown/dropdown.theme';
+import loaderTheme from '../components/loader/loader.theme';
 import common from '../tokens/common';
 import tokensThemes from '../tokens/themes';
-import type { XZKUIThemeModeUnion } from '../types/theme';
+import type { XZKUIThemeModeUnion, XZKUIThemeSelected } from '../types/theme';
 
 function theme(mode: XZKUIThemeModeUnion) {
   return {
-    ...(tokensThemes[mode] as (typeof tokensThemes)['dark']),
     mode,
     common,
+    ...(tokensThemes[mode] as XZKUIThemeSelected),
     components: {
       button: buttonTheme(mode),
+      loader: loaderTheme(mode),
+      dropdown: dropdownTheme(mode),
     },
   };
 }

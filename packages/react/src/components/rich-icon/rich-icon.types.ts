@@ -5,11 +5,11 @@ export type XZKUIRichIconShape = keyof typeof richIconPaths;
 
 export interface XZKUIRichIconBaseProps {
   shape?: XZKUIRichIconShape;
-  size?: number;
+  size: number;
   backdropProps?: SVGAttributes<SVGPathElement>;
 }
 
 export type XZKUIRichIconProps<T extends ElementType = 'div'> = ComponentPropsWithoutRef<T> &
-  XZKUIRichIconBaseProps & {
+  Partial<XZKUIRichIconBaseProps> & {
     as?: T;
   };

@@ -26,7 +26,7 @@ export default mergeConfig(
         headless: true,
       },
       isolate: true,
-      setupFiles: '.storybook/vitest.setup.ts',
+      setupFiles: ['./.storybook/vitest.setup.ts'],
     },
   }),
 );

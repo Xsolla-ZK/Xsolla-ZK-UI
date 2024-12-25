@@ -5,6 +5,7 @@ import { css, Global, ThemeProvider, useTheme } from '@emotion/react';
 import tokensThemes from '../src/tokens/themes';
 import theme from '../src/utils/theme';
 import { XZKUITheme } from '../src/types/theme';
+import { fn } from '@storybook/test';
 
 const GlobalStyles = () => {
   const currentTheme = useTheme() as XZKUITheme;
@@ -18,6 +19,8 @@ const GlobalStyles = () => {
       .docs-story {
         * {
           font-family: ${currentTheme.common.typography.font.text};
+          font-optical-sizing: auto;
+          -webkit-font-smoothing: antialiased;
         }
       }
     `} />
@@ -44,6 +47,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+  },
+  args: {
+    onClick: fn(),
   },
   decorators: [
     withThemeFromJSXProvider({

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { within, expect } from '@storybook/test';
+import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
 import XZKUISeparator from './separator';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   component: XZKUISeparator,
@@ -9,12 +9,17 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
-    children: { control: 'text' },
+    color: { control: 'select', options: Object.keys(tokensThemes['dark'].theme.border) },
+    weight: { control: 'number' },
+    mt: { control: 'number' },
+    mb: { control: 'number' },
+    ml: { control: 'number' },
+    mr: { control: 'number' },
+    mx: { control: 'number' },
+    my: { control: 'number' },
   },
-  args: {
-    children: 'Text',
-    // onClick: fn(),
-  },
+  args: {},
+  play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof XZKUISeparator>;
 
 export default meta;
@@ -22,15 +27,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  // 👇 Test
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  render: (args) => (
+    <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
+      <XZKUISeparator {...args} />
+    </div>
+  ),
+};
 
-    // 👇 Assert DOM structure
-    await expect(
-      canvas.getByText('Text')
-    ).toBeInTheDocument();
+export const Vertical: Story = {
+  args: {
+    vertical: true,
   },
+  render: (args) => (
+    <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
+      <XZKUISeparator {...args} />
+    </div>
+  ),
 };
 
 /*

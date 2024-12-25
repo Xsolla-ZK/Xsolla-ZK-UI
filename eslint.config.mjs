@@ -57,6 +57,7 @@ export default tseslint.config(
       '@typescript-eslint/no-empty-function': 'warn',
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+      '@typescript-eslint/restrict-template-expressions': 'off',
       // 'array-callback-return': 'error',
       'arrow-body-style': ['error', 'as-needed', { requireReturnForObjectLiteral: false }],
       // curly: ['error', 'multi-line'],

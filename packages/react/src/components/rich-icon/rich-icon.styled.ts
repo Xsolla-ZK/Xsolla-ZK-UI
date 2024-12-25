@@ -23,7 +23,7 @@ export const richIconPaths = {
 };
 
 const Main = styled('div')<XZKUIRichIconBaseProps>(
-  ({ theme, size = 24 }) => `
+  ({ theme, size }) => `
     position: relative;
     display: inline-flex;
     font-size: ${size}px;
