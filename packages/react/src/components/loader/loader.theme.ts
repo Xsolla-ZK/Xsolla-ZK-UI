@@ -8,27 +8,27 @@ const loaderTheme = (mode: XZKUIThemeModeUnion) => {
   return {
     variants: {
       default: css({
-        color: selectedTheme.theme.border['neutral-secondary'],
+        color: selectedTheme.theme.border.neutralSecondary,
         '.spin': {
-          stroke: selectedTheme.theme.border['brand-primary'],
+          stroke: selectedTheme.theme.border.brandPrimary,
         },
       }),
       light: css({
-        color: selectedTheme.theme.background['static-dark-high'],
+        color: selectedTheme.theme.background.staticDarkHigh,
         '.spin': {
-          stroke: selectedTheme.theme.border['brand-primary'],
+          stroke: selectedTheme.theme.border.brandPrimary,
         },
       }),
       dark: css({
-        color: selectedTheme.theme.background['static-light-high'],
+        color: selectedTheme.theme.background.staticLightHigh,
         '.spin': {
-          stroke: selectedTheme.theme.border['brand-primary'],
+          stroke: selectedTheme.theme.border.brandPrimary,
         },
       }),
       brand: css({
-        color: selectedTheme.theme.background['static-light-high'],
+        color: selectedTheme.theme.background.staticLightHigh,
         '.spin': {
-          stroke: selectedTheme.theme.background['static-dark-high'],
+          stroke: selectedTheme.theme.background.staticDarkHigh,
         },
       }),
     },

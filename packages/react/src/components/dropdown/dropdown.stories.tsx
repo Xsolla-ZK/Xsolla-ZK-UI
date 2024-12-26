@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import XZKUIButton from '../button/button';
+import xzkuiButtonClasses from '../button/button.classes';
 import XZKUIDropdown from './dropdown';
 import { dropdownThemeSizes } from './dropdown.theme';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -10,7 +12,11 @@ const meta = {
   },
   // tags: ['stable'],
   argTypes: {
-    size: { control: false, options: dropdownThemeSizes },
+    size: {
+      control: false,
+      table: { defaultValue: { summary: 'md' }, type: { summary: dropdownThemeSizes.join('|') } },
+    },
+    onClick: { table: { disable: true } },
   },
   args: {
     control: ({ toggleHandler, ownProps }) => (
@@ -31,8 +37,13 @@ export const Default: Story = {
   args: {},
   render: () => (
     <XZKUIDropdown
-      control={({ toggleHandler, ownProps }) => (
-        <XZKUIButton aria-label="List" onClick={toggleHandler} {...ownProps}>
+      control={({ toggleHandler, open, ownProps }) => (
+        <XZKUIButton
+          aria-label="List"
+          onClick={toggleHandler}
+          className={clsx(open && xzkuiButtonClasses.active)}
+          {...ownProps}
+        >
           Click me
         </XZKUIButton>
       )}

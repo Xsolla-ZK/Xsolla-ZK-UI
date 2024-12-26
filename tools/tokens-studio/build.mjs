@@ -134,35 +134,40 @@ function injectImportGroup(data, path) {
     .join('\n');
 }
 
+function getSimpleContent(data, name) {
+  return `
+    ${Object.keys(data)
+      .map((name) => `import ${camelize(name)} from './${name}';`)
+      .join('\n')}
+
+    const ${name} = {
+      ${Object.keys(data)
+        .map((name) => camelize(name))
+        .join(',\n')}
+    };
+
+    export default ${name};
+  `;
+}
+
 async function createThemeFiles(metadata) {
   const { groupMap, pathsGroupData } = await getGroupMap(metadata);
 
   groupMap.theme.forEach(async (theme) => {
-    // const commonImports = injectImportGroup(pathsGroupData.common, 'common');
     const currentThemeImports = injectImportGroup(pathsGroupData[`theme_${theme}`], theme);
-    const layoutImports = injectImportGroup(pathsGroupData.layout, theme);
 
     const base = [Object.keys(pathsGroupData[`theme_${theme}`])]
       .flat()
-      .map((item) => camelize(item))
-      .join(',\n');
-    const breakpoints = Object.keys(pathsGroupData.layout)
       .map((item) => camelize(item))
       .join(',\n');
 
     const name = `tokens${capitalizeFirstLetter(theme)}`;
 
     const content = `
-      // theme
       ${currentThemeImports}
-      // semantic
-      ${layoutImports}
 
       const ${name} = {
         ${base},
-        breakpoints: {
-          ${breakpoints},
-        },
       };
 
       export default ${name};
@@ -181,20 +186,12 @@ async function createThemeFiles(metadata) {
     export default tokensThemes;
   `;
 
-  const commonContent = `
-    ${Object.keys(pathsGroupData.common)
-      .map((name) => `import ${name} from './${name}';`)
-      .join('\n')}
-
-    const tokensCommon = {
-      ${Object.keys(pathsGroupData.common).join(',\n')}
-    };
-
-    export default tokensCommon;
-  `;
+  const commonContent = getSimpleContent(pathsGroupData.common, 'tokensCommon');
+  const layoutContent = getSimpleContent(pathsGroupData.layout, 'tokensLayout');
 
   fse.outputFile(`${getBuildPath()}/themes.js`, await formatJS(themeContent));
   fse.outputFile(`${getBuildPath()}/common/index.js`, await formatJS(commonContent));
+  fse.outputFile(`${getBuildPath()}/layout/index.js`, await formatJS(layoutContent));
 }
 
 function configJSTemplate(data, buildPathKey, buildGroup) {
@@ -232,7 +229,7 @@ function configJSTemplate(data, buildPathKey, buildGroup) {
         buildPath: `${getBuildPath()}/${buildPathKey}/`,
         files: Object.keys(files).map((key) => ({
           destination: `${key}.js`,
-          format: 'js/object/prettier',
+          format: 'js/nestedObject/prettier',
           options: {
             categorySelector: files[key],
             categorySelectorKey: key,
@@ -264,7 +261,7 @@ function arrayToNestedObject(arr, options) {
     const value = `${compileTokenValue(token, options)}${token.comment ? ` // ${token.comment}` : ''}`;
 
     path.reduce(
-      (acc, curr, index) => (acc[curr] ??= index === path.length - 1 ? value : {}),
+      (acc, curr, index) => (acc[camelize(curr)] ??= index === path.length - 1 ? value : {}),
       result,
     );
   });
@@ -287,16 +284,14 @@ async function run() {
 
   const configs = [configJSTemplate(pathsGroupData, 'common', 'common')];
 
+  groupMap.layout.forEach((layoutKey) => {
+    configs.push(configJSTemplate(pathsGroupData, 'layout', ['common', `layout.${layoutKey}`]));
+  });
+
   groupMap.theme.forEach((theme) => {
     const themeKey = `theme_${theme}`;
 
     configs.push(configJSTemplate(pathsGroupData, theme, ['common', themeKey]));
-
-    groupMap.layout.forEach((layoutKey) => {
-      configs.push(
-        configJSTemplate(pathsGroupData, theme, ['common', themeKey, `layout.${layoutKey}`]),
-      );
-    });
   });
 
   async function cleanAndBuild(cfg) {
@@ -324,7 +319,7 @@ StyleDictionary.registerTransform({
 });
 
 StyleDictionary.registerFormat({
-  name: `js/object/prettier`,
+  name: `js/nestedObject/prettier`,
   format: async function ({ dictionary, _platform, options, file }) {
     const selectedTokens = dictionary.allTokens.filter((token) =>
       token.filePath.includes(options.categorySelector),

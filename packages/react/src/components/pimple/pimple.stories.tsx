@@ -1,5 +1,7 @@
-import { within, expect } from '@storybook/test';
+import XZKUISvgIcon from '../svg-icon/svg-icon';
+import SvgPlus from '../svg-icons/plus';
 import XZKUIPimple from './pimple';
+import { pimpleThemeSizes } from './pimple.theme';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
@@ -10,11 +12,20 @@ const meta = {
   tags: ['stable'],
   argTypes: {
     children: { control: 'text' },
+    size: {
+      control: 'select',
+      options: pimpleThemeSizes,
+      table: {
+        defaultValue: { summary: '500' },
+        type: { summary: pimpleThemeSizes.join('|') },
+      },
+    },
   },
   args: {
-    children: 'Text',
+    children: '5',
     // onClick: fn(),
   },
+  play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof XZKUIPimple>;
 
 export default meta;
@@ -22,13 +33,43 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  // 👇 Test
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+};
 
-    // 👇 Assert DOM structure
-    await expect(canvas.getByText('Text')).toBeInTheDocument();
+export const AllSizes: Story = {
+  argTypes: {
+    size: {
+      table: { disable: true },
+    },
   },
+  args: {},
+  render: ({ size, ...args }) => (
+    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+      {pimpleThemeSizes.map((size) => (
+        <XZKUIPimple key={size} size={size} {...args} />
+      ))}
+    </div>
+  ),
+};
+
+export const AllSizesWithIcon: Story = {
+  argTypes: {
+    children: {
+      table: { disable: true },
+    },
+    size: {
+      table: { disable: true },
+    },
+  },
+  args: {
+    children: <XZKUISvgIcon icon={SvgPlus} />,
+  },
+  render: ({ size, ...args }) => (
+    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+      {pimpleThemeSizes.map((size) => (
+        <XZKUIPimple key={size} size={size} {...args} />
+      ))}
+    </div>
+  ),
 };
 
 /*

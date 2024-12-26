@@ -17,7 +17,7 @@ const meta = {
   },
   args: {
     icon: SvgPlus,
-    iconColor: 'neutral-primary',
+    iconColor: 'neutralPrimary',
     iconSize: 24,
   },
   play: async ({ canvasElement }) => {},

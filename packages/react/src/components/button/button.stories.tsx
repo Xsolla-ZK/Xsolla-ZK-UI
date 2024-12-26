@@ -15,8 +15,22 @@ const meta = {
   tags: ['stable'],
   argTypes: {
     as: { control: false },
-    size: { control: 'inline-radio', options: buttonThemeSizes },
-    variant: { control: 'inline-radio', options: Object.keys(theme.variants) },
+    size: {
+      control: 'select',
+      options: buttonThemeSizes,
+      table: {
+        defaultValue: { summary: 'md' },
+        type: { summary: buttonThemeSizes.join('|') },
+      },
+    },
+    variant: {
+      control: 'select',
+      options: Object.keys(theme.variants),
+      table: {
+        defaultValue: { summary: 'primary' },
+        type: { summary: Object.keys(theme.variants).join('|') },
+      },
+    },
     isLoading: { type: 'boolean' },
     children: { control: 'text' },
     startAdornment: {

@@ -4,7 +4,7 @@ import Styled from './separator.styled';
 import type { XZKUISeparatorProps } from './separator.types';
 
 function XZKUISeparator({
-  color = 'neutral-secondary',
+  color = 'neutralSecondary',
   weight = 1,
   mt,
   mb,

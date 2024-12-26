@@ -20,3 +20,7 @@ export type KeyBuilder<T extends string, S extends string> = `${T}${Capitalize<S
 export type AddPrefix<T, Prefix extends string> = {
   [K in keyof T as `${Prefix}${Capitalize<string & K>}`]: T[K];
 };
+
+export type ExcludeStartsWith<T, Prefix extends string> = T extends `${Prefix}${string}`
+  ? never
+  : T;

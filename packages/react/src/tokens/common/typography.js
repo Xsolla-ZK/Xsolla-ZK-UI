@@ -4,7 +4,7 @@
 
 export default {
   font: { brand: 'Onest', text: 'Onest' },
-  'font-size': {
+  fontSize: {
     150: '10px',
     200: '12px',
     250: '14px',
@@ -19,7 +19,7 @@ export default {
     800: '56px',
     900: '64px',
   },
-  'line-height': {
+  lineHeight: {
     default: {
       150: '14px',
       200: '16px',
@@ -51,11 +51,11 @@ export default {
       900: '76px',
     },
   },
-  'font-weight': {
+  fontWeight: {
     brand: { light: '100', default: '500', accent: '600' },
     text: { light: '100', default: '500', accent: '600' },
   },
-  'paragraph-spacing': {
+  paragraphSpacing: {
     0: '0',
     150: '2px',
     200: '4px',
@@ -76,43 +76,43 @@ export default {
       default: '500 18px/22px Onest',
       numeric: '500 18px/22px Onest',
       accent: '600 18px/22px Onest',
-      'accent-numeric': '600 18px/22px Onest',
+      accentNumeric: '600 18px/22px Onest',
     },
     400: {
       default: '500 22px/26px Onest',
       numeric: '500 22px/26px Onest',
       accent: '600 22px/26px Onest',
-      'accent-numeric': '600 22px/26px Onest',
+      accentNumeric: '600 22px/26px Onest',
     },
     450: {
       default: '500 28px/32px Onest',
       numeric: '500 28px/32px Onest',
       accent: '600 28px/32px Onest',
-      'accent-numeric': '600 28px/32px Onest',
+      accentNumeric: '600 28px/32px Onest',
     },
     500: {
       default: '500 32px/38px Onest',
       numeric: '500 32px/38px Onest',
       accent: '600 32px/38px Onest',
-      'accent-numeric': '600 32px/38px Onest',
+      accentNumeric: '600 32px/38px Onest',
     },
     600: {
       default: '500 36px/42px Onest',
       numeric: '500 36px/42px Onest',
       accent: '600 36px/42px Onest',
-      'accent-numeric': '600 36px/42px Onest',
+      accentNumeric: '600 36px/42px Onest',
     },
     650: {
       default: '500 40px/48px Onest',
       numeric: '500 40px/48px Onest',
       accent: '600 40px/48px Onest',
-      'accent-numeric': '600 40px/48px Onest',
+      accentNumeric: '600 40px/48px Onest',
     },
     700: {
       default: '500 48px/56px Onest',
       numeric: '500 48px/56px Onest',
       accent: '600 48px/56px Onest',
-      'accent-numeric': '600 48px/56px Onest',
+      accentNumeric: '600 48px/56px Onest',
     },
   },
   text: {
@@ -120,37 +120,37 @@ export default {
       default: '500 10px/14px Onest',
       numeric: '500 10px/14px Onest',
       accent: '600 10px/14px Onest',
-      'accent-numeric': '600 10px/14px Onest',
+      accentNumeric: '600 10px/14px Onest',
     },
     200: {
       default: '500 12px/16px Onest',
       numeric: '500 12px/16px Onest',
       accent: '600 12px/16px Onest',
-      'accent-numeric': '600 12px/16px Onest',
+      accentNumeric: '600 12px/16px Onest',
     },
     250: {
       default: '500 14px/20px Onest',
       numeric: '500 14px/20px Onest',
       accent: '600 14px/20px Onest',
-      'accent-numeric': '600 14px/20px Onest',
+      accentNumeric: '600 14px/20px Onest',
     },
     300: {
       default: '500 16px/22px Onest',
       numeric: '500 16px/22px Onest',
       accent: '600 16px/22px Onest',
-      'accent-numeric': '600 16px/22px Onest',
+      accentNumeric: '600 16px/22px Onest',
     },
     350: {
       default: '500 18px/24px Onest',
       numeric: '500 18px/24px Onest',
       accent: '600 18px/24px Onest',
-      'accent-numeric': '600 18px/24px Onest',
+      accentNumeric: '600 18px/24px Onest',
     },
     400: {
       default: '500 22px/30px Onest',
       numeric: '500 22px/30px Onest',
       accent: '600 22px/30px Onest',
-      'accent-numeric': '600 22px/30px Onest',
+      accentNumeric: '600 22px/30px Onest',
     },
   },
   compact: {
@@ -158,37 +158,37 @@ export default {
       default: '500 10px/12px Onest',
       numeric: '500 10px/12px Onest',
       accent: '600 10px/12px Onest',
-      'accent-numeric': '600 10px/12px Onest',
+      accentNumeric: '600 10px/12px Onest',
     },
     200: {
       default: '500 12px/14px Onest',
       numeric: '500 12px/14px Onest',
       accent: '600 12px/14px Onest',
-      'accent-numeric': '600 12px/14px Onest',
+      accentNumeric: '600 12px/14px Onest',
     },
     250: {
       default: '500 14px/16px Onest',
       numeric: '500 14px/16px Onest',
       accent: '600 14px/16px Onest',
-      'accent-numeric': '600 14px/16px Onest',
+      accentNumeric: '600 14px/16px Onest',
     },
     300: {
       default: '500 16px/18px Onest',
       numeric: '500 16px/18px Onest',
       accent: '600 16px/18px Onest',
-      'accent-numeric': '600 16px/18px Onest',
+      accentNumeric: '600 16px/18px Onest',
     },
     350: {
       default: '500 18px/22px Onest',
       numeric: '500 18px/22px Onest',
       accent: '600 18px/22px Onest',
-      'accent-numeric': '600 18px/22px Onest',
+      accentNumeric: '600 18px/22px Onest',
     },
     400: {
       default: '500 22px/26px Onest',
       numeric: '500 22px/26px Onest',
       accent: '600 22px/26px Onest',
-      'accent-numeric': '600 22px/26px Onest',
+      accentNumeric: '600 22px/26px Onest',
     },
   },
 };

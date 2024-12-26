@@ -26,7 +26,7 @@ const StyledColorMain = styled('div')(
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    color: ${theme.theme.content['neutral-primary']};
+    color: ${theme.theme.content.neutralPrimary};
   `,
 );
 
@@ -78,7 +78,7 @@ const StyledColorsLabelLine = styled('div')(
   ({ theme }) => `
     display: flex;
     flex-direction: row;
-    color: ${setAlpha(theme.theme.content['neutral-primary'], 0.6)};
+    color: ${setAlpha(theme.theme.content.neutralPrimary, 0.6)};
   `,
 );
 

@@ -1,12 +1,31 @@
 import styled from '@emotion/styled';
-import type { XZKUIPimpleProps } from './pimple.types';
+import XZKUISvgIconStyled from '../svg-icon/svg-icon.styled';
+import xzkuiPimpleClasses from './pimple.classes';
+import type { XZKUIPimpleBaseProps } from './pimple.types';
+import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
-const Main = styled('div')<XZKUIPimpleProps>(
-  ({ theme, size = 20 }) => `
-    min-width: ${size}px;
-    height: ${size}px;
-    border-radius: 50%;
+type StyledProps = XZKUIStyledProps<XZKUIPimpleBaseProps>;
+
+const Main = styled('div')<StyledProps>(
+  ({ theme }) => `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: ${theme.common.radius[999]};
+    background-color: ${theme.theme.background.negativeHigh};
+    color: ${theme.theme.content.staticLightPrimary};
+
+    &.${xzkuiPimpleClasses.withIcon} {
+      padding: 0;
+    }
+
+    ${XZKUISvgIconStyled.Main} {
+      font-size: inherit;
+      color: inherit;
+    }
   `,
+  ({ theme, xzkuiSize }) => theme.components.pimple.sizes[xzkuiSize],
 );
 
 const XZKUIPimpleStyled = {

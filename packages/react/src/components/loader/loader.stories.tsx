@@ -19,6 +19,9 @@ const meta = {
     variant: {
       control: 'select',
       options: Object.keys(theme.variants),
+      table: {
+        type: { summary: Object.keys(theme.variants).join('|') },
+      },
     },
     vertical: {
       control: 'boolean',

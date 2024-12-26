@@ -26,7 +26,7 @@ export const popoverBaseBody = css`
 const Body = styled('div')<StyledProps>(
   popoverBaseBody,
   ({ theme }) => `
-    background-color: ${theme.theme.layer['floor-1']};
+    background-color: ${theme.theme.layer.floor1};
     box-shadow: ${theme.shadow[500]};
   `,
   ({ theme, xzkuiSize }) => theme.components.dropdown.sizes[xzkuiSize],

@@ -11,8 +11,8 @@ export default {
     tertiary: { light: '0.08', dark: '0.06' },
   },
   layer: {
-    'floor-scrim': { light: '0.6', dark: '0.6' },
-    'floor-overlay': { light: '0.8', dark: '0.8' },
+    floorScrim: { light: '0.6', dark: '0.6' },
+    floorOverlay: { light: '0.8', dark: '0.8' },
   },
   effect: {
     shadow: {

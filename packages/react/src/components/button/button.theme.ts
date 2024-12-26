@@ -39,13 +39,13 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
     ),
     variants: {
       primary: css({
-        backgroundColor: selectedTheme.theme.background['brand-high'],
-        color: selectedTheme.theme.content['static-dark-primary'],
+        backgroundColor: selectedTheme.theme.background.brandHigh,
+        color: selectedTheme.theme.content.staticDarkPrimary,
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
-              selectedTheme.theme.background['brand-high'],
-              selectedTheme.theme.background['neutral-high'],
+              selectedTheme.theme.background.brandHigh,
+              selectedTheme.theme.background.neutralHigh,
               'color-dodge',
             ),
           },
@@ -53,25 +53,25 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
 
         [`&.${xzkuiButtonClasses.active}`]: {
           backgroundColor: colorBlend(
-            selectedTheme.theme.background['brand-high'],
-            selectedTheme.theme.background['neutral-high'],
+            selectedTheme.theme.background.brandHigh,
+            selectedTheme.theme.background.neutralHigh,
             'overlay',
           ),
         },
 
         [`&.${xzkuiButtonClasses.disabled}`]: {
           backgroundColor: selectedTheme.theme.overlay.neutral,
-          color: selectedTheme.theme.content['neutral-tertiary'],
+          color: selectedTheme.theme.content.neutralTertiary,
         },
       }),
       secondary: css({
         backgroundColor: selectedTheme.theme.overlay.neutral,
-        color: selectedTheme.theme.content['neutral-primary'],
+        color: selectedTheme.theme.content.neutralPrimary,
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
               selectedTheme.theme.overlay.neutral,
-              selectedTheme.theme.background['neutral-high'],
+              selectedTheme.theme.background.neutralHigh,
               'color-dodge',
             ),
           },
@@ -80,23 +80,23 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
         [`&.${xzkuiButtonClasses.active}`]: {
           backgroundColor: colorBlend(
             selectedTheme.theme.overlay.neutral,
-            selectedTheme.theme.background['neutral-high'],
+            selectedTheme.theme.background.neutralHigh,
             'overlay',
           ),
         },
 
         [`&.${xzkuiButtonClasses.disabled}`]: {
           backgroundColor: selectedTheme.theme.overlay.neutral,
-          color: selectedTheme.theme.content['neutral-tertiary'],
+          color: selectedTheme.theme.content.neutralTertiary,
         },
       }),
       primaryGhost: css({
-        color: selectedTheme.theme.content['brand-primary'],
+        color: selectedTheme.theme.content.brandPrimary,
         '@media (pointer:fine)': {
           '&:hover': {
             backgroundColor: colorBlend(
               selectedTheme.palette.goose[200],
-              selectedTheme.theme.background['neutral-high'],
+              selectedTheme.theme.background.neutralHigh,
               'color-dodge',
             ),
           },
@@ -105,31 +105,31 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
         [`&.${xzkuiButtonClasses.active}`]: {
           backgroundColor: colorBlend(
             selectedTheme.palette.goose[200],
-            selectedTheme.theme.background['neutral-high'],
+            selectedTheme.theme.background.neutralHigh,
             'overlay',
           ),
         },
 
         [`&.${xzkuiButtonClasses.disabled}`]: {
           backgroundColor: 'transparent',
-          color: selectedTheme.theme.content['neutral-tertiary'],
+          color: selectedTheme.theme.content.neutralTertiary,
         },
       }),
       secondaryGhost: css({
-        color: selectedTheme.theme.content['neutral-primary'],
+        color: selectedTheme.theme.content.neutralPrimary,
         '@media (pointer:fine)': {
           '&:hover': {
-            backgroundColor: selectedTheme.theme.background['static-light-high'], // fix
+            backgroundColor: selectedTheme.theme.background.staticLightHigh, // fix
           },
         },
 
         [`&.${xzkuiButtonClasses.active}`]: {
-          backgroundColor: selectedTheme.theme.background['neutral-high'], // fix
+          backgroundColor: selectedTheme.theme.background.neutralHigh, // fix
         },
 
         [`&.${xzkuiButtonClasses.disabled}`]: {
           backgroundColor: 'transparent',
-          color: selectedTheme.theme.content['neutral-tertiary'],
+          color: selectedTheme.theme.content.neutralTertiary,
         },
       }),
     },

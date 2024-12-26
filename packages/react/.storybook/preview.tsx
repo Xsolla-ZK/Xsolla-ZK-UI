@@ -13,7 +13,7 @@ const GlobalStyles = () => {
     <Global styles={css`
       .sb-show-main,
       .docs-story {
-        background: ${currentTheme.theme.background['neutral-low']};
+        background: ${currentTheme.theme.background.neutralLow};
       }
       #storybook-root,
       .docs-story {
@@ -38,7 +38,7 @@ const preview: Preview = {
     backgrounds: {
       values: Object.entries(tokensThemes).map(([key, value]) => ({
         name: key,
-        value: value.theme.background['neutral-low'],
+        value: value.theme.background.neutralLow,
       }))
     },
     controls: {
