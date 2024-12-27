@@ -28,6 +28,13 @@ const meta = {
     my: { control: 'number' },
   },
   args: {},
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof XZKUISeparator>;
 
@@ -36,22 +43,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  render: (args) => (
-    <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
-      <XZKUISeparator {...args} />
-    </div>
-  ),
+};
+
+export const CustomColor: Story = {
+  args: {
+    color: {
+      custom: '#ff0000',
+    },
+  },
 };
 
 export const Vertical: Story = {
   args: {
     vertical: true,
   },
-  render: (args) => (
-    <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
-      <XZKUISeparator {...args} />
-    </div>
-  ),
 };
 
 /*

@@ -13,6 +13,15 @@ const meta = {
     children: { control: 'text' },
     color: { control: 'color' },
     align: { control: 'inline-radio', options: ['left', 'center', 'right'] },
+    as: {
+      control: 'inline-radio',
+      options: ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'p'],
+      table: {
+        defaultValue: {
+          summary: 'div',
+        },
+      },
+    },
     variant: {
       control: 'inline-radio',
       options: Object.keys(themeVariants),
@@ -55,27 +64,6 @@ export const All: Story = {
     <>
       {(Object.keys(themeVariants) as Array<keyof typeof themeVariants>).map((variant) => (
         <XZKUISemanticText key={variant} variant={variant} {...args} />
-      ))}
-    </>
-  ),
-};
-
-export const AllWithValue: Story = {
-  argTypes: {
-    variant: {
-      table: { disable: true },
-    },
-    value: {
-      table: { disable: true },
-    },
-  },
-  args: {
-    value: 'Value',
-  },
-  render: ({ variant, ...args }) => (
-    <>
-      {(Object.keys(themeVariants) as Array<keyof typeof themeVariants>).map((variant) => (
-        <XZKUISemanticText key={`${variant}-value`} variant={variant} {...args} />
       ))}
     </>
   ),

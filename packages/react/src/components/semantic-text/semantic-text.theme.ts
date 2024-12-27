@@ -5,27 +5,27 @@ import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
 const semanticTextTheme = (_mode: XZKUIThemeModeUnion) => ({
   variants: {
-    h1: css({
+    headingXl: css({
       marginTop: spacing[400],
       marginBottom: spacing[100],
       font: typography.display[500].accent,
     }),
-    h2: css({
+    headingLg: css({
       marginTop: spacing[350],
       marginBottom: spacing[100],
       font: typography.display[450].accent,
     }),
-    h3: css({
+    headingMd: css({
       marginTop: spacing[300],
       marginBottom: spacing[100],
       font: typography.display[400].accent,
     }),
-    h4: css({
+    headingSm: css({
       marginTop: spacing[200],
       marginBottom: spacing[100],
       font: typography.display[350].accent,
     }),
-    h5: css({
+    headingXs: css({
       marginTop: spacing[200],
       marginBottom: spacing[100],
       font: typography.compact[300].accent,

@@ -3,7 +3,6 @@ import { Modal } from '@mui/base';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import XZKUIAnimatedFade from '../animated/fade';
 import XZKUIAnimatedSlideUp from '../animated/slide-up';
-import XZKUIRichIcon from '../rich-icon/rich-icon';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgCross from '../svg-icons/cross';
 import XZKUIModalProvider, { useXZKUIModalCtx } from './modal.context';
@@ -72,29 +71,29 @@ function XZKUIModal(props: XZKUIModalProps) {
 
   return (
     <>
-      {trigger?.(sharedProps)}
-      <StyledModal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        open={openOwn || open}
-        onClose={handleClose}
-        closeAfterTransition
-        onTransitionExited={transitionExited.current}
-        slots={{ backdrop: XZKUIModalBackdrop }}
-        {...rest}
+      <XZKUIModalProvider
+        initialStep={initialStep}
+        onTransitionExited={onTransitionExited}
+        handleClose={handleClose}
       >
-        <XZKUIModalProvider
-          initialStep={initialStep}
-          onTransitionExited={onTransitionExited}
-          {...sharedProps}
+        {trigger?.(sharedProps)}
+        <StyledModal
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+          open={openOwn || open}
+          onClose={handleClose}
+          closeAfterTransition
+          onTransitionExited={transitionExited.current}
+          slots={{ backdrop: XZKUIModalBackdrop }}
+          {...rest}
         >
           <XZKUIAnimatedSlideUp in={openOwn || open}>
             {typeof children === 'function'
               ? children({ ...sharedProps, onTransitionExited })
               : children}
           </XZKUIAnimatedSlideUp>
-        </XZKUIModalProvider>
-      </StyledModal>
+        </StyledModal>
+      </XZKUIModalProvider>
     </>
   );
 }
@@ -109,7 +108,7 @@ function XZKUIModalHeader({ title, subtitle }: XZKUIModalHeaderProps) {
         {subtitle && <Styled.Subtitle>{subtitle}</Styled.Subtitle>}
       </Styled.HeaderContent>
       <Styled.HeaderRight>
-        <Styled.CloseButton size={300} onClick={close}>
+        <Styled.CloseButton as="button" size={300} onClick={close}>
           <XZKUISvgIcon icon={SvgCross} />
         </Styled.CloseButton>
       </Styled.HeaderRight>

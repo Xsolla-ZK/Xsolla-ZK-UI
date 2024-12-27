@@ -3,6 +3,7 @@ import dropdownTheme from '../components/dropdown/dropdown.theme';
 import loaderTheme from '../components/loader/loader.theme';
 import pimpleTheme from '../components/pimple/pimple.theme';
 import richIconTheme from '../components/rich-icon/rich-icon.theme';
+import segmentedControlTheme from '../components/segmented-control/segmented-control.theme';
 import semanticTextTheme from '../components/semantic-text/semantic-text.theme';
 import common from '../tokens/common';
 import layout from '../tokens/layout';
@@ -22,6 +23,7 @@ function theme(mode: XZKUIThemeModeUnion) {
       semanticText: semanticTextTheme(mode),
       pimple: pimpleTheme(mode),
       richIcon: richIconTheme(mode),
+      segmentedControl: segmentedControlTheme(mode),
     },
   };
 }

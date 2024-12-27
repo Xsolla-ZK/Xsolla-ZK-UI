@@ -32,14 +32,20 @@ export const richIconPaths = {
 type StyledProps = XZKUIStyledProps<XZKUIRichIconBaseProps>;
 
 const Main = styled('div')<Pick<StyledProps, 'xzkuiSize' | 'xzkuiBg'>>(
-  ({ theme, xzkuiSize, xzkuiBg }) => `
+  ({ theme, xzkuiBg }) => `
     position: relative;
     display: inline-flex;
-    color: ${theme.theme.background[xzkuiBg]};
+    color: ${theme.theme.background[xzkuiBg] ?? xzkuiBg};
+
     ${XZKUIPimpleStyled.Main} {
       position: absolute;
-      top: ${xzkuiSize > 200 ? '-4px' : '-2px'};
-      right: ${xzkuiSize > 200 ? '-4px' : '-2px'};
+      top: -0.33em;
+      right: -0.33em;
+      min-width: 1.66em;
+      min-height: 1.66em;
+      padding: 0 0.33em;
+      font-size: 0.25em;
+      line-height: 1em;
     }
   `,
   ({ theme, xzkuiSize }) => theme.components.richIcon.sizes[xzkuiSize],

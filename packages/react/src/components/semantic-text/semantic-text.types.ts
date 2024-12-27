@@ -9,10 +9,9 @@ export interface XZKUISemanticTextBaseProps {
 
 export interface XZKUISemanticTextProps<T extends ElementType>
   extends Partial<XZKUISemanticTextBaseProps> {
-  children: ReactNode;
+  children?: ReactNode;
   align?: CSSProperties['textAlign'];
   color?: CSSProperties['color'];
   className?: string;
-  value?: string;
   as?: T;
 }

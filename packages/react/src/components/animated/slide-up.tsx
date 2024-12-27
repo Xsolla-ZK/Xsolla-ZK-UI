@@ -7,8 +7,8 @@ const XZKUIAnimatedSlideUp = forwardRef<HTMLDivElement, XZKUIAnimatedProps>(
     const { in: open, children, onEnter, onExited, from, to, settings, ...other } = props;
 
     const style = useSpring({
-      from: { transform: 'translateY(100%)', ...from },
-      to: open ? { transform: 'translateY(0)', ...to } : { transform: 'translateY(100%)', ...from },
+      from: { y: '100%', ...from },
+      to: open ? { y: '0%', ...to } : { y: '100%', ...from },
       onStart: () => {
         if (open && onEnter) {
           onEnter(null, true);

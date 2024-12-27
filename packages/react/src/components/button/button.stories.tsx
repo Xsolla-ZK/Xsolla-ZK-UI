@@ -19,7 +19,7 @@ const meta = {
       control: 'select',
       options: buttonThemeSizes,
       table: {
-        defaultValue: { summary: 'md' },
+        defaultValue: { summary: '500' },
         type: { summary: buttonThemeSizes.join('|') },
       },
     },
@@ -127,7 +127,7 @@ export const TruncatedText: Story = {
 
 export const FullWidth: Story = {
   args: {
-    full: true,
+    fullWidth: true,
   },
   render: (args) => (
     <div style={{ width: 200 }}>

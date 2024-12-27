@@ -1,20 +1,37 @@
-import { within, expect } from '@storybook/test';
+import { useRef, useState } from 'react';
 import XZKUISegmentedControl from './segmented-control';
+import { segmentedControlThemeSizes } from './segmented-control.theme';
+import type { XZKUISegmentedControlSelectedItem } from './segmented-control.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   component: XZKUISegmentedControl,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
-  tags: ['stable'],
+  tags: ['!stable'],
   argTypes: {
-    children: { control: 'text' },
+    size: {
+      control: 'select',
+      options: segmentedControlThemeSizes,
+      table: {
+        defaultValue: { summary: '500' },
+        type: { summary: segmentedControlThemeSizes.join('|') },
+      },
+    },
   },
   args: {
-    children: 'Text',
+    values: ['first', 'second', 'third'],
     // onClick: fn(),
   },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: 40 }}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof XZKUISegmentedControl>;
 
 export default meta;
@@ -22,12 +39,82 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  // 👇 Test
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+};
 
-    // 👇 Assert DOM structure
-    await expect(canvas.getByText('Text')).toBeInTheDocument();
+export const DefaultSelected: Story = {
+  args: {
+    defaultSelected: 1,
+  },
+};
+
+export const OnChangeCallback: Story = {
+  args: {
+    onChangeValue: (item) => {
+      alert(JSON.stringify(item));
+    },
+  },
+};
+
+const externalArrayContent = [
+  'first content',
+  <div>
+    <h3>Another content</h3>
+    <p>SomeText</p>
+  </div>,
+  'last content',
+];
+
+export const PickExternalArrayContent: Story = {
+  args: {},
+  render: ({ onChangeValue, ...args }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [active, setActive] = useState<XZKUISegmentedControlSelectedItem>();
+    return (
+      <div style={{ width: 300 }}>
+        <XZKUISegmentedControl
+          onChangeValue={(item) => {
+            setActive(item);
+          }}
+          {...args}
+        />
+        <div style={{ marginTop: 12 }}>
+          {active
+            ? (externalArrayContent[active?.idx] ?? 'Not Selected')
+            : 'Select control to show content'}
+        </div>
+      </div>
+    );
+  },
+};
+
+const externalObjectData: Record<string, number> = {
+  usd: 1,
+  rub: 100,
+  inr: 85,
+};
+
+export const PickExternalObjectData: Story = {
+  args: {
+    values: ['usd', 'rub', 'inr', 'eur'],
+  },
+  render: ({ onChangeValue, ...args }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [active, setActive] = useState<XZKUISegmentedControlSelectedItem>();
+    return (
+      <div style={{ width: 300 }}>
+        <XZKUISegmentedControl
+          onChangeValue={(item) => {
+            setActive(item);
+          }}
+          {...args}
+        />
+        <div style={{ marginTop: 12 }}>
+          {active !== undefined
+            ? 'Current Price: ' + (externalObjectData[active.value] ?? 'Not Found')
+            : 'Select control to show current price'}
+        </div>
+      </div>
+    );
   },
 };
 

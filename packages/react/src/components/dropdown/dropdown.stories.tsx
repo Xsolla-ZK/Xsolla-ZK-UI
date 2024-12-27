@@ -10,11 +10,11 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  // tags: ['stable'],
+  tags: ['!stable'],
   argTypes: {
     size: {
       control: false,
-      table: { defaultValue: { summary: 'md' }, type: { summary: dropdownThemeSizes.join('|') } },
+      table: { defaultValue: { summary: '500' }, type: { summary: dropdownThemeSizes.join('|') } },
     },
     onClick: { table: { disable: true } },
   },

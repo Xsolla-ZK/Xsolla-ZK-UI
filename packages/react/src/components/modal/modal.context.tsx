@@ -11,7 +11,7 @@ import type { XZKUIModalSharedProps } from './modal.types';
 import type { PropsWithChildren } from 'react';
 
 interface XZKUIModalContextValues {
-  open: boolean;
+  // open: boolean;
   step: number;
   changeStep: (value: number) => void;
   back: () => void;
@@ -33,13 +33,12 @@ export function useXZKUIModalCtx() {
   return ctx;
 }
 
-type XZKUIModalProviderProps = XZKUIModalSharedProps & {
+type XZKUIModalProviderProps = Pick<XZKUIModalSharedProps, 'handleClose' | 'onTransitionExited'> & {
   initialStep?: number;
 };
 
 function XZKUIModalProvider({
   initialStep = 0,
-  open,
   handleClose,
   onTransitionExited,
   children,
@@ -73,12 +72,11 @@ function XZKUIModalProvider({
   const contextValue = useMemo(
     () => ({
       changeStep,
-      open,
       step,
       back: handleBack,
       close: handleClose,
     }),
-    [changeStep, open, step, handleBack, handleClose],
+    [changeStep, step, handleBack, handleClose],
   );
 
   return <Provider value={contextValue}>{children}</Provider>;

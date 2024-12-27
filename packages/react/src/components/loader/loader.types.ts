@@ -14,4 +14,5 @@ export interface XZKUILoaderBaseProps {
 
 export interface XZKUILoaderProps extends Partial<XZKUILoaderBaseProps> {
   children?: ReactNode;
+  className?: string;
 }

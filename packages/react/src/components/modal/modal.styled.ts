@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Button as MuiButton } from '@mui/base';
 import XZKUIRichIcon from '../rich-icon/rich-icon';
 
 const Main = styled('div')(
@@ -70,7 +69,11 @@ const Subtitle = styled('div')(
 
 const CloseButton = styled(XZKUIRichIcon)(
   ({ theme }) => `
+    padding: 0;
+    border: none;
+    background: none;
     color: ${theme.theme.overlay.neutral};
+    cursor: pointer;
   `,
 );
 

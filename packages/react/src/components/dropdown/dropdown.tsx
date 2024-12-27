@@ -14,7 +14,7 @@ function XZKUIDropdown<T extends ElementType>(props: XZKUIDropdownProps<T>) {
     body,
     component,
     className,
-    size = 'md',
+    size = 500,
     ...rest
   } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

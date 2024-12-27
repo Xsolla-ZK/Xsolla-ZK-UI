@@ -3,8 +3,13 @@ import { forwardRef } from 'react';
 import XZKUIPimple from '../pimple/pimple';
 import xzkuiRichIconClasses from './rich-icon.classes';
 import Styled, { richIconPaths } from './rich-icon.styled';
-import type { XZKUIRichIconBaseProps, XZKUIRichIconProps } from './rich-icon.types';
-import type { ElementType, ForwardedRef } from 'react';
+import type { XZKUIRichIconProps } from './rich-icon.types';
+import type {
+  XZKUIPolymorphicComponent,
+  XZKUIPolymorphicForwardedRef,
+  XZKUIPolymorphicProps,
+} from '@xsolla-zk-ui/react/types/components';
+import type { ElementType } from 'react';
 
 const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
   {
@@ -13,17 +18,15 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
     children,
     backdropProps,
     imageSrc,
-    component,
     className,
     bg = 'brandHigh',
     pimple,
     ...rest
-  }: XZKUIRichIconProps<T>,
-  ref: ForwardedRef<HTMLDivElement>,
+  }: XZKUIPolymorphicProps<T, XZKUIRichIconProps>,
+  ref: XZKUIPolymorphicForwardedRef<T>,
 ) {
   return (
     <Styled.Main
-      as={component}
       className={clsx([className, !shape && xzkuiRichIconClasses.noShape])}
       xzkuiSize={size}
       xzkuiBg={bg}
@@ -38,14 +41,19 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
           viewBox="0 0 80 80"
         >
           <defs>
-            <clipPath id="icon-clip">
+            <clipPath id={`icon-clip-${shape}`}>
               <path d={richIconPaths[shape]} {...backdropProps} />
             </clipPath>
           </defs>
           {imageSrc ? (
             <>
-              <rect width="100%" height="100%" fill="currentColor" clipPath="url(#icon-clip)" />
-              <g clipPath="url(#icon-clip)">
+              <rect
+                width="100%"
+                height="100%"
+                fill="currentColor"
+                clipPath={`url(#icon-clip-${shape}`}
+              />
+              <g clipPath={`url(#icon-clip-${shape}`}>
                 <image
                   href={imageSrc}
                   width="100%"
@@ -55,23 +63,19 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
               </g>
             </>
           ) : (
-            <path d={richIconPaths[shape]} {...backdropProps} fill="currentColor" />
+            <path
+              d={richIconPaths[shape]}
+              {...backdropProps}
+              fill="currentColor"
+              clipPath={`url(#icon-clip-${shape}`}
+            />
           )}
         </Styled.Icon>
       )}
       <Styled.Content>{children}</Styled.Content>
-      {pimple && <XZKUIPimple size={calcPimpleSize(size)} {...pimple} />}
+      {pimple && <XZKUIPimple {...pimple} />}
     </Styled.Main>
   );
-});
-
-function calcPimpleSize(size: XZKUIRichIconBaseProps['size']) {
-  if (size > 700) return 700;
-  if (size > 500) return 600;
-  if (size > 300) return 500;
-  if (size === 300) return 400;
-  if (size === 200) return 300;
-  return 200;
-}
+}) as XZKUIPolymorphicComponent<XZKUIRichIconProps>;
 
 export default XZKUIRichIcon;

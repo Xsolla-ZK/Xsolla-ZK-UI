@@ -9,7 +9,7 @@ import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-obj
 import xzkuiButtonClasses from './button.classes';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
-export const buttonThemeSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+export const buttonThemeSizes = [300, 400, 500, 600, 700] as const;
 
 const base = {
   size: [size[300], size[400], size[500], size[600], size[700]],

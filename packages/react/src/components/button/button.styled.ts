@@ -4,7 +4,9 @@ import XZKUILoaderStyled from '../loader/loader.styled';
 import XZKUISvgIconStyled from '../svg-icon/svg-icon.styled';
 import xzkuiButtonClasses from './button.classes';
 import type { XZKUIButtonBaseProps } from './button.types';
-import type { RequiredOnly } from '@xsolla-zk-ui/react/types/helpers';
+import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+
+type StyledProps = XZKUIStyledProps<XZKUIButtonBaseProps>;
 
 const Text = styled('span')(
   () => `
@@ -15,7 +17,7 @@ const Text = styled('span')(
   `,
 );
 
-const Main = styled(MuiButton)<RequiredOnly<XZKUIButtonBaseProps, 'size' | 'variant'>>(
+const Main = styled(MuiButton)<StyledProps>(
   () => `
     display: flex;
     align-items: center;
@@ -25,7 +27,7 @@ const Main = styled(MuiButton)<RequiredOnly<XZKUIButtonBaseProps, 'size' | 'vari
     border: none;
     cursor: pointer;
 
-    &.${xzkuiButtonClasses.full} {
+    &.${xzkuiButtonClasses.fullWidth} {
       width: 100%;
     }
 
@@ -48,12 +50,9 @@ const Main = styled(MuiButton)<RequiredOnly<XZKUIButtonBaseProps, 'size' | 'vari
     ${XZKUISvgIconStyled.Main} {
       font-size: 1.33em;
     }
-    ${XZKUISvgIconStyled.Main} {
-      color: inherit;
-    }
   `,
-  ({ theme, size }) => theme.components.button.sizes[size],
-  ({ theme, variant }) => theme.components.button.variants[variant],
+  ({ theme, xzkuiSize }) => theme.components.button.sizes[xzkuiSize],
+  ({ theme, xzkuiVariant }) => theme.components.button.variants[xzkuiVariant],
 );
 
 const Adornment = styled('span')(

@@ -48,7 +48,7 @@ export const All: Story = {
         gap: '12px',
       }}
     >
-      {Object.keys(richIconPaths).map((item) => (
+      {(Object.keys(richIconPaths) as Array<keyof typeof richIconPaths>).map((item) => (
         <XZKUIRichIcon key={item} shape={item} {...args} />
       ))}
     </div>
@@ -72,13 +72,13 @@ export const WithStrokeShape: Story = {
 
 export const WithImage: Story = {
   args: {
-    imageSrc: 'static/shiba.png',
+    imageSrc: 'shiba.png',
   },
 };
 
 export const WithImageFill: Story = {
   args: {
-    imageSrc: 'static/blank-image.png',
+    imageSrc: 'blank-image.png',
   },
 };
 

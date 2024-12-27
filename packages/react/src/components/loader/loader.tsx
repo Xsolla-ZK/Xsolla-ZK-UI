@@ -1,13 +1,21 @@
+import clsx from 'clsx';
 import { forwardRef } from 'react';
+import xzkuiLoaderClasses from './loader.classes';
 import Styled from './loader.styled';
 import type { XZKUILoaderProps } from './loader.types';
 
 const XZKUILoader = forwardRef<HTMLDivElement, XZKUILoaderProps>(function XZKUILoader(
-  { children, variant = 'default', size = 24, ...props },
+  { children, variant = 'default', size = 24, className, vertical, ...props },
   ref,
 ) {
   return (
-    <Styled.Main size={size} variant={variant} ref={ref} {...props}>
+    <Styled.Main
+      size={size}
+      variant={variant}
+      ref={ref}
+      className={clsx([className, vertical && xzkuiLoaderClasses.vertical])}
+      {...props}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"

@@ -1,12 +1,19 @@
+import type { Theme } from '@emotion/react';
 import type { PickByDotNotation } from '@xsolla-zk-ui/react/types/helpers';
-import type { XZKUITheme } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
 import type { ComponentProps } from 'react';
 
-type XZKUISeparatorBorderUnion = keyof PickByDotNotation<XZKUITheme, 'theme.border'>;
+type XZKUISeparatorBorderUnion = keyof PickByDotNotation<Theme, 'theme.border'>;
 
 export interface XZKUISeparatorBaseProps {
-  color: XZKUISeparatorBorderUnion;
+  color: XZKUISeparatorBorderUnion | XZKUICustomColor;
   weight: number;
+}
+
+export interface XZKUISeparatorProps
+  extends Omit<ComponentProps<'hr'>, keyof XZKUISeparatorBaseProps>,
+    Partial<XZKUISeparatorBaseProps> {
+  vertical?: boolean;
   /** margin-top */
   mt?: number | string;
   /** margin-bottom */
@@ -19,10 +26,4 @@ export interface XZKUISeparatorBaseProps {
   mx?: number | string;
   /** margin-vertical */
   my?: number | string;
-}
-
-export interface XZKUISeparatorProps
-  extends Omit<ComponentProps<'hr'>, keyof XZKUISeparatorBaseProps>,
-    Partial<XZKUISeparatorBaseProps> {
-  vertical?: boolean;
 }

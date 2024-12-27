@@ -3,7 +3,7 @@ import { buttonClasses } from '@mui/base';
 const xzkuiButtonClasses = {
   ...buttonClasses,
   loading: 'xzkui-button-loading',
-  full: 'xzkui-button-full',
+  fullWidth: 'xzkui-button-full-width',
   extraSpaces: 'xzkui-button-extra-spaces',
 };
 

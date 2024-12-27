@@ -4,7 +4,7 @@ import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
-export const dropdownThemeSizes = ['sm', 'md'] as const;
+export const dropdownThemeSizes = [400, 500] as const;
 
 const base = {
   padding: [spacing[100], spacing[200]],
