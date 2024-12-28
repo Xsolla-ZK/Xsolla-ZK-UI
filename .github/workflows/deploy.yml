@@ -27,9 +27,9 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}/xsolla-zk-ui:cache
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/xsolla-zk-ui:cache
+            ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}
+            ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:cache
+          cache-from: type=registry,ref=ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:cache
           cache-to: type=inline
 
       - name: Deploy to Server
@@ -41,7 +41,7 @@ jobs:
           port: 22
           script: |
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
+            docker pull ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}
             docker stop xsolla-zk-ui-storybook || true
             docker rm xsolla-zk-ui-storybook || true
-            docker run -d --name xsolla-zk-ui-storybook -p 80:3000 ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
+            docker run -d --name xsolla-zk-ui-storybook -p 80:3000 ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}
