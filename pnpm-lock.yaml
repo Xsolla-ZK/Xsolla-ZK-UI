@@ -53,6 +53,9 @@ importers:
       prettier:
         specifier: ^3.4.2
         version: 3.4.2
+      storybook:
+        specifier: ^8.4.7
+        version: 8.4.7(prettier@3.4.2)
       style-dictionary:
         specifier: ^4.0.0
         version: 4.3.0
@@ -108,6 +111,9 @@ importers:
       '@eslint/js':
         specifier: 9.16.0
         version: 9.16.0
+      '@mui/types':
+        specifier: ^7.2.20
+        version: 7.2.20(@types/react@18.3.17)
       '@storybook/addon-essentials':
         specifier: ^8.4.7
         version: 8.4.7(@types/react@18.3.17)(storybook@8.4.7(prettier@3.4.2))
@@ -183,9 +189,6 @@ importers:
       react-docgen-typescript:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.7.2)
-      storybook:
-        specifier: ^8.4.7
-        version: 8.4.7(prettier@3.4.2)
       typescript:
         specifier: 5.7.2
         version: 5.7.2
