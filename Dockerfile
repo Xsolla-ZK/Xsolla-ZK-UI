@@ -1,24 +1,22 @@
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
+FROM base AS builder
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-RUN npm install -g pnpm@9.15.0
-
-RUN pnpm install --ignore-scripts
-
 COPY . .
+
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --ignore-scripts --frozen-lockfile
 
 RUN pnpm build:storybook:react
 RUN pnpm build:storybook:vue
 
 FROM builder AS final
+COPY --from=builder /app/storybook-build/react /srv/ui-kit/react
 
-WORKDIR /srv/ui-kit/
-
-COPY --from=builder /app/storybook-build/react react/
-COPY --from=builder /app/storybook-build/vue vue/
+# WORKDIR /srv/ui-kit/
 
 # EXPOSE 80
 
