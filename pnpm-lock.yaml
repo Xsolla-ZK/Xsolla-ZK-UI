@@ -11,6 +11,33 @@ importers:
       '@eslint/js':
         specifier: 9.16.0
         version: 9.16.0
+      '@storybook/addon-essentials':
+        specifier: ^8.4.7
+        version: 8.4.7(@types/react@18.3.17)(storybook@8.4.7(prettier@3.4.2))
+      '@storybook/addon-themes':
+        specifier: ^8.4.7
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))
+      '@storybook/blocks':
+        specifier: ^8.4.7
+        version: 8.4.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
+      '@storybook/experimental-addon-test':
+        specifier: ^8.4.7
+        version: 8.4.7(@vitest/browser@2.1.8)(@vitest/runner@2.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(vitest@2.1.8)
+      '@storybook/manager-api':
+        specifier: ^8.4.7
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))
+      '@storybook/react':
+        specifier: ^8.4.7
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.2)
+      '@storybook/react-vite':
+        specifier: ^8.4.7
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.28.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.2)(vite@6.0.3(@types/node@22.10.2)(yaml@2.6.1))
+      '@storybook/test':
+        specifier: ^8.4.7
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))
+      '@storybook/theming':
+        specifier: ^8.4.7
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))
       '@tokens-studio/sd-transforms':
         specifier: ^1.2.9
         version: 1.2.9(style-dictionary@4.3.0)
@@ -189,6 +216,9 @@ importers:
       react-docgen-typescript:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.7.2)
+      storybook:
+        specifier: ^8.4.7
+        version: 8.4.7(prettier@3.4.2)
       typescript:
         specifier: 5.7.2
         version: 5.7.2
