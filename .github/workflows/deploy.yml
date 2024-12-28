@@ -1,0 +1,47 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/xsolla-zk-ui:cache
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/xsolla-zk-ui:cache
+          cache-to: type=inline
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.5.1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
+            docker stop xsolla-zk-ui-storybook || true
+            docker rm xsolla-zk-ui-storybook || true
+            docker run -d --name xsolla-zk-ui-storybook -p 80:3000 ghcr.io/${{ github.repository }}/xsolla-zk-ui:${{ github.ref_name }}
