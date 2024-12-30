@@ -44,4 +44,4 @@ jobs:
             docker pull ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}
             docker stop xsolla-zk-ui-storybook || true
             docker rm xsolla-zk-ui-storybook || true
-            docker run -d --name xsolla-zk-ui-storybook -p 80:3000 ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}
+            docker run -d --name xsolla-zk-ui-storybook -p 3003:3000 ghcr.io/xsolla-zk/xsolla-zk-ui/storybook:${{ github.ref_name }}

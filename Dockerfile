@@ -14,10 +14,14 @@ RUN pnpm build:storybook:react
 RUN pnpm build:storybook:vue
 
 FROM builder AS final
-COPY --from=builder /app/storybook-build/react /srv/ui-kit/react
+WORKDIR /srv/ui-kit
 
-# WORKDIR /srv/ui-kit/
+COPY --from=builder /app/server/storybook ./
+COPY --from=builder /app/storybook-build/react ./react
+COPY --from=builder /app/storybook-build/vue ./vue
 
-# EXPOSE 80
+RUN pnpm install
 
-# CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3003
+
+CMD ["node", "server.js"]

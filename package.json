@@ -5,7 +5,8 @@
   "scripts": {
     "build": "pnpm workspaces foreach --topological-dev run build",
     "build:storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook:build -o ../../storybook-build/react",
-    "build:storybook:vue": "pnpm --filter @xsolla-zk-ui/react storybook:build -o ../../storybook-build/vue",
+    "build:storybook:vue": "pnpm --filter @xsolla-zk-ui/vue storybook:build -o ../../storybook-build/vue",
+    "build:react": "pnpm --filter @xsolla-zk-ui/react build",
     "build:vue": "pnpm --filter @xsolla-zk-ui/vue build",
     "generate:icons:react": "npx @svgr/cli@8.0.1 --config-file ./tools/svgr/react/svgr.config.js -- ./raw-icons",
     "generate:tokens": "node ./tools/tokens-studio/build.mjs",
