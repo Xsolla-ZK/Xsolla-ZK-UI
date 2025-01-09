@@ -23,7 +23,6 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(function Backdrop(pro
 
 const XZKUIModalBackdrop = styled(Backdrop)(
   ({ theme }) => `
-    z-index: -1;
     position: fixed;
     right: 0;
     bottom: 0;
@@ -108,7 +107,7 @@ function XZKUIModalHeader({ title, subtitle }: XZKUIModalHeaderProps) {
         {subtitle && <Styled.Subtitle>{subtitle}</Styled.Subtitle>}
       </Styled.HeaderContent>
       <Styled.HeaderRight>
-        <Styled.CloseButton as="button" size={300} onClick={close}>
+        <Styled.CloseButton component="button" size={300} onClick={close}>
           <XZKUISvgIcon icon={SvgCross} />
         </Styled.CloseButton>
       </Styled.HeaderRight>

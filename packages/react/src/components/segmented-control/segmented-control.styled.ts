@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { buttonClasses, Button as MuiButton } from '@mui/base';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import type { XZKUISegmentedControlBaseProps } from './segmented-control.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
@@ -25,7 +26,9 @@ const Control = styled(MuiButton)(
   `,
 );
 
-const Main = styled('div')<StyledProps>(
+const Main = styled('div', {
+  shouldForwardProp,
+})<StyledProps>(
   ({ theme }) => `
     display: flex;
     align-items: center;

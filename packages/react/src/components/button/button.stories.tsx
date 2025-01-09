@@ -1,4 +1,5 @@
 import { within, expect } from '@storybook/test';
+import XZKUISeparator from '../separator/separator';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgPlus from '../svg-icons/plus';
 import XZKUIButton from './button';
@@ -14,7 +15,7 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
-    as: { control: false },
+    // as: { control: false },
     size: {
       control: 'select',
       options: buttonThemeSizes,
@@ -31,6 +32,7 @@ const meta = {
         type: { summary: Object.keys(theme.variants).join('|') },
       },
     },
+    bgOff: { type: 'boolean' },
     isLoading: { type: 'boolean' },
     children: { control: 'text' },
     startAdornment: {
@@ -61,12 +63,20 @@ export const Default: Story = {
 };
 
 export const AllVariants: Story = {
+  argTypes: {
+    bgOff: { table: { disable: true } },
+    variant: { table: { disable: true } },
+  },
   args: {},
   render: (args) => (
     <div style={{ display: 'flex', gap: '12px' }}>
       {(Object.keys(theme.variants) as Array<keyof typeof theme.variants>).map((variant) => (
-        <XZKUIButton key={variant} {...args} variant={variant} />
+        <div key={variant} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <XZKUIButton {...args} variant={variant} />
+          <XZKUIButton {...args} bgOff variant={variant} />
+        </div>
       ))}
+      <XZKUISeparator />
     </div>
   ),
 };

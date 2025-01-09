@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import type { XZKUISvgIconBaseProps } from './svg-icon.types';
+import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
-const Main = styled('span')<XZKUISvgIconBaseProps>(({ theme, iconColor, iconSize }) => ({
+type StyledProps = XZKUIStyledProps<XZKUISvgIconBaseProps>;
+
+const Main = styled('span', {
+  shouldForwardProp,
+})<StyledProps>(({ theme, xzkuiColor, xzkuiSize }) => ({
   display: 'inline-flex',
-  fontSize: iconSize ? iconSize + 'px' : 'inherit',
-  color: iconColor ? theme.theme.content[iconColor] : 'inherit',
+  fontSize: xzkuiSize ? xzkuiSize + 'px' : 'inherit',
+  color: xzkuiColor ? theme.theme.content[xzkuiColor] : 'inherit',
 
   svg: {
     display: 'inline-block',

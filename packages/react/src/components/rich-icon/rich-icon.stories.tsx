@@ -1,3 +1,4 @@
+import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgPlus from '../svg-icons/plus';
 import XZKUIRichIcon from './rich-icon';
@@ -5,14 +6,22 @@ import { richIconPaths } from './rich-icon.styled';
 import { richIconThemeSizes } from './rich-icon.theme';
 import type { Meta, StoryObj } from '@storybook/react';
 
+const bgVariants = Object.keys(tokensThemes['dark'].theme.background);
+
 const meta = {
   component: XZKUIRichIcon,
   parameters: {
     layout: 'centered',
   },
-  tags: ['!autodocs'],
+  // tags: ['!autodocs'],
   argTypes: {
-    shape: { control: 'inline-radio', options: Object.keys(richIconPaths) },
+    shape: {
+      table: {
+        type: { summary: Object.keys(richIconPaths).join('|') },
+      },
+      control: 'select',
+      options: Object.keys(richIconPaths),
+    },
     size: {
       control: 'select',
       options: richIconThemeSizes,
@@ -20,6 +29,13 @@ const meta = {
         defaultValue: { summary: '500' },
         type: { summary: richIconThemeSizes.join('|') },
       },
+    },
+    bg: {
+      table: {
+        type: { summary: bgVariants.join('|') },
+      },
+      control: 'select',
+      options: bgVariants,
     },
   },
   args: {
@@ -34,6 +50,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
+};
+
+export const CustomBg: Story = {
+  args: {
+    bg: {
+      custom: '#a81caf',
+    },
+  },
 };
 
 export const All: Story = {

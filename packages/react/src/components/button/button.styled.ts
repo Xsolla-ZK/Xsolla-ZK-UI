@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Button as MuiButton } from '@mui/base';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import XZKUILoaderStyled from '../loader/loader.styled';
 import XZKUISvgIconStyled from '../svg-icon/svg-icon.styled';
 import xzkuiButtonClasses from './button.classes';
@@ -17,8 +18,11 @@ const Text = styled('span')(
   `,
 );
 
-const Main = styled(MuiButton)<StyledProps>(
-  () => `
+const Main = styled(MuiButton, {
+  shouldForwardProp,
+})<StyledProps>(
+  ({ theme }) => `
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,12 +31,39 @@ const Main = styled(MuiButton)<StyledProps>(
     border: none;
     cursor: pointer;
 
-    &.${xzkuiButtonClasses.fullWidth} {
-      width: 100%;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      mix-blend-mode: overlay;
+      border-radius: inherit;
+      background-color: ${theme.theme.overlay.staticLight};
+      border: 1px solid ${theme.theme.border.neutralPrimary};
+      transition: ${theme.transitions.state};
+      transition-property: opacity, background;
+      opacity: 0;
     }
 
-    &.${xzkuiButtonClasses.disabled} {
-      cursor: not-allowed;
+    @media (pointer:fine) {
+      &:hover {
+        &:before {
+          opacity: 0.5;
+        }
+      }
+    }
+
+    &.${xzkuiButtonClasses.active} {
+      &:before {
+        opacity: 0.3;
+        background-color: ${theme.theme.background.staticDarkHigh};
+      }
+    }
+
+    &.${xzkuiButtonClasses.fullWidth} {
+      width: 100%;
     }
 
     &.${xzkuiButtonClasses.loading} {
@@ -53,6 +84,18 @@ const Main = styled(MuiButton)<StyledProps>(
   `,
   ({ theme, xzkuiSize }) => theme.components.button.sizes[xzkuiSize],
   ({ theme, xzkuiVariant }) => theme.components.button.variants[xzkuiVariant],
+  ({ theme }) => `
+    &.${xzkuiButtonClasses.disabled} {
+      &:before {
+        display: none;
+      }
+      &:not(.${xzkuiButtonClasses.bgOff}) {
+        background-color: ${theme.theme.overlay.neutral};
+      }
+      color: ${theme.theme.content.neutralTertiary};
+      cursor: not-allowed;
+    }
+  `,
 );
 
 const Adornment = styled('span')(

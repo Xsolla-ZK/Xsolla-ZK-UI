@@ -7,8 +7,8 @@ const XZKUISvgIcon = memo(
   forwardRef(function XZKUISvgIcon<T extends ElementType>(
     {
       icon: SvgComponent,
-      iconSize,
-      iconColor,
+      size,
+      color,
       className,
       component,
       children,
@@ -28,7 +28,7 @@ const XZKUISvgIcon = memo(
     }
 
     return (
-      <Styled.Main as={component} iconSize={iconSize} iconColor={iconColor} className={className}>
+      <Styled.Main as={component} xzkuiSize={size} xzkuiColor={color} className={className}>
         <SvgComponent {...svgProps} ref={ref} />
       </Styled.Main>
     );

@@ -6,7 +6,7 @@ export type XZKUIModalSharedProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleOpen: () => void;
-  handleClose: (onTransitionExited?: () => void) => void;
+  handleClose: () => void;
   onTransitionExited: (cb: () => void) => void;
 };
 

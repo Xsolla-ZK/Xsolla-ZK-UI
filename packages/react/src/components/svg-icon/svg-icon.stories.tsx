@@ -13,12 +13,12 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
-    iconColor: { control: 'select', options: Object.keys(tokensDark.theme.content) },
+    color: { control: 'select', options: Object.keys(tokensDark.theme.content) },
   },
   args: {
     icon: SvgPlus,
-    iconColor: 'neutralPrimary',
-    iconSize: 24,
+    color: 'neutralPrimary',
+    size: 24,
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof XZKUISvgIcon>;

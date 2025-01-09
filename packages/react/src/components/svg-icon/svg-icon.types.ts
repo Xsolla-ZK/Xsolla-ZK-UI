@@ -12,12 +12,12 @@ import type {
 export type XZKUISvgIconColorUnion = keyof PickByDotNotation<XZKUITheme, 'theme.content'>;
 
 export interface XZKUISvgIconBaseProps {
-  iconSize?: number;
-  iconColor?: XZKUISvgIconColorUnion;
+  size?: number;
+  color?: XZKUISvgIconColorUnion;
 }
 
 export interface XZKUISvgIconProps<T extends ElementType = 'span'>
-  extends Omit<SVGProps<SVGSVGElement>, 'ref'>,
+  extends Omit<SVGProps<SVGSVGElement>, 'ref' | keyof XZKUISvgIconBaseProps>,
     XZKUISvgIconBaseProps {
   icon: MemoExoticComponent<
     ForwardRefExoticComponent<

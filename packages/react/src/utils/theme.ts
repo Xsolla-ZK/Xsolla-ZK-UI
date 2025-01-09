@@ -10,12 +10,20 @@ import layout from '../tokens/layout';
 import tokensThemes from '../tokens/themes';
 import type { XZKUIThemeModeUnion, XZKUIThemeSelected } from '../types/theme';
 
-function theme(mode: XZKUIThemeModeUnion) {
+const easingFunctions = {
+  easeOutQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
+};
+
+function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
   return {
     mode,
     common,
     layout,
     ...(tokensThemes[mode] as XZKUIThemeSelected),
+    easingFunctions,
+    transitions: {
+      state: `${easingFunctions.easeOutQuad} 0.1s`,
+    },
     components: {
       button: buttonTheme(mode),
       loader: loaderTheme(mode),

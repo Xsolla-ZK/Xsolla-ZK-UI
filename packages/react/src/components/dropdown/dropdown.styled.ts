@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Popper as PopperBase } from '@mui/base';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import type { XZKUIDropdownBaseProps } from './dropdown.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
@@ -23,7 +24,9 @@ export const popoverBaseBody = css`
   overflow: hidden;
 `;
 
-const Body = styled('div')<StyledProps>(
+const Body = styled('div', {
+  shouldForwardProp,
+})<StyledProps>(
   popoverBaseBody,
   ({ theme }) => `
     background-color: ${theme.theme.layer.floor1};

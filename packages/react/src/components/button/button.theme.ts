@@ -4,7 +4,6 @@ import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import typography from '@xsolla-zk-ui/react/tokens/common/typography';
 import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
-import colorBlend from '@xsolla-zk-ui/react/utils/color/color-blend';
 import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
 import xzkuiButtonClasses from './button.classes';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
@@ -39,98 +38,19 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
     ),
     variants: {
       primary: css({
-        backgroundColor: selectedTheme.theme.background.brandHigh,
         color: selectedTheme.theme.content.staticDarkPrimary,
-        '@media (pointer:fine)': {
-          '&:hover': {
-            backgroundColor: colorBlend(
-              selectedTheme.theme.background.brandHigh,
-              selectedTheme.theme.background.neutralHigh,
-              'color-dodge',
-            ),
-          },
+        [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
+          backgroundColor: selectedTheme.theme.background.brandHigh,
         },
-
-        [`&.${xzkuiButtonClasses.active}`]: {
-          backgroundColor: colorBlend(
-            selectedTheme.theme.background.brandHigh,
-            selectedTheme.theme.background.neutralHigh,
-            'overlay',
-          ),
-        },
-
-        [`&.${xzkuiButtonClasses.disabled}`]: {
-          backgroundColor: selectedTheme.theme.overlay.neutral,
-          color: selectedTheme.theme.content.neutralTertiary,
+        [`&.${xzkuiButtonClasses.bgOff}`]: {
+          color: selectedTheme.theme.content.brandPrimary,
         },
       }),
       secondary: css({
-        backgroundColor: selectedTheme.theme.overlay.neutral,
-        color: selectedTheme.theme.content.neutralPrimary,
-        '@media (pointer:fine)': {
-          '&:hover': {
-            backgroundColor: colorBlend(
-              selectedTheme.theme.overlay.neutral,
-              selectedTheme.theme.background.neutralHigh,
-              'color-dodge',
-            ),
-          },
-        },
-
-        [`&.${xzkuiButtonClasses.active}`]: {
-          backgroundColor: colorBlend(
-            selectedTheme.theme.overlay.neutral,
-            selectedTheme.theme.background.neutralHigh,
-            'overlay',
-          ),
-        },
-
-        [`&.${xzkuiButtonClasses.disabled}`]: {
+        [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
           backgroundColor: selectedTheme.theme.overlay.neutral,
-          color: selectedTheme.theme.content.neutralTertiary,
         },
-      }),
-      primaryGhost: css({
-        color: selectedTheme.theme.content.brandPrimary,
-        '@media (pointer:fine)': {
-          '&:hover': {
-            backgroundColor: colorBlend(
-              selectedTheme.palette.goose[200],
-              selectedTheme.theme.background.neutralHigh,
-              'color-dodge',
-            ),
-          },
-        },
-
-        [`&.${xzkuiButtonClasses.active}`]: {
-          backgroundColor: colorBlend(
-            selectedTheme.palette.goose[200],
-            selectedTheme.theme.background.neutralHigh,
-            'overlay',
-          ),
-        },
-
-        [`&.${xzkuiButtonClasses.disabled}`]: {
-          backgroundColor: 'transparent',
-          color: selectedTheme.theme.content.neutralTertiary,
-        },
-      }),
-      secondaryGhost: css({
         color: selectedTheme.theme.content.neutralPrimary,
-        '@media (pointer:fine)': {
-          '&:hover': {
-            backgroundColor: selectedTheme.theme.background.staticLightHigh, // fix
-          },
-        },
-
-        [`&.${xzkuiButtonClasses.active}`]: {
-          backgroundColor: selectedTheme.theme.background.neutralHigh, // fix
-        },
-
-        [`&.${xzkuiButtonClasses.disabled}`]: {
-          backgroundColor: 'transparent',
-          color: selectedTheme.theme.content.neutralTertiary,
-        },
       }),
     },
   };

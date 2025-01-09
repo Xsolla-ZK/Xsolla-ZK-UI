@@ -4,7 +4,17 @@ import type { XZKUIAnimatedProps } from './animated.types';
 
 const XZKUIAnimatedFade = forwardRef<HTMLDivElement, XZKUIAnimatedProps>(
   function XZKUIAnimatedFade(props, ref) {
-    const { in: open, children, onEnter, onExited, from, to, settings, ...other } = props;
+    const {
+      in: open,
+      children,
+      onEnter,
+      onExited,
+      from,
+      to,
+      settings,
+      ownerState,
+      ...other
+    } = props;
     const style = useSpring({
       from: { opacity: 0, ...from },
       to: open ? { opacity: 1, ...to } : { opacity: 0, ...from },

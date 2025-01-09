@@ -10,4 +10,5 @@ export interface XZKUIAnimatedProps {
   onClick?: MouseEventHandler<HTMLDivElement>;
   onEnter?: (node: HTMLElement | null, isAppearing: boolean) => void;
   onExited?: (node: HTMLElement | null, isAppearing: boolean) => void;
+  ownerState?: Record<string, unknown>;
 }

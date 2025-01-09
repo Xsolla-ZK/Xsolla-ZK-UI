@@ -5,13 +5,15 @@ import Styled from './loader.styled';
 import type { XZKUILoaderProps } from './loader.types';
 
 const XZKUILoader = forwardRef<HTMLDivElement, XZKUILoaderProps>(function XZKUILoader(
-  { children, variant = 'default', size = 24, className, vertical, ...props },
+  { children, variant = 'default', size = 24, className, vertical, mainColor, spinColor, ...props },
   ref,
 ) {
   return (
     <Styled.Main
-      size={size}
-      variant={variant}
+      xzkuiSize={size}
+      xzkuiVariant={variant}
+      xzkuiMainColor={mainColor}
+      xzkuiSpinColor={spinColor}
       ref={ref}
       className={clsx([className, vertical && xzkuiLoaderClasses.vertical])}
       {...props}

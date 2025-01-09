@@ -4,6 +4,7 @@ import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { css, Global, ThemeProvider, useTheme } from '@emotion/react';
 import tokensThemes from '../src/tokens/themes';
 import theme from '../src/utils/theme';
+// import XZKUIThemeProvider from '../src/components/theme-provider/theme-provider';
 import { XZKUITheme } from '../src/types/theme';
 import { fn } from '@storybook/test';
 
@@ -21,6 +22,7 @@ const GlobalStyles = () => {
           font-family: ${currentTheme.common.typography.font.text};
           font-optical-sizing: auto;
           -webkit-font-smoothing: antialiased;
+          box-sizing: border-box;
         }
       }
     `} />
@@ -59,6 +61,7 @@ const preview: Preview = {
       }, {}),
       defaultTheme: 'light',
       Provider: ThemeProvider,
+      // Provider: ({ theme, props }) => <XZKUIThemeProvider defaultTheme={theme} {...props} />,
       GlobalStyles,
     }),
   ],

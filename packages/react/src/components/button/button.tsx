@@ -3,22 +3,21 @@ import { forwardRef, isValidElement, useMemo, type ElementType } from 'react';
 import XZKUILoader from '../loader/loader';
 import xzkuiButtonClasses from './button.classes';
 import Styled from './button.styled';
-import type { XZKUIButtonProps } from './button.types';
-import type {
-  XZKUIPolymorphicComponent,
-  XZKUIPolymorphicForwardedRef,
-  XZKUIPolymorphicProps,
-} from '@xsolla-zk-ui/react/types/components';
+import type { ComponentButtonTypeMap } from './button.types';
+import type { PolymorphicProps } from '@mui/base';
+import type { OverridableComponent } from '@mui/types';
 import type { ReactNode } from 'react';
 
-const XZKUIButton = forwardRef(function XZKUIButton<T extends ElementType>(
-  props: XZKUIPolymorphicProps<T, XZKUIButtonProps>,
-  ref: XZKUIPolymorphicForwardedRef<T>,
-) {
+// const XZKUIButton = forwardRef(function XZKUIButton<T extends ElementType>(
+//   props: XZKUIPolymorphicProps<T, XZKUIButtonProps>,
+//   ref: XZKUIPolymorphicForwardedRef<T>,
+// ) {
+const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
   const {
     size = 500,
     variant = 'primary',
     isLoading,
+    bgOff,
     startAdornment,
     endAdornment,
     children,
@@ -34,6 +33,7 @@ const XZKUIButton = forwardRef(function XZKUIButton<T extends ElementType>(
         className,
         isLoading && xzkuiButtonClasses.loading,
         fullWidth && xzkuiButtonClasses.fullWidth,
+        bgOff && xzkuiButtonClasses.bgOff,
         (startAdornment || endAdornment) && xzkuiButtonClasses.extraSpaces,
       ])}
       {...rest}
@@ -50,7 +50,7 @@ const XZKUIButton = forwardRef(function XZKUIButton<T extends ElementType>(
       )}
     </Styled.Main>
   );
-}) as XZKUIPolymorphicComponent<XZKUIButtonProps>;
+}) as OverridableComponent<ComponentButtonTypeMap>;
 
 function renderContent(content: ReactNode, start: ReactNode, end: ReactNode) {
   return (
@@ -62,19 +62,19 @@ function renderContent(content: ReactNode, start: ReactNode, end: ReactNode) {
   );
 }
 
-function useFilterProps<T extends ElementType>(props: XZKUIPolymorphicProps<T, XZKUIButtonProps>) {
+function useFilterProps<T extends ElementType>(props: PolymorphicProps<ComponentButtonTypeMap, T>) {
   return useMemo(
     () =>
       props.isLoading
         ? Object.keys(props).reduce(
             (acc, key) => {
               if (!(key.startsWith('on') && typeof props[key] === 'function')) {
-                acc[key as keyof XZKUIPolymorphicProps<T, XZKUIButtonProps>] =
-                  props[key as keyof XZKUIPolymorphicProps<T, XZKUIButtonProps>];
+                acc[key as keyof PolymorphicProps<ComponentButtonTypeMap, T>] =
+                  props[key as keyof PolymorphicProps<ComponentButtonTypeMap, T>];
               }
               return acc;
             },
-            {} as XZKUIPolymorphicProps<T, XZKUIButtonProps>,
+            {} as PolymorphicProps<ComponentButtonTypeMap, T>,
           )
         : props,
     [props],

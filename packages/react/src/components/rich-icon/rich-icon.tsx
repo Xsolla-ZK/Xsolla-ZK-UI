@@ -3,15 +3,10 @@ import { forwardRef } from 'react';
 import XZKUIPimple from '../pimple/pimple';
 import xzkuiRichIconClasses from './rich-icon.classes';
 import Styled, { richIconPaths } from './rich-icon.styled';
-import type { XZKUIRichIconProps } from './rich-icon.types';
-import type {
-  XZKUIPolymorphicComponent,
-  XZKUIPolymorphicForwardedRef,
-  XZKUIPolymorphicProps,
-} from '@xsolla-zk-ui/react/types/components';
-import type { ElementType } from 'react';
+import type { ComponentRichIconTypeMap } from './rich-icon.types';
+import type { OverridableComponent } from '@mui/types';
 
-const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
+const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
   {
     shape = 'circle',
     size = 500,
@@ -21,15 +16,17 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
     className,
     bg = 'brandHigh',
     pimple,
+    component = 'div',
     ...rest
-  }: XZKUIPolymorphicProps<T, XZKUIRichIconProps>,
-  ref: XZKUIPolymorphicForwardedRef<T>,
+  },
+  ref,
 ) {
   return (
     <Styled.Main
       className={clsx([className, !shape && xzkuiRichIconClasses.noShape])}
       xzkuiSize={size}
       xzkuiBg={bg}
+      as={component}
       {...rest}
       ref={ref}
     >
@@ -76,6 +73,6 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon<T extends ElementType>(
       {pimple && <XZKUIPimple {...pimple} />}
     </Styled.Main>
   );
-}) as XZKUIPolymorphicComponent<XZKUIRichIconProps>;
+}) as OverridableComponent<ComponentRichIconTypeMap>;
 
 export default XZKUIRichIcon;

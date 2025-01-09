@@ -4,7 +4,17 @@ import type { XZKUIAnimatedProps } from './animated.types';
 
 const XZKUIAnimatedSlideUp = forwardRef<HTMLDivElement, XZKUIAnimatedProps>(
   function XZKUIAnimatedSlideUp(props, ref) {
-    const { in: open, children, onEnter, onExited, from, to, settings, ...other } = props;
+    const {
+      in: open,
+      children,
+      onEnter,
+      onExited,
+      from,
+      to,
+      settings,
+      ownerState,
+      ...other
+    } = props;
 
     const style = useSpring({
       from: { y: '100%', ...from },

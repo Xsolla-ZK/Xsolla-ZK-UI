@@ -1,7 +1,9 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import xzkuiLoaderClasses from './loader.classes';
 import type { XZKUILoaderBaseProps } from './loader.types';
+import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 const progress = () => keyframes`
   0% {
@@ -30,12 +32,16 @@ const spinStyles = () => css`
   }
 `;
 
-const Main = styled('div')<XZKUILoaderBaseProps>(
-  ({ size }) => `
+type StyledProps = XZKUIStyledProps<XZKUILoaderBaseProps>;
+
+const Main = styled('div', {
+  shouldForwardProp,
+})<StyledProps>(
+  ({ xzkuiSize }) => `
     display: inline-flex;
     align-items: center;
     gap: 0.25em;
-    font-size: ${size}px;
+    font-size: ${xzkuiSize}px;
     &.${xzkuiLoaderClasses.vertical} {
       flex-direction: column;
     }
@@ -43,13 +49,13 @@ const Main = styled('div')<XZKUILoaderBaseProps>(
       font-size: 0.75em;
     }
   `,
-  ({ theme, variant, mainColor, spinColor }) =>
-    !(mainColor || spinColor)
-      ? theme.components.loader.variants[variant]
+  ({ theme, xzkuiVariant, xzkuiMainColor, xzkuiSpinColor }) =>
+    !(xzkuiMainColor || xzkuiSpinColor)
+      ? theme.components.loader.variants[xzkuiVariant]
       : `
-    color: ${mainColor || undefined};
+    color: ${xzkuiMainColor || undefined};
     .spin {
-      stroke: ${spinColor || undefined};
+      stroke: ${xzkuiSpinColor || undefined};
     }
   `,
   spinStyles,

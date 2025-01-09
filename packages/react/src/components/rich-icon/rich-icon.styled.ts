@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
+import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import XZKUIPimpleStyled from '../pimple/pimple.styled';
 import xzkuiRichIconClasses from './rich-icon.classes';
 import type { XZKUIRichIconBaseProps } from './rich-icon.types';
@@ -31,11 +33,13 @@ export const richIconPaths = {
 
 type StyledProps = XZKUIStyledProps<XZKUIRichIconBaseProps>;
 
-const Main = styled('div')<Pick<StyledProps, 'xzkuiSize' | 'xzkuiBg'>>(
+const Main = styled('div', {
+  shouldForwardProp,
+})<StyledProps>(
   ({ theme, xzkuiBg }) => `
     position: relative;
     display: inline-flex;
-    color: ${theme.theme.background[xzkuiBg] ?? xzkuiBg};
+    color: ${pickCustomColor(xzkuiBg, theme.theme.background)};
 
     ${XZKUIPimpleStyled.Main} {
       position: absolute;
@@ -61,7 +65,7 @@ const Icon = styled('svg')(
   `,
 );
 
-const Content = styled('div')(
+const Content = styled('span')(
   ({ theme }) => `
     position: absolute;
     top: 0;
