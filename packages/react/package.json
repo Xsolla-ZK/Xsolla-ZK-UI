@@ -41,7 +41,8 @@
     "clsx": "^2.1.1",
     "color": "^4.2.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",

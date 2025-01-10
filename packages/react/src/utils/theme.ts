@@ -5,6 +5,7 @@ import pimpleTheme from '../components/pimple/pimple.theme';
 import richIconTheme from '../components/rich-icon/rich-icon.theme';
 import segmentedControlTheme from '../components/segmented-control/segmented-control.theme';
 import semanticTextTheme from '../components/semantic-text/semantic-text.theme';
+import tabsTheme from '../components/tabs/tabs.theme';
 import common from '../tokens/common';
 import layout from '../tokens/layout';
 import tokensThemes from '../tokens/themes';
@@ -32,6 +33,7 @@ function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
       pimple: pimpleTheme(mode),
       richIcon: richIconTheme(mode),
       segmentedControl: segmentedControlTheme(mode),
+      tabs: tabsTheme(mode),
     },
   };
 }
