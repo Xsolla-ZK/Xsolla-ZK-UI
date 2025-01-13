@@ -21,7 +21,9 @@ const Main = styled(MuiTabs)`
 
 type StyledProps = XZKUIStyledProps<XZKUITabsBaseProps>;
 
-const Tab = styled(MuiTab)<StyledProps>(
+const Tab = styled(MuiTab, {
+  shouldForwardProp,
+})<StyledProps>(
   ({ theme }) => `
     position: relative;
     display: flex;

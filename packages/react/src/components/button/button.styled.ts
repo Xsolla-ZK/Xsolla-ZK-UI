@@ -29,6 +29,7 @@ const Main = styled(MuiButton, {
     max-width: 100%;
     background: none;
     border: none;
+    overflow: hidden;
     cursor: pointer;
 
     &:before {

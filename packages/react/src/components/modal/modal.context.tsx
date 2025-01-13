@@ -7,16 +7,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { XZKUIModalSharedProps } from './modal.types';
+import type { XZKUIModalContextValues, XZKUIModalSharedProps } from './modal.types';
 import type { PropsWithChildren } from 'react';
-
-interface XZKUIModalContextValues {
-  // open: boolean;
-  step: number;
-  changeStep: (value: number) => void;
-  back: () => void;
-  close: XZKUIModalSharedProps['handleClose'];
-}
 
 const XZKUIModalContext = createContext<XZKUIModalContextValues | null>(null);
 
@@ -55,6 +47,13 @@ function XZKUIModalProvider({
     }
   }, []);
 
+  const handleNext = useCallback(() => {
+    setStep((value) => {
+      history.current.push(value);
+      return value + 1;
+    });
+  }, []);
+
   const changeStep = useCallback(
     (value: XZKUIModalContextValues['step']) => {
       history.current.push(step);
@@ -74,9 +73,11 @@ function XZKUIModalProvider({
       changeStep,
       step,
       back: handleBack,
+      next: handleNext,
       close: handleClose,
+      onTransitionExited,
     }),
-    [changeStep, step, handleBack, handleClose],
+    [changeStep, step, handleBack, handleNext, handleClose, onTransitionExited],
   );
 
   return <Provider value={contextValue}>{children}</Provider>;

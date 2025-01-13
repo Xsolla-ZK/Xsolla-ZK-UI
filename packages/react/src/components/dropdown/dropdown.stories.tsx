@@ -13,7 +13,8 @@ const meta = {
   tags: ['!stable'],
   argTypes: {
     size: {
-      control: false,
+      control: 'select',
+      options: dropdownThemeSizes,
       table: { defaultValue: { summary: '500' }, type: { summary: dropdownThemeSizes.join('|') } },
     },
     onClick: { table: { disable: true } },
@@ -58,6 +59,47 @@ export const Default: Story = {
     </XZKUIDropdown>
   ),
 };
+
+// function Comp() {
+//   const [selected, setSelected] = useState<null | number>(null);
+
+//   return (
+//     <XZKUIDropdown
+//       control={({ toggleHandler, open, ownProps }) => (
+//         <XZKUIButton
+//           aria-label="Network List"
+//           onClick={toggleHandler}
+//           bgOff
+//           variant="secondary"
+//           // startAdornment={<XZKUISvgIcon icon={SvgHeart} />}
+//           endAdornment={<XZKUISvgIcon icon={open ? SvgBackpack : SvgArrowUp} />}
+//           className={clsx(open && xzkuiButtonClasses.active)}
+//           {...ownProps}
+//         >
+//           {selected ? `Network #${selected}` : 'Choose Network'}
+//         </XZKUIButton>
+//       )}
+//     >
+//       {({ close }) => (
+//         <ul>
+//           {[...Array(10).keys()].map((item) => (
+//             <li key={item} onClick={() => {
+//               setSelected(item);
+//               close();
+//             }}>
+//               Network #{item}
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </XZKUIDropdown>
+//   );
+// }
+
+// export const Composition: Story = {
+//   args: {},
+//   render: () => <Comp />,
+// };
 
 /*
 export const ExperimentalFeatureStory: Story = {

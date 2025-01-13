@@ -52,6 +52,14 @@ const Main = styled('div', {
       line-height: 1em;
     }
   `,
+  ({ as }) =>
+    as === 'button' &&
+    `
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+  `,
   ({ theme, xzkuiSize }) => theme.components.richIcon.sizes[xzkuiSize],
 );
 

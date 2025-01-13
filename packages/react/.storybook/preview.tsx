@@ -22,8 +22,10 @@ const GlobalStyles = () => {
           font-family: ${currentTheme.common.typography.font.text};
           font-optical-sizing: auto;
           -webkit-font-smoothing: antialiased;
-          box-sizing: border-box;
         }
+      }
+      .sb-show-main * {
+        box-sizing: border-box;
       }
     `} />
   );

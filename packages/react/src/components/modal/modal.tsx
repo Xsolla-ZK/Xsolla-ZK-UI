@@ -1,14 +1,25 @@
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Modal } from '@mui/base';
+import clsx from 'clsx';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import XZKUIAnimatedFade from '../animated/fade';
 import XZKUIAnimatedSlideUp from '../animated/slide-up';
+import XZKUIRichIcon from '../rich-icon/rich-icon';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
+import SvgChevronLeft from '../svg-icons/chevron-left';
 import SvgCross from '../svg-icons/cross';
+import xzkuiModalClasses from './modal.classes';
 import XZKUIModalProvider, { useXZKUIModalCtx } from './modal.context';
 import Styled from './modal.styled';
-import type { XZKUIModalBodyProps, XZKUIModalHeaderProps, XZKUIModalProps } from './modal.types';
-import type { MouseEventHandler, PropsWithChildren, ReactElement } from 'react';
+import type {
+  XZKUIModalBodyBaseProps,
+  XZKUIModalBodyProps,
+  XZKUIModalFooterProps,
+  XZKUIModalHeaderProps,
+  XZKUIModalProps,
+} from './modal.types';
+import type { MouseEventHandler, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
 interface BackdropProps {
   children?: ReactElement;
@@ -29,7 +40,6 @@ const XZKUIModalBackdrop = styled(Backdrop)(
     top: 0;
     left: 0;
     background-color: ${theme.theme.layer.floorScrim};
-    backdrop-filter: blur(12px);
     -webkit-tap-highlight-color: transparent;
   `,
 );
@@ -88,7 +98,10 @@ function XZKUIModal(props: XZKUIModalProps) {
         >
           <XZKUIAnimatedSlideUp in={openOwn || open}>
             {typeof children === 'function'
-              ? children({ ...sharedProps, onTransitionExited })
+              ? children({
+                  ...sharedProps,
+                  onTransitionExited,
+                })
               : children}
           </XZKUIAnimatedSlideUp>
         </StyledModal>
@@ -97,19 +110,39 @@ function XZKUIModal(props: XZKUIModalProps) {
   );
 }
 
-function XZKUIModalHeader({ title, subtitle }: XZKUIModalHeaderProps) {
+function XZKUIModalHeader({ title, subtitle, className }: XZKUIModalHeaderProps) {
   const { step, close, back } = useXZKUIModalCtx();
+  const { theme } = useTheme();
+  const headerEmpty = !(title || subtitle);
   return (
-    <Styled.Header>
-      {step > 0 && <Styled.HeaderLeft>back</Styled.HeaderLeft>}
+    <Styled.Header className={clsx(className, [headerEmpty && xzkuiModalClasses.headerEmpty])}>
+      {step > 0 && (
+        <Styled.HeaderLeft>
+          <XZKUIRichIcon
+            component="button"
+            aria-label="modal back"
+            bg={{ custom: theme.overlay.neutral }}
+            size={300}
+            onClick={back}
+          >
+            <XZKUISvgIcon icon={SvgChevronLeft} />
+          </XZKUIRichIcon>
+        </Styled.HeaderLeft>
+      )}
       <Styled.HeaderContent>
         {title && <Styled.Title>{title}</Styled.Title>}
         {subtitle && <Styled.Subtitle>{subtitle}</Styled.Subtitle>}
       </Styled.HeaderContent>
       <Styled.HeaderRight>
-        <Styled.CloseButton component="button" size={300} onClick={close}>
+        <XZKUIRichIcon
+          component="button"
+          aria-label="modal close"
+          bg={{ custom: theme.overlay.neutral }}
+          size={300}
+          onClick={close}
+        >
           <XZKUISvgIcon icon={SvgCross} />
-        </Styled.CloseButton>
+        </XZKUIRichIcon>
       </Styled.HeaderRight>
     </Styled.Header>
   );
@@ -123,25 +156,45 @@ function XZKUIModalContent({ children }: PropsWithChildren) {
   );
 }
 
-function XZKUIModalFooter({ children }: PropsWithChildren) {
-  return <Styled.Footer>{children}</Styled.Footer>;
-}
-
-export function XZKUIModalBody({ headerProps, children, footer }: XZKUIModalBodyProps) {
+function XZKUIModalFooter({ children, className, blur }: PropsWithChildren<XZKUIModalFooterProps>) {
   return (
-    <XZKUIModalBase>
-      <XZKUIModalHeader {...headerProps} />
-      <XZKUIModalContent>{children}</XZKUIModalContent>
-      {footer && <Styled.Footer>{footer}</Styled.Footer>}
-    </XZKUIModalBase>
+    <Styled.Footer className={clsx(className, [blur && xzkuiModalClasses.footerBlured])}>
+      {children}
+    </Styled.Footer>
   );
 }
 
-function XZKUIModalBase({ children }: PropsWithChildren) {
-  return <Styled.Main>{children}</Styled.Main>;
+export function XZKUIModalBody({
+  className,
+  headerProps,
+  children,
+  footer,
+  footerProps,
+  variant,
+}: XZKUIModalBodyProps) {
+  const ctx = useXZKUIModalCtx();
+  return (
+    <XZKUIModalBodyBase className={className} variant={variant}>
+      <XZKUIModalHeader {...headerProps} />
+      <XZKUIModalContent>
+        {typeof children === 'function' ? children(ctx) : children}
+      </XZKUIModalContent>
+      {footer && <XZKUIModalFooter {...footerProps}>{footer}</XZKUIModalFooter>}
+    </XZKUIModalBodyBase>
+  );
 }
 
-XZKUIModalBody.Base = XZKUIModalBase;
+function XZKUIModalBodyBase({
+  children,
+  className,
+  variant = 'curtain',
+}: PropsWithChildren<XZKUIModalBodyBaseProps>) {
+  return (
+    <Styled.Main className={clsx(className, [xzkuiModalClasses[variant]])}>{children}</Styled.Main>
+  );
+}
+
+XZKUIModalBody.Base = XZKUIModalBodyBase;
 XZKUIModalBody.Header = XZKUIModalHeader;
 XZKUIModalBody.Content = XZKUIModalContent;
 XZKUIModalBody.Footer = XZKUIModalFooter;

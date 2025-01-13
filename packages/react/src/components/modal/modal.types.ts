@@ -2,6 +2,18 @@ import type { ModalOwnProps as MuiModalOwnProps } from '@mui/base';
 import type { Optional } from '@xsolla-zk-ui/react/types/helpers';
 import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 
+type Variants = 'curtain' | 'popup';
+
+export interface XZKUIModalContextValues {
+  // open: boolean;
+  step: number;
+  changeStep: (value: number) => void;
+  back: () => void;
+  next: () => void;
+  close: XZKUIModalSharedProps['handleClose'];
+  onTransitionExited: XZKUIModalSharedProps['onTransitionExited'];
+}
+
 export type XZKUIModalSharedProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -31,10 +43,22 @@ export type XZKUIModalProps =
 export interface XZKUIModalHeaderProps {
   title?: ReactNode;
   subtitle?: ReactNode;
+  className?: string;
 }
 
-export interface XZKUIModalBodyProps {
+export interface XZKUIModalFooterProps {
+  blur?: boolean;
+  className?: string;
+}
+
+export interface XZKUIModalBodyBaseProps {
+  variant?: Variants;
+  className?: string;
+}
+
+export interface XZKUIModalBodyProps extends XZKUIModalBodyBaseProps {
   headerProps: XZKUIModalHeaderProps;
-  children?: ReactNode;
+  children?: ((context: XZKUIModalContextValues) => ReactNode) | ReactNode;
   footer?: ReactNode;
+  footerProps?: XZKUIModalFooterProps;
 }
