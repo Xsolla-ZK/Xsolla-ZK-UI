@@ -114,11 +114,6 @@ export const TextareaMaxRows: Story = {
     placeholder: 'Max Rows 5',
     multiline: true,
     maxRows: 5,
-    endAdornment: (
-      <XZKUIRichIcon size={200} bg={({ theme }) => theme.overlay.neutral}>
-        <XZKUISvgIcon icon={SvgBankCard} />
-      </XZKUIRichIcon>
-    ),
   },
 };
 export const TextareaMinRows: Story = {
