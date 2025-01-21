@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import radius from '@xsolla-zk-ui/react/tokens/common/radius';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
@@ -25,13 +24,11 @@ const controlSizes = {
 };
 
 const segmentedControlTheme = (_mode: XZKUIThemeModeUnion) => ({
-  sizes: callbackObjectByKeys(segmentedControlThemeSizes, (idx) =>
-    css({
-      borderRadius: baseSizes.borderRadius[idx],
-    }),
-  ),
-  controlSizes: callbackObjectByKeys(segmentedControlThemeSizes, (idx) =>
-    css({
+  sizes: callbackObjectByKeys(segmentedControlThemeSizes, (idx) => ({
+    borderRadius: baseSizes.borderRadius[idx],
+  })),
+  control: {
+    sizes: callbackObjectByKeys(segmentedControlThemeSizes, (idx) => ({
       minWidth: controlSizes.size[idx],
       height: controlSizes.size[idx],
       padding: `0 ${controlSizes.px[idx]}`,
@@ -44,8 +41,8 @@ const segmentedControlTheme = (_mode: XZKUIThemeModeUnion) => ({
         borderTopRightRadius: controlSizes.borderRadius[idx],
         borderBottomRightRadius: controlSizes.borderRadius[idx],
       },
-    }),
-  ),
+    })),
+  },
 });
 
 export default segmentedControlTheme;

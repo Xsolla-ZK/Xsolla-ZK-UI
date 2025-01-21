@@ -53,6 +53,18 @@ export const Default: Story = {
   args: {},
 };
 
+export const CustomColor: Story = {
+  args: {
+    color: '#1cb084',
+  },
+};
+
+export const CustomColorThemeBased: Story = {
+  args: {
+    color: ({ theme }) => theme.content.infoPrimary,
+  },
+};
+
 export const All: Story = {
   argTypes: {
     variant: {

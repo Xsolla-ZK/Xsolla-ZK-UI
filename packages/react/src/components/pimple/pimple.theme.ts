@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import typography from '@xsolla-zk-ui/react/tokens/common/typography';
@@ -21,14 +20,12 @@ const baseSizes = {
 };
 
 const pimpleTheme = (_mode: XZKUIThemeModeUnion) => ({
-  sizes: callbackObjectByKeys(pimpleThemeSizes, (idx) =>
-    css({
-      minWidth: baseSizes.size[idx],
-      minHeight: baseSizes.size[idx],
-      padding: `0 ${baseSizes.px[idx]}`,
-      font: baseSizes.font[idx],
-    }),
-  ),
+  sizes: callbackObjectByKeys(pimpleThemeSizes, (idx) => ({
+    minWidth: baseSizes.size[idx],
+    minHeight: baseSizes.size[idx],
+    padding: `0 ${baseSizes.px[idx]}`,
+    font: baseSizes.font[idx],
+  })),
 });
 
 export default pimpleTheme;

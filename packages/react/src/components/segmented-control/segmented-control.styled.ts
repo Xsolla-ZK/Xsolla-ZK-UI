@@ -42,7 +42,7 @@ const Main = styled('div', {
   `,
   ({ theme, xzkuiSize }) => theme.components.segmentedControl.sizes[xzkuiSize],
   ({ theme, xzkuiSize }) => ({
-    [`${Control}`]: theme.components.segmentedControl.controlSizes[xzkuiSize],
+    [`${Control}`]: theme.components.segmentedControl.control.sizes[xzkuiSize],
   }),
 );
 

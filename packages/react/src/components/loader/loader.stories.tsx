@@ -39,15 +39,15 @@ export const Default: Story = {
   args: {},
 };
 
-export const Light: Story = {
+export const OnLight: Story = {
   args: {
-    variant: 'light',
+    variant: 'onLight',
   },
 };
 
-export const Dark: Story = {
+export const OnDark: Story = {
   args: {
-    variant: 'dark',
+    variant: 'onDark',
   },
 };
 

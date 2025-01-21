@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
@@ -7,30 +6,30 @@ const loaderTheme = (mode: XZKUIThemeModeUnion) => {
 
   return {
     variants: {
-      default: css({
+      default: {
         color: selectedTheme.theme.border.neutralSecondary,
         '.spin': {
           stroke: selectedTheme.theme.border.brandPrimary,
         },
-      }),
-      light: css({
+      },
+      onLight: {
         color: selectedTheme.theme.background.staticDarkHigh,
         '.spin': {
           stroke: selectedTheme.theme.border.brandPrimary,
         },
-      }),
-      dark: css({
+      },
+      onDark: {
         color: selectedTheme.theme.background.staticLightHigh,
         '.spin': {
           stroke: selectedTheme.theme.border.brandPrimary,
         },
-      }),
-      brand: css({
+      },
+      brand: {
         color: selectedTheme.theme.background.staticLightHigh,
         '.spin': {
           stroke: selectedTheme.theme.background.staticDarkHigh,
         },
-      }),
+      },
     },
   };
 };

@@ -5,6 +5,7 @@ import xzkuiRichIconClasses from './rich-icon.classes';
 import Styled, { richIconPaths } from './rich-icon.styled';
 import type { ComponentRichIconTypeMap } from './rich-icon.types';
 import type { OverridableComponent } from '@mui/types';
+import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
 
 const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
   {
@@ -14,7 +15,7 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
     backdropProps,
     imageSrc,
     className,
-    bg = 'brandHigh',
+    bg = ((theme) => theme.theme.background.brandHigh) as XZKUICustomColor,
     pimple,
     component = 'div',
     ...rest

@@ -50,6 +50,48 @@ export const Default: Story = {
   },
 };
 
+export const Nested: Story = {
+  args: {
+    trigger: ({ handleOpen }) => (
+      <XZKUIButton onClick={handleOpen} aria-label="open modal">
+        Click to open modal
+      </XZKUIButton>
+    ),
+    children: (
+      <XZKUIModalBody
+        headerProps={{
+          title: 'Title',
+          subtitle: 'Subtitle',
+        }}
+      >
+        <div style={{ padding: '0 16px' }}>
+          <XZKUISemanticText>
+            {blankText.repeat(6)}
+            <XZKUIModal
+              trigger={({ handleOpen }) => (
+                <XZKUIButton onClick={handleOpen} aria-label="open nested modal">
+                  Click to open nested modal
+                </XZKUIButton>
+              )}
+            >
+              <XZKUIModalBody
+                headerProps={{
+                  title: 'Title',
+                  subtitle: 'Subtitle',
+                }}
+              >
+                <div style={{ padding: '0 16px' }}>
+                  <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+                </div>
+              </XZKUIModalBody>
+            </XZKUIModal>
+          </XZKUISemanticText>
+        </div>
+      </XZKUIModalBody>
+    ),
+  },
+};
+
 export const VariantPopup: Story = {
   args: {
     trigger: ({ handleOpen }) => (

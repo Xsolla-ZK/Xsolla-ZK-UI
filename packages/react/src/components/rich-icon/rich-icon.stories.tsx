@@ -1,12 +1,10 @@
-import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
+import { expect, fn, within } from '@storybook/test';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgPlus from '../svg-icons/plus';
 import XZKUIRichIcon from './rich-icon';
 import { richIconPaths } from './rich-icon.styled';
 import { richIconThemeSizes } from './rich-icon.theme';
 import type { Meta, StoryObj } from '@storybook/react';
-
-const bgVariants = Object.keys(tokensThemes['dark'].theme.background);
 
 const meta = {
   component: XZKUIRichIcon,
@@ -31,11 +29,7 @@ const meta = {
       },
     },
     bg: {
-      table: {
-        type: { summary: bgVariants.join('|') },
-      },
-      control: 'select',
-      options: bgVariants,
+      control: 'color',
     },
   },
   args: {
@@ -53,10 +47,86 @@ export const Default: Story = {
 };
 
 export const CustomBg: Story = {
-  args: {
-    bg: {
-      custom: '#a81caf',
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            bg="#a81caf"
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
     },
+  },
+  args: {
+    bg: '#a81caf',
+  },
+};
+
+export const CustomBgThemeBased: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            bg={({ theme }) => theme.overlay.neutral}
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    bg: ({ theme }) => theme.overlay.neutral,
+  },
+};
+
+export const ButtonType: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            component="button"
+          >
+            <XZKUISvgIcon icon={SvgPlus} />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    component: 'button',
+    onClick: (event) => {
+      alert('event.currentTarget.tagName = ' + event.currentTarget.tagName);
+    },
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+      Click on button and check TagName
+      <XZKUIRichIcon data-testid="rich-icon-button-type" {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const element = canvas.queryByTestId('rich-icon-button-type');
+    await expect(element?.tagName).toEqual('BUTTON');
   },
 };
 
@@ -80,12 +150,51 @@ export const All: Story = {
 };
 
 export const WithoutShape: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            shape={false}
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
   args: {
     shape: false,
   },
 };
 
 export const WithStrokeShape: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            backdropProps={{
+              stroke: 'rgba(17, 16, 20, 0.16)',
+              strokeWidth: 1,
+            }}
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
   args: {
     backdropProps: {
       stroke: 'rgba(17, 16, 20, 0.16)',
@@ -95,6 +204,24 @@ export const WithStrokeShape: Story = {
 };
 
 export const WithImage: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            imageSrc="shiba.png"
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
   args: {
     imageSrc: 'shiba.png',
   },
@@ -107,6 +234,26 @@ export const WithImageFill: Story = {
 };
 
 export const WithPimple: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUIRichIcon
+            pimple={{
+              children: 5,
+            }}
+          >
+            <XZKUISvgIcon
+              icon={SvgPlus}
+            />
+          </XZKUIRichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
   args: {
     pimple: {
       children: 5,

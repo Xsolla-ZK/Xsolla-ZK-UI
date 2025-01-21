@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
 import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import type { XZKUISvgIconBaseProps } from './svg-icon.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
@@ -10,7 +11,7 @@ const Main = styled('span', {
 })<StyledProps>(({ theme, xzkuiColor, xzkuiSize }) => ({
   display: 'inline-flex',
   fontSize: xzkuiSize ? xzkuiSize + 'px' : 'inherit',
-  color: xzkuiColor ? theme.theme.content[xzkuiColor] : 'inherit',
+  color: xzkuiColor ? pickCustomColor(theme, xzkuiColor) : 'inherit',
 
   svg: {
     display: 'inline-block',

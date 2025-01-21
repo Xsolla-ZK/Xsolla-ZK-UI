@@ -1,5 +1,4 @@
-import type { PickByDotNotation } from '@xsolla-zk-ui/react/types/helpers';
-import type { XZKUITheme } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
 import type {
   ElementType,
   ForwardRefExoticComponent,
@@ -9,11 +8,9 @@ import type {
   SVGProps,
 } from 'react';
 
-export type XZKUISvgIconColorUnion = keyof PickByDotNotation<XZKUITheme, 'theme.content'>;
-
 export interface XZKUISvgIconBaseProps {
   size?: number;
-  color?: XZKUISvgIconColorUnion;
+  color?: XZKUICustomColor;
 }
 
 export interface XZKUISvgIconProps<T extends ElementType = 'span'>

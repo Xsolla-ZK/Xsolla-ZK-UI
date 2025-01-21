@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import radius from '@xsolla-zk-ui/react/tokens/common/radius';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
@@ -12,24 +11,22 @@ const base = {
 };
 
 const dropdownTheme = (_mode: XZKUIThemeModeUnion) => ({
-  sizes: callbackObjectByKeys(dropdownThemeSizes, (idx) =>
-    css({
-      padding: base.padding[idx],
-      borderRadius: base.borderRadius[idx],
-      [`[data-popper-placement^="bottom"] &`]: {
-        marginTop: base.padding[idx],
-      },
-      [`[data-popper-placement^="top"] &`]: {
-        marginBottom: base.padding[idx],
-      },
-      [`[data-popper-placement^="left"] &`]: {
-        marginRight: base.padding[idx],
-      },
-      [`[data-popper-placement^="right"] &`]: {
-        marginLeft: base.padding[idx],
-      },
-    }),
-  ),
+  sizes: callbackObjectByKeys(dropdownThemeSizes, (idx) => ({
+    padding: base.padding[idx],
+    borderRadius: base.borderRadius[idx],
+    [`[data-popper-placement^="bottom"] &`]: {
+      marginTop: base.padding[idx],
+    },
+    [`[data-popper-placement^="top"] &`]: {
+      marginBottom: base.padding[idx],
+    },
+    [`[data-popper-placement^="left"] &`]: {
+      marginRight: base.padding[idx],
+    },
+    [`[data-popper-placement^="right"] &`]: {
+      marginLeft: base.padding[idx],
+    },
+  })),
 });
 
 export default dropdownTheme;

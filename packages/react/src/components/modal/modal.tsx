@@ -112,7 +112,6 @@ function XZKUIModal(props: XZKUIModalProps) {
 
 function XZKUIModalHeader({ title, subtitle, className }: XZKUIModalHeaderProps) {
   const { step, close, back } = useXZKUIModalCtx();
-  const { theme } = useTheme();
   const headerEmpty = !(title || subtitle);
   return (
     <Styled.Header className={clsx(className, [headerEmpty && xzkuiModalClasses.headerEmpty])}>
@@ -121,7 +120,7 @@ function XZKUIModalHeader({ title, subtitle, className }: XZKUIModalHeaderProps)
           <XZKUIRichIcon
             component="button"
             aria-label="modal back"
-            bg={{ custom: theme.overlay.neutral }}
+            bg={({ theme }) => theme.overlay.neutral}
             size={300}
             onClick={back}
           >
@@ -137,7 +136,7 @@ function XZKUIModalHeader({ title, subtitle, className }: XZKUIModalHeaderProps)
         <XZKUIRichIcon
           component="button"
           aria-label="modal close"
-          bg={{ custom: theme.overlay.neutral }}
+          bg={({ theme }) => theme.overlay.neutral}
           size={300}
           onClick={close}
         >

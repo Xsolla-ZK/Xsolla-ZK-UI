@@ -16,9 +16,9 @@ function XZKUISemanticText<T extends ElementType>({
       as={Component}
       className={className}
       xzkuiVariant={variant}
+      xzkuiColor={color}
       css={css`
         text-align: ${align || ''};
-        color: ${color || ''};
       `}
     >
       {children}

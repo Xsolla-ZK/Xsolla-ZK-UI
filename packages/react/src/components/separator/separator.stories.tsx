@@ -1,8 +1,5 @@
-import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
 import XZKUISeparator from './separator';
 import type { Meta, StoryObj } from '@storybook/react';
-
-const colorVariants = Object.keys(tokensThemes['dark'].theme.border);
 
 const meta = {
   component: XZKUISeparator,
@@ -12,12 +9,7 @@ const meta = {
   tags: ['stable'],
   argTypes: {
     color: {
-      control: 'select',
-      options: colorVariants,
-      table: {
-        // defaultValue: { summary: ' },
-        type: { summary: colorVariants.join('|') },
-      },
+      control: 'color',
     },
     weight: { control: 'number' },
     mt: { control: 'number' },
@@ -47,9 +39,7 @@ export const Default: Story = {
 
 export const CustomColor: Story = {
   args: {
-    color: {
-      custom: '#ff0000',
-    },
+    color: '#ff0000',
   },
 };
 

@@ -1,12 +1,8 @@
-import type { Theme } from '@emotion/react';
-import type { PickByDotNotation } from '@xsolla-zk-ui/react/types/helpers';
 import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
 import type { ComponentProps } from 'react';
 
-type XZKUISeparatorBorderUnion = keyof PickByDotNotation<Theme, 'theme.border'>;
-
 export interface XZKUISeparatorBaseProps {
-  color: XZKUISeparatorBorderUnion | XZKUICustomColor;
+  color?: XZKUICustomColor;
   weight: number;
 }
 

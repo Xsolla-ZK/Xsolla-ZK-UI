@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import typography from '@xsolla-zk-ui/react/tokens/common/typography';
@@ -19,20 +18,18 @@ const base = {
   gap: [spacing[300], spacing[350], spacing[400], spacing[400], spacing[450]],
 };
 
-const tabsTheme = (mode: XZKUIThemeModeUnion) => ({
-  sizes: {
-    list: callbackObjectByKeys(tabsThemeSizes, (idx) =>
-      css({
-        gap: base.gap[idx],
-      }),
-    ),
-    tab: callbackObjectByKeys(tabsThemeSizes, (idx) =>
-      css({
-        minHeight: base.size[idx],
-        minWidth: base.size[idx],
-        font: base.font[idx],
-      }),
-    ),
+const tabsTheme = (_mode: XZKUIThemeModeUnion) => ({
+  list: {
+    sizes: callbackObjectByKeys(tabsThemeSizes, (idx) => ({
+      gap: base.gap[idx],
+    })),
+  },
+  tab: {
+    sizes: callbackObjectByKeys(tabsThemeSizes, (idx) => ({
+      minHeight: base.size[idx],
+      minWidth: base.size[idx],
+      font: base.font[idx],
+    })),
   },
 });
 

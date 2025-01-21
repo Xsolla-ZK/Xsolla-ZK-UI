@@ -12,4 +12,5 @@ export type XZKUIThemeSelected = (typeof tokensThemes)['dark'];
 
 export type XZKUIStyledProps<T> = AddPrefix<T, 'xzkui'>;
 
-export type XZKUICustomColor = { custom: string };
+export type XZKUICustomColorCallback = (theme: Pick<Theme, 'mode' | 'theme'>) => string;
+export type XZKUICustomColor = string | XZKUICustomColorCallback;

@@ -1,6 +1,5 @@
 import { expect, within } from '@storybook/test';
 import * as Svg from '@xsolla-zk-ui/react/components/svg-icons';
-import tokensDark from '@xsolla-zk-ui/react/tokens/dark';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgPlus from '../svg-icons/plus';
 import type { XZKUISvgIconProps } from './svg-icon.types';
@@ -13,11 +12,11 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
-    color: { control: 'select', options: Object.keys(tokensDark.theme.content) },
+    color: { control: 'color' },
   },
   args: {
     icon: SvgPlus,
-    color: 'neutralPrimary',
+    // color: ({ theme }) => theme.content.neutralPrimary,
     size: 24,
   },
   play: async ({ canvasElement }) => {},
@@ -28,6 +27,50 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
+};
+
+export const CustomColor: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUISvgIcon
+            color="#b2da40"
+            icon={SvgPlus}
+            size={24}
+          />
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    color: '#b2da40',
+  },
+};
+
+export const CustomColorThemeBased: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <XZKUISvgIcon
+            color={({ theme }) => theme.content.warningPrimary}
+            icon={SvgPlus}
+            size={24}
+          />
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    color: ({ theme }) => theme.content.warningPrimary,
+  },
 };
 
 export const All: Story = {

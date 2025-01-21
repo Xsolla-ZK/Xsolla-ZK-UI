@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import radius from '@xsolla-zk-ui/react/tokens/common/radius';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
@@ -28,17 +27,15 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
   const selectedTheme = tokensThemes[mode];
 
   return {
-    sizes: callbackObjectByKeys(buttonThemeSizes, (idx) =>
-      css({
-        minWidth: base.size[idx],
-        minHeight: base.size[idx],
-        font: base.font[idx],
-        padding: `0 ${base.px[idx]}`,
-        borderRadius: base.borderRadius[idx],
-      }),
-    ),
+    sizes: callbackObjectByKeys(buttonThemeSizes, (idx) => ({
+      minWidth: base.size[idx],
+      minHeight: base.size[idx],
+      font: base.font[idx],
+      padding: `0 ${base.px[idx]}`,
+      borderRadius: base.borderRadius[idx],
+    })),
     variants: {
-      primary: css({
+      primary: {
         color: selectedTheme.theme.content.staticDarkPrimary,
         [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
           backgroundColor: selectedTheme.theme.background.brandHigh,
@@ -46,13 +43,13 @@ const buttonTheme = (mode: XZKUIThemeModeUnion) => {
         [`&.${xzkuiButtonClasses.bgOff}`]: {
           color: selectedTheme.theme.content.brandPrimary,
         },
-      }),
-      secondary: css({
+      },
+      secondary: {
         [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
           backgroundColor: selectedTheme.theme.overlay.neutral,
         },
         color: selectedTheme.theme.content.neutralPrimary,
-      }),
+      },
     },
   };
 };

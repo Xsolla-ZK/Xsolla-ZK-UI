@@ -23,8 +23,9 @@ const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
     children,
     fullWidth,
     className,
+    onClick,
     ...rest
-  } = useFilterProps(props);
+  } = props;
   return (
     <Styled.Main
       xzkuiSize={size}
@@ -36,6 +37,7 @@ const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
         bgOff && xzkuiButtonClasses.bgOff,
         (startAdornment || endAdornment) && xzkuiButtonClasses.extraSpaces,
       ])}
+      onClick={!props.isLoading ? onClick : undefined}
       {...rest}
       ref={ref}
     >

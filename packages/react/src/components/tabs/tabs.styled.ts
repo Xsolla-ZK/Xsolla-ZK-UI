@@ -82,13 +82,10 @@ const List = styled(MuiTabsList, {
     border-bottom: 1px solid ${theme.theme.border.neutralSecondary};
     overflow-x: auto;
   `,
-  ({ theme, xzkuiSize }) => theme.components.tabs.sizes.list[xzkuiSize],
-  ({ theme, xzkuiSize }) =>
-    `
-    ${Tab} {
-      ${theme.components.tabs.sizes.tab[xzkuiSize].styles};
-    }
-  `,
+  ({ theme, xzkuiSize }) => theme.components.tabs.list.sizes[xzkuiSize],
+  ({ theme, xzkuiSize }) => ({
+    [`${Tab}`]: theme.components.tabs.tab.sizes[xzkuiSize],
+  }),
 );
 
 const Panel = styled(MuiTabPanel)(

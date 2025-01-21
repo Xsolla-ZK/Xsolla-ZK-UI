@@ -1,5 +1,6 @@
 import buttonTheme from '../components/button/button.theme';
 import dropdownTheme from '../components/dropdown/dropdown.theme';
+import inputTheme from '../components/input/input.theme';
 import loaderTheme from '../components/loader/loader.theme';
 import pimpleTheme from '../components/pimple/pimple.theme';
 import richIconTheme from '../components/rich-icon/rich-icon.theme';
@@ -34,6 +35,7 @@ function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
       richIcon: richIconTheme(mode),
       segmentedControl: segmentedControlTheme(mode),
       tabs: tabsTheme(mode),
+      input: inputTheme(mode),
     },
   };
 }

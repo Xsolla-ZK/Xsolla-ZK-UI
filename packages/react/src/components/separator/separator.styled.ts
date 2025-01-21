@@ -14,7 +14,7 @@ const Main = styled('hr', {
     width: 100%;
     height: ${xzkuiWeight}px;
     border: none;
-    background-color: ${pickCustomColor(xzkuiColor, theme.theme.border)};
+    background-color: ${xzkuiColor ? pickCustomColor(theme, xzkuiColor) : theme.theme.border.neutralSecondary};
 
     &.${xzkuiSeparatorClasses.vertical} {
       width: ${xzkuiWeight}px;

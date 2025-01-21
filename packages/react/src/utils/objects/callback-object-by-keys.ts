@@ -1,15 +1,15 @@
-import type { SerializedStyles } from '@emotion/react';
+import type { CSSObject } from '@emotion/styled';
 
 function callbackObjectByKeys<T extends ReadonlyArray<string | number>>(
   keys: T,
-  cb: (idx: number, key: T[number]) => SerializedStyles,
+  cb: (idx: number, key: T[number]) => CSSObject,
 ) {
   return keys.reduce(
     (acc, curr, idx) => {
       acc[curr as T[number]] = cb(idx, curr);
       return acc;
     },
-    {} as Record<T[number], SerializedStyles>,
+    {} as Record<T[number], CSSObject>,
   );
 }
 
