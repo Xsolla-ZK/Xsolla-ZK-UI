@@ -6,7 +6,7 @@ import type { XZKUIPimpleProps } from './pimple.types';
 
 function XZKUIPimple({ children, className, size = 500 }: XZKUIPimpleProps) {
   return (
-    <Styled.Main
+    <Styled.Root
       className={clsx([
         className,
         isValidElement(children) &&
@@ -16,7 +16,7 @@ function XZKUIPimple({ children, className, size = 500 }: XZKUIPimpleProps) {
       xzkuiSize={size}
     >
       {size > 200 ? children : null}
-    </Styled.Main>
+    </Styled.Root>
   );
 }
 

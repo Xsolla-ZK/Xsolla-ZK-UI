@@ -28,9 +28,9 @@ const XZKUISvgIcon = memo(
     }
 
     return (
-      <Styled.Main as={component} xzkuiSize={size} xzkuiColor={color} className={className}>
+      <Styled.Root as={component} xzkuiSize={size} xzkuiColor={color} className={className}>
         <SvgComponent {...svgProps} ref={ref} />
-      </Styled.Main>
+      </Styled.Root>
     );
   }),
 );

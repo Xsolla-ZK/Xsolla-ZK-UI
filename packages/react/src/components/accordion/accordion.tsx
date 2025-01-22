@@ -1,21 +1,35 @@
 import { useSpring } from '@react-spring/web';
 import { Fragment, useEffect, useId, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
+import XZKUIRichIcon from '../rich-icon/rich-icon';
+import XZKUISvgIcon from '../svg-icon/svg-icon';
+import SvgChevronDown from '../svg-icons/chevron-down';
+import SvgChevronUp from '../svg-icons/chevron-up';
 import Styled from './accordion.styled';
 import type { XZKUIAccordionContentProps, XZKUIAccordionProps } from './accordion.types';
 
-function XZKUIAccordion({ list, header, children }: XZKUIAccordionProps) {
+function XZKUIAccordion({
+  list,
+  header,
+  headerClick,
+  className,
+  bg,
+  renders,
+  children,
+}: XZKUIAccordionProps) {
   const uniqId = useId();
   const [isOpen, setOpen] = useState<number | boolean | null>(null);
 
   return (
-    <Styled.Main>
+    <Styled.Root className={className} xzkuiBg={bg}>
       {list ? (
         list.map((item, idx) => {
           const content = `${uniqId}accordion-content-${idx}`;
           const header = `${uniqId}accordion-header-${idx}`;
           const active = isOpen === idx;
           const disabled = !item.content;
+          const toggle = () => setOpen((prev) => (prev === idx ? null : idx));
+          const hasCustomHandler = Boolean(item.headerClick || headerClick);
 
           return (
             <Fragment key={`accordion-list-item-${idx}`}>
@@ -26,10 +40,34 @@ function XZKUIAccordion({ list, header, children }: XZKUIAccordionProps) {
                 role="button"
                 tabIndex={disabled ? -1 : 0}
                 id={header}
-                onClick={() => setOpen((prev) => (prev === idx ? null : idx))}
+                onClick={(event) => {
+                  if (item.headerClick) {
+                    return item.headerClick(event, { active });
+                  }
+                  if (headerClick) {
+                    return headerClick(event, { active });
+                  }
+                  toggle();
+                }}
               >
                 <Styled.HeaderTitle>{item.header}</Styled.HeaderTitle>
-                {/* <SvgIcon icon={active ? SvgUp : SvgDown} /> */}
+                {renders?.headerButton ? (
+                  typeof renders?.headerButton === 'function' ? (
+                    renders?.headerButton?.({ active })
+                  ) : (
+                    renders?.headerButton
+                  )
+                ) : (
+                  <XZKUIRichIcon
+                    component={hasCustomHandler ? 'button' : undefined}
+                    shape="squircle"
+                    size={200}
+                    bg={({ theme }) => theme.overlay.neutral}
+                    onClickCapture={hasCustomHandler ? () => toggle() : undefined}
+                  >
+                    <XZKUISvgIcon icon={active ? SvgChevronUp : SvgChevronDown} />
+                  </XZKUIRichIcon>
+                )}
               </Styled.Header>
               <XZKUIAccordionContent id={content} label={header} active={active}>
                 {item.content}
@@ -46,10 +84,31 @@ function XZKUIAccordion({ list, header, children }: XZKUIAccordionProps) {
             role="button"
             tabIndex={!children ? -1 : 0}
             id={`${uniqId}-accordion-header`}
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={(event) => {
+              if (headerClick) {
+                return headerClick(event, { active: Boolean(isOpen) });
+              }
+              setOpen((prev) => !prev);
+            }}
           >
             <Styled.HeaderTitle>{header}</Styled.HeaderTitle>
-            {/* <SvgIcon icon={active ? SvgUp : SvgDown} /> */}
+            {renders?.headerButton ? (
+              typeof renders?.headerButton === 'function' ? (
+                renders?.headerButton?.({ active: Boolean(isOpen) })
+              ) : (
+                renders?.headerButton
+              )
+            ) : (
+              <XZKUIRichIcon
+                component={headerClick ? 'button' : undefined}
+                shape="squircle"
+                size={200}
+                bg={({ theme }) => theme.overlay.neutral}
+                onClickCapture={headerClick ? () => setOpen((prev) => !prev) : undefined}
+              >
+                <XZKUISvgIcon icon={isOpen ? SvgChevronUp : SvgChevronDown} />
+              </XZKUIRichIcon>
+            )}
           </Styled.Header>
           <XZKUIAccordionContent
             id={`${uniqId}-accordion-content`}
@@ -60,7 +119,7 @@ function XZKUIAccordion({ list, header, children }: XZKUIAccordionProps) {
           </XZKUIAccordionContent>
         </>
       )}
-    </Styled.Main>
+    </Styled.Root>
   );
 }
 

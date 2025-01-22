@@ -1,4 +1,4 @@
-import { expect, fn, within } from '@storybook/test';
+import { expect, within } from '@storybook/test';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgPlus from '../svg-icons/plus';
 import XZKUIRichIcon from './rich-icon';

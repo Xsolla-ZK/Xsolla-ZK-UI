@@ -1,4 +1,5 @@
 import buttonTheme from '../components/button/button.theme';
+import checkboxTheme from '../components/checkbox/checkbox.theme';
 import dropdownTheme from '../components/dropdown/dropdown.theme';
 import inputTheme from '../components/input/input.theme';
 import loaderTheme from '../components/loader/loader.theme';
@@ -36,6 +37,7 @@ function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
       segmentedControl: segmentedControlTheme(mode),
       tabs: tabsTheme(mode),
       input: inputTheme(mode),
+      checkbox: checkboxTheme(mode),
     },
   };
 }

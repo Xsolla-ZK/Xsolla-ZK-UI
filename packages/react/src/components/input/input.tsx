@@ -28,7 +28,7 @@ const XZKUIInput = forwardRef(function CustomInput(
   return (
     <MuiInput
       slots={{
-        root: InputStyled.Main,
+        root: InputStyled.Root,
         input: InputStyled.Element,
         textarea: InputStyled.TextareaElement,
         ...slots,

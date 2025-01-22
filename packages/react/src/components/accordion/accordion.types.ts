@@ -1,7 +1,17 @@
-import type { ReactNode } from 'react';
+import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
+import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 
+type XZKUIAccordionState = {
+  active: boolean;
+};
+
+type HeaderClickHandler = (
+  event: ReactMouseEvent<HTMLDivElement, MouseEvent>,
+  state: XZKUIAccordionState,
+) => void;
 export interface XZKUIAccordionItem {
   header: ReactNode;
+  headerClick?: HeaderClickHandler;
   content?: ReactNode;
 }
 
@@ -10,17 +20,28 @@ export interface XZKUIAccordionStandalone {
   children?: ReactNode;
 }
 
+export interface XZKUIAccordionBaseProps {
+  bg?: XZKUICustomColor;
+}
+
 type NeverAllKeys<T> = {
   [K in keyof T]?: never;
 };
 
-export type XZKUIAccordionProps =
-  | ({
-      list: XZKUIAccordionItem[];
-    } & NeverAllKeys<XZKUIAccordionStandalone>)
-  | ({
-      list?: never;
-    } & XZKUIAccordionStandalone);
+export type XZKUIAccordionProps = XZKUIAccordionBaseProps & {
+  className?: string;
+  headerClick?: HeaderClickHandler;
+  renders?: {
+    headerButton?: ReactNode | ((props: XZKUIAccordionState) => ReactNode);
+  };
+} & (
+    | ({
+        list: XZKUIAccordionItem[];
+      } & NeverAllKeys<XZKUIAccordionStandalone>)
+    | ({
+        list?: never;
+      } & XZKUIAccordionStandalone)
+  );
 
 export interface XZKUIAccordionContentProps {
   active: boolean;

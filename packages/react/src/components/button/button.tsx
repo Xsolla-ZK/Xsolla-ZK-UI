@@ -27,7 +27,7 @@ const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
     ...rest
   } = props;
   return (
-    <Styled.Main
+    <Styled.Root
       xzkuiSize={size}
       xzkuiVariant={variant}
       className={clsx([
@@ -50,7 +50,7 @@ const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
       ) : (
         renderContent(children, startAdornment, endAdornment)
       )}
-    </Styled.Main>
+    </Styled.Root>
   );
 }) as OverridableComponent<ComponentButtonTypeMap>;
 

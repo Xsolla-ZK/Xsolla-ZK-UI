@@ -34,7 +34,7 @@ const spinStyles = () => css`
 
 type StyledProps = XZKUIStyledProps<XZKUILoaderBaseProps>;
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ xzkuiSize }) => `
@@ -62,7 +62,7 @@ const Main = styled('div', {
 );
 
 const XZKUILoaderStyled = {
-  Main,
+  Root,
 };
 
 export default XZKUILoaderStyled;

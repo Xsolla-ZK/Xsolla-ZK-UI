@@ -23,7 +23,7 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
   ref,
 ) {
   return (
-    <Styled.Main
+    <Styled.Root
       className={clsx([className, !shape && xzkuiRichIconClasses.noShape])}
       xzkuiSize={size}
       xzkuiBg={bg}
@@ -72,7 +72,7 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
       )}
       <Styled.Content>{children}</Styled.Content>
       {pimple && <XZKUIPimple {...pimple} />}
-    </Styled.Main>
+    </Styled.Root>
   );
 }) as OverridableComponent<ComponentRichIconTypeMap>;
 

@@ -18,7 +18,7 @@ const Text = styled('span')(
   `,
 );
 
-const Main = styled(MuiButton, {
+const Root = styled(MuiButton, {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme }) => `
@@ -78,8 +78,8 @@ const Main = styled(MuiButton, {
       }
     }
 
-    ${XZKUILoaderStyled.Main},
-    ${XZKUISvgIconStyled.Main} {
+    ${XZKUILoaderStyled.Root},
+    ${XZKUISvgIconStyled.Root} {
       font-size: 1.33em;
     }
   `,
@@ -106,7 +106,7 @@ const Adornment = styled('span')(
 );
 
 const XZKUIButtonStyled = {
-  Main,
+  Root,
   Text,
   Adornment,
 };

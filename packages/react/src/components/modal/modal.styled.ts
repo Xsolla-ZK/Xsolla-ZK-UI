@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import xzkuiModalClasses from './modal.classes';
 
-const Main = styled('div')(
+const Root = styled('div')(
   ({ theme }) => `
     position: absolute;
     display: flex;
@@ -142,7 +142,7 @@ const Footer = styled('div')(
 );
 
 const XZKUIModalStyled = {
-  Main,
+  Root,
   Header,
   HeaderContent,
   HeaderLeft,

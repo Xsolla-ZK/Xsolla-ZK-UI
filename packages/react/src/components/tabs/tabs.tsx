@@ -7,7 +7,7 @@ import type {
 } from './tabs.types';
 
 function XZKUITabs(props: XZKUITabsProps) {
-  return <Styled.Main {...props} />;
+  return <Styled.Root {...props} />;
 }
 
 function TabsList({ size = 500, ...props }: XZKUITabsListProps) {

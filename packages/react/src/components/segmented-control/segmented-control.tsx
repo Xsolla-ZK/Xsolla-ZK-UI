@@ -18,7 +18,7 @@ function XZKUISegmentedControl({
   const controlId = `xzkui-segmetad-control-${uniqId}`;
 
   return (
-    <Styled.Main xzkuiSize={size} className={className}>
+    <Styled.Root xzkuiSize={size} className={className}>
       {values.map((value, idx) => (
         <Styled.Control
           key={`${controlId}-position-${value}`}
@@ -31,7 +31,7 @@ function XZKUISegmentedControl({
           {value}
         </Styled.Control>
       ))}
-    </Styled.Main>
+    </Styled.Root>
   );
 }
 

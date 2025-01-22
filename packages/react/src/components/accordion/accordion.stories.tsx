@@ -1,3 +1,7 @@
+import XZKUIRichIcon from '../rich-icon/rich-icon';
+import XZKUISvgIcon from '../svg-icon/svg-icon';
+import SvgBankCard from '../svg-icons/bank-card';
+import SvgCash from '../svg-icons/cash';
 import XZKUIAccordion from './accordion';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -36,15 +40,47 @@ export const Standalone: Story = {
   },
 };
 
+export const StandaloneCustomBg: Story = {
+  args: {
+    header: 'Standalone Custom Bg',
+    children: contentBlank,
+    bg: ({ theme }) => theme.background.infoLow,
+  },
+};
+
+export const StandaloneCustomHeaderButton: Story = {
+  args: {
+    header: 'Standalone Custom Header Button',
+    children: contentBlank,
+    renders: {
+      headerButton: ({ active }) => (
+        <XZKUIRichIcon component="button" size={200}>
+          <XZKUISvgIcon icon={active ? SvgCash : SvgBankCard} />
+        </XZKUIRichIcon>
+      ),
+    },
+  },
+};
+
+export const StandaloneHeaderCustomClick: Story = {
+  args: {
+    header: 'Standalone Header Custom Click',
+    children: contentBlank,
+    headerClick: (_event, state) => {
+      alert(`some cutom event click. State: ${JSON.stringify(state)}`);
+    },
+  },
+};
+
 export const MultipleStandalones: Story = {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   args: {},
   render: () => (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <XZKUIAccordion header="Standalone Header 1">{contentBlank}</XZKUIAccordion>
       <XZKUIAccordion header="Standalone Header 2">{contentBlank}</XZKUIAccordion>
-    </>
+    </div>
   ),
 };
 

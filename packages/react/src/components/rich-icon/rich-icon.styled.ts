@@ -32,7 +32,7 @@ export const richIconPaths = {
 
 type StyledProps = XZKUIStyledProps<XZKUIRichIconBaseProps>;
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme, xzkuiBg }) => `
@@ -42,7 +42,7 @@ const Main = styled('div', {
     justify-content: center;
     color: ${pickCustomColor(theme, xzkuiBg)};
 
-    ${XZKUIPimpleStyled.Main} {
+    ${XZKUIPimpleStyled.Root} {
       position: absolute;
       top: -0.33em;
       right: -0.33em;
@@ -94,7 +94,7 @@ const Content = styled('span')(
 );
 
 const XZKUIRichIconStyled = {
-  Main,
+  Root,
   Icon,
   Content,
 };

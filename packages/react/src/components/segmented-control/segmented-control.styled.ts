@@ -26,7 +26,7 @@ const Control = styled(MuiButton)(
   `,
 );
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme }) => `
@@ -47,7 +47,7 @@ const Main = styled('div', {
 );
 
 const XZKUISegmentedControlStyled = {
-  Main,
+  Root,
   Control,
 };
 

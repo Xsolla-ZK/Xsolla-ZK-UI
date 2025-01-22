@@ -50,7 +50,7 @@ function XZKUIDropdown<T extends ElementType>(props: XZKUIDropdownProps<T>) {
 
   return (
     <ClickAwayListener onClickAway={handleClose}>
-      <Styled.Main className={className} as={component} onKeyDown={onKeyDownHandler} {...rest}>
+      <Styled.Root className={className} as={component} onKeyDown={onKeyDownHandler} {...rest}>
         {typeof control === 'function' && isValidElement(control) ? (
           control({ ...sharedProps, ownProps })
         ) : (
@@ -61,7 +61,7 @@ function XZKUIDropdown<T extends ElementType>(props: XZKUIDropdownProps<T>) {
             {typeof children === 'function' ? children(sharedProps) : children}
           </Body>
         </Styled.Popper>
-      </Styled.Main>
+      </Styled.Root>
     </ClickAwayListener>
   );
 }

@@ -1,9 +1,9 @@
 ---
 to: packages/react/src/components/<%= h.changeCase.kebab(name) %>/<%= h.changeCase.kebab(name) %>.stories.tsx
 ---
-import type { Meta, StoryObj } from '@storybook/react';
 import { within, expect } from '@storybook/test';
 import XZKUI<%= h.changeCase.pascal(name) %> from './<%= h.changeCase.kebab(name) %>';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   component: XZKUI<%= h.changeCase.pascal(name) %>,

@@ -18,7 +18,7 @@ function XZKUISeparator({
   ...props
 }: XZKUISeparatorProps) {
   return (
-    <Styled.Main
+    <Styled.Root
       xzkuiColor={color}
       xzkuiWeight={weight}
       css={css`

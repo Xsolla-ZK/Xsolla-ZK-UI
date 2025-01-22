@@ -9,7 +9,7 @@ const XZKUILoader = forwardRef<HTMLDivElement, XZKUILoaderProps>(function XZKUIL
   ref,
 ) {
   return (
-    <Styled.Main
+    <Styled.Root
       xzkuiSize={size}
       xzkuiVariant={variant}
       xzkuiMainColor={mainColor}
@@ -39,7 +39,7 @@ const XZKUILoader = forwardRef<HTMLDivElement, XZKUILoaderProps>(function XZKUIL
         />
       </svg>
       {children && <span>{children}</span>}
-    </Styled.Main>
+    </Styled.Root>
   );
 });
 

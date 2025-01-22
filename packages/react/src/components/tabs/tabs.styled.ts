@@ -12,7 +12,7 @@ import XZKUIPimpleStyled from '../pimple/pimple.styled';
 import type { XZKUITabsBaseProps } from './tabs.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
-const Main = styled(MuiTabs)`
+const Root = styled(MuiTabs)`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -54,7 +54,7 @@ const Tab = styled(MuiTab, {
         opacity: 1;
       }
 
-      ${XZKUIPimpleStyled.Main} {
+      ${XZKUIPimpleStyled.Root} {
         background-color: ${theme.theme.background.neutralHigh};
         color: ${theme.theme.content.staticLightPrimary};
       }
@@ -64,7 +64,7 @@ const Tab = styled(MuiTab, {
       cursor: not-allowed;
     }
 
-    ${XZKUIPimpleStyled.Main} {
+    ${XZKUIPimpleStyled.Root} {
       background-color: ${theme.theme.overlay.neutral};
       color: ${theme.theme.content.neutralPrimary};
     }
@@ -103,7 +103,7 @@ const Panel = styled(MuiTabPanel)(
 );
 
 const XZKUITabsStyled = {
-  Main,
+  Root,
   List,
   Panel,
   Tab,

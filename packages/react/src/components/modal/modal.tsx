@@ -189,7 +189,7 @@ function XZKUIModalBodyBase({
   variant = 'curtain',
 }: PropsWithChildren<XZKUIModalBodyBaseProps>) {
   return (
-    <Styled.Main className={clsx(className, [xzkuiModalClasses[variant]])}>{children}</Styled.Main>
+    <Styled.Root className={clsx(className, [xzkuiModalClasses[variant]])}>{children}</Styled.Root>
   );
 }
 

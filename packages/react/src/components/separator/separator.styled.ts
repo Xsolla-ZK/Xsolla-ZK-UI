@@ -7,7 +7,7 @@ import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUISeparatorBaseProps>;
 
-const Main = styled('hr', {
+const Root = styled('hr', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme, xzkuiColor, xzkuiWeight }) => `
@@ -24,7 +24,7 @@ const Main = styled('hr', {
 );
 
 const XZKUISeparatorStyled = {
-  Main,
+  Root,
 };
 
 export default XZKUISeparatorStyled;

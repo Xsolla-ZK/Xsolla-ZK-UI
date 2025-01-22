@@ -12,7 +12,7 @@ function XZKUISemanticText<T extends ElementType>({
   className,
 }: XZKUISemanticTextProps<T>) {
   return (
-    <Styled.Main
+    <Styled.Root
       as={Component}
       className={className}
       xzkuiVariant={variant}
@@ -22,7 +22,7 @@ function XZKUISemanticText<T extends ElementType>({
       `}
     >
       {children}
-    </Styled.Main>
+    </Styled.Root>
   );
 }
 

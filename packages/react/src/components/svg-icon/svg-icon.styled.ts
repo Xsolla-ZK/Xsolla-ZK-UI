@@ -6,7 +6,7 @@ import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUISvgIconBaseProps>;
 
-const Main = styled('span', {
+const Root = styled('span', {
   shouldForwardProp,
 })<StyledProps>(({ theme, xzkuiColor, xzkuiSize }) => ({
   display: 'inline-flex',
@@ -22,7 +22,7 @@ const Main = styled('span', {
 }));
 
 const XZKUISvgIconStyled = {
-  Main,
+  Root,
 };
 
 export default XZKUISvgIconStyled;

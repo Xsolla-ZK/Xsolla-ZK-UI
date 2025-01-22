@@ -50,7 +50,7 @@ const TextareaElement = styled(TextareaAutosize, {
   `,
 );
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme }) => `
@@ -104,7 +104,7 @@ const Main = styled('div', {
 );
 
 const XZKUIInputStyled = {
-  Main,
+  Root,
   Element,
   Adornment,
   TextareaElement,

@@ -6,7 +6,7 @@ import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUISemanticTextBaseProps>;
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme, xzkuiColor }) => `
@@ -17,7 +17,7 @@ const Main = styled('div', {
 );
 
 const XZKUISemanticTextStyled = {
-  Main,
+  Root,
 };
 
 export default XZKUISemanticTextStyled;

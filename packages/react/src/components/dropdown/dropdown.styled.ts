@@ -7,7 +7,7 @@ import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUIDropdownBaseProps>;
 
-const Main = styled('div')({
+const Root = styled('div')({
   position: 'relative',
 });
 
@@ -36,7 +36,7 @@ const Body = styled('div', {
 );
 
 const PopoverStyled = {
-  Main,
+  Root,
   Popper,
   Body,
 };

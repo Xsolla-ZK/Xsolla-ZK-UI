@@ -4,14 +4,14 @@ to: packages/react/src/components/<%= h.changeCase.kebab(name) %>/<%= h.changeCa
 
 import styled from '@emotion/styled';
 
-const Main = styled('div')(
+const Root = styled('div')(
   ({ theme }) => `
     /* Your styles */
   `,
 );
 
 const XZKUI<%= h.changeCase.pascal(name) %>Styled = {
-  Main,
+  Root,
 };
 
 export default XZKUI<%= h.changeCase.pascal(name) %>Styled;

@@ -6,7 +6,7 @@ import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUIPimpleBaseProps>;
 
-const Main = styled('div', {
+const Root = styled('div', {
   shouldForwardProp,
 })<StyledProps>(
   ({ theme }) => `
@@ -26,7 +26,7 @@ const Main = styled('div', {
 );
 
 const XZKUIPimpleStyled = {
-  Main,
+  Root,
 };
 
 export default XZKUIPimpleStyled;
