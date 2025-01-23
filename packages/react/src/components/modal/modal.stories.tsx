@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import { useState } from 'react';
 import XZKUIButton from '../button/button';
+import XZKUICheckbox from '../checkbox/checkbox';
 import XZKUISemanticText from '../semantic-text/semantic-text';
 import XZKUIModal, { XZKUIModalBody } from './modal';
 import { useXZKUIModalCtx } from './modal.context';
@@ -319,15 +320,12 @@ function ConfiguredHeader() {
     >
       <div style={{ padding: '0 16px' }}>
         <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showTitle"
-              checked={state.showTitle}
-              onChange={handleChange}
-            />
-            Show Title
-          </label>
+          <XZKUICheckbox
+            label="Show Title"
+            name="showTitle"
+            checked={state.showTitle}
+            onChange={handleChange}
+          />
           {state.showTitle && (
             <input
               type="text"
@@ -339,15 +337,12 @@ function ConfiguredHeader() {
           )}
         </div>
         <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showSubtitle"
-              checked={state.showSubtitle}
-              onChange={handleChange}
-            />
-            Show Subtitle
-          </label>
+          <XZKUICheckbox
+            label="Show Subtitle"
+            name="showSubtitle"
+            checked={state.showSubtitle}
+            onChange={handleChange}
+          />
           {state.showSubtitle && (
             <input
               type="text"

@@ -1,9 +1,9 @@
-import XZKUICheckbox from './checkbox';
-import { checkboxThemeSizes } from './checkbox.theme';
+import XZKUIRadio from './radio';
+import { radioThemeSizes } from './radio.theme';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  component: XZKUICheckbox,
+  component: XZKUIRadio,
   parameters: {
     layout: 'centered',
   },
@@ -17,7 +17,7 @@ const meta = {
     // onClick: fn(),
   },
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUICheckbox>;
+} satisfies Meta<typeof XZKUIRadio>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -51,7 +51,7 @@ export const CustomCheckedColorThemeBased: Story = {
     docs: {
       source: {
         code: `
-          <XZKUICheckbox
+          <XZKUIRadio
             bg={({ theme }) => theme.background.negativeHigh}
             color={({ theme }) => theme.content.staticLightPrimary}
             defaultChecked
@@ -86,8 +86,8 @@ export const AllSizes: Story = {
   args: {},
   render: (args) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      {checkboxThemeSizes.map((size) => (
-        <XZKUICheckbox key={size} {...args} size={size} />
+      {radioThemeSizes.map((size) => (
+        <XZKUIRadio key={size} {...args} size={size} />
       ))}
     </div>
   ),

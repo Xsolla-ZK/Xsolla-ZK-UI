@@ -14,7 +14,9 @@ const GlobalStyles = () => {
     <Global styles={css`
       .sb-show-main,
       .docs-story {
-        background: ${currentTheme.theme.background.neutralLow};
+        &, & [scale] {
+          background: ${currentTheme.theme.background.neutralLow};
+        }
       }
       #storybook-root,
       .docs-story {

@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
 import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import xzkuiCheckboxClasses from './checkbox.classes';
-import type { XZKUICheckboxBaseProps } from './checkbox.types';
+import xzkuiRadioClasses from './radio.classes';
+import type { XZKUIRadioBaseProps } from './radio.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
-type StyledProps = XZKUIStyledProps<XZKUICheckboxBaseProps>;
+type StyledProps = XZKUIStyledProps<XZKUIRadioBaseProps>;
 
 const Root = styled('div')<Pick<StyledProps, 'xzkuiSize'>>(
   ({ theme }) => `
@@ -16,12 +16,13 @@ const Root = styled('div')<Pick<StyledProps, 'xzkuiSize'>>(
     max-width: 100%;
     cursor: pointer;
     color: ${theme.theme.content.neutralPrimary};
+    transform: none;
 
-    &.${xzkuiCheckboxClasses.focusVisible} {
+    &.${xzkuiRadioClasses.focusVisible} {
       outline: auto;
     }
 
-    &.${xzkuiCheckboxClasses.disabled} {
+    &.${xzkuiRadioClasses.disabled} {
       cursor: not-allowed;
     }
   `,
@@ -36,10 +37,10 @@ const Indicator = styled('span', {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    border-radius: ${theme.common.radius[999]};
     border-style: solid;
     border-color: ${theme.theme.border.neutralSecondary};
     background-color: ${theme.theme.overlay.neutral};
-    color: ${xzkuiColor ? pickCustomColor(theme, xzkuiColor) : theme.theme.content.staticDarkPrimary};
     overflow: hidden;
 
     &:before {
@@ -57,20 +58,32 @@ const Indicator = styled('span', {
       opacity: 0;
     }
 
-    .${xzkuiCheckboxClasses.checked} & {
+    &:after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-radius: inherit;
+      background-color: ${xzkuiColor ? pickCustomColor(theme, xzkuiColor) : theme.theme.content.staticDarkPrimary};
+      transition: ${theme.transitions.state};
+      transition-property: width, height, background;
+    }
+
+    .${xzkuiRadioClasses.checked} & {
       background-color: ${xzkuiBg ? pickCustomColor(theme, xzkuiBg) : theme.theme.background.brandHigh};
     }
 
-    .${xzkuiCheckboxClasses.disabled} & {
+    .${xzkuiRadioClasses.disabled} & {
       background-color: ${theme.theme.overlay.neutral};
-      color: ${theme.theme.content.neutralTertiary};
       &:before {
         border-color: ${theme.theme.border.neutralTertiary};
+      }
+      &:after {
+        background-color: ${theme.theme.content.neutralTertiary};
       }
     }
   `,
   ({ theme, xzkuiSize }) => {
-    const box = theme.components.checkbox.box.sizes[xzkuiSize];
+    const box = theme.components.radio.box.sizes[xzkuiSize];
 
     return {
       ...box,
@@ -80,7 +93,7 @@ const Indicator = styled('span', {
         right: `-${box.borderWidth}`,
         bottom: `-${box.borderWidth}`,
       },
-      [`.${xzkuiCheckboxClasses.checked} &`]: theme.components.checkbox.indicator.sizes[xzkuiSize],
+      [`.${xzkuiRadioClasses.checked} &:after`]: theme.components.radio.indicator.sizes[xzkuiSize],
     };
   },
 );
@@ -89,13 +102,13 @@ const Input = styled('input')(
   () => `
     cursor: inherit;
     position: absolute;
+    opacity: 0;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    opacity: 0;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
     z-index: 1;
 
     @media (pointer: fine) {
@@ -114,11 +127,11 @@ const Label = styled('span')(
   `,
 );
 
-const XZKUICheckboxStyled = {
+const XZKUIRadioStyled = {
   Root,
   Input,
   Indicator,
   Label,
 };
 
-export default XZKUICheckboxStyled;
+export default XZKUIRadioStyled;

@@ -1,4 +1,3 @@
-import radius from '@xsolla-zk-ui/react/tokens/common/radius';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import stroke from '@xsolla-zk-ui/react/tokens/common/stroke';
@@ -6,7 +5,7 @@ import typography from '@xsolla-zk-ui/react/tokens/common/typography';
 import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
-export const checkboxThemeSizes = [400, 500, 600] as const;
+export const radioThemeSizes = [400, 500, 600] as const;
 
 const baseSizes = {
   gap: [spacing[250], spacing[250], spacing[300]],
@@ -20,31 +19,30 @@ const baseSizes = {
 const boxSizes = {
   size: [size[100], size[200], size[300]],
   borderWidth: [stroke[100], stroke[100], stroke[200]],
-  borderRadius: [radius[200], radius[300], radius[300]],
 };
 
 const indicatorSizes = {
-  size: [size[80], size[100], size[150]],
+  size: [size[40], size[60], size[80]],
 };
 
-const checkboxTheme = (_mode: XZKUIThemeModeUnion) => ({
-  sizes: callbackObjectByKeys(checkboxThemeSizes, (idx) => ({
+const radioTheme = (_mode: XZKUIThemeModeUnion) => ({
+  sizes: callbackObjectByKeys(radioThemeSizes, (idx) => ({
     gap: baseSizes.gap[idx],
     font: baseSizes.font[idx],
   })),
   box: {
-    sizes: callbackObjectByKeys(checkboxThemeSizes, (idx) => ({
+    sizes: callbackObjectByKeys(radioThemeSizes, (idx) => ({
       width: boxSizes.size[idx],
       height: boxSizes.size[idx],
       borderWidth: boxSizes.borderWidth[idx],
-      borderRadius: boxSizes.borderRadius[idx],
     })),
   },
   indicator: {
-    sizes: callbackObjectByKeys(checkboxThemeSizes, (idx) => ({
-      fontSize: indicatorSizes.size[idx],
+    sizes: callbackObjectByKeys(radioThemeSizes, (idx) => ({
+      width: indicatorSizes.size[idx],
+      height: indicatorSizes.size[idx],
     })),
   },
 });
 
-export default checkboxTheme;
+export default radioTheme;

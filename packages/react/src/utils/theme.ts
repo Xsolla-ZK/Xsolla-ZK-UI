@@ -4,6 +4,7 @@ import dropdownTheme from '../components/dropdown/dropdown.theme';
 import inputTheme from '../components/input/input.theme';
 import loaderTheme from '../components/loader/loader.theme';
 import pimpleTheme from '../components/pimple/pimple.theme';
+import radioTheme from '../components/radio/radio.theme';
 import richIconTheme from '../components/rich-icon/rich-icon.theme';
 import segmentedControlTheme from '../components/segmented-control/segmented-control.theme';
 import semanticTextTheme from '../components/semantic-text/semantic-text.theme';
@@ -38,6 +39,7 @@ function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
       tabs: tabsTheme(mode),
       input: inputTheme(mode),
       checkbox: checkboxTheme(mode),
+      radio: radioTheme(mode),
     },
   };
 }

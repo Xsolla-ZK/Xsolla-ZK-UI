@@ -8,8 +8,8 @@ import Styled from './checkbox.styled';
 import type { XZKUICheckboxProps } from './checkbox.types';
 
 const XZKUICheckbox = forwardRef<HTMLInputElement, XZKUICheckboxProps>(
-  function Checkbox(props, ref) {
-    const { label, children, className, bg, size = 500, ...rest } = props;
+  function XZKUICheckbox(props, ref) {
+    const { label, children, className, bg, color, size = 500, ...rest } = props;
     const { getInputProps, checked, disabled, focusVisible } = useSwitch(rest);
 
     const hasLabel = Boolean(children || label);
@@ -23,12 +23,13 @@ const XZKUICheckbox = forwardRef<HTMLInputElement, XZKUICheckboxProps>(
     return (
       <Styled.Root
         as={hasLabel ? 'label' : 'div'}
-        xzkuiBg={bg}
         xzkuiSize={size}
         className={clsx(className, stateClasses)}
       >
-        <Styled.Input {...rest} {...getInputProps()} type="checkbox" ref={ref} />
-        <Styled.Icon>{checked ? <XZKUISvgIcon icon={SvgCheckmark} /> : null}</Styled.Icon>
+        <Styled.Input {...rest} {...getInputProps()} role="checkbox" type="checkbox" ref={ref} />
+        <Styled.Indicator xzkuiBg={bg} xzkuiColor={color} xzkuiSize={size}>
+          {checked ? <XZKUISvgIcon icon={SvgCheckmark} /> : null}
+        </Styled.Indicator>
         {hasLabel ? <Styled.Label>{children || label}</Styled.Label> : null}
       </Styled.Root>
     );

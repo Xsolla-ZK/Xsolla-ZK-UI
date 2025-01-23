@@ -1,19 +1,19 @@
-import type { checkboxThemeSizes } from './checkbox.theme';
+import type { radioThemeSizes } from './radio.theme';
 import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
-type Sizes = (typeof checkboxThemeSizes)[number];
+type Sizes = (typeof radioThemeSizes)[number];
 
-export interface XZKUICheckboxBaseProps {
+export interface XZKUIRadioBaseProps {
   bg?: XZKUICustomColor;
   color?: XZKUICustomColor;
   size: Sizes;
 }
 
-export type XZKUICheckboxProps = Omit<
+export type XZKUIRadioProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  'type' | keyof XZKUICheckboxBaseProps
+  'type' | keyof XZKUIRadioBaseProps
 > &
-  Partial<XZKUICheckboxBaseProps> & {
+  Partial<XZKUIRadioBaseProps> & {
     label?: ReactNode;
   };
