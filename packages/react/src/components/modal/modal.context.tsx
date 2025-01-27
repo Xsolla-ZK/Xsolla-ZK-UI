@@ -15,7 +15,7 @@ const XZKUIModalContext = createContext<XZKUIModalContextValues | null>(null);
 const Provider = XZKUIModalContext.Provider;
 // const Consumer = XZKUIModalContext.Consumer;
 
-export function useXZKUIModalCtx() {
+export function useXZKUIModalContext() {
   const ctx = useContext(XZKUIModalContext);
 
   if (!ctx) {

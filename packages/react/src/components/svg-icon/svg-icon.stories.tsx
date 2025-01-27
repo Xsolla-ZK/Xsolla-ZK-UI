@@ -12,7 +12,7 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
-    color: { control: 'color' },
+    // color: { control: 'color' },
   },
   args: {
     icon: SvgPlus,

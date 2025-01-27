@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import XZKUISegmentedControl from './segmented-control';
 import { segmentedControlThemeSizes } from './segmented-control.theme';
 import type { XZKUISegmentedControlSelectedItem } from './segmented-control.types';

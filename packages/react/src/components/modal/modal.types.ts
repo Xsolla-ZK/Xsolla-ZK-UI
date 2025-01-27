@@ -1,4 +1,5 @@
 import type { ModalOwnProps as MuiModalOwnProps } from '@mui/base';
+import type { XZKUIWithSlots } from '@xsolla-zk-ui/react/types/components';
 import type { Optional } from '@xsolla-zk-ui/react/types/helpers';
 import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 
@@ -43,12 +44,10 @@ export type XZKUIModalProps =
 export interface XZKUIModalHeaderProps {
   title?: ReactNode;
   subtitle?: ReactNode;
-  className?: string;
 }
 
 export interface XZKUIModalFooterProps {
   blur?: boolean;
-  className?: string;
 }
 
 export interface XZKUIModalBodyBaseProps {
@@ -56,9 +55,17 @@ export interface XZKUIModalBodyBaseProps {
   className?: string;
 }
 
-export interface XZKUIModalBodyProps extends XZKUIModalBodyBaseProps {
-  headerProps: XZKUIModalHeaderProps;
+type SlotProps = XZKUIWithSlots<{
+  header: {
+    type: 'div';
+    props: XZKUIModalHeaderProps;
+  };
+  footer: {
+    type: 'div';
+    props: XZKUIModalFooterProps;
+  };
+}>;
+
+export interface XZKUIModalBodyProps extends XZKUIModalBodyBaseProps, SlotProps {
   children?: ((context: XZKUIModalContextValues) => ReactNode) | ReactNode;
-  footer?: ReactNode;
-  footerProps?: XZKUIModalFooterProps;
 }

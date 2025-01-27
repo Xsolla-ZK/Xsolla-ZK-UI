@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Modal } from '@mui/base';
 import clsx from 'clsx';
@@ -10,7 +9,7 @@ import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgChevronLeft from '../svg-icons/chevron-left';
 import SvgCross from '../svg-icons/cross';
 import xzkuiModalClasses from './modal.classes';
-import XZKUIModalProvider, { useXZKUIModalCtx } from './modal.context';
+import XZKUIModalProvider, { useXZKUIModalContext } from './modal.context';
 import Styled from './modal.styled';
 import type {
   XZKUIModalBodyBaseProps,
@@ -19,7 +18,8 @@ import type {
   XZKUIModalHeaderProps,
   XZKUIModalProps,
 } from './modal.types';
-import type { MouseEventHandler, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { XZKUISlotComponent } from '@xsolla-zk-ui/react/types/components';
+import type { ElementType, MouseEventHandler, PropsWithChildren, ReactElement } from 'react';
 
 interface BackdropProps {
   children?: ReactElement;
@@ -110,11 +110,19 @@ function XZKUIModal(props: XZKUIModalProps) {
   );
 }
 
-function XZKUIModalHeader({ title, subtitle, className }: XZKUIModalHeaderProps) {
-  const { step, close, back } = useXZKUIModalCtx();
+function XZKUIModalHeader({
+  title,
+  subtitle,
+  className,
+  ...rest
+}: XZKUISlotComponent<'div', XZKUIModalHeaderProps>) {
+  const { step, close, back } = useXZKUIModalContext();
   const headerEmpty = !(title || subtitle);
   return (
-    <Styled.Header className={clsx(className, [headerEmpty && xzkuiModalClasses.headerEmpty])}>
+    <Styled.Header
+      className={clsx(className, [headerEmpty && xzkuiModalClasses.headerEmpty])}
+      {...rest}
+    >
       {step > 0 && (
         <Styled.HeaderLeft>
           <XZKUIRichIcon
@@ -155,9 +163,14 @@ function XZKUIModalContent({ children }: PropsWithChildren) {
   );
 }
 
-function XZKUIModalFooter({ children, className, blur }: PropsWithChildren<XZKUIModalFooterProps>) {
+function XZKUIModalFooter<T extends ElementType = 'div'>({
+  children,
+  className,
+  blur,
+  ...rest
+}: XZKUISlotComponent<T, XZKUIModalFooterProps>) {
   return (
-    <Styled.Footer className={clsx(className, [blur && xzkuiModalClasses.footerBlured])}>
+    <Styled.Footer className={clsx(className, [blur && xzkuiModalClasses.footerBlured])} {...rest}>
       {children}
     </Styled.Footer>
   );
@@ -165,20 +178,21 @@ function XZKUIModalFooter({ children, className, blur }: PropsWithChildren<XZKUI
 
 export function XZKUIModalBody({
   className,
-  headerProps,
+  slots = {},
+  slotProps,
   children,
-  footer,
-  footerProps,
   variant,
 }: XZKUIModalBodyProps) {
-  const ctx = useXZKUIModalCtx();
+  const ctx = useXZKUIModalContext();
+  const Header = (slots?.header ?? XZKUIModalHeader) as NonNullable<(typeof slots)['header']>;
+  const Footer = (slots?.footer ?? XZKUIModalFooter) as NonNullable<(typeof slots)['footer']>;
   return (
     <XZKUIModalBodyBase className={className} variant={variant}>
-      <XZKUIModalHeader {...headerProps} />
+      <Header {...slotProps?.header} />
       <XZKUIModalContent>
         {typeof children === 'function' ? children(ctx) : children}
       </XZKUIModalContent>
-      {footer && <XZKUIModalFooter {...footerProps}>{footer}</XZKUIModalFooter>}
+      {slotProps?.footer && <Footer {...slotProps?.footer} />}
     </XZKUIModalBodyBase>
   );
 }

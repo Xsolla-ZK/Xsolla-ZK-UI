@@ -4,9 +4,10 @@ import XZKUIButton from '../button/button';
 import XZKUICheckbox from '../checkbox/checkbox';
 import XZKUISemanticText from '../semantic-text/semantic-text';
 import XZKUIModal, { XZKUIModalBody } from './modal';
-import { useXZKUIModalCtx } from './modal.context';
+import { useXZKUIModalContext } from './modal.context';
+import type { XZKUIModalBodyProps } from './modal.types';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, ComponentProps } from 'react';
 
 const meta = {
   component: XZKUIModal,
@@ -15,7 +16,7 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
-    children: { control: 'text' },
+    // children: { control: 'text' },
   },
   args: {
     // onClick: fn(),
@@ -38,9 +39,11 @@ export const Default: Story = {
     ),
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
         }}
       >
         <div style={{ padding: '0 16px' }}>
@@ -60,9 +63,11 @@ export const Nested: Story = {
     ),
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
         }}
       >
         <div style={{ padding: '0 16px' }}>
@@ -76,9 +81,11 @@ export const Nested: Story = {
               )}
             >
               <XZKUIModalBody
-                headerProps={{
-                  title: 'Title',
-                  subtitle: 'Subtitle',
+                slotProps={{
+                  header: {
+                    title: 'Title',
+                    subtitle: 'Subtitle',
+                  },
                 }}
               >
                 <div style={{ padding: '0 16px' }}>
@@ -103,9 +110,11 @@ export const VariantPopup: Story = {
     children: (
       <XZKUIModalBody
         variant="popup"
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
         }}
       >
         <div style={{ padding: '0 16px' }}>
@@ -128,9 +137,11 @@ export const StepModal: Story = {
     initialStep: 2,
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
         }}
       >
         {({ step }) => (
@@ -162,29 +173,31 @@ const richSteps = [
 ];
 
 function ControlledSteps() {
-  const { step, back, next, changeStep } = useXZKUIModalCtx();
+  const { step, back, next, changeStep } = useXZKUIModalContext();
   const selectedStep = richSteps[step];
   return (
     <XZKUIModalBody
-      headerProps={{
-        title: selectedStep.title,
-        subtitle: selectedStep.subtitle,
+      slotProps={{
+        header: {
+          title: selectedStep.title,
+          subtitle: selectedStep.subtitle,
+        },
+        footer: {
+          blur: true,
+          children: (
+            <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
+              {Boolean(step) && (
+                <XZKUIButton variant="secondary" fullWidth onClick={back}>
+                  Alt Back
+                </XZKUIButton>
+              )}
+              <XZKUIButton fullWidth onClick={next} disabled={step === richSteps.length - 1}>
+                Next
+              </XZKUIButton>
+            </div>
+          ),
+        },
       }}
-      footerProps={{
-        blur: true,
-      }}
-      footer={
-        <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
-          {Boolean(step) && (
-            <XZKUIButton variant="secondary" fullWidth onClick={back}>
-              Alt Back
-            </XZKUIButton>
-          )}
-          <XZKUIButton fullWidth onClick={next} disabled={step === richSteps.length - 1}>
-            Next
-          </XZKUIButton>
-        </div>
-      }
     >
       <div style={{ padding: '0 16px' }}>
         <XZKUISemanticText>{selectedStep.content}</XZKUISemanticText>
@@ -218,18 +231,22 @@ export const WithFooter: Story = {
     ),
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
+          footer: {
+            children: (
+              <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
+                <XZKUIButton variant="secondary" fullWidth>
+                  Button
+                </XZKUIButton>
+                <XZKUIButton fullWidth>Button</XZKUIButton>
+              </div>
+            ),
+          },
         }}
-        footer={
-          <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
-            <XZKUIButton variant="secondary" fullWidth>
-              Button
-            </XZKUIButton>
-            <XZKUIButton fullWidth>Button</XZKUIButton>
-          </div>
-        }
       >
         <div style={{ padding: '0 16px' }}>
           <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
@@ -248,21 +265,23 @@ export const WithBluredFooter: Story = {
     ),
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Title',
-          subtitle: 'Subtitle',
+        slotProps={{
+          header: {
+            title: 'Title',
+            subtitle: 'Subtitle',
+          },
+          footer: {
+            blur: true,
+            children: (
+              <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
+                <XZKUIButton variant="secondary" fullWidth>
+                  Button
+                </XZKUIButton>
+                <XZKUIButton fullWidth>Button</XZKUIButton>
+              </div>
+            ),
+          },
         }}
-        footerProps={{
-          blur: true,
-        }}
-        footer={
-          <div style={{ display: 'flex', width: '100%', gap: '4px' }}>
-            <XZKUIButton variant="secondary" fullWidth>
-              Button
-            </XZKUIButton>
-            <XZKUIButton fullWidth>Button</XZKUIButton>
-          </div>
-        }
       >
         <div style={{ padding: '0 16px' }}>
           <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
@@ -281,14 +300,64 @@ export const TruncatedHeader: Story = {
     ),
     children: (
       <XZKUIModalBody
-        headerProps={{
-          title: 'Long title up to several lines of text '.repeat(5),
-          subtitle:
-            'Long subtitle up to several lines of text because there is a lot to say'.repeat(5),
+        slotProps={{
+          header: {
+            title: 'Long title up to several lines of text '.repeat(5),
+            subtitle:
+              'Long subtitle up to several lines of text because there is a lot to say'.repeat(5),
+          },
         }}
       >
         <div style={{ padding: '0 16px' }}>
           <XZKUISemanticText>{blankText}</XZKUISemanticText>
+        </div>
+      </XZKUIModalBody>
+    ),
+  },
+};
+
+function CustomHeaderSlot({
+  title,
+  subtitle,
+  onClick,
+  ...rest
+}: ComponentProps<typeof XZKUIModalBody.Header>) {
+  const { close } = useXZKUIModalContext();
+  return (
+    <div style={{ padding: '40px' }} {...rest}>
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
+      <div onClick={onClick}>Click</div>
+      <button onClick={close}>CLOSE</button>
+    </div>
+  );
+}
+
+export const CustomSlots: Story = {
+  args: {
+    trigger: ({ handleOpen }) => (
+      <XZKUIButton onClick={handleOpen} aria-label="open custom slots modal">
+        Click to open custom slots modal
+      </XZKUIButton>
+    ),
+    children: (
+      <XZKUIModalBody
+        slots={{
+          header: CustomHeaderSlot,
+          footer: () => <div>DNO</div>,
+        }}
+        slotProps={{
+          header: {
+            title: 'Title KEK',
+            subtitle: 'Subtitle',
+            onClick: (event) => {
+              alert(event.currentTarget);
+            },
+          },
+        }}
+      >
+        <div style={{ padding: '0 16px' }}>
+          <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -313,9 +382,11 @@ function ConfiguredHeader() {
 
   return (
     <XZKUIModalBody
-      headerProps={{
-        title: state.showTitle ? state.title : undefined,
-        subtitle: state.showSubtitle ? state.subtitle : undefined,
+      slotProps={{
+        header: {
+          title: state.showTitle ? state.title : undefined,
+          subtitle: state.showSubtitle ? state.subtitle : undefined,
+        },
       }}
     >
       <div style={{ padding: '0 16px' }}>

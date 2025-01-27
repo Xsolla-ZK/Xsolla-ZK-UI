@@ -8,7 +8,7 @@ import type { InputOwnerState, SlotComponentProps } from '@mui/base';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 import type { ForwardedRef, ReactNode } from 'react';
 
-const XZKUIInput = forwardRef(function CustomInput(
+const XZKUIInput = forwardRef(function XZKUIInput(
   props: XZKUIInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -39,6 +39,7 @@ const XZKUIInput = forwardRef(function CustomInput(
           xzkuiSize: size,
         } as SlotComponentProps<'div', XZKUIStyledProps<XZKUIInputBaseProps>, InputOwnerState>,
         input: {
+          spellCheck: false,
           inputMode,
           onKeyDown: (e) => {
             if (e.key === '/') e.stopPropagation();
