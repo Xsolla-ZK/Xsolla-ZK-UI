@@ -1,11 +1,10 @@
-// import { createThemes, defaultConfig } from '@tamagui/config/v4';
-import { createTamagui, createTokens, createVariable, getConfig } from '@tamagui/core';
-import radius from './src/tokens-tamagui/common/radius';
-import size from './src/tokens-tamagui/common/size';
-import spacing from './src/tokens-tamagui/common/spacing';
-import tokensThemes from './src/tokens-tamagui/themes';
+import { defaultConfig } from '@tamagui/config/v4';
+import { createTamagui, createTokens, getConfig } from '@tamagui/core';
+// import radius from './src/tokens-tamagui/common/radius';
+// import size from './src/tokens-tamagui/common/size';
+// import spacing from './src/tokens-tamagui/common/spacing';
+// import tokensThemes from './src/tokens-tamagui/themes';
 import type { CreateTamaguiProps, GenericFont } from '@tamagui/core';
-export { shorthands } from '@tamagui/config/v4';
 
 export const config = createTamagui({
   displayName: 'tamagui-config',
@@ -77,61 +76,33 @@ export const config = createTamagui({
       letterSpacing: {},
     },
   },
-  tokens: createTokens({
-    size,
-    space: spacing,
-    radius,
-    // size: objectValuesToNumber(size),
-    // space: objectValuesToNumber(spacing),
-    // radius: objectValuesToNumber(radius),
-    // size: {
-    //   $300: 38,
-    //   $400: 46,
-    //   $500: 60,
-    //   $600: 70,
-    // },
-    // space: {
-    //   $300: 8,
-    //   $400: 12,
-    //   $500: 20,
-    //   $600: 24,
-    // },
-    // radius: {
-    //   $300: 3,
-    //   $400: 6,
-    //   $500: 10,
-    //   $600: 12,
-    // },
-    // color,
-    // ... the rest of your tokens
-  } as const),
+  tokens: createTokens(defaultConfig.tokens),
 
-  themes: {
-    ...tokensThemes,
-    // light: {
-    //   background: '#c9f938',
-    //   theme: {
-    //     color: createVariable({ value: 'black' }),
-    //   },
-    //   palette: {
-    //     brand: {
-    //       '500': '#c9f938',
-    //     },
-    //   },
-    // },
-    // define a Button sub-theme, see the Themes docs for more
-    light_Button: {
-      background: '#c9f938',
-      backgroundPress: '#bbb', // darker background on press
-      backgroundHover: '#ddd', // lighter background on hover
-      color: 'black',
-    },
-  },
+  // themes: {
+  //   ...tokensThemes,
+  //   // light: {
+  //   //   background: '#c9f938',
+  //   //   theme: {
+  //   //     color: createVariable({ value: 'black' }),
+  //   //   },
+  //   //   palette: {
+  //   //     brand: {
+  //   //       '500': '#c9f938',
+  //   //     },
+  //   //   },
+  //   // },
+  //   // define a Button sub-theme, see the Themes docs for more
+  //   light_Button: {
+  //     background: '#c9f938',
+  //     backgroundPress: '#bbb', // darker background on press
+  //     backgroundHover: '#ddd', // lighter background on hover
+  //     color: 'black',
+  //   },
+  // },
   // media: {},
   // shorthands,
 });
 
-console.log(createVariable({ val: 'sad', name: 'someName', key: 'someKey' }));
 // in other files use this:
 console.log(`config is`, getConfig());
 
