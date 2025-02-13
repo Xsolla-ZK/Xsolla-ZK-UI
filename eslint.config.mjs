@@ -55,6 +55,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-empty-function': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       '@typescript-eslint/restrict-template-expressions': 'off',

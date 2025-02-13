@@ -18,6 +18,9 @@
 # IDE
 /.idea
 
+# ai
+.cursorignore
+
 # debug
 .logs
 npm-debug.log*
@@ -26,7 +29,9 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
+.env
 .env*.local
+!.env.example
 
 # vercel
 .vercel

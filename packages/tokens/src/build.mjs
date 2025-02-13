@@ -3,80 +3,37 @@ import { register, transformDimension } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 import { fileHeader } from 'style-dictionary/utils';
 import fse from 'fs-extra';
-import path from 'path';
-import prettier from 'prettier';
-import prettierConfig from '../../prettier.config.mjs';
-const { promises } = fse;
+import {
+  camelize,
+  capitalizeFirstLetter,
+  getArgValue,
+  pickByDotNotation,
+  isNumeric,
+} from './utils/helpers.mjs';
+import { formatJS } from './utils/formatter.mjs';
+import { getDesignTokensFile, getBuildPath } from './utils/helpers.mjs';
+import { readJsonFile, writeFile } from './utils/files.mjs';
 
-const designTokensPath = 'design-tokens/tokens';
 let globalGroup;
 
-function getDesignTokensPath(filename, ext = 'json') {
-  return `${designTokensPath}/${filename}.${ext}`;
-}
-
-function camelize(str) {
-  if (/^[a-z][A-Za-z0-9]*$/.test(str)) return str;
-  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
-}
-
-function kebabize(str) {
-  return str
-    .split('')
-    .map((letter, idx) =>
-      letter.toUpperCase() === letter ? `${idx !== 0 ? '-' : ''}${letter.toLowerCase()}` : letter,
-    )
-    .join('');
-}
-
-function capitalizeFirstLetter(val) {
-  return val.charAt(0).toUpperCase() + val.slice(1);
-}
-
-function isNumeric(str) {
-  if (typeof str !== 'string') return false;
-  return (
-    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-  );
-}
-
-function getRelativePath(from, to) {
-  return path.relative(path.dirname(from), to);
-}
-
-function pickByDotNotation(obj, path) {
-  return path.split('.').reduce((acc, key) => {
-    if (acc && Object.hasOwn(acc, key)) {
-      return acc[key];
-    }
-    return undefined;
-  }, obj);
-}
-
-async function formatJS(content, ts) {
-  return await prettier.format(content, {
-    semi: prettierConfig.semi,
-    singleQuote: prettierConfig.singleQuote,
-    trailingComma: prettierConfig.trailingComma,
-    parser: ts ? 'typescript' : 'babel',
-  });
-}
+const bannedGroups = ['product', 'platform', 'skeleton'];
 
 async function getGroupMap(metadata) {
   if (globalGroup) return globalGroup;
-  const $themes = JSON.parse(await promises.readFile(getDesignTokensPath('$themes'), 'utf-8'));
+  const $themes = await readJsonFile(getDesignTokensFile('$themes'));
 
   const groupMap = $themes.reduce((acc, curr) => {
-    if (acc[curr.group]) {
-      acc[curr.group].push(curr.name);
-    } else {
-      acc[curr.group] = [curr.name];
+    if (!bannedGroups.includes(curr.group)) {
+      if (acc[curr.group]) {
+        acc[curr.group].push(curr.name);
+      } else {
+        acc[curr.group] = [curr.name];
+      }
     }
     return acc;
   }, {});
 
-  const pathsGroupData = metadata.tokenSetOrder.reduce(
+  const pathsGroupData = metadata.tokenSetOrder.filter((item) => !bannedGroups.some((group) => item.includes(group))).reduce(
     (acc, curr, _idx, data) => {
       let injected = false;
       const currPathParts = curr.split('/');
@@ -86,6 +43,8 @@ async function getGroupMap(metadata) {
         const name = names.find((n) => curr.includes(n));
         if (!name && group === 'theme') {
           const refWithTheme = data.filter((path) => path.includes(currPathParts.join('/')));
+
+          console.log(refWithTheme, currPathParts)
 
           if (refWithTheme.length > names.length) {
             names.forEach((name) => {
@@ -156,10 +115,10 @@ async function createThemeFiles(metadata) {
   groupMap.theme.forEach(async (theme) => {
     const currentThemeImports = injectImportGroup(pathsGroupData[`theme_${theme}`], theme);
 
-    const base = [Object.keys(pathsGroupData[`theme_${theme}`])]
-      .flat()
-      .map((item) => camelize(item))
-      .join(',\n');
+    const base = [Object.keys(pathsGroupData[`theme_${theme}`])].flat().map((item) => {
+      const res = camelize(item);
+      return getArgValue('tamagui') ? `...${res}` : res;
+    });
 
     const name = `tokens${capitalizeFirstLetter(theme)}`;
 
@@ -167,17 +126,17 @@ async function createThemeFiles(metadata) {
       ${currentThemeImports}
 
       const ${name} = {
-        ${base},
+        ${base.join(',\n')}
       };
 
       export default ${name};
     `;
 
-    fse.outputFile(`${getBuildPath()}/${theme}.js`, await formatJS(content));
+    writeFile(`${getBuildPath()}/${theme}.js`, content);
   });
 
   const themeContent = `
-    ${groupMap.theme.map((theme) => `import ${theme} from './${theme}';`).join('\n')}
+    ${groupMap.theme.map((themeMode) => `import ${themeMode} from './${themeMode}';`).join('\n')}
 
     const tokensThemes = {
       ${groupMap.theme.join(',\n')}
@@ -187,11 +146,29 @@ async function createThemeFiles(metadata) {
   `;
 
   const commonContent = getSimpleContent(pathsGroupData.common, 'tokensCommon');
-  const layoutContent = getSimpleContent(pathsGroupData.layout, 'tokensLayout');
+  // const layoutContent = getSimpleContent(pathsGroupData.layout, 'tokensLayout');
 
-  fse.outputFile(`${getBuildPath()}/themes.js`, await formatJS(themeContent));
-  fse.outputFile(`${getBuildPath()}/common/index.js`, await formatJS(commonContent));
-  fse.outputFile(`${getBuildPath()}/layout/index.js`, await formatJS(layoutContent));
+  writeFile(`${getBuildPath()}/themes.js`, themeContent);
+  writeFile(`${getBuildPath()}/common/index.js`, commonContent);
+  // fse.outputFile(`${getBuildPath()}/layout/index.js`, await formatJS(layoutContent));
+}
+
+function getPlatformTemplate(files, { transforms, buildPathKey, format }) {
+  return {
+    transformGroup: 'tokens-studio',
+    transforms,
+    buildPath: `${getBuildPath()}/${buildPathKey}/`,
+    files: Object.keys(files).map((key) => ({
+      destination: `${key}.js`,
+      format,
+      filter: 'not-figma',
+      options: {
+        categorySelector: files[key],
+        categorySelectorKey: key,
+        buildKeyPath: buildPathKey,
+      },
+    })),
+  };
 }
 
 function configJSTemplate(data, buildPathKey, buildGroup) {
@@ -212,8 +189,22 @@ function configJSTemplate(data, buildPathKey, buildGroup) {
       ? { [key.includes('.') ? key.split('.').slice(1).join() : key]: pickedFiles }
       : pickedFiles;
 
+  let platformTemplate = getPlatformTemplate(files, {
+    buildPathKey,
+    transforms: ['ts/resolveMath', 'dimension/size/px'],
+    format: 'js/nestedObject/prettier',
+  });
+
+  if (getArgValue('tamagui')) {
+    platformTemplate = getPlatformTemplate(files, {
+      buildPathKey,
+      transforms: ['ts/resolveMath', 'numeric/value'],
+      format: 'js/themeFlat/prettier',
+    });
+  }
+
   return {
-    source: selectedData.map((path) => getDesignTokensPath(path)),
+    source: selectedData.map((path) => getDesignTokensFile(path)),
     // log: {
     //   warnings: 'warn',
     //   verbosity: 'default',
@@ -223,19 +214,7 @@ function configJSTemplate(data, buildPathKey, buildGroup) {
     // },
     preprocessors: ['tokens-studio'],
     platforms: {
-      js: {
-        transformGroup: 'tokens-studio',
-        transforms: ['ts/resolveMath', 'dimension/size/px'],
-        buildPath: `${getBuildPath()}/${buildPathKey}/`,
-        files: Object.keys(files).map((key) => ({
-          destination: `${key}.js`,
-          format: 'js/nestedObject/prettier',
-          options: {
-            categorySelector: files[key],
-            categorySelectorKey: key,
-          },
-        })),
-      },
+      js: platformTemplate,
     },
   };
 }
@@ -244,7 +223,8 @@ function configJSTemplate(data, buildPathKey, buildGroup) {
 /** @param {import('style-dictionary').Config} options */
 function compileTokenValue(token, options) {
   const { usesDtcg } = options;
-  let value = `${usesDtcg ? token.$value : token.value}`;
+  const value = usesDtcg ? token.$value : token.value;
+
   // const originalValue = `${usesDtcg ? token.original.$value : token.original.value}`;
 
   return isNumeric(value) ? value : `${value}`;
@@ -258,7 +238,7 @@ function arrayToNestedObject(arr, options) {
       ? token.path.filter((value) => value !== options.categorySelectorKey)
       : token.path;
 
-    const value = `${compileTokenValue(token, options)}${token.comment ? ` // ${token.comment}` : ''}`;
+    const value = compileTokenValue(token, options); // ${token.comment ? ` // ${token.comment}` : ''}
 
     path.reduce(
       (acc, curr, index) => (acc[camelize(curr)] ??= index === path.length - 1 ? value : {}),
@@ -269,24 +249,15 @@ function arrayToNestedObject(arr, options) {
   return result;
 }
 
-function getBuildPath() {
-  const args = process.argv.slice(2);
-  if (args.includes('--react')) {
-    return './packages/react/src/tokens';
-  }
-
-  return './tokens';
-}
-
 async function run() {
-  const $metadata = JSON.parse(await promises.readFile(getDesignTokensPath('$metadata'), 'utf-8'));
+  const $metadata = await readJsonFile(getDesignTokensFile('$metadata'));
   const { groupMap, pathsGroupData } = await getGroupMap($metadata);
 
   const configs = [configJSTemplate(pathsGroupData, 'common', 'common')];
 
-  groupMap.layout.forEach((layoutKey) => {
-    configs.push(configJSTemplate(pathsGroupData, 'layout', ['common', `layout.${layoutKey}`]));
-  });
+  // groupMap.layout.forEach((layoutKey) => {
+  //   configs.push(configJSTemplate(pathsGroupData, 'layout', ['common', `layout.${layoutKey}`]));
+  // });
 
   groupMap.theme.forEach((theme) => {
     const themeKey = `theme_${theme}`;
@@ -318,6 +289,20 @@ StyleDictionary.registerTransform({
   transform: (token) => transformDimension(token),
 });
 
+StyleDictionary.registerTransform({
+  name: 'numeric/value',
+  type: 'value',
+  transitive: true,
+  filter: (token) => ['opacity', 'number'].includes(token.type),
+  transform: (token) => token.value,
+});
+
+StyleDictionary.registerFilter({
+  name: 'not-figma',
+  filter: (token) => token.comment !== 'figma-only',
+});
+
+
 StyleDictionary.registerFormat({
   name: `js/nestedObject/prettier`,
   format: async function ({ dictionary, _platform, options, file }) {
@@ -338,7 +323,43 @@ StyleDictionary.registerFormat({
   },
 });
 
-run();
+StyleDictionary.registerFormat({
+  name: `js/themeFlat/prettier`,
+  format: async function ({ dictionary, _platform, options, file }) {
+    const selectedTokens = dictionary.allTokens.filter((token) =>
+      token.filePath.includes(options.categorySelector),
+    );
+
+    const header = await fileHeader({ file, options });
+    const content = [
+      header,
+      'export default',
+      JSON.stringify(
+        selectedTokens.reduce((acc, curr) => {
+          const path = options.categorySelectorKey
+            ? curr.path.filter((value) => value !== options.categorySelectorKey)
+            : curr.path;
+
+          const key = path.join('/');
+          const completeKey =
+            options.buildKeyPath !== 'layout' && options.buildKeyPath !== 'common' // && options.categorySelectorKey !== 'theme'
+              ? `${options.categorySelectorKey}/${key}`
+              : key;
+
+          acc[completeKey] = curr.type === 'number' ? Number(curr.value) : curr.value;
+
+          return acc;
+        }, {}),
+      ),
+    ]
+      .flat()
+      .join('\n');
+
+    return await formatJS(content);
+  },
+});
+
+export default run;
 
 // css: {
 //   transformGroup: 'tokens-studio',

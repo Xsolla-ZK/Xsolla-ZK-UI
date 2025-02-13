@@ -1,0 +1,28 @@
+{
+  "name": "@xsolla-zk-ui/tokens",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.mjs",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/tokens"
+  },
+  "bin": {
+    "tokens": "./src/index.mjs"
+  },
+  "scripts": {
+    "generate": "node src/index.mjs generate"
+  },
+  "devDependencies": {
+    "@tamagui/core": "catalog:tamagui",
+    "chalk": "^5.4.1",
+    "fs-extra": "^11.3.0",
+    "prettier": "catalog:",
+    "yargs": "^17.7.2"
+  }
+}
