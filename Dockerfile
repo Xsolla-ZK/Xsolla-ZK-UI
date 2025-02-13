@@ -1,8 +1,5 @@
 FROM node:20-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack cache clean
-RUN corepack enable && corepack prepare pnpm@10.3.0 --activate
+RUN npm install -g pnpm@10.3.0
 
 FROM base AS builder
 WORKDIR /app
