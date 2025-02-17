@@ -4,15 +4,6 @@ import { withoutEmpty } from './utils/helpers.mjs';
 import { readJsonFile, writeFile } from './utils/files.mjs';
 import generateSimpleFile from './templates/simple.mjs';
 
-const getValueByPath = (obj, path) => {
-  const o = obj;
-  const result = path
-    .replace(/{|}/g, '')
-    .split('.')
-    .reduce((acc, key) => (acc ? acc[key] : undefined), o);
-  return result;
-};
-
 const allowedKeys = {
   fontFamily: true,
   fontWeight: false,
@@ -33,13 +24,31 @@ const mappingValues = {
   paragraphSpacing: 'value',
 };
 
+/**
+ * @param {object} obj
+ * @param {string} path
+ * @returns {string | number}
+ */
+const getValueByPath = (obj, path) => {
+  const o = obj;
+  const result = path
+    .replace(/{|}/g, '')
+    .split('.')
+    .reduce((acc, key) => (acc ? acc[key] : undefined), o);
+  return result.type === 'number' ? Number(result.value) : result.value;
+};
+
+/**
+ * @param {string | number} value
+ * @returns {string | number | null}
+ */
 function validateValue(value) {
   return typeof value === 'string' || value > 0 ? value : null;
 }
 
 function _presetTemplate(data, key, value, path) {
   if (mappingValues[key] === 'value') {
-    const val = getValueByPath(data, value).value;
+    const val = getValueByPath(data, value);
     return validateValue(val);
   }
   const val = validateValue(path[mappingValues[key]]);
@@ -70,7 +79,7 @@ async function transformTypographyToFonts() {
           const pickKey = key.startsWith('font') ? key.slice(4).toLowerCase() : key;
           const data = variantData[key];
           if (/{|}/g.test(data)) {
-            const value = getValueByPath(typographyJson, data).value;
+            const value = getValueByPath(typographyJson, data);
             if (typeof result[pickKey] === 'string') {
               result[pickKey] = value;
             } else {
@@ -86,12 +95,12 @@ async function transformTypographyToFonts() {
         const presetPath = [category, size, variant];
         const presetKey = presetPath.join('/');
         presets[presetKey] ??= {};
-        result.weight[variant] = getValueByPath(typographyJson, variantData['fontWeight']).value;
+        result.weight[variant] = getValueByPath(typographyJson, variantData['fontWeight']);
 
         Object.entries(presetAllowedKeys).forEach(([key, mappedKey]) => {
           const variantDataValue = variantData[key];
           if (variantDataValue) {
-            const val = validateValue(getValueByPath(typographyJson, variantDataValue).value);
+            const val = validateValue(getValueByPath(typographyJson, variantDataValue));
             if (val) {
               presets[presetKey][mappedKey] = val;
             }
@@ -122,8 +131,8 @@ async function transformTypographyToFonts() {
     fonts[category] = withoutEmpty(result);
   });
 
-  writeFile(`${getBuildPath()}/fonts.js`, generateSimpleFile(fonts, 'fonts'));
-  writeFile(`${getBuildPath()}/presets.ts`, generatePresetsFile(presets));
+  writeFile(`${getBuildPath()}/typography/fonts.js`, generateSimpleFile(fonts, 'fonts'));
+  writeFile(`${getBuildPath()}/typography/presets.ts`, generatePresetsFile(presets));
 }
 
 export default transformTypographyToFonts;

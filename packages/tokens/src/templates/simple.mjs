@@ -1,5 +1,10 @@
 import generateFileHeader from './header.mjs';
 
+/**
+ * @param {object} data
+ * @param {string} key
+ * @returns {string}
+ */
 function generateSimpleFile(data, key) {
   return `
     ${generateFileHeader()}

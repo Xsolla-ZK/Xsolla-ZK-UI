@@ -3,224 +3,256 @@ import { register, transformDimension } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 import { fileHeader } from 'style-dictionary/utils';
 import fse from 'fs-extra';
-import {
-  camelize,
-  capitalizeFirstLetter,
-  getArgValue,
-  pickByDotNotation,
-  isNumeric,
-} from './utils/helpers.mjs';
+import { camelize, getArgValue, isNumeric } from './utils/helpers.mjs';
 import { formatJS } from './utils/formatter.mjs';
 import { getDesignTokensFile, getBuildPath } from './utils/helpers.mjs';
 import { readJsonFile, writeFile } from './utils/files.mjs';
+import { formatMap } from './utils/mappings.mjs';
 
 let globalGroup;
 
-const bannedGroups = ['product', 'platform', 'skeleton'];
+const bannedGroups = ['semantic', 'figma-only'];
+const whitelistGroup = {
+  theme: true,
+  platform: true,
+};
 
-async function getGroupMap(metadata) {
-  if (globalGroup) return globalGroup;
-  const $themes = await readJsonFile(getDesignTokensFile('$themes'));
+/**
+ * @param {Record<string, string>} selectedTokenSets
+ * @param {{ group: string, name: string }} options
+ * @returns {{ input: Record<string, string>, source: Record<string, string> }}
+ */
+function getSelectedTokenSets(selectedTokenSets, { name }) {
+  return Object.entries(selectedTokenSets).reduce(
+    (acc, [key, value]) => {
+      const pathParts = key.split('/');
+      const fileKey = pathParts.pop();
+      const currentKey = fileKey === name ? pathParts.pop() : fileKey;
 
-  const groupMap = $themes.reduce((acc, curr) => {
-    if (!bannedGroups.includes(curr.group)) {
-      if (acc[curr.group]) {
-        acc[curr.group].push(curr.name);
-      } else {
-        acc[curr.group] = [curr.name];
+      if (value === 'source') {
+        acc.source[currentKey] = key;
       }
-    }
-    return acc;
-  }, {});
-
-  const pathsGroupData = metadata.tokenSetOrder.filter((item) => !bannedGroups.some((group) => item.includes(group))).reduce(
-    (acc, curr, _idx, data) => {
-      let injected = false;
-      const currPathParts = curr.split('/');
-      const currKey = currPathParts.pop();
-
-      for (const [group, names] of Object.entries(groupMap)) {
-        const name = names.find((n) => curr.includes(n));
-        if (!name && group === 'theme') {
-          const refWithTheme = data.filter((path) => path.includes(currPathParts.join('/')));
-
-          console.log(refWithTheme, currPathParts)
-
-          if (refWithTheme.length > names.length) {
-            names.forEach((name) => {
-              const mainKey = group + '_' + name;
-              acc[mainKey] ??= { [currKey]: curr };
-              acc[mainKey][currKey] = curr;
-            });
-            injected = true;
-            break;
-          }
-          continue;
-        }
-
-        if (name) {
-          const mainKey = group === 'theme' ? group + '_' + name : group;
-          const key = group === 'theme' ? curr.replace(`/${name}`, '').split('/').pop() : name;
-
-          acc[mainKey] ??= { [key]: curr };
-          acc[mainKey][key] = curr;
-
-          injected = true;
-          break;
-        }
-      }
-
-      if (!injected) {
-        acc.common[currKey] = curr;
+      if (value === 'enabled') {
+        acc.input[currentKey] = key;
+        acc.source[currentKey] = key;
       }
 
       return acc;
     },
-    { common: {} },
+    { input: {}, source: {} },
+  );
+}
+
+/**
+ * @param {{ tokenSetOrder: string[] }} metadata
+ * @returns {{ groupMap: Record<string, string[]>, pathsGroupData: Record<string, { input: Record<string, string>, source: Record<string, string> }> }}
+ */
+async function getGroupMap(metadata) {
+  if (globalGroup) return globalGroup;
+  const $themes = await readJsonFile(getDesignTokensFile('$themes'));
+
+  const groupMap = {};
+  const used = new Set(bannedGroups);
+
+  const groupData = $themes.reduce((acc, { group, name, selectedTokenSets }) => {
+    if (whitelistGroup[group]) {
+      const key = `${group}/${name}`;
+      const selectedTokens = getSelectedTokenSets(selectedTokenSets, { group, name });
+
+      if (!acc[key]) {
+        acc[key] = { input: {}, source: {} };
+      }
+
+      Object.keys(selectedTokens).forEach((token) => {
+        Object.assign(acc[key][token], selectedTokens[token]);
+      });
+
+      Object.keys(selectedTokens.input).forEach((token) => used.add(token));
+
+      if (groupMap[group]) {
+        groupMap[group].push(name);
+      } else {
+        groupMap[group] = [name];
+      }
+    }
+
+    return acc;
+  }, {});
+
+  const commonRaw = metadata.tokenSetOrder.filter(
+    (item) => !Array.from(used).some((group) => item.includes(group)),
+  );
+
+  const common = commonRaw.reduce(
+    (acc, curr) => {
+      const key = curr.split('/').pop();
+      acc.input[key] = curr;
+      acc.source[key] = curr;
+
+      if (groupMap.common) {
+        groupMap.common.push(key);
+      } else {
+        groupMap.common = [key];
+      }
+      return acc;
+    },
+    { input: {}, source: {} },
   );
 
   globalGroup = {
     groupMap,
-    pathsGroupData,
+    pathsGroupData: {
+      ...groupData,
+      common,
+    },
   };
 
   return globalGroup;
 }
 
+/**
+ * @param {{ Record<string, string> }} data
+ * @param {string} path
+ * @returns {string}
+ */
 function injectImportGroup(data, path) {
   return Object.keys(data)
     .map((key) => `import ${camelize(key)} from './${path}/${key}';`)
     .join('\n');
 }
 
+/**
+ * @param {string[]} data
+ * @param {string} name
+ * @returns {string}
+ */
 function getSimpleContent(data, name) {
-  return `
-    ${Object.keys(data)
-      .map((name) => `import ${camelize(name)} from './${name}';`)
-      .join('\n')}
-
-    const ${name} = {
-      ${Object.keys(data)
-        .map((name) => camelize(name))
-        .join(',\n')}
-    };
-
-    export default ${name};
-  `;
-}
-
-async function createThemeFiles(metadata) {
-  const { groupMap, pathsGroupData } = await getGroupMap(metadata);
-
-  groupMap.theme.forEach(async (theme) => {
-    const currentThemeImports = injectImportGroup(pathsGroupData[`theme_${theme}`], theme);
-
-    const base = [Object.keys(pathsGroupData[`theme_${theme}`])].flat().map((item) => {
-      const res = camelize(item);
-      return getArgValue('tamagui') ? `...${res}` : res;
-    });
-
-    const name = `tokens${capitalizeFirstLetter(theme)}`;
-
-    const content = `
-      ${currentThemeImports}
-
-      const ${name} = {
-        ${base.join(',\n')}
-      };
-
-      export default ${name};
-    `;
-
-    writeFile(`${getBuildPath()}/${theme}.js`, content);
+  const base = data.map((item) => {
+    const res = camelize(item);
+    return res;
   });
 
-  const themeContent = `
-    ${groupMap.theme.map((themeMode) => `import ${themeMode} from './${themeMode}';`).join('\n')}
+  const formattedName = camelize(name);
 
-    const tokensThemes = {
-      ${groupMap.theme.join(',\n')}
+  return `
+    ${data.map((name) => `import ${camelize(name)} from './${name}';`).join('\n')}
+
+    const ${formattedName} = {
+      ${base.join(',\n')}
     };
 
-    export default tokensThemes;
+    export default ${formattedName};
   `;
-
-  const commonContent = getSimpleContent(pathsGroupData.common, 'tokensCommon');
-  // const layoutContent = getSimpleContent(pathsGroupData.layout, 'tokensLayout');
-
-  writeFile(`${getBuildPath()}/themes.js`, themeContent);
-  writeFile(`${getBuildPath()}/common/index.js`, commonContent);
-  // fse.outputFile(`${getBuildPath()}/layout/index.js`, await formatJS(layoutContent));
 }
 
-function getPlatformTemplate(files, { transforms, buildPathKey, format }) {
+/**
+ * @param {{ tokenSetOrder: string[] }} metadata
+ * @returns {Promise<void>}
+ */
+async function createCollectionFiles(metadata) {
+  const { groupMap, pathsGroupData } = await getGroupMap(metadata);
+
+  Object.entries(groupMap).forEach(([group, names]) => {
+    const groupContent = getSimpleContent(names, group);
+
+    writeFile(`${getBuildPath()}/${group}/index.js`, groupContent);
+    names.forEach((name) => {
+      const groupData = pathsGroupData[`${group}/${name}`];
+      if (groupData) {
+        const groupByName = getSimpleContent(Object.keys(groupData.input), name);
+
+        writeFile(`${getBuildPath()}/${group}/${name}/index.js`, groupByName);
+      }
+    });
+  });
+}
+
+function getPlatformTemplate(files, { buildPathKey }) {
+  // console.log(files, buildPathKey);
+  const { transforms, format, extension } = getFormatConfig();
+  const buildPath = buildPathKey.split('/');
+  const groupName = buildPath[0];
+
+  const filesCompiler = getFormatConfig()?.groupFilesCompiler[groupName];
+
+  const currentFormat = filesCompiler?.format ?? format;
+
+  const groupSelector = buildPath[Number(buildPath.length > 1)];
+
+  console.log(groupName);
+  // console.log(options.groupName, options.buildKeyPath, options.groupSelector, options.groupVariant);
+  // platform, platform/web, common/media/web, media
+
   return {
     transformGroup: 'tokens-studio',
     transforms,
-    buildPath: `${getBuildPath()}/${buildPathKey}/`,
-    files: Object.keys(files).map((key) => ({
-      destination: `${key}.js`,
-      format,
-      filter: 'not-figma',
-      options: {
-        categorySelector: files[key],
-        categorySelectorKey: key,
-        buildKeyPath: buildPathKey,
-      },
-    })),
+    buildPath: `${getBuildPath()}/${filesCompiler === 'singleton' ? groupName : buildPathKey}/`,
+    files:
+      filesCompiler === 'singleton'
+        ? [
+            {
+              destination: `${groupSelector}.${extension}`,
+              format: currentFormat,
+              filter: 'not-figma',
+              options: {
+                groupName,
+                groupSelector,
+                groupVariant: '',
+                buildKeyPath: buildPathKey,
+              },
+            },
+          ]
+        : Object.keys(files)
+            .filter((file) => getFormatConfig().groupVariantFilesCompiler?.[file] !== 'manual')
+            .map((variant) => ({
+              destination: `${variant}.${extension}`,
+              format: currentFormat,
+              filter: 'not-figma',
+              options: {
+                groupName,
+                groupSelector: files[variant],
+                groupVariant: variant,
+                buildKeyPath: buildPathKey,
+              },
+            })),
   };
 }
 
-function configJSTemplate(data, buildPathKey, buildGroup) {
-  const selectedData = Array.isArray(buildGroup)
-    ? buildGroup
-        .map((key) => {
-          const picked = pickByDotNotation(data, key);
-          return typeof picked === 'string' ? picked : Object.values(picked);
-        })
-        .flat()
-    : Object.values(data[buildGroup]);
+function getFormatConfig() {
+  return formatMap[getArgValue('format')];
+}
+
+function configJSTemplate(data, pathKey) {
+  const buildPathKey = pathKey;
+  const selectedData = Object.values(data.source);
   if (!selectedData.length) return;
 
-  const key = Array.isArray(buildGroup) ? buildGroup[buildGroup.length - 1] : buildGroup;
-  const pickedFiles = pickByDotNotation(data, key);
-  const files =
-    typeof pickedFiles === 'string'
-      ? { [key.includes('.') ? key.split('.').slice(1).join() : key]: pickedFiles }
-      : pickedFiles;
+  const files = data.input;
 
   let platformTemplate = getPlatformTemplate(files, {
     buildPathKey,
-    transforms: ['ts/resolveMath', 'dimension/size/px'],
-    format: 'js/nestedObject/prettier',
   });
 
-  if (getArgValue('tamagui')) {
-    platformTemplate = getPlatformTemplate(files, {
-      buildPathKey,
-      transforms: ['ts/resolveMath', 'numeric/value'],
-      format: 'js/themeFlat/prettier',
-    });
-  }
-
-  return {
+  return /** @type {import('style-dictionary').Config} */ ({
     source: selectedData.map((path) => getDesignTokensFile(path)),
+    preprocessors: ['tokens-studio'],
+    platforms: {
+      [getFormatConfig().platform]: platformTemplate,
+    },
     // log: {
     //   warnings: 'warn',
-    //   verbosity: 'default',
+    //   verbosity: 'verbose',
     //   errors: {
     //     brokenReferences: 'console',
     //   },
     // },
-    preprocessors: ['tokens-studio'],
-    platforms: {
-      js: platformTemplate,
-    },
-  };
+  });
 }
 
-/** @param {import('style-dictionary').TransformedToken} token */
-/** @param {import('style-dictionary').Config} options */
+/**
+ * @param {import('style-dictionary').TransformedToken} token
+ * @param {import('style-dictionary').Config} options
+ */
 function compileTokenValue(token, options) {
   const { usesDtcg } = options;
   const value = usesDtcg ? token.$value : token.value;
@@ -230,12 +262,16 @@ function compileTokenValue(token, options) {
   return isNumeric(value) ? value : `${value}`;
 }
 
+/**
+ * @param {import('style-dictionary').TransformedToken[]} arr
+ * @param {import('style-dictionary').Config} options
+ */
 function arrayToNestedObject(arr, options) {
   const result = {};
 
   arr.forEach((token) => {
-    const path = options.categorySelectorKey
-      ? token.path.filter((value) => value !== options.categorySelectorKey)
+    const path = options.groupVariant
+      ? token.path.filter((value) => value !== options.groupVariant)
       : token.path;
 
     const value = compileTokenValue(token, options); // ${token.comment ? ` // ${token.comment}` : ''}
@@ -251,18 +287,12 @@ function arrayToNestedObject(arr, options) {
 
 async function run() {
   const $metadata = await readJsonFile(getDesignTokensFile('$metadata'));
-  const { groupMap, pathsGroupData } = await getGroupMap($metadata);
+  const { pathsGroupData } = await getGroupMap($metadata);
 
-  const configs = [configJSTemplate(pathsGroupData, 'common', 'common')];
+  const configs = [];
 
-  // groupMap.layout.forEach((layoutKey) => {
-  //   configs.push(configJSTemplate(pathsGroupData, 'layout', ['common', `layout.${layoutKey}`]));
-  // });
-
-  groupMap.theme.forEach((theme) => {
-    const themeKey = `theme_${theme}`;
-
-    configs.push(configJSTemplate(pathsGroupData, theme, ['common', themeKey]));
+  Object.entries(pathsGroupData).forEach(([key, value]) => {
+    configs.push(configJSTemplate(value, key));
   });
 
   async function cleanAndBuild(cfg) {
@@ -273,7 +303,7 @@ async function run() {
   }
 
   await Promise.all(configs.map(cleanAndBuild));
-  await createThemeFiles($metadata);
+  await createCollectionFiles($metadata);
 }
 
 // sd-transforms, 2nd parameter for options can be added
@@ -299,15 +329,19 @@ StyleDictionary.registerTransform({
 
 StyleDictionary.registerFilter({
   name: 'not-figma',
-  filter: (token) => token.comment !== 'figma-only',
+  filter: (token) =>
+    !(
+      token.filePath.startsWith('figma-only') ||
+      token.comment === 'figma-only' ||
+      token.description === 'figma-only'
+    ),
 });
-
 
 StyleDictionary.registerFormat({
   name: `js/nestedObject/prettier`,
   format: async function ({ dictionary, _platform, options, file }) {
     const selectedTokens = dictionary.allTokens.filter((token) =>
-      token.filePath.includes(options.categorySelector),
+      token.filePath.includes(options.groupSelector),
     );
 
     const header = await fileHeader({ file, options });
@@ -327,7 +361,7 @@ StyleDictionary.registerFormat({
   name: `js/themeFlat/prettier`,
   format: async function ({ dictionary, _platform, options, file }) {
     const selectedTokens = dictionary.allTokens.filter((token) =>
-      token.filePath.includes(options.categorySelector),
+      token.filePath.includes(options.groupSelector),
     );
 
     const header = await fileHeader({ file, options });
@@ -336,17 +370,34 @@ StyleDictionary.registerFormat({
       'export default',
       JSON.stringify(
         selectedTokens.reduce((acc, curr) => {
-          const path = options.categorySelectorKey
-            ? curr.path.filter((value) => value !== options.categorySelectorKey)
+          const path = options.groupVariant
+            ? curr.path.filter((value) => value !== options.groupVariant)
             : curr.path;
 
-          const key = path.join('/');
-          const completeKey =
-            options.buildKeyPath !== 'layout' && options.buildKeyPath !== 'common' // && options.categorySelectorKey !== 'theme'
-              ? `${options.categorySelectorKey}/${key}`
-              : key;
+          console.log(
+            options.groupName,
+            options.buildKeyPath,
+            options.groupSelector,
+            options.groupVariant,
+          );
+          // platform, platform/web, common/media/web, media
 
-          acc[completeKey] = curr.type === 'number' ? Number(curr.value) : curr.value;
+          const key = path.join('/');
+          // const completeKey =
+          //   options.buildKeyPath !== 'layout' && options.buildKeyPath !== 'common' // && options.groupVariant !== 'theme'
+          //     ? `${options.groupVariant}/${key}`
+          //     : key;
+
+          // console.log(options.groupSelector);
+
+          // const completeKey =
+          //   options.buildKeyPath.includes('theme') && options.groupVariant !== 'theme'
+          //     ? `${options.groupVariant}/${key}`
+          //     : key;
+          const completeKey = key;
+
+          acc[completeKey] =
+            curr.type === 'number' || curr.type === 'opacity' ? Number(curr.value) : curr.value;
 
           return acc;
         }, {}),
@@ -360,21 +411,3 @@ StyleDictionary.registerFormat({
 });
 
 export default run;
-
-// css: {
-//   transformGroup: 'tokens-studio',
-//   transforms: [
-//     'name/kebab'
-//   ],
-//   buildPath: 'tokens/css/',
-//   files: [
-//     {
-//       destination: `_${name}.css`,
-//       format: 'css/variables'
-//     },
-//     {
-//       destination: `_${name}.scss`,
-//       format: 'scss/variables'
-//     }
-//   ]
-// },

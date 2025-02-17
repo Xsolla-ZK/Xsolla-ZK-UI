@@ -1,5 +1,9 @@
 import generateFileHeader from './header.mjs';
 
+/**
+ * @param {object} data
+ * @returns {string}
+ */
 function generatePresetsFile(data) {
   return `
     ${generateFileHeader()}

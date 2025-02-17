@@ -1,17 +1,24 @@
 # XSolla-ZK UI-Kit
 ---------------------
-## Добавление в проект с помощью настройки NPM для работы с приватными пакетами
-Токен можно получить из вашей учетной записи на [npmjs.com](https://www.npmjs.com/).
 
-1. Убедитесь, что сторонний проект также настроен для работы с вашим приватным реестром. В его .npmrc добавьте:
-```bash
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-@xsolla-zk-ui:registry=https://npm.pkg.github.com/
-```
-2. Установите приватный пакет через `pnpm`:
-```bash
-pnpm add @xsolla-zk-ui/react
-```
+A comprehensive design system and UI component library that provides:
+
+- **Design Tokens**: Centralized design variables (colors, typography, spacing, etc.)
+- **Core Components**: A collection of reusable React components built with Tamagui
+- **Documentation**: Interactive Storybook with component examples and guidelines
+- **Theme Support**: Built-in light/dark modes and customizable themes
+- **Type Safety**: Written in TypeScript for better development experience
+- **Package Management**: Monorepo structure using pnpm workspaces
+
+## Key Features
+- 🎨 Consistent design language across applications
+- 📦 Modular architecture for selective component usage
+- 🔧 Easy customization and theming
+- 📱 Cross-platform support (Web & React Native)
+- 🚀 Performance optimized
+- 💻 Developer-friendly with strong TypeScript support
+
+Built and maintained by XSolla-ZK team to streamline UI development across projects.
 ---------------------
 ## Генерация компонентов
 
@@ -25,7 +32,7 @@ pnpm hygen react new --name <component-name>
 ```
 pnpm hygen vue new --name <component-name>
 ```
-Где `component-name` это имя нового компонента, и оно должно быть в <font color="#c95151">**kebab-case**</font>.
+Где `component-name` это имя нового компонента, и оно должно быть в **kebab-case**.
 Генератор создаст файлы для компонента, стилей, тестов и сторибука.
 ---------------------
 ## Генерация иконок
