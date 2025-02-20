@@ -14,6 +14,7 @@ export default tseslint.config(
       '.swc',
       '**/.*',
       '**/build',
+      '**/dist',
       '**/*.(s[ac]ss|css)',
       'raw-icons',
       // 'tools',

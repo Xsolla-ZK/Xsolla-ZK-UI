@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "allowJs": true,
@@ -20,7 +22,7 @@
       "@xsolla-zk-ui/vue/*": ["./packages/vue/src/*"],
       "@xsolla-zk-ui/icons": ["./packages/icons/src"],
       "@xsolla-zk-ui/icons/*": ["./packages/icons/src/*"],
-    },
+    }
   },
-  "exclude": ["**/.*", "**/build", "**/node_modules"],
+  "exclude": ["**/.*", "**/build", "**/dist", "**/node_modules"]
 }

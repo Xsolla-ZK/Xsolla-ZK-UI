@@ -11,8 +11,14 @@ catalog:
 
 catalogs:
   tamagui:
+    "@tamagui/animations-css": ^1.124.13
+    "@tamagui/animations-moti": ^1.124.13
+    "@tamagui/animations-react-native": ^1.124.13
+    "@tamagui/build": ^1.124.13
+    "@tamagui/stacks": ^1.124.13
     "@tamagui/config": ^1.124.13
     "@tamagui/core": ^1.124.13
+    "@tamagui/web": ^1.124.13
     "@tamagui/vite-plugin": ^1.124.13
   eslint9:
     eslint: 9.16.0
@@ -21,6 +27,9 @@ catalogs:
     vitest: ^3.0.4
     "@vitest/browser": ^3.0.4
     "@vitest/coverage-v8": ^3.0.4
+  reactNative:
+    "react-native": 0.78.0
+    "@types/react-native": ^0.73.0
   react18:
     react: ^18.3.1
     react-dom: ^18.3.1

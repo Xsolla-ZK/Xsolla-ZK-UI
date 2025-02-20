@@ -1,0 +1,73 @@
+{
+  "name": "@xsolla-zk-ui/config",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/config"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./web": {
+      "react-native": {
+        "import": "./dist/esm/web.native.js",
+        "require": "./dist/cjs/web.native.js"
+      },
+      "types": "./types/web.d.ts",
+      "import": "./dist/esm/web.mjs",
+      "require": "./dist/cjs/web.cjs"
+    },
+    "./android": {
+      "react-native": {
+        "import": "./dist/esm/android.native.js",
+        "require": "./dist/cjs/android.native.js"
+      },
+      "types": "./types/android.d.ts",
+      "import": "./dist/esm/android.mjs",
+      "require": "./dist/cjs/android.cjs"
+    },
+    "./ios": {
+      "react-native": {
+        "import": "./dist/esm/ios.native.js",
+        "require": "./dist/cjs/ios.native.js"
+      },
+      "types": "./types/ios.d.ts",
+      "import": "./dist/esm/ios.mjs",
+      "require": "./dist/cjs/ios.cjs"
+    }
+  },
+  "dependencies": {
+    "@tamagui/animations-css": "catalog:tamagui",
+    "@tamagui/animations-moti": "catalog:tamagui",
+    "@tamagui/animations-react-native": "catalog:tamagui",
+    "@tamagui/core": "catalog:tamagui",
+    "react-native-reanimated": "^3.16.7"
+  },
+  "devDependencies": {
+    "@tamagui/build": "catalog:tamagui",
+    "typescript": "catalog:"
+  }
+}
