@@ -1,5 +1,15 @@
+import { createFormat, transformKeyFromMap, transformGroupKey } from './format.mjs';
 import { getArgValue } from './helpers.mjs';
-import { formatMap } from './mappings.mjs';
+
+export const formatMap = {
+  object: createFormat(),
+  tamagui: createFormat({
+    transformKey: transformKeyFromMap,
+    transformGroupKey,
+    extension: 'ts',
+    flatten: true,
+  }),
+};
 
 /**
  * @typedef {Object} FormatConfig
@@ -8,7 +18,6 @@ import { formatMap } from './mappings.mjs';
  * @property {boolean} [flatten] - Whether to flatten nested objects
  * @property {(key: string) => string} transformKey - Function to transform object keys
  * @property {(key: string) => string} transformGroupKey - Function to transform group keys
- * @property {Object} [transformMap] - Map of transform functions
  */
 
 /**

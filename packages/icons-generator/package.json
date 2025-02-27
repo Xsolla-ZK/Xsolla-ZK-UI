@@ -1,0 +1,27 @@
+{
+  "name": "@xsolla-zk-ui/icons-generator",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/icons-generator"
+  },
+  "bin": {
+    "xzkui-icons": "./index.mjs"
+  },
+  "scripts": {
+    "generate": "node index.mjs generate"
+  },
+  "devDependencies": {
+    "fs-extra": "^11.3.0",
+    "prettier": "catalog:",
+    "svgo": "^3.3.2",
+    "yargs": "^17.7.2"
+  }
+}

@@ -1,13 +1,18 @@
-import size from '@xsolla-zk-ui/react/tokens/common/size';
-import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
-import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
+export const richIconTheme = {
+  size: {
+    500: {
+      scale: 1,
+    },
+    400: {
+      scale: 0.8,
+    },
+    300: {
+      scale: 0.6,
+    },
+    200: {
+      scale: 0.4,
+    },
+  },
+};
 
 export const richIconThemeSizes = [100, 200, 300, 400, 500, 600, 700, 800, 900] as const;
-
-const richIconTheme = (_mode: XZKUIThemeModeUnion) => ({
-  sizes: callbackObjectByKeys(richIconThemeSizes, (_idx, key) => ({
-    fontSize: size[key],
-  })),
-});
-
-export default richIconTheme;

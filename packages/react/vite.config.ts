@@ -6,10 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
-    react({
-      plugins: [['@swc/plugin-emotion', {}]],
-      jsxImportSource: '@emotion/react',
-    }),
+    react(),
     tamaguiPlugin({
       // points to your tamagui config file
       config: './tamagui.config.ts',

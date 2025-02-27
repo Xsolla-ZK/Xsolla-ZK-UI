@@ -7,7 +7,6 @@ import pimpleTheme from '../components/pimple/pimple.theme';
 import radioTheme from '../components/radio/radio.theme';
 import richIconTheme from '../components/rich-icon/rich-icon.theme';
 import segmentedControlTheme from '../components/segmented-control/segmented-control.theme';
-import semanticTextTheme from '../components/semantic-text/semantic-text.theme';
 import tabsTheme from '../components/tabs/tabs.theme';
 import common from '../tokens/common';
 import layout from '../tokens/layout';
@@ -32,7 +31,6 @@ function theme(mode: XZKUIThemeModeUnion, themes = tokensThemes) {
       button: buttonTheme(mode),
       loader: loaderTheme(mode),
       dropdown: dropdownTheme(mode),
-      semanticText: semanticTextTheme(mode),
       pimple: pimpleTheme(mode),
       richIcon: richIconTheme(mode),
       segmentedControl: segmentedControlTheme(mode),

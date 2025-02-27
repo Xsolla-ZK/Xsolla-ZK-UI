@@ -5,6 +5,7 @@ import { getFormatConfig } from './utils/config.mjs';
 import { logger } from './utils/log.mjs';
 import { getGroupMap } from './utils/parser.mjs';
 import { getValueRecursively } from './utils/values.mjs';
+import { getTransform } from './utils/transforms.mjs';
 
 /**
  * @param {string} variant
@@ -14,7 +15,8 @@ import { getValueRecursively } from './utils/values.mjs';
  * @returns {Promise<object>}
  */
 async function processVariant(variant, group, groupData, pathsGroupData) {
-  const { transformMap, transformGroupKey } = getFormatConfig();
+  const transformMap = getTransform();
+  const { transformGroupKey } = getFormatConfig();
   const sources = await Promise.all(
     Object.values(groupData.source).map(
       async (filePath) => await readJsonFile(getDesignTokensFile(filePath)),

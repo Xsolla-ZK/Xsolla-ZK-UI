@@ -1,13 +1,18 @@
-import clsx from 'clsx';
 import { forwardRef } from 'react';
+import { GetProps } from '@tamagui/core';
 import XZKUIPimple from '../pimple/pimple';
 import xzkuiRichIconClasses from './rich-icon.classes';
-import Styled, { richIconPaths } from './rich-icon.styled';
-import type { ComponentRichIconTypeMap } from './rich-icon.types';
-import type { OverridableComponent } from '@mui/types';
-import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
+import { Root, Icon, Content, richIconPaths } from './rich-icon.styled';
+import type { XZKUIRichIconShape } from './rich-icon.types';
 
-const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
+export type RichIconProps = GetProps<typeof Root> & {
+  shape?: XZKUIRichIconShape | false;
+  backdropProps?: React.SVGAttributes<SVGPathElement>;
+  imageSrc?: string;
+  pimple?: Omit<React.ComponentProps<typeof XZKUIPimple>, 'size'>;
+};
+
+const XZKUIRichIcon = forwardRef<typeof Root, RichIconProps>(function XZKUIRichIcon(
   {
     shape = 'circle',
     size = 500,
@@ -15,28 +20,28 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
     backdropProps,
     imageSrc,
     className,
-    bg = ((theme) => theme.theme.background.brandHigh) as XZKUICustomColor,
     pimple,
-    component = 'div',
+    isButton,
     ...rest
   },
-  ref,
+  ref
 ) {
   return (
-    <Styled.Root
-      className={clsx([className, !shape && xzkuiRichIconClasses.noShape])}
-      xzkuiSize={size}
-      xzkuiBg={bg}
-      as={component}
+    <Root
+      className={className}
+      data-no-shape={!shape}
+      size={size}
+      isButton={isButton}
       {...rest}
       ref={ref}
     >
       {shape && (
-        <Styled.Icon
+        <Icon
           width="1em"
           height="1em"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 80 80"
+          as="svg"
         >
           <defs>
             <clipPath id={`icon-clip-${shape}`}>
@@ -68,12 +73,12 @@ const XZKUIRichIcon = forwardRef(function XZKUIRichIcon(
               clipPath={`url(#icon-clip-${shape}`}
             />
           )}
-        </Styled.Icon>
+        </Icon>
       )}
-      <Styled.Content>{children}</Styled.Content>
+      <Content noShape={!shape}>{children}</Content>
       {pimple && <XZKUIPimple {...pimple} />}
-    </Styled.Root>
+    </Root>
   );
-}) as OverridableComponent<ComponentRichIconTypeMap>;
+});
 
 export default XZKUIRichIcon;

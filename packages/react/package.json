@@ -5,8 +5,7 @@
   "main": "./build/index.js",
   "type": "module",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "directory": "build"
+    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
@@ -24,34 +23,17 @@
     "storybook:build": "storybook build"
   },
   "peerDependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/base": "5.0.0-beta.69",
-    "@react-spring/web": "^9.7.5",
     "@tamagui/config": "catalog:tamagui",
-    "@tamagui/core": "catalog:tamagui",
-    "react": "catalog:react18",
-    "react-dom": "catalog:react18"
+    "@tamagui/core": "catalog:tamagui"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "^1.3.1",
-    "@emotion/memoize": "^0.9.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/base": "5.0.0-beta.69",
-    "@react-spring/web": "^9.7.5",
     "@tamagui/config": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
-    "clsx": "^2.1.1",
-    "color": "^4.2.3",
-    "react": "catalog:react18",
-    "react-dom": "catalog:react18",
-    "react-native-svg": "^15.11.1",
-    "usehooks-ts": "^3.1.0"
+    "@tamagui/stacks": "catalog:tamagui",
+    "@xsolla-zk-ui/config": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",
-    "@mui/types": "^7.2.20",
     "@storybook/addon-essentials": "catalog:storybook",
     "@storybook/addon-themes": "catalog:storybook",
     "@storybook/blocks": "catalog:storybook",
@@ -61,18 +43,11 @@
     "@storybook/react-vite": "catalog:storybook",
     "@storybook/test": "catalog:storybook",
     "@storybook/theming": "catalog:storybook",
-    "@swc/plugin-emotion": "^8.5.0",
     "@tamagui/vite-plugin": "catalog:tamagui",
-    "@types/color": "^4.2.0",
-    "@types/deepmerge": "^2.2.3",
-    "@types/react": "catalog:react18",
-    "@types/react-dom": "catalog:react18",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "@vitest/browser": "catalog:vitest",
     "@vitest/coverage-v8": "catalog:vitest",
-    "babel-plugin-react-native-web": "^0.19.13",
-    "deepmerge": "^4.3.1",
     "eslint": "catalog:eslint9",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",

@@ -1,29 +1,12 @@
-import { css } from '@emotion/react';
-import Styled from './semantic-text.styled';
-import type { XZKUISemanticTextProps } from './semantic-text.types';
-import type { ElementType } from 'react';
+import { SemanticTextRoot } from './semantic-text.styled';
+import type { SemanticTextProps } from './semantic-text.types';
+import type { TamaguiTextElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-function XZKUISemanticText<T extends ElementType>({
-  as: Component,
-  variant = 'paragraphMd',
-  children,
-  align,
-  color,
-  className,
-}: XZKUISemanticTextProps<T>) {
-  return (
-    <Styled.Root
-      as={Component}
-      className={className}
-      xzkuiVariant={variant}
-      xzkuiColor={color}
-      css={css`
-        text-align: ${align || ''};
-      `}
-    >
-      {children}
-    </Styled.Root>
-  );
-}
+const SemanticText = SemanticTextRoot.styleable(
+  (props: SemanticTextProps, ref: ForwardedRef<TamaguiTextElement>) => (
+    <SemanticTextRoot {...props} ref={ref} />
+  ),
+);
 
-export default XZKUISemanticText;
+export default SemanticText;

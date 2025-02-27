@@ -1,25 +1,10 @@
-import type buttonTheme from './button.theme';
-import type { buttonThemeSizes } from './button.theme';
-import type { ButtonProps as MuiButtonProps } from '@mui/base';
-import type { ElementType, ReactNode } from 'react';
+import type Button from './button.styled';
+import type { GetProps } from '@tamagui/core';
+import type { ReactNode } from 'react';
 
-type Sizes = (typeof buttonThemeSizes)[number];
-type Variants = keyof ReturnType<typeof buttonTheme>['variants'];
+type ButtonSharedProps = GetProps<typeof Button>;
 
-export interface XZKUIButtonBaseProps {
-  size: Sizes;
-  variant: Variants;
-}
-
-export interface XZKUIButtonProps extends MuiButtonProps, Partial<XZKUIButtonBaseProps> {
+export interface ButtonProps extends ButtonSharedProps {
   isLoading?: ReactNode;
-  bgOff?: boolean;
-  startAdornment?: ReactNode;
-  endAdornment?: ReactNode;
   fullWidth?: boolean;
 }
-
-export type ComponentButtonTypeMap<P = object, D extends ElementType = 'button'> = {
-  props: P & XZKUIButtonProps;
-  defaultComponent: D;
-};

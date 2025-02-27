@@ -13,19 +13,17 @@
     "directory": "packages/tokens"
   },
   "bin": {
-    "tokens": "./src/index.mjs"
+    "xzkui-tokens": "./src/index.mjs"
   },
   "scripts": {
     "generate": "node src/index.mjs generate"
   },
   "devDependencies": {
-    "@tokens-studio/sd-transforms": "^1.2.9",
     "chalk": "^5.4.1",
     "color": "^5.0.0",
     "dotenv": "^16.4.7",
     "fs-extra": "^11.3.0",
     "prettier": "catalog:",
-    "style-dictionary": "^4.3.0",
     "yargs": "^17.7.2"
   }
 }

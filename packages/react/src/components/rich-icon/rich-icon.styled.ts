@@ -1,8 +1,4 @@
-import styled from '@emotion/styled';
-import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import XZKUIPimpleStyled from '../pimple/pimple.styled';
-import xzkuiRichIconClasses from './rich-icon.classes';
+import { Stack, styled } from '@tamagui/core';
 import type { XZKUIRichIconBaseProps } from './rich-icon.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
@@ -32,66 +28,66 @@ export const richIconPaths = {
 
 type StyledProps = XZKUIStyledProps<XZKUIRichIconBaseProps>;
 
-const Root = styled('div', {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme, xzkuiBg }) => `
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: ${pickCustomColor(theme, xzkuiBg)};
+export const Root = styled(Stack, {
+  name: 'RichIconRoot',
+  position: 'relative',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 
-    ${XZKUIPimpleStyled.Root} {
-      position: absolute;
-      top: -0.33em;
-      right: -0.33em;
-      min-width: 1.66em;
-      min-height: 1.66em;
-      padding: 0 0.33em;
-      font-size: 0.25em;
-      line-height: 1em;
-    }
-  `,
-  ({ as }) =>
-    as === 'button' &&
-    `
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-  `,
-  ({ theme, xzkuiSize }) => theme.components.richIcon.sizes[xzkuiSize],
-);
+  variants: {
+    size: {
+      500: { scale: 1 },
+      400: { scale: 0.8 },
+      300: { scale: 0.6 },
+      200: { scale: 0.4 },
+    },
+    isButton: {
+      true: {
+        tag: 'button',
+        role: 'button',
+        border: 'none',
+        background: 'none',
+        padding: 0,
+        cursor: 'pointer',
+      },
+    },
+  } as const,
 
-const Icon = styled('svg')(
-  () => `
-    display: inline-block;
-    position: relative;
-    vertical-align: middle;
-    user-select: none;
-    color: inherit;
-  `,
-);
+  defaultVariants: {
+    size: '500',
+  },
+});
 
-const Content = styled('span')(
-  ({ theme }) => `
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.55em;
-    color: ${theme.theme.content.neutralPrimary};
+export const Icon = styled(Stack, {
+  name: 'RichIconSvg',
+  display: 'inline-block',
+  position: 'relative',
+  verticalAlign: 'middle',
+  userSelect: 'none',
+  color: 'inherit',
+});
 
-    .${xzkuiRichIconClasses.noShape} & {
-      font-size: 1em;
-    }
-  `,
-);
+export const Content = styled(Stack, {
+  name: 'RichIconContent',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '$5',
+
+  variants: {
+    noShape: {
+      true: {
+        fontSize: '$6',
+      },
+    },
+  },
+});
 
 const XZKUIRichIconStyled = {
   Root,

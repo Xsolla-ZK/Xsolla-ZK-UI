@@ -8,7 +8,7 @@ import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { formatMap } from './utils/mappings.mjs';
+import { formatMap } from './utils/config.mjs';
 import dotenv from 'dotenv';
 import { readJsonFile } from './utils/files.mjs';
 import { logger } from './utils/log.mjs';

@@ -2,7 +2,6 @@ export function createFormat(format) {
   return {
     transformKey: (key) => key,
     transformGroupKey: (key) => key,
-    transformMap: {},
     flatten: false,
     extension: 'js',
     separator: '.',

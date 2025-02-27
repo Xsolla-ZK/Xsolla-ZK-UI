@@ -1,39 +1,61 @@
-import React from 'react';
 import type { Preview } from '@storybook/react';
-import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { css, Global, ThemeProvider, useTheme } from '@emotion/react';
-import tokensThemes from '../src/tokens/themes';
-import theme from '../src/utils/theme';
-// import XZKUIThemeProvider from '../src/components/theme-provider/theme-provider';
-import { XZKUITheme } from '../src/types/theme';
 import { fn } from '@storybook/test';
+import { createStyledContext, Stack, TamaguiProvider, Theme, useTheme, useThemeName } from '@tamagui/core';
+import React, { useEffect, useState } from 'react';
+import { config } from '../tamagui.config';
 
-const GlobalStyles = () => {
-  const currentTheme = useTheme() as XZKUITheme;
+const value = {
+  light: 't_light',
+  dark: 't_dark',
+}
+
+function GlobalStyles() {
+  const theme = useTheme();
+  const themeName = useThemeName();
+
+  useEffect(() => {
+    const d = document.documentElement;
+    d.classList.remove(...Object.values(value));
+    d.classList.add(value[themeName]);
+  }, [themeName])
+
   return (
-    <Global styles={css`
-      .sb-show-main,
-      .docs-story {
-        &, & [scale] {
-          background: ${currentTheme.theme.background.neutralLow};
+    <style>
+      {`
+        .sb-show-main, .docs-story, .sb-show-main [scale], .docs-story [scale] {
+          background: ${theme['background.neutral-low'].get()};
         }
-      }
-      #storybook-root,
-      .docs-story {
-        * {
-          font-family: ${currentTheme.common.typography.font.text};
+        #storybook-root *,
+        .docs-story * {
           font-optical-sizing: auto;
           -webkit-font-smoothing: antialiased;
         }
-      }
-      .sb-show-main * {
-        box-sizing: border-box;
-      }
-    `} />
+        .sb-show-main * {
+          box-sizing: border-box;
+        }
+      `}
+    </style>
   );
 }
 
 const preview: Preview = {
+  globalTypes: {
+    theme: {
+      description: "Switch between Tamagui themes",
+      toolbar: {
+        title: 'Theme',
+        icon: 'circlehollow',
+        items: [
+          { value: 'light', title: 'Light', icon: 'sun' },
+          { value: 'dark', title: 'Dark', icon: 'moon' }
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: {
+    theme: 'light',
+  },
   tags: ['autodocs'],
   parameters: {
     // docs: {
@@ -41,12 +63,12 @@ const preview: Preview = {
     //     code: CodeBlock,
     //   },
     // },
-    backgrounds: {
-      values: Object.entries(tokensThemes).map(([key, value]) => ({
-        name: key,
-        value: value.theme.background.neutralLow,
-      }))
-    },
+    // backgrounds: {
+    //   values: Object.entries(config.themes).map(([key, value]) => ({
+    //     name: key,
+    //     value: value['background.neutral-low'],
+    //   }))
+    // },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -58,16 +80,16 @@ const preview: Preview = {
     onClick: fn(),
   },
   decorators: [
-    withThemeFromJSXProvider({
-      themes: Object.keys(tokensThemes).reduce((acc, curr) => {
-        acc[curr] = theme(curr as keyof typeof tokensThemes);
-        return acc;
-      }, {}),
-      defaultTheme: 'light',
-      Provider: ThemeProvider,
-      // Provider: ({ theme, props }) => <XZKUIThemeProvider defaultTheme={theme} {...props} />,
-      GlobalStyles,
-    }),
+    (Story, { globals }) => {
+      return (
+        <TamaguiProvider config={config} defaultTheme="light">
+          <Theme name={globals.theme || 'light'}>
+            <GlobalStyles />
+              <Story />
+          </Theme>
+        </TamaguiProvider>
+      );
+    },
   ],
 };
 

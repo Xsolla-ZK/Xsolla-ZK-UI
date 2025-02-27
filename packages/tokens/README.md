@@ -19,7 +19,7 @@
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-1. Установите пакет одним из следующих способов:
+3. Установите пакет одним из следующих способов:
 
 ```bash
 # Используя npm
@@ -37,7 +37,7 @@ yarn add @xsolla-zk-ui/tokens
 ### Базовое использование
 
 ```bash
-tokens generate [опции]
+xzkui-tokens generate [опции]
 ```
 
 ### Опции
@@ -53,48 +53,49 @@ tokens generate [опции]
 
 ```bash
 # Генерация токенов из репозитория (ветка main)
-tokens generate
+xzkui-tokens generate
 
 # Генерация токенов из определенной ветки репозитория
-tokens generate --input feature/new-tokens
+xzkui-tokens generate --input feature/new-tokens
 
 # Генерация токенов из локальной директории
-tokens generate --source local --input ./my-tokens
+xzkui-tokens generate --source local --input ./my-tokens
 
 # Генерация токенов в формате Tamagui
-tokens generate --type tamagui
+xzkui-tokens generate --type tamagui
 
 # Указание пользовательской директории для выходных файлов
-tokens generate --output ./src/styles/tokens
+xzkui-tokens generate --output ./src/styles/tokens
 ```
 
 ## Форматы генерации
 
 ### Object
-Генерирует токены в виде JavaScript-объектов. Это формат по умолчанию.
+Генерирует токены в виде JavaScript-объектов. Это формат по умолчанию. Поддерживает:
+- Цвета
+- Размеры
+- Отступы
+- Тени
+- Радиусы скругления
 
 ### Tamagui
 Специальный формат для использования с UI-фреймворком Tamagui. Генерирует:
-- Файлы тем
+- Файлы тем (цвета, размеры, отступы и т.д.)
 - Типографические пресеты
-- Шрифты и их вариации
-
-## Структура выходных файлов
-
-```
-tokens/
-├── common/           # Общие токены
-├── themes/           # Файлы тем
-├── fonts.js         # Конфигурация шрифтов
-└── presets.ts       # Типографические пресеты
-```
+- Конфигурацию шрифтов и их вариаций
+- Медиа-запросы для адаптивного дизайна
 
 ### Структура проекта
 
 ```
 src/
-├── build.mjs        # Основная логика сборки
-├── typography.mjs   # Трансформация типографических токенов
-├── templates/       # Шаблоны для генерации файлов
-└── utils/          # Вспомогательные функции
+├── build.mjs # Основная логика сборки
+├── tamagui/ # Трансформации для Tamagui
+├── templates/ # Шаблоны для генерации файлов
+└── utils/ # Вспомогательные функции
+| ├── config.mjs # Конфигурация форматов
+| ├── files.mjs # Работа с файлами
+| ├── format.mjs # Форматирование токенов
+| ├── parser.mjs # Парсинг токенов
+| └── values.mjs # Обработка значений
 ```

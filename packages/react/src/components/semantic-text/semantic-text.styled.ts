@@ -1,23 +1,67 @@
-import styled from '@emotion/styled';
-import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import type { XZKUISemanticTextBaseProps } from './semantic-text.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import { styled, Text } from '@tamagui/core';
+import { getTypographyPreset } from '@xsolla-zk-ui/config';
 
-type StyledProps = XZKUIStyledProps<XZKUISemanticTextBaseProps>;
+export const SemanticTextRoot = styled(
+  Text,
+  {
+    name: 'SemanticText',
+    tag: 'span',
+    color: '$content.neutral-primary',
 
-const Root = styled('div', {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme, xzkuiColor }) => `
-    display: block;
-    color: ${xzkuiColor ? pickCustomColor(theme, xzkuiColor) : theme.theme.content.neutralPrimary};
-  `,
-  ({ theme, xzkuiVariant }) => theme.components.semanticText.variants[xzkuiVariant],
+    variants: {
+      variant: {
+        headingXl: {
+          role: 'heading',
+          marginTop: '$400',
+          marginBottom: '$100',
+          ...getTypographyPreset('display.500.accent'),
+        },
+        headingLg: {
+          role: 'heading',
+          marginTop: '$350',
+          marginBottom: '$100',
+          ...getTypographyPreset('display.450.accent'),
+        },
+        headingMd: {
+          role: 'heading',
+          marginTop: '$300',
+          marginBottom: '$100',
+          ...getTypographyPreset('display.400.accent'),
+        },
+        headingSm: {
+          role: 'heading',
+          marginTop: '$200',
+          marginBottom: '$100',
+          ...getTypographyPreset('display.350.accent'),
+        },
+        headingXs: {
+          role: 'heading',
+          marginTop: '$200',
+          marginBottom: '$100',
+          ...getTypographyPreset('compact.300.accent'),
+        },
+        paragraphLg: {
+          marginTop: '$100',
+          marginBottom: '$100',
+          ...getTypographyPreset('text.350.default'),
+        },
+        paragraphMd: {
+          marginTop: '$100',
+          marginBottom: '$100',
+          ...getTypographyPreset('text.300.default'),
+        },
+        paragraphSm: {
+          marginTop: '$100',
+          marginBottom: '$100',
+          ...getTypographyPreset('text.250.default'),
+        },
+      },
+    } as const,
+    defaultVariants: {
+      variant: 'paragraphMd',
+    },
+  },
+  {
+    acceptsClassName: true,
+  },
 );
-
-const XZKUISemanticTextStyled = {
-  Root,
-};
-
-export default XZKUISemanticTextStyled;

@@ -1,6 +1,4 @@
-import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import setAlpha from '../utils/color/set-alpha';
+import { styled, Text, useTheme, View } from '@tamagui/core';
 import type { PickByDotNotation } from '../types/helpers';
 import type { XZKUITheme } from '../types/theme';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -19,87 +17,85 @@ function ColorPalette({ children }: { children: ReactNode }) {
   return <div>{children}</div>;
 }
 
-const StyledColorMain = styled('div')(
-  ({ theme }) => `
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    color: ${theme.theme.content.neutralPrimary};
-  `,
-);
+const StyledColorMain = styled(View, {
+  display: 'flex',
+  alignItems: 'flex-start',
+  width: '100%',
+  padding: 20,
+  boxSizing: 'border-box',
+});
 
-const StyledColorInfo = styled('div')`
-  flex: 0 0 30%;
-  line-height: 20px;
-  margin-top: 5px;
-`;
+const StyledColorInfo = styled(View, {
+  flex: 0,
+  flexBasis: '30%',
+  marginTop: 5,
+});
 
-const StyledColorTitle = styled('div')`
-  margin-bottom: 6px;
-  font-weight: 700;
-`;
+const StyledColorTitle = styled(Text, {
+  marginBottom: 6,
+  fontWeight: 700,
+  lineHeight: 20,
+  color: '$content.neutral-primary',
+});
 
-const StyledColorSubtitle = styled('div')`
-  opacity: 0.6;
-`;
+const StyledColorSubtitle = styled(Text, {
+  opacity: 0.6,
+  color: '$content.neutral-primary',
+});
 
-const StyledColorsWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  position: relative;
-  margin-bottom: 30px;
-`;
+const StyledColorsWrapper = styled(View, {
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+  position: 'relative',
+  marginBottom: 30,
+});
 
-const StyledColorsLine = styled('div')`
-  border-radius: 4px;
-  background: #ffffff;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
-  border: 1px solid hsla(203, 50%, 30%, 0.15);
-  display: flex;
-  flex-direction: row;
-  height: 50px;
-  margin-bottom: 5px;
-  overflow: hidden;
-  background-color: white;
-  background-image: repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px);
-  background-clip: padding-box;
-`;
+const StyledColorsLine = styled(View, {
+  borderRadius: 4,
+  background: '#ffffff',
+  boxShadow: 'rgba(0, 0, 0, 0.1) 0 1px 3px 0',
+  borderWidth: 1,
+  borderStyle: 'solid',
+  borderColor: 'hsla(203, 50%, 30%, 0.15)',
+  display: 'flex',
+  flexDirection: 'row',
+  height: 50,
+  marginBottom: 5,
+  overflow: 'hidden',
+  backgroundColor: 'white',
+  backgroundImage: 'repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)',
+  backgroundClip: 'padding-box',
+});
 
-const StyledColorsItem = styled('div')`
-  position: relative;
-  flex: 1;
-  height: 100%;
-`;
+const StyledColorsItem = styled(View, {
+  position: 'relative',
+  flex: 1,
+  height: '100%',
+});
 
-const StyledColorsLabelLine = styled('div')(
-  ({ theme }) => `
-    display: flex;
-    flex-direction: row;
-    color: ${setAlpha(theme.theme.content.neutralPrimary, 0.6)};
-  `,
-);
+const StyledColorsLabelLine = styled(View, {
+  display: 'flex',
+  flexDirection: 'row',
+});
 
-const StyledColorsLabelText = styled('div')(
-  () => `
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1;
-    overflow: hidden;
-    > div {
-      display: inline-block;
-      overflow: hidden;
-      max-width: 100%;
-      text-overflow: ellipsis;
-    }
-  `,
-);
+const StyledColorsLabelTextWrapper = styled(View, {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 6,
+  flex: 1,
+  overflow: 'hidden',
+});
+
+const StyledColorsLabelText = styled(Text, {
+  overflow: 'hidden',
+  maxWidth: '100%',
+  textOverflow: 'ellipsis',
+  textAlign: 'center',
+  fontSize: 12,
+  lineHeight: 1,
+  color: '$content.neutral-primary',
+});
 
 function ColorItem({
   title,
@@ -121,17 +117,16 @@ function ColorItem({
           {Object.entries(colors).map(([name, color]) => (
             <StyledColorsItem
               key={name}
-              title={color}
               style={{ backgroundColor: color, width: '50px', height: '50px' }}
             />
           ))}
         </StyledColorsLine>
         <StyledColorsLabelLine>
           {Object.entries(colors).map(([name, color]) => (
-            <StyledColorsLabelText key={color}>
-              <div title={name}>{name}</div>
-              <div title={color}>{color}</div>
-            </StyledColorsLabelText>
+            <StyledColorsLabelTextWrapper key={color}>
+              <StyledColorsLabelText>{name}</StyledColorsLabelText>
+              <StyledColorsLabelText>{color}</StyledColorsLabelText>
+            </StyledColorsLabelTextWrapper>
           ))}
         </StyledColorsLabelLine>
       </StyledColorsWrapper>
@@ -141,27 +136,28 @@ function ColorItem({
 
 function PaletteComponent() {
   const theme = useTheme();
-
-  if (!theme?.palette) {
+  if (!theme) {
     return <div>Theme is not defined</div>;
   }
 
+  const themeByCategory = Object.keys(theme).reduce((acc, curr) => {
+    const splitKey = curr.split('.');
+    acc.push(splitKey);
+    return acc;
+  }, [] as string[][]);
+
   return (
     <ColorPalette>
-      {(Object.keys(theme.palette) as Array<keyof PickByDotNotation<XZKUITheme, 'palette'>>).map(
-        (key) => {
-          const colors = Object.entries(theme.palette[key]).reduce(
-            (acc: Record<string, string>, [pick, value]) => {
-              acc[pick] = value;
-              return acc;
-            },
-            {},
-          );
-          return (
-            <ColorItem key={key} title={`theme.palette.${key}`} subtitle={key} colors={colors} />
-          );
-        },
-      )}
+      {themeByCategory.map((key) => {
+        const colors = Object.entries(theme[key.join('.') as keyof typeof theme]).reduce(
+          (acc: Record<string, string>, [pick, value]) => {
+            acc[pick] = value;
+            return acc;
+          },
+          {},
+        );
+        return <ColorItem key={key} title={`theme.${key}`} subtitle={key} colors={colors} />;
+      })}
     </ColorPalette>
   );
 }

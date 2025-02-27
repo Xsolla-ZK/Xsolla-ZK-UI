@@ -1,0 +1,44 @@
+{
+  "name": "@xsolla-zk-ui/icons",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/icons"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "generate": "xzkui-icons generate -i ./raw-icons -o ./src/icons"
+  },
+  "peerDependencies": {
+    "@tamagui/core": "catalog:tamagui",
+    "react-native-svg": "catalog:"
+  },
+  "dependencies": {
+    "@tamagui/core": "catalog:tamagui",
+    "@tamagui/helpers-icon": "catalog:tamagui"
+  },
+  "devDependencies": {
+    "@tamagui/build": "catalog:tamagui",
+    "@xsolla-zk-ui/icons-generator": "workspace:*",
+    "react-native-svg": "catalog:",
+    "typescript": "catalog:"
+  }
+}

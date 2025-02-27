@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import XZKUIButton from '../button/button';
 import XZKUICheckbox from '../checkbox/checkbox';
-import XZKUISemanticText from '../semantic-text/semantic-text';
+import SemanticText from '../semantic-text/semantic-text';
 import XZKUIModal, { XZKUIModalBody } from './modal';
 import { useXZKUIModalContext } from './modal.context';
 import type { XZKUIModalBodyProps } from './modal.types';
@@ -47,7 +47,7 @@ export const Default: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+          <SemanticText>{blankText.repeat(6)}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -71,7 +71,7 @@ export const Nested: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>
+          <SemanticText>
             {blankText.repeat(6)}
             <XZKUIModal
               trigger={({ handleOpen }) => (
@@ -89,11 +89,11 @@ export const Nested: Story = {
                 }}
               >
                 <div style={{ padding: '0 16px' }}>
-                  <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+                  <SemanticText>{blankText.repeat(6)}</SemanticText>
                 </div>
               </XZKUIModalBody>
             </XZKUIModal>
-          </XZKUISemanticText>
+          </SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -118,7 +118,7 @@ export const VariantPopup: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText}</XZKUISemanticText>
+          <SemanticText>{blankText}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -146,8 +146,8 @@ export const StepModal: Story = {
       >
         {({ step }) => (
           <div style={{ padding: '0 16px' }}>
-            <XZKUISemanticText variant="headingMd">{steps[step]}</XZKUISemanticText>
-            <XZKUISemanticText>{blankText}</XZKUISemanticText>
+            <SemanticText variant="headingMd">{steps[step]}</SemanticText>
+            <SemanticText>{blankText}</SemanticText>
           </div>
         )}
       </XZKUIModalBody>
@@ -200,7 +200,7 @@ function ControlledSteps() {
       }}
     >
       <div style={{ padding: '0 16px' }}>
-        <XZKUISemanticText>{selectedStep.content}</XZKUISemanticText>
+        <SemanticText>{selectedStep.content}</SemanticText>
         {step === 0 && (
           <XZKUIButton fullWidth onClick={() => changeStep(richSteps.length - 1)}>
             Go To Last Step
@@ -249,7 +249,7 @@ export const WithFooter: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+          <SemanticText>{blankText.repeat(6)}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -284,7 +284,7 @@ export const WithBluredFooter: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+          <SemanticText>{blankText.repeat(6)}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -309,7 +309,7 @@ export const TruncatedHeader: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText}</XZKUISemanticText>
+          <SemanticText>{blankText}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -357,7 +357,7 @@ export const CustomSlots: Story = {
         }}
       >
         <div style={{ padding: '0 16px' }}>
-          <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+          <SemanticText>{blankText.repeat(6)}</SemanticText>
         </div>
       </XZKUIModalBody>
     ),
@@ -424,7 +424,7 @@ function ConfiguredHeader() {
             />
           )}
         </div>
-        <XZKUISemanticText>{blankText.repeat(6)}</XZKUISemanticText>
+        <SemanticText>{blankText.repeat(6)}</SemanticText>
       </div>
     </XZKUIModalBody>
   );

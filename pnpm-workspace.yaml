@@ -7,7 +7,7 @@ catalog:
   vite: ^6.0.11
   "@types/node": ^22.10.1
   "@svgr/core": 8.1.0
-  "react-native-svg": ^15.11.1
+  "react-native-svg": 15.8.0
 
 catalogs:
   tamagui:
@@ -20,6 +20,7 @@ catalogs:
     "@tamagui/core": ^1.124.13
     "@tamagui/web": ^1.124.13
     "@tamagui/vite-plugin": ^1.124.13
+    "@tamagui/helpers-icon": ^1.124.13
   eslint9:
     eslint: 9.16.0
     "@eslint/js": 9.16.0

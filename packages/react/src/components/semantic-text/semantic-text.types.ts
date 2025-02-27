@@ -1,18 +1,6 @@
-import type semanticTextTheme from './semantic-text.theme';
-import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
-import type { CSSProperties, ElementType, ReactNode } from 'react';
+import type { SemanticTextRoot } from './semantic-text.styled';
+import type { GetProps } from '@tamagui/core';
 
-type Variants = keyof ReturnType<typeof semanticTextTheme>['variants'];
+type TextProps = GetProps<typeof SemanticTextRoot>;
 
-export interface XZKUISemanticTextBaseProps {
-  variant: Variants;
-  color?: XZKUICustomColor;
-}
-
-export interface XZKUISemanticTextProps<T extends ElementType>
-  extends Partial<XZKUISemanticTextBaseProps> {
-  children?: ReactNode;
-  align?: CSSProperties['textAlign'];
-  className?: string;
-  as?: T;
-}
+export interface SemanticTextProps extends TextProps {}
