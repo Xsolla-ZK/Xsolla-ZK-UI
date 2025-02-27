@@ -9,14 +9,14 @@ COPY . .
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --ignore-scripts --frozen-lockfile
 
 RUN pnpm build:storybook:react
-RUN pnpm build:storybook:vue
+# RUN pnpm build:storybook:vue
 
 FROM builder AS final
 WORKDIR /srv/ui-kit
 
 COPY --from=builder /app/server/storybook ./
 COPY --from=builder /app/storybook-build/react ./react
-COPY --from=builder /app/storybook-build/vue ./vue
+# COPY --from=builder /app/storybook-build/vue ./vue
 
 RUN pnpm install
 

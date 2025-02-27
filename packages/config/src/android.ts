@@ -1,19 +1,22 @@
-import { sharedConfig, tokens, themes } from './shared';
-import media from './tokens/platform/android/media';
-import type { GenericMedia } from './types/helpers';
+import { sharedConfig } from './shared';
+import { fonts } from './tokens/fonts';
+import { media } from './tokens/media/android';
+import { android } from './tokens/platform';
+import { settings } from './tokens/settings';
+import { themes } from './tokens/themes';
+import { tokens } from './tokens/tokens';
+import { typography } from './tokens/typography';
 import type { CreateTamaguiProps } from '@tamagui/core';
 
 export const androidConfig = {
   ...sharedConfig,
+  fonts,
   themes,
-  tokens,
-  media: (Object.keys(media.breakpoint) as Array<keyof typeof media.breakpoint>).reduce(
-    (acc, key) => {
-      acc[key] = {
-        minWidth: media.breakpoint[key],
-      };
-      return acc;
-    },
-    {} as GenericMedia<typeof media.breakpoint>,
-  ),
+  tokens: {
+    ...tokens,
+    platform: android,
+    typography,
+  },
+  media,
+  settings,
 } satisfies CreateTamaguiProps;

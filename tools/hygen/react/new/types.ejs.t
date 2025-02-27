@@ -3,7 +3,7 @@ to: packages/react/src/components/<%= h.changeCase.kebab(name) %>/<%= h.changeCa
 ---
 import type { ReactNode } from 'react';
 
-export interface XZKUI<%= h.changeCase.pascal(name) %>Props {
+export interface <%= h.changeCase.pascal(name) %>Props {
   children?: ReactNode;
   className?: string;
 }

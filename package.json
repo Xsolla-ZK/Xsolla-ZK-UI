@@ -2,6 +2,11 @@
   "name": "@xsolla-zk-ui/monorepo",
   "version": "0.0.1",
   "private": true,
+  "author": {
+    "email": "knuckleswolf@gmail.com",
+    "name": "Yaroslav Volov",
+    "url": "https://github.com/knuckleswolf"
+  },
   "scripts": {
     "publish:all": "pnpm workspaces foreach --topological-dev run publish --no-git-checks",
     "publish:tokens": "pnpm --filter @xsolla-zk-ui/tokens publish --no-git-checks",
@@ -24,8 +29,7 @@
     "prepare": "git submodule update --init && git config --local core.hooksPath .githooks",
     "publish": "pnpm workspaces foreach --topological-dev run publish",
     "release": "pnpm build && pnpm publish",
-    "storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook",
-    "update-design-tokens": "git submodule update --remote --merge"
+    "storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook"
   },
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",

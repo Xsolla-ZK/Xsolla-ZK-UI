@@ -45,7 +45,7 @@ tokens generate [опции]
 | Опция | Алиас | Описание | Тип | По умолчанию |
 |-------|--------|-----------|------|--------------|
 | `--output` | `-o` | Путь для выходных файлов | string | `./tokens` |
-| `--type` | `-t` | Тип генерации (object, css, tamagui) | string | `object` |
+| `--type` | `-t` | Тип генерации (object, tamagui) | string | `object` |
 | `--input` | `-i` | Путь к локальным токенам или имя ветки в репозитории [Design-Tokens](https://github.com/Xsolla-ZK/Design-Tokens) | string | `main` | other-repo-branch |
 | `--source` | `-s` | Источник токенов (local или repo) | string | `repo` |
 
@@ -79,9 +79,6 @@ tokens generate --output ./src/styles/tokens
 - Типографические пресеты
 - Шрифты и их вариации
 
-### CSS (в разработке)
-Генерация CSS-переменных пока не поддерживается.
-
 ## Структура выходных файлов
 
 ```
@@ -92,8 +89,6 @@ tokens/
 └── presets.ts       # Типографические пресеты
 ```
 
-## Разработка
-
 ### Структура проекта
 
 ```
@@ -103,7 +98,3 @@ src/
 ├── templates/       # Шаблоны для генерации файлов
 └── utils/          # Вспомогательные функции
 ```
-
-## Лицензия
-
-[MIT](./LICENSE)

@@ -17,6 +17,7 @@
 
 # IDE
 /.idea
+/.cursor
 
 # ai
 .cursorignore

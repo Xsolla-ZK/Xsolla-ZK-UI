@@ -1,19 +1,22 @@
-import { sharedConfig, tokens, themes } from './shared';
-import media from './tokens/platform/ios/media';
-import type { GenericMedia } from './types/helpers';
+import { sharedConfig } from './shared';
+import { fonts } from './tokens/fonts';
+import { media } from './tokens/media/ios';
+import { ios } from './tokens/platform';
+import { settings } from './tokens/settings';
+import { themes } from './tokens/themes';
+import { tokens } from './tokens/tokens';
+import { typography } from './tokens/typography';
 import type { CreateTamaguiProps } from '@tamagui/core';
 
 export const iosConfig = {
   ...sharedConfig,
+  fonts,
   themes,
-  tokens,
-  media: (Object.keys(media.breakpoint) as Array<keyof typeof media.breakpoint>).reduce(
-    (acc, key) => {
-      acc[key] = {
-        minWidth: media.breakpoint[key],
-      };
-      return acc;
-    },
-    {} as GenericMedia<typeof media.breakpoint>,
-  ),
+  tokens: {
+    ...tokens,
+    platform: ios,
+    typography,
+  },
+  media,
+  settings,
 } satisfies CreateTamaguiProps;

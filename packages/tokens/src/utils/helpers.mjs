@@ -53,10 +53,7 @@ export function capitalizeFirstLetter(val) {
  */
 export function isNumeric(str) {
   if (typeof str !== 'string') return false;
-  return (
-    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-  );
+  return !isNaN(str) && !isNaN(parseFloat(str));
 }
 
 /**
@@ -138,14 +135,34 @@ export function getOutputPath() {
  * @returns {string}
  */
 export function getDesignTokensFile(filename, ext = 'json') {
-  return `${getInputPath()}/tokens/${filename}.${ext}`;
+  return path.join(getInputPath(), 'tokens', `${filename}.${ext}`);
 }
 
 /**
  * @returns {string}
  */
 export function getBuildPath() {
-  const defaultOutPath = './tokens';
+  const defaultOutPath = 'tokens';
 
-  return getOutputPath() ?? defaultOutPath;
+  return path.join(getOutputPath() ?? defaultOutPath);
+}
+
+/**
+ * @param {object} obj
+ * @param {string} [separator='.']
+ * @param {string} [prefix='']
+ * @returns {object}
+ */
+export function flattenObject(obj, separator = '.', prefix = '') {
+  return Object.keys(obj).reduce((acc, key) => {
+    const newKey = prefix ? `${prefix}${separator}${key}` : key;
+
+    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+      Object.assign(acc, flattenObject(obj[key], separator, newKey));
+    } else {
+      acc[newKey] = obj[key];
+    }
+
+    return acc;
+  }, {});
 }

@@ -2,11 +2,11 @@
 to: packages/react/src/components/<%= h.changeCase.kebab(name) %>/<%= h.changeCase.kebab(name) %>.stories.tsx
 ---
 import { within, expect } from '@storybook/test';
-import XZKUI<%= h.changeCase.pascal(name) %> from './<%= h.changeCase.kebab(name) %>';
+import <%= h.changeCase.pascal(name) %> from './<%= h.changeCase.kebab(name) %>';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  component: XZKUI<%= h.changeCase.pascal(name) %>,
+  component: <%= h.changeCase.pascal(name) %>,
   parameters: {
     layout: 'centered',
   },
@@ -18,7 +18,7 @@ const meta = {
     children: 'Text',
     // onClick: fn(),
   },
-} satisfies Meta<typeof XZKUI<%= h.changeCase.pascal(name) %>>;
+} satisfies Meta<typeof <%= h.changeCase.pascal(name) %>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -10,8 +10,8 @@ const Root = styled('div')(
   `,
 );
 
-const XZKUI<%= h.changeCase.pascal(name) %>Styled = {
+const <%= h.changeCase.pascal(name) %>Styled = {
   Root,
 };
 
-export default XZKUI<%= h.changeCase.pascal(name) %>Styled;
+export default <%= h.changeCase.pascal(name) %>Styled;
