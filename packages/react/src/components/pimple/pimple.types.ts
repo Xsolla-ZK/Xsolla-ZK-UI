@@ -3,11 +3,11 @@ import type { ReactNode } from 'react';
 
 type Sizes = (typeof pimpleThemeSizes)[number];
 
-export interface XZKUIPimpleBaseProps {
+export interface PimpleBaseProps {
   size: Sizes;
 }
 
-export interface XZKUIPimpleProps extends Partial<XZKUIPimpleBaseProps> {
+export interface PimpleProps extends Partial<PimpleBaseProps> {
   children: ReactNode;
   className?: string;
 }

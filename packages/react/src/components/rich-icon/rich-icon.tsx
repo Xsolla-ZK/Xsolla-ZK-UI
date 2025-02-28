@@ -1,72 +1,55 @@
-import { forwardRef } from 'react';
-import { GetProps } from '@tamagui/core';
-import XZKUIPimple from '../pimple/pimple';
-import xzkuiRichIconClasses from './rich-icon.classes';
-import { Root, Icon, Content, richIconPaths } from './rich-icon.styled';
-import type { XZKUIRichIconShape } from './rich-icon.types';
+import { ClipPath, Defs, G, Image, Path, Rect, Svg } from 'react-native-svg';
+// import XZKUIPimple from '../pimple/pimple';
+import { Content, Icon, richIconPaths } from './rich-icon.styled';
+import RichIconStyled from './rich-icon.styled';
+import type { RichIconShape } from './rich-icon.types';
+import type { GetProps, ThemeTokens } from '@tamagui/core';
 
-export type RichIconProps = GetProps<typeof Root> & {
-  shape?: XZKUIRichIconShape | false;
-  backdropProps?: React.SVGAttributes<SVGPathElement>;
+export interface RichIconProps extends GetProps<typeof RichIconStyled> {
+  shape?: RichIconShape | false;
+  backdropProps?: GetProps<typeof Path>;
   imageSrc?: string;
-  pimple?: Omit<React.ComponentProps<typeof XZKUIPimple>, 'size'>;
-};
+  color?: ThemeTokens;
+  // pimple?: Omit<ComponentProps<typeof XZKUIPimple>, 'size'>;
+}
 
-const XZKUIRichIcon = forwardRef<typeof Root, RichIconProps>(function XZKUIRichIcon(
-  {
-    shape = 'circle',
-    size = 500,
-    children,
-    backdropProps,
-    imageSrc,
-    className,
-    pimple,
-    isButton,
-    ...rest
-  },
-  ref
-) {
+const RichIcon = function RichIcon({
+  shape = 'circle',
+  children,
+  backdropProps,
+  imageSrc,
+  color = '$background.brand-high',
+  // pimple,
+  ...rest
+}: RichIconProps) {
   return (
-    <Root
-      className={className}
-      data-no-shape={!shape}
-      size={size}
-      isButton={isButton}
-      {...rest}
-      ref={ref}
-    >
+    <RichIconStyled {...rest}>
       {shape && (
-        <Icon
-          width="1em"
-          height="1em"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 80 80"
-          as="svg"
-        >
-          <defs>
-            <clipPath id={`icon-clip-${shape}`}>
-              <path d={richIconPaths[shape]} {...backdropProps} />
-            </clipPath>
-          </defs>
+        <Icon color={color} viewBox="0 0 80 80">
+          <Defs>
+            <ClipPath id={`icon-clip-${shape}`}>
+              <Path d={richIconPaths[shape]} {...backdropProps} />
+            </ClipPath>
+          </Defs>
           {imageSrc ? (
             <>
-              <rect
+              <Rect
                 width="100%"
                 height="100%"
                 fill="currentColor"
                 clipPath={`url(#icon-clip-${shape}`}
               />
-              <g clipPath={`url(#icon-clip-${shape}`}>
-                <image
+              <G clipPath={`url(#icon-clip-${shape}`}>
+                <Image
                   href={imageSrc}
                   width="100%"
                   height="100%"
                   preserveAspectRatio="xMidYMid slice"
                 />
-              </g>
+              </G>
             </>
           ) : (
-            <path
+            <Path
               d={richIconPaths[shape]}
               {...backdropProps}
               fill="currentColor"
@@ -76,9 +59,9 @@ const XZKUIRichIcon = forwardRef<typeof Root, RichIconProps>(function XZKUIRichI
         </Icon>
       )}
       <Content noShape={!shape}>{children}</Content>
-      {pimple && <XZKUIPimple {...pimple} />}
-    </Root>
+      {/* {pimple && <XZKUIPimple {...pimple} />} */}
+    </RichIconStyled>
   );
-});
+};
 
-export default XZKUIRichIcon;
+export default RichIcon;

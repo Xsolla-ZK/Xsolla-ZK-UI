@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
 import xzkuiPimpleClasses from './pimple.classes';
-import type { XZKUIPimpleBaseProps } from './pimple.types';
+import type { PimpleBaseProps } from './pimple.types';
 import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
 
-type StyledProps = XZKUIStyledProps<XZKUIPimpleBaseProps>;
+type StyledProps = XZKUIStyledProps<PimpleBaseProps>;
 
 const Root = styled('div', {
   shouldForwardProp,

@@ -7,9 +7,17 @@ import { hideBin } from 'yargs/helpers';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { optimize } from 'svgo';
+import chalk from 'chalk';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const logger = {
+  info: (...args) => console.info(chalk.blue('ℹ'), ...args),
+  success: (...args) => console.info(chalk.green('✔'), ...args),
+  warning: (...args) => console.info(chalk.yellow('⚠'), ...args),
+  error: (...args) => console.error(chalk.red('✖'), ...args),
+};
 
 const packageJson = JSON.parse(
   await fse.promises.readFile(path.resolve(__dirname, './package.json'), 'utf-8'),
@@ -35,6 +43,14 @@ const svgoConfig = {
     },
     {
       name: 'removeDimensions',
+      active: true,
+    },
+    {
+      name: 'removeXMLNS',
+      active: true,
+    },
+    {
+      name: 'removeXlink',
       active: true,
     },
     {
@@ -161,9 +177,9 @@ async function generateIcons({ input, output }) {
     await fse.remove(indexFile);
   }
 
-  console.info('Finding SVG files...');
+  logger.info('Finding SVG files...');
   const icons = await findSvgFiles(iconsDir);
-  console.info(`Found ${icons.length} icons`);
+  logger.success(`Found ${icons.length} icons`);
 
   const iconExports = [];
 
@@ -190,11 +206,18 @@ async function generateIcons({ input, output }) {
         ${componentImports}
       } from 'react-native-svg'
       import type { IconProps } from '@tamagui/helpers-icon'
+      import type { ComponentProps, FC } from 'react'
 
-      export const ${cname} = memo<IconProps>(themed((props) => {
-        const { color = 'black', size = 24, ...otherProps } = props
+      type Props = ComponentProps<typeof Svg> & {
+        size: number
+      }
+
+      const Icon: FC = (props) => {
+        const { color = 'black', size = 24, ...otherProps } = props as Props
         return ${svgContent}
-      }))
+      }
+
+      export const ${cname} = memo<IconProps>(themed(Icon))
     `;
 
     const formattedCode = await formatCode(componentCode);
@@ -202,13 +225,13 @@ async function generateIcons({ input, output }) {
     const targetDirName = path.basename(outDir);
     iconExports.push(`export { ${cname} } from './${targetDirName}/${id}'`);
 
-    console.info(`Generated: ${fileName}`);
+    logger.success(`Generated: ${fileName}`);
   }
 
   // Create and format the index file
   const formattedIndex = await formatCode(iconExports.join('\n'));
   await fse.writeFile(indexFile, formattedIndex);
-  console.info(`Generated index file at: ${indexFile}`);
+  logger.success(`Generated index file at: ${indexFile}`);
 }
 
 // CLI configuration
@@ -245,7 +268,7 @@ yargs(hideBin(process.argv))
       try {
         await generateIcons(argv);
       } catch (error) {
-        console.error('Error:', error);
+        logger.error('Error:', error);
         process.exit(1);
       }
     },

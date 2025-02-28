@@ -1,6 +1,4 @@
 import { styled, Text, useTheme, View } from '@tamagui/core';
-import type { PickByDotNotation } from '../types/helpers';
-import type { XZKUITheme } from '../types/theme';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
 

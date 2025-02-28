@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { isValidElement } from 'react';
 import xzkuiPimpleClasses from './pimple.classes';
 import Styled from './pimple.styled';
-import type { XZKUIPimpleProps } from './pimple.types';
+import type { PimpleProps } from './pimple.types';
 
-function XZKUIPimple({ children, className, size = 500 }: XZKUIPimpleProps) {
+function XZKUIPimple({ children, className, size = 500 }: PimpleProps) {
   return (
     <Styled.Root
       className={clsx([

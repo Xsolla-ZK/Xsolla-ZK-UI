@@ -11,16 +11,16 @@ catalog:
 
 catalogs:
   tamagui:
-    "@tamagui/animations-css": ^1.124.13
-    "@tamagui/animations-moti": ^1.124.13
-    "@tamagui/animations-react-native": ^1.124.13
-    "@tamagui/build": ^1.124.13
-    "@tamagui/stacks": ^1.124.13
-    "@tamagui/config": ^1.124.13
-    "@tamagui/core": ^1.124.13
-    "@tamagui/web": ^1.124.13
-    "@tamagui/vite-plugin": ^1.124.13
-    "@tamagui/helpers-icon": ^1.124.13
+    "@tamagui/animations-css": ^1.125.20
+    "@tamagui/animations-moti": ^1.125.20
+    "@tamagui/animations-react-native": ^1.125.20
+    "@tamagui/build": ^1.125.20
+    "@tamagui/stacks": ^1.125.20
+    "@tamagui/config": ^1.125.20
+    "@tamagui/core": ^1.125.20
+    "@tamagui/web": ^1.125.20
+    "@tamagui/vite-plugin": ^1.125.20
+    "@tamagui/helpers-icon": ^1.125.20
   eslint9:
     eslint: 9.16.0
     "@eslint/js": 9.16.0
@@ -42,16 +42,15 @@ catalogs:
     "@types/react": ^19.0.0
     "@types/react-dom": ^19.0.0
   storybook:
-    storybook: ^8.5.2
-    "@storybook/addon-essentials": ^8.5.2
-    "@storybook/addon-interactions": ^8.5.2
-    "@storybook/addon-themes": ^8.5.2
-    "@storybook/blocks": ^8.5.2
-    "@storybook/experimental-addon-test": ^8.5.2
-    "@storybook/manager-api": ^8.5.2
-    "@storybook/react": ^8.5.2
-    "@storybook/react-vite": ^8.5.2
-    "@storybook/test": ^8.5.2
-    "@storybook/theming": ^8.5.2
-    "@storybook/vue3": ^8.5.2
-    "@storybook/vue3-vite": ^8.5.2
+    storybook: ^8.6.2
+    "@storybook/addon-essentials": ^8.6.2
+    "@storybook/addon-interactions": ^8.6.2
+    "@storybook/blocks": ^8.6.2
+    "@storybook/experimental-addon-test": ^8.6.2
+    "@storybook/manager-api": ^8.6.2
+    "@storybook/react": ^8.6.2
+    "@storybook/react-vite": ^8.6.2
+    "@storybook/test": ^8.6.2
+    "@storybook/theming": ^8.6.2
+    "@storybook/vue3": ^8.6.2
+    "@storybook/vue3-vite": ^8.6.2

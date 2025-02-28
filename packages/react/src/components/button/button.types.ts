@@ -1,10 +1,8 @@
-import type Button from './button.styled';
+import type { ButtonRoot } from './button.styled';
 import type { GetProps } from '@tamagui/core';
-import type { ReactNode } from 'react';
 
-type ButtonSharedProps = GetProps<typeof Button>;
+type ButtonSharedProps = GetProps<typeof ButtonRoot>;
 
 export interface ButtonProps extends ButtonSharedProps {
-  isLoading?: ReactNode;
   fullWidth?: boolean;
 }

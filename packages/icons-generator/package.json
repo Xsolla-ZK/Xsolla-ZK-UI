@@ -19,6 +19,7 @@
     "generate": "node index.mjs generate"
   },
   "devDependencies": {
+    "chalk": "^5.4.1",
     "fs-extra": "^11.3.0",
     "prettier": "catalog:",
     "svgo": "^3.3.2",

@@ -4,7 +4,6 @@ import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import typography from '@xsolla-zk-ui/react/tokens/common/typography';
 import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
 import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
-import xzkuiButtonClasses from './button.classes';
 import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
 export const buttonThemeSizes = [200, 300, 400, 500, 600, 700] as const;

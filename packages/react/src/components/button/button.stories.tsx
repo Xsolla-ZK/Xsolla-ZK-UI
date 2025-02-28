@@ -1,18 +1,14 @@
 import { within, expect } from '@storybook/test';
-import XZKUISeparator from '../separator/separator';
-import XZKUISvgIcon from '../svg-icon/svg-icon';
-import SvgPlus from '../svg-icons/plus';
+import { Plus } from '@xsolla-zk-ui/icons';
+import { useState } from 'react';
 import Button from './button';
-import ButtonStyled from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const variants = Object.keys(ButtonStyled.staticConfig?.variants?.variant ?? {}) as Array<
+const variants = Object.keys(Button.staticConfig?.variants?.variant ?? {}) as Array<
   ButtonProps['variant']
 >;
-const sizes = Object.keys(ButtonStyled.staticConfig?.variants?.size ?? {}) as Array<
-  ButtonProps['size']
->;
+const sizes = Object.keys(Button.staticConfig?.variants?.size ?? {}) as Array<ButtonProps['size']>;
 
 const meta = {
   component: Button,
@@ -25,18 +21,18 @@ const meta = {
     size: {
       control: 'select',
       options: sizes,
-      table: {
-        defaultValue: { summary: '$500' },
-        type: { summary: sizes.join('|') },
-      },
+      // table: {
+      //   defaultValue: { summary: '$500' },
+      //   type: { summary: sizes.join('|') },
+      // },
     },
     variant: {
       control: 'select',
       options: variants,
-      table: {
-        defaultValue: { summary: 'primary' },
-        type: { summary: variants.join('|') },
-      },
+      // table: {
+      //   defaultValue: { summary: 'primary' },
+      //   type: { summary: variants.join('|') },
+      // },
     },
     hasBackground: { type: 'boolean' },
     isLoading: { type: 'boolean' },
@@ -49,7 +45,7 @@ const meta = {
     // },
   },
   args: {
-    children: 'Button',
+    children: <Button.Text>Button</Button.Text>,
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof Button>;
@@ -95,11 +91,39 @@ export const Default: Story = {
 //   ),
 // };
 
-// export const Disabled: Story = {
-//   args: {
-//     disabled: true,
-//   },
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
+
+// export const Test: Story = {
+//   args: {},
+//   render: (args) => <Plus />,
 // };
+
+export const SimulateRequest: Story = {
+  args: {
+    children: <Button.Text>Send Request</Button.Text>,
+  },
+  render: (args) => {
+    const ButtonWithState = () => {
+      const [isLoading, setIsLoading] = useState(false);
+      return (
+        <Button
+          {...args}
+          isLoading={isLoading}
+          onPress={() => {
+            setIsLoading(true);
+            setTimeout(() => setIsLoading(false), 2000);
+          }}
+        />
+      );
+    };
+
+    return <ButtonWithState />;
+  },
+};
 
 // export const Loading: Story = {
 //   args: {
@@ -107,11 +131,18 @@ export const Default: Story = {
 //   },
 // };
 
-// export const IconLeft: Story = {
-//   args: {
-//     startAdornment: <XZKUISvgIcon icon={SvgPlus} />,
-//   },
-// };
+export const IconLeft: Story = {
+  args: {
+    children: (
+      <>
+        <Button.Icon>
+          <Plus />
+        </Button.Icon>
+        <Button.Text>Button</Button.Text>
+      </>
+    ),
+  },
+};
 
 // export const IconRight: Story = {
 //   args: {

@@ -11,10 +11,4 @@ export interface RichIconProps {
   backdropProps?: SVGAttributes<SVGPathElement>;
   imageSrc?: string;
   pimple?: Omit<PimpleProps, 'size'>;
-  component?: ElementType;
 }
-
-export type ComponentRichIconTypeMap<P = object, D extends ElementType = 'div'> = {
-  props: P & RichIconProps;
-  defaultComponent: D;
-};

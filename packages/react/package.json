@@ -30,12 +30,13 @@
     "@tamagui/config": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
     "@tamagui/stacks": "catalog:tamagui",
-    "@xsolla-zk-ui/config": "workspace:*"
+    "@xsolla-zk-ui/config": "workspace:*",
+    "@xsolla-zk-ui/icons": "workspace:*",
+    "react-native-svg": "catalog:"
   },
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",
     "@storybook/addon-essentials": "catalog:storybook",
-    "@storybook/addon-themes": "catalog:storybook",
     "@storybook/blocks": "catalog:storybook",
     "@storybook/experimental-addon-test": "catalog:storybook",
     "@storybook/manager-api": "catalog:storybook",

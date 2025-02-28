@@ -3,7 +3,8 @@ import { StorybookConfig } from '@storybook/react-vite';
 const config: StorybookConfig = {
   stories: [
     '../src/components/semantic-text/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../src/components/button/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../src/components/button/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/rich-icon/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
@@ -12,7 +13,7 @@ const config: StorybookConfig = {
     options: {},
   },
 
-  addons: ['@storybook/addon-essentials', '@storybook/experimental-addon-test', '@storybook/addon-themes'],
+  addons: ['@storybook/addon-essentials', '@storybook/experimental-addon-test'],
   staticDirs: ['../static'],
 
   previewHead: (head) => `

@@ -1,6 +1,18 @@
-import { Stack, styled } from '@tamagui/core';
-import type { XZKUIRichIconBaseProps } from './rich-icon.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import {
+  createStyledContext,
+  getTokenValue,
+  Stack,
+  styled,
+  ThemeKeys,
+  useTheme,
+} from '@tamagui/core';
+import { withStaticProperties } from '@tamagui/core';
+import { createElement, useContext } from 'react';
+import { cloneElement } from 'react';
+import { isValidElement } from 'react';
+import { Svg as _Svg } from 'react-native-svg';
+import { ButtonContext } from '../button/button.styled';
+import type { SizeTokens, ThemeTokens } from '@tamagui/core';
 
 export const richIconPaths = {
   circle:
@@ -26,47 +38,49 @@ export const richIconPaths = {
     'M0 60C0 71.0457 8.95431 80 20 80C31.0457 80 40 71.0457 40 60C40 71.0457 48.9543 80 60 80C71.0457 80 80 71.0457 80 60V20C80 8.9543 71.0457 0 60 0C48.9543 0 40 8.9543 40 20C40 8.9543 31.0457 0 20 0C8.95431 0 0 8.9543 0 20V60Z',
 };
 
-type StyledProps = XZKUIStyledProps<XZKUIRichIconBaseProps>;
+export const RichIconContext = createStyledContext({
+  size: '$500' as SizeTokens,
+  bg: '$background.brand-high' as ThemeTokens,
+});
 
 export const Root = styled(Stack, {
-  name: 'RichIconRoot',
+  name: 'RichIcon',
+  context: RichIconContext,
   position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
+  background: 'transparent',
 
   variants: {
-    size: {
-      500: { scale: 1 },
-      400: { scale: 0.8 },
-      300: { scale: 0.6 },
-      200: { scale: 0.4 },
-    },
-    isButton: {
+    button: {
       true: {
         tag: 'button',
         role: 'button',
         border: 'none',
-        background: 'none',
+        background: 'transparent',
         padding: 0,
         cursor: 'pointer',
       },
     },
   } as const,
-
-  defaultVariants: {
-    size: '500',
-  },
 });
 
-export const Icon = styled(Stack, {
-  name: 'RichIconSvg',
-  display: 'inline-block',
+export const Svg = styled(_Svg, {
   position: 'relative',
-  verticalAlign: 'middle',
   userSelect: 'none',
-  color: 'inherit',
 });
+
+export const Icon = (props) => {
+  const { size, bg } = useContext(RichIconContext.context);
+  // const theme = useTheme();
+  return createElement(Svg, {
+    width: getTokenValue(size, 'size'),
+    height: getTokenValue(size, 'size'),
+    color: bg,
+    ...props,
+  });
+};
 
 export const Content = styled(Stack, {
   name: 'RichIconContent',
@@ -89,10 +103,10 @@ export const Content = styled(Stack, {
   },
 });
 
-const XZKUIRichIconStyled = {
-  Root,
+const RichIconStyled = withStaticProperties(Root, {
+  Props: RichIconContext.Provider,
   Icon,
   Content,
-};
+});
 
-export default XZKUIRichIconStyled;
+export default RichIconStyled;
