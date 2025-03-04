@@ -1,68 +1,79 @@
-import { css, keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import xzkuiLoaderClasses from './loader.classes';
-import type { XZKUILoaderBaseProps } from './loader.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import type { ThemeTokens } from '@tamagui/core';
 
-const progress = () => keyframes`
-  0% {
-    stroke-dasharray: 0 150;
-    stroke-dashoffset: 150;
-  }
-  50% {
-    stroke-dasharray: 18 150;
-    stroke-dashoffset: 150;
-  }
-  75% {
-    stroke-dasharray: 18 150;
-    stroke-dashoffset: 112;
-  }
-  100% {
-    stroke-dasharray: 0 150;
-    stroke-dashoffset: 75;
-  }
-`;
+// const progress = () => keyframes`
+//   0% {
+//     stroke-dasharray: 0 150;
+//     stroke-dashoffset: 150;
+//   }
+//   50% {
+//     stroke-dasharray: 18 150;
+//     stroke-dashoffset: 150;
+//   }
+//   75% {
+//     stroke-dasharray: 18 150;
+//     stroke-dashoffset: 112;
+//   }
+//   100% {
+//     stroke-dasharray: 0 150;
+//     stroke-dashoffset: 75;
+//   }
+// `;
 
-const spinStyles = () => css`
-  .spin {
-    transform: rotate(-90deg);
-    transform-origin: center;
-    animation: ${progress()} 1s linear infinite;
-  }
-`;
+// const spinStyles = () => css`
+//   .spin {
+//     transform: rotate(-90deg);
+//     transform-origin: center;
+//     animation: ${progress()} 1s linear infinite;
+//   }
+// `;
 
-type StyledProps = XZKUIStyledProps<XZKUILoaderBaseProps>;
+export const LoaderContext = createStyledContext({
+  size: 24,
+  color: '$border.neutral-secondary' as ThemeTokens,
+  spinColor: '$border.brand-primary' as ThemeTokens,
+});
 
-const Root = styled('div', {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ xzkuiSize }) => `
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25em;
-    font-size: ${xzkuiSize}px;
-    &.${xzkuiLoaderClasses.vertical} {
-      flex-direction: column;
-    }
-    > span {
-      font-size: 0.75em;
-    }
-  `,
-  ({ theme, xzkuiVariant, xzkuiMainColor, xzkuiSpinColor }) =>
-    !(xzkuiMainColor || xzkuiSpinColor)
-      ? theme.components.loader.variants[xzkuiVariant]
-      : `
-    color: ${xzkuiMainColor || undefined};
-    .spin {
-      stroke: ${xzkuiSpinColor || undefined};
-    }
-  `,
-  spinStyles,
-);
+export const LoaderRoot = styled(Stack, {
+  name: 'Loader',
+  context: LoaderContext,
+  display: 'inline-flex',
+  flexDirection: 'row',
+  alignItems: 'center',
 
-const XZKUILoaderStyled = {
-  Root,
-};
+  variants: {
+    size: {
+      ':number': (val, { tokens }) => ({
+        gap: val * 0.25,
+      }),
+    },
+    vertical: {
+      true: {
+        flexDirection: 'column',
+      },
+    },
+  } as const,
+  defaultVariants: {
+    vertical: false,
+    size: 24,
+  },
 
-export default XZKUILoaderStyled;
+  // color: ${xzkuiMainColor || undefined};
+  // .spin {
+  //   stroke: ${xzkuiSpinColor || undefined};
+  // }
+});
+
+export const LoaderText = styled(Text, {
+  name: 'Loader',
+  context: LoaderContext,
+
+  variants: {
+    size: {
+      ':number': (val, { tokens }) => ({
+        fontSize: val * 0.75,
+      }),
+    },
+  },
+  // font-size: 0.75em;
+});

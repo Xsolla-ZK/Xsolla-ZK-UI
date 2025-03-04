@@ -1,13 +1,16 @@
 import { within, expect } from '@storybook/test';
+import { styled, withStaticProperties } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from './button';
+import { ButtonContext, ButtonIcon, ButtonRoot, ButtonText } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const variants = Object.keys(Button.staticConfig?.variants?.variant ?? {}) as Array<
   ButtonProps['variant']
 >;
+
 const sizes = Object.keys(Button.staticConfig?.variants?.size ?? {}) as Array<ButtonProps['size']>;
 
 const meta = {
@@ -91,16 +94,84 @@ export const Default: Story = {
 //   ),
 // };
 
+const ButtonKek = styled(ButtonRoot, {
+  context: ButtonContext,
+  variants: {
+    size: {
+      $1000: {
+        minWidth: 150,
+        minHeight: 150,
+        borderRadius: 100,
+      },
+    },
+    disabled: {
+      true: {
+        backgroundColor: 'skyblue',
+      }
+    }
+  },
+  defaultVariants: {
+    size: '$1000',
+  },
+});
+const ButtonKekText = styled(ButtonText, {
+  context: ButtonContext,
+  variants: {
+    size: {
+      $1000: {
+        color: 'red',
+      },
+    },
+  },
+});
+
+const ForkedButton = withStaticProperties(ButtonKek, {
+  Props: ButtonContext.Provider,
+  Text: ButtonKekText,
+  Icon: ButtonIcon,
+});
+
+const SomeComponent = () => {
+  const ctx = useContext(ButtonContext);
+  console.log(ctx);
+  return 'SomeComponent';
+};
+
+export const Test: Story = {
+  render: (args) => {
+    const [isLoading, setIsLoading] = useState(false);
+    return (
+      <ForkedButton
+        {...args}
+        isLoading={isLoading}
+        disabled={isLoading}
+        onPress={() => {
+          setIsLoading(true);
+          setTimeout(() => setIsLoading(false), 2000);
+        }}
+      >
+        <ForkedButton.Icon>
+          <Plus />
+        </ForkedButton.Icon>
+        <ForkedButton.Text>
+          <SomeComponent />
+        </ForkedButton.Text>
+      </ForkedButton>
+    );
+  },
+};
+
 export const Disabled: Story = {
   args: {
     disabled: true,
   },
 };
 
-// export const Test: Story = {
-//   args: {},
-//   render: (args) => <Plus />,
-// };
+export const Themable: Story = {
+  args: {
+    theme: 'secondary',
+  },
+};
 
 export const SimulateRequest: Story = {
   args: {
@@ -125,11 +196,11 @@ export const SimulateRequest: Story = {
   },
 };
 
-// export const Loading: Story = {
-//   args: {
-//     isLoading: true,
-//   },
-// };
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+  },
+};
 
 export const IconLeft: Story = {
   args: {

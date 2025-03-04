@@ -1,18 +1,6 @@
-import type loaderTheme from './loader.theme';
-import type { ReactNode } from 'react';
+import type { LoaderRoot } from './loader.styled';
+import type { GetProps } from '@tamagui/core';
 
-type Variants = keyof ReturnType<typeof loaderTheme>['variants'];
+type LoaderSharedProps = GetProps<typeof LoaderRoot>;
 
-export interface XZKUILoaderBaseProps {
-  size: number;
-  /** Orientation of elements in a component */
-  vertical?: boolean;
-  variant: Variants;
-  mainColor?: string;
-  spinColor?: string;
-}
-
-export interface XZKUILoaderProps extends Partial<XZKUILoaderBaseProps> {
-  children?: ReactNode;
-  className?: string;
-}
+export interface LoaderProps extends LoaderSharedProps {}

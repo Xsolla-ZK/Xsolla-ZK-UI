@@ -18,5 +18,4 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ].filter(Boolean),
-  // plugins: [react()] as UserConfig['plugins'],
 });

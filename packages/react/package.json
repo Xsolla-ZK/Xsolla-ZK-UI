@@ -29,7 +29,6 @@
   "dependencies": {
     "@tamagui/config": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
-    "@tamagui/stacks": "catalog:tamagui",
     "@xsolla-zk-ui/config": "workspace:*",
     "@xsolla-zk-ui/icons": "workspace:*",
     "react-native-svg": "catalog:"

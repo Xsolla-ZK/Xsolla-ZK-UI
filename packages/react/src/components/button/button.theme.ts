@@ -1,10 +1,8 @@
+import { themes } from '@xsolla-zk-ui/config';
 import radius from '@xsolla-zk-ui/react/tokens/common/radius';
 import size from '@xsolla-zk-ui/react/tokens/common/size';
 import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
 import typography from '@xsolla-zk-ui/react/tokens/common/typography';
-import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
-import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
-import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
 
 export const buttonThemeSizes = [200, 300, 400, 500, 600, 700] as const;
 
@@ -22,35 +20,25 @@ const base = {
   borderRadius: [radius[300], radius[300], radius[400], radius[500], radius[500], radius[550]],
 };
 
-const buttonTheme = (mode: XZKUIThemeModeUnion) => {
-  const selectedTheme = tokensThemes[mode];
+const name = 'Button';
 
-  return {
-    sizes: callbackObjectByKeys(buttonThemeSizes, (idx) => ({
-      minWidth: base.size[idx],
-      minHeight: base.size[idx],
-      font: base.font[idx],
-      padding: `0 ${base.px[idx]}`,
-      borderRadius: base.borderRadius[idx],
-    })),
-    variants: {
-      primary: {
-        color: selectedTheme.theme.content.staticDarkPrimary,
-        [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
-          backgroundColor: selectedTheme.theme.background.brandHigh,
-        },
-        [`&.${xzkuiButtonClasses.bgOff}`]: {
-          color: selectedTheme.theme.content.brandPrimary,
-        },
-      },
-      secondary: {
-        [`&:not(.${xzkuiButtonClasses.bgOff})`]: {
-          backgroundColor: selectedTheme.theme.overlay.neutral,
-        },
-        color: selectedTheme.theme.content.neutralPrimary,
-      },
-    },
-  };
-};
 
-export default buttonTheme;
+// export const buttonTheme = Object.keys(themes).reduce((acc, curr) =>{
+//   acc[`${curr}_Button`] = {
+//     background: themes[curr]['background.brand-high'],
+//     color: themes[curr]['content.static-dark-primary'],
+//   };
+//   acc[`${curr}_secondary_Button`] = {
+//     background: themes[curr]['overlay.neutral'],
+//     color: themes[curr]['content.neutral-primary'],
+//   };
+//   return acc;
+// }, {})
+  // dark_Button: {
+  //   background: themes.dark['background.brand-high'],
+  //   color: themes.light['content.static-dark-primary'],
+  // },
+  // dark_secondary_Button: {
+  //   background: themes.dark['overlay.neutral'],
+  //   color: themes.dark['content.neutral-primary'],
+  // },

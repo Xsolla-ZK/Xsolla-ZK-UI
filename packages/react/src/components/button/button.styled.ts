@@ -5,7 +5,6 @@ import {
   Stack,
   styled,
   Text,
-  View,
 } from '@tamagui/core';
 import { getTypographyPreset } from '@xsolla-zk-ui/config';
 import { cloneElement, isValidElement, useContext } from 'react';
@@ -45,35 +44,35 @@ export const ButtonRoot = styled(Stack, {
   cursor: 'pointer',
 
   variants: {
-    variant: {
-      primary: {
-        backgroundColor: '$background.brand-high',
-      },
-      secondary: {
-        backgroundColor: '$overlay.neutral',
-      },
-    },
+    // variant: {
+    //   primary: {
+    //     backgroundColor: '$background.brand-high',
+    //   },
+    //   secondary: {
+    //     backgroundColor: '$overlay.neutral',
+    //   },
+    // },
     size: {
       $200: (_, { tokens }) => ({
         minWidth: tokens.size['$200'],
         minHeight: tokens.size['$200'],
         paddingHorizontal: tokens.space['$100'],
         borderRadius: tokens.radius['$300'],
-        gap: getVariableValue(tokens.typography['$font-size.200']) * 0.33,
+        gap: tokens.space['$100'],
       }),
       $300: (_, { tokens }) => ({
         minWidth: tokens.size['$300'],
         minHeight: tokens.size['$300'],
         paddingHorizontal: tokens.space['$200'],
         borderRadius: tokens.radius['$300'],
-        gap: getVariableValue(tokens.typography['$font-size.200']) * 0.33,
+        gap: tokens.space['$100'],
       }),
       $400: (_, { tokens }) => ({
         minWidth: tokens.size['$400'],
         minHeight: tokens.size['$400'],
         paddingHorizontal: tokens.space['$250'],
         borderRadius: tokens.radius['$400'],
-        gap: getVariableValue(tokens.typography['$font-size.250']) * 0.33,
+        gap: tokens.space['$100'],
       }),
       $500: (_, { tokens }) => ({
         minWidth: tokens.size['$500'],
@@ -97,15 +96,18 @@ export const ButtonRoot = styled(Stack, {
         gap: getVariableValue(tokens.typography['$font-size.350']) * 0.33,
       }),
     },
+    hasBackground: {
+      true: {
+        backgroundColor: '$background',
+      },
+      false: {
+        backgroundColor: 'transparent',
+      },
+    },
     disabled: {
       true: {
         pointerEvents: 'none',
         backgroundColor: '$overlay.neutral',
-      },
-    },
-    hasBackground: {
-      false: {
-        backgroundColor: 'transparent',
       },
     },
     isLoading: {
@@ -117,13 +119,13 @@ export const ButtonRoot = styled(Stack, {
 
   defaultVariants: {
     size: '$500',
-    variant: 'primary',
+    // variant: 'primary',
     hasBackground: true,
     disabled: false,
   },
 });
 
-export const ButtonOverlay = styled(View, {
+export const ButtonOverlay = styled(Stack, {
   name: 'Button',
   context: ButtonContext,
   tag: 'span',
@@ -162,23 +164,29 @@ export const ButtonText = styled(Text, {
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   whiteSpace: 'nowrap',
+  color: '$color',
 
   variants: {
-    variant: {
-      primary: {
-        color: '$content.static-dark-primary',
-      },
-      secondary: {
-        color: '$content.neutral-primary',
-      },
-    },
+    // variant: {
+    //   primary: {
+    //     // color: '$content.static-dark-primary',
+    //   },
+    //   secondary: {
+    //     color: '$content.neutral-primary',
+    //   },
+    // },
+    // hasBackground: {
+    //   false: (_, context: { props: ButtonContextType }) => {
+    //     if (!context.props.disabled && context.props.variant === 'primary') {
+    //       return {
+    //         color: '$content.brand-primary',
+    //       };
+    //     }
+    //   },
+    // },
     hasBackground: {
-      false: (_, context: { props: ButtonContextType }) => {
-        if (!context.props.disabled && context.props.variant === 'primary') {
-          return {
-            color: '$content.brand-primary',
-          };
-        }
+      false: {
+        color: '$content.brand-primary',
       },
     },
     disabled: {
@@ -236,8 +244,10 @@ export const ButtonIcon = (props: { children: ReactNode }) => {
 
   return isValidElement(props.children)
     ? cloneElement(props.children, {
+        name: 'Button',
         size: size[ctx.size],
-        color: getIconColor(ctx),
+        color: '$color',
+        // color: getIconColor(ctx),
       } as {})
     : null;
 };

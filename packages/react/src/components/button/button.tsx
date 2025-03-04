@@ -1,9 +1,9 @@
 import { withStaticProperties } from '@tamagui/core';
+import Loader from '../loader/loader';
 import { ButtonContext, ButtonIcon, ButtonOverlay, ButtonRoot, ButtonText } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
-import { Bag } from '@xsolla-zk-ui/icons';
 
 // const XZKUIButton = forwardRef(function XZKUIButton(props, ref) {
 //   const {
@@ -64,7 +64,7 @@ const ButtonComponent = ButtonRoot.styleable<ButtonProps>(function ButtonCompone
   return (
     <ButtonRoot group isLoading={isLoading} {...props} ref={ref}>
       <ButtonOverlay />
-      {isLoading ? <Bag /> : children}
+      {isLoading ? <Loader /> : children}
     </ButtonRoot>
   );
 });
