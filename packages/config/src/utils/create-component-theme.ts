@@ -1,24 +1,23 @@
-import { themes } from '../tokens/themes';
-import type { VariableColorVal } from '@tamagui/core';
+import type { themes } from '../tokens/themes';
 
 type ThemeNames = keyof typeof themes;
-type ThemeTokens = (typeof themes)[ThemeNames];
-type StyleDefinition = Record<string, VariableColorVal>;
-type PartialStyleDefinition = Partial<StyleDefinition>;
+type Themes = typeof themes;
+type ThemeTokens = Themes[ThemeNames];
+type StyleDefinition = Record<string, string>;
 
-interface ThemeStyleGenerator<T extends PartialStyleDefinition> {
+interface ThemeStyleGenerator<T extends StyleDefinition> {
   (themeTokens: ThemeTokens): T;
 }
 
 type SubthemeVariants = Subthemes<string, StyleDefinition>;
 
 type Subthemes<V extends string, T extends StyleDefinition> =
-  | Record<V, ThemeStyleGenerator<Partial<T>>>
+  | Record<V, ThemeStyleGenerator<T>>
   | undefined;
 
 interface ThemeOptions<
   C extends string | undefined = undefined,
-  V extends Subthemes<string, StyleDefinition> = Subthemes<string, StyleDefinition>,
+  V extends SubthemeVariants = SubthemeVariants,
 > {
   componentName?: C;
   subthemes?: V;
@@ -36,16 +35,16 @@ type ThemeSubthemeKeys<
 type ThemeRecord<
   C extends string | undefined,
   V extends SubthemeVariants,
-  T extends StyleDefinition,
+  S extends StyleDefinition,
 > = C extends string
   ? {
       [K in ThemeSubthemeKeys<
         C,
         V extends object ? keyof V : undefined
-      >]: K extends `${ThemeNames}_${infer U}_${C}` ? (V extends object ? ReturnType<V[U]> : T) : T;
+      >]: K extends `${ThemeNames}_${infer U}_${C}` ? (V extends object ? ReturnType<V[U]> : S) : S;
     }
   : {
-      [K in ThemeNames]: T;
+      [K in ThemeNames]: S;
     };
 
 /**
@@ -56,39 +55,38 @@ type ThemeRecord<
 export function createTheme<
   C extends string | undefined = undefined,
   V extends SubthemeVariants = SubthemeVariants,
-  T extends StyleDefinition = StyleDefinition,
->(styleGenerator: ThemeStyleGenerator<T>, options: ThemeOptions<C, V> = {}) {
+  S extends StyleDefinition = StyleDefinition,
+>(styleGenerator: ThemeStyleGenerator<S>, options: ThemeOptions<C, V> = {}) {
   const { componentName, subthemes } = options;
 
-  return (Object.keys(themes) as ThemeNames[]).reduce(
-    (acc, themeName) => {
-      // Base theme
-      const baseThemePath = (
-        componentName ? `${themeName}_${componentName}` : themeName
-      ) as keyof ThemeRecord<C, V, T>;
-      acc[baseThemePath] = styleGenerator(themes[themeName]) as ThemeRecord<
-        C,
-        V,
-        T
-      >[keyof ThemeRecord<C, V, T>];
+  return <T extends Record<ThemeNames, Record<string, string>>>(themes: T) =>
+    (Object.keys(themes) as ThemeNames[]).reduce(
+      (acc, themeName) => {
+        // Base theme
+        const baseThemePath = (
+          componentName ? `${themeName}_${componentName}` : themeName
+        ) as keyof ThemeRecord<C, V, S>;
+        acc[baseThemePath] = styleGenerator(themes[themeName] as ThemeTokens) as ThemeRecord<
+          C,
+          V,
+          S
+        >[keyof ThemeRecord<C, V, S>];
 
-      // Theme subthemes
-      if (subthemes) {
-        Object.entries(subthemes).forEach(([subthemeName, subthemeGenerator]) => {
-          const subthemeThemePath =
-            `${themeName}_${subthemeName}_${componentName}` as keyof ThemeRecord<C, V, T>;
-          acc[subthemeThemePath] = subthemeGenerator(themes[themeName]) as ThemeRecord<
-            C,
-            V,
-            T
-          >[keyof ThemeRecord<C, V, T>];
-        });
-      }
+        // Theme subthemes
+        if (subthemes) {
+          Object.entries(subthemes).forEach(([subthemeName, subthemeGenerator]) => {
+            const subthemeThemePath =
+              `${themeName}_${subthemeName}_${componentName}` as keyof ThemeRecord<C, V, S>;
+            acc[subthemeThemePath] = subthemeGenerator(
+              themes[themeName] as ThemeTokens,
+            ) as ThemeRecord<C, V, S>[keyof ThemeRecord<C, V, S>];
+          });
+        }
 
-      return acc;
-    },
-    {} as ThemeRecord<C, V, T>,
-  );
+        return acc;
+      },
+      {} as ThemeRecord<C, V, S>,
+    );
 }
 
 /**
@@ -100,8 +98,8 @@ export function createTheme<
 export function createComponentTheme<
   C extends string,
   V extends SubthemeVariants,
-  T extends StyleDefinition = StyleDefinition,
->(componentName: C, styleGenerator: ThemeStyleGenerator<T>, subthemes?: V) {
+  S extends StyleDefinition = StyleDefinition,
+>(componentName: C, styleGenerator: ThemeStyleGenerator<S>, subthemes?: V) {
   return createTheme(styleGenerator, {
     componentName,
     subthemes,
@@ -144,4 +142,47 @@ export function deepMerge<T extends object, U extends object>(obj1: T, obj2: U) 
     },
     { ...obj1 } as DeepMerge<T, U>,
   );
+}
+
+type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
+
+type RecordToArray<T> = T extends Record<string, unknown> ? Array<T[keyof T]> : never;
+
+type CreateThemesReturnType<
+  T extends Record<ThemeNames, Record<string, string>>,
+  B extends ReturnType<typeof createTheme>,
+  C extends Record<string, ReturnType<typeof createTheme>>,
+> = T & ReturnType<B> & UnionToIntersection<ReturnType<RecordToArray<C>[number]>>;
+
+/**
+ * Creates a theme object with support for base and component themes
+ * @param themes - The base themes to extend
+ * @param compose - An object containing optional base and component themes
+ * @returns A merged theme object with support for base and component themes
+ */
+export function createThemes<
+  T extends Record<ThemeNames, Record<string, string>>,
+  B extends ReturnType<typeof createTheme>,
+  C extends Record<string, ReturnType<typeof createTheme>>,
+>(
+  themes: T,
+  compose: {
+    base?: B;
+    components?: C;
+  } = {},
+) {
+  const base = compose.base?.(themes);
+  const components = Object.values(compose.components ?? {}).reduce((acc, curr) => {
+    Object.assign(acc, curr(themes));
+    return acc;
+  }, {});
+
+  return {
+    ...(base ? deepMerge(themes, base) : themes),
+    ...components,
+  } as CreateThemesReturnType<T, B, C>;
 }

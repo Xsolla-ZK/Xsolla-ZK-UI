@@ -8,26 +8,24 @@ import {
 } from '@tamagui/core';
 import { getTypographyPreset } from '@xsolla-zk-ui/config';
 import { cloneElement, isValidElement, useContext } from 'react';
+import { BUTTON_COMPONENT_NAME } from './button.theme';
 import type { ThemeTokens } from '@tamagui/core';
 import type { ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary';
 type ButtonContextType = {
   size: string;
-  variant: ButtonVariant;
   disabled: boolean;
   hasBackground: boolean;
 };
 
 export const ButtonContext = createStyledContext<ButtonContextType>({
   size: '$500',
-  variant: 'primary',
   disabled: false,
   hasBackground: true,
 });
 
 export const ButtonRoot = styled(Stack, {
-  name: 'Button',
+  name: BUTTON_COMPONENT_NAME,
   context: ButtonContext,
   tag: 'button',
   role: 'button',
@@ -126,7 +124,7 @@ export const ButtonRoot = styled(Stack, {
 });
 
 export const ButtonOverlay = styled(Stack, {
-  name: 'Button',
+  name: BUTTON_COMPONENT_NAME,
   context: ButtonContext,
   tag: 'span',
   position: 'absolute',
@@ -156,7 +154,7 @@ export const ButtonOverlay = styled(Stack, {
 });
 
 export const ButtonText = styled(Text, {
-  name: 'Button',
+  name: BUTTON_COMPONENT_NAME,
   context: ButtonContext,
   tag: 'span',
   userSelect: 'none',
@@ -205,24 +203,24 @@ export const ButtonText = styled(Text, {
   } as const,
 });
 
-const getIconColor = (ctx: ButtonContextType): ThemeTokens => {
-  if (ctx.disabled) {
-    return '$content.neutral-tertiary';
-  }
+// const getIconColor = (ctx: ButtonContextType): ThemeTokens => {
+//   if (ctx.disabled) {
+//     return '$content.neutral-tertiary';
+//   }
 
-  if (ctx.variant === 'primary') {
-    if (!ctx.hasBackground) {
-      return '$content.brand-primary';
-    }
-    return '$content.static-dark-primary';
-  }
+//   if (ctx.variant === 'primary') {
+//     if (!ctx.hasBackground) {
+//       return '$content.brand-primary';
+//     }
+//     return '$content.static-dark-primary';
+//   }
 
-  if (ctx.variant === 'secondary') {
-    return '$content.neutral-primary';
-  }
+//   if (ctx.variant === 'secondary') {
+//     return '$content.neutral-primary';
+//   }
 
-  return '$content.neutral-primary';
-};
+//   return '$content.neutral-primary';
+// };
 
 export const ButtonIcon = (props: { children: ReactNode }) => {
   const ctx = useContext(ButtonContext.context);
@@ -244,7 +242,7 @@ export const ButtonIcon = (props: { children: ReactNode }) => {
 
   return isValidElement(props.children)
     ? cloneElement(props.children, {
-        name: 'Button',
+        name: BUTTON_COMPONENT_NAME,
         size: size[ctx.size],
         color: '$color',
         // color: getIconColor(ctx),
@@ -252,7 +250,7 @@ export const ButtonIcon = (props: { children: ReactNode }) => {
     : null;
 };
 
-// const ButtonStyled = withStaticProperties(Root, {
+// export const ButtonStyled = withStaticProperties(ButtonRoot, {
 //   Props: ButtonContext.Provider,
 //   Text: ButtonText,
 //   Icon: ButtonIcon,

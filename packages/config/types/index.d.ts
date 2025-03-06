@@ -5,7 +5,7 @@ import getTypographyPreset from './tokens/presets';
 import { settings } from './tokens/settings';
 import { themes } from './tokens/themes';
 import { tokens } from './tokens/tokens';
-import { deepMerge, createTheme, createComponentTheme } from './utils/create-component-theme';
+import { deepMerge, createTheme, createThemes, createComponentTheme } from './utils/create-component-theme';
 export { sharedConfig } from './shared';
-export { animations, shorthands, settings, tokens, fonts, themes, getTypographyPreset, deepMerge, createTheme, createComponentTheme, };
+export { animations, shorthands, settings, tokens, fonts, themes, getTypographyPreset, deepMerge, createTheme, createThemes, createComponentTheme, };
 //# sourceMappingURL=index.d.ts.map

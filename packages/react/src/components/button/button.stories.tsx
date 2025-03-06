@@ -2,14 +2,10 @@ import { within, expect } from '@storybook/test';
 import { styled, withStaticProperties } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { useContext, useState } from 'react';
-import Button from './button';
+import Button, { ButtonComponent } from './button';
 import { ButtonContext, ButtonIcon, ButtonRoot, ButtonText } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
-
-const variants = Object.keys(Button.staticConfig?.variants?.variant ?? {}) as Array<
-  ButtonProps['variant']
->;
 
 const sizes = Object.keys(Button.staticConfig?.variants?.size ?? {}) as Array<ButtonProps['size']>;
 
@@ -29,9 +25,9 @@ const meta = {
       //   type: { summary: sizes.join('|') },
       // },
     },
-    variant: {
-      control: 'select',
-      options: variants,
+    theme: {
+      control: 'check',
+      options: ['secondary'],
       // table: {
       //   defaultValue: { summary: 'primary' },
       //   type: { summary: variants.join('|') },
@@ -94,42 +90,43 @@ export const Default: Story = {
 //   ),
 // };
 
-const ButtonKek = styled(ButtonRoot, {
+const CustomButtonRoot = styled(ButtonRoot, {
   context: ButtonContext,
   variants: {
     size: {
-      $1000: {
-        minWidth: 150,
-        minHeight: 150,
-        borderRadius: 100,
-      },
+      $1000: (_, { tokens }) => ({
+        paddingHorizontal: tokens.space['$300'],
+      }),
     },
-    disabled: {
-      true: {
-        backgroundColor: 'skyblue',
-      }
-    }
-  },
-  defaultVariants: {
-    size: '$1000',
-  },
-});
-const ButtonKekText = styled(ButtonText, {
-  context: ButtonContext,
-  variants: {
-    size: {
-      $1000: {
-        color: 'red',
-      },
-    },
-  },
+  } as const,
 });
 
-const ForkedButton = withStaticProperties(ButtonKek, {
-  Props: ButtonContext.Provider,
-  Text: ButtonKekText,
-  Icon: ButtonIcon,
+const CustomButtonText = styled(ButtonText, {
+  context: ButtonContext,
+  variants: {
+    size: {
+      $5000: (_, { tokens }) => ({
+        py: 40,
+      }),
+      $1000: (_, { tokens }) => ({
+        p: 40,
+      }),
+    },
+  } as const,
 });
+
+const CustomButton = ButtonComponent.overrides(
+  {
+    Root: CustomButtonRoot,
+    Text: CustomButtonText,
+  },
+  (Root, { children, ...props }, ref) => (
+    <Root {...props} ref={ref}>
+      Hello
+      {children}
+    </Root>
+  ),
+);
 
 const SomeComponent = () => {
   const ctx = useContext(ButtonContext);
@@ -139,25 +136,29 @@ const SomeComponent = () => {
 
 export const Test: Story = {
   render: (args) => {
-    const [isLoading, setIsLoading] = useState(false);
-    return (
-      <ForkedButton
-        {...args}
-        isLoading={isLoading}
-        disabled={isLoading}
-        onPress={() => {
-          setIsLoading(true);
-          setTimeout(() => setIsLoading(false), 2000);
-        }}
-      >
-        <ForkedButton.Icon>
-          <Plus />
-        </ForkedButton.Icon>
-        <ForkedButton.Text>
-          <SomeComponent />
-        </ForkedButton.Text>
-      </ForkedButton>
-    );
+    const TestButton = () => {
+      const [isLoading, setIsLoading] = useState(false);
+      return (
+        <CustomButton
+          {...args}
+          size="$1000"
+          isLoading={isLoading}
+          disabled={isLoading}
+          onPress={() => {
+            setIsLoading(true);
+            setTimeout(() => setIsLoading(false), 2000);
+          }}
+        >
+          <CustomButton.Icon>
+            <Plus />
+          </CustomButton.Icon>
+          <CustomButton.Text>
+            <SomeComponent />
+          </CustomButton.Text>
+        </CustomButton>
+      );
+    };
+    return <TestButton />;
   },
 };
 

@@ -57,11 +57,6 @@ export const LoaderRoot = styled(Stack, {
     vertical: false,
     size: 24,
   },
-
-  // color: ${xzkuiMainColor || undefined};
-  // .spin {
-  //   stroke: ${xzkuiSpinColor || undefined};
-  // }
 });
 
 export const LoaderText = styled(Text, {
