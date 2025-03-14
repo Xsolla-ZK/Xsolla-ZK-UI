@@ -3,9 +3,7 @@ export declare const sharedConfig: {
         state: string;
     }>;
     shorthands: {
-        b: "bottom";
         bg: "backgroundColor";
-        l: "left";
         m: "margin";
         maxH: "maxHeight";
         maxW: "maxWidth";
@@ -24,10 +22,7 @@ export declare const sharedConfig: {
         pt: "paddingTop";
         px: "paddingHorizontal";
         py: "paddingVertical";
-        r: "right";
         rounded: "borderRadius";
-        t: "top";
-        z: "zIndex";
     };
 };
 //# sourceMappingURL=shared.d.ts.map

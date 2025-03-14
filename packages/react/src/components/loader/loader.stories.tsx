@@ -1,9 +1,7 @@
-import styled from '@emotion/styled';
 import XZKUILoader from './loader';
-import loaderTheme from './loader.theme';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const theme = loaderTheme('dark');
+// const theme = loaderTheme('dark');
 
 const meta = {
   component: XZKUILoader,
@@ -16,13 +14,13 @@ const meta = {
     mainColor: { control: 'color', type: 'string' },
     spinColor: { control: 'color', type: 'string' },
     size: { control: 'number', type: 'number' },
-    variant: {
-      control: 'select',
-      options: Object.keys(theme.variants),
-      table: {
-        type: { summary: Object.keys(theme.variants).join('|') },
-      },
-    },
+    // variant: {
+    //   control: 'select',
+    //   options: Object.keys(theme.variants),
+    //   table: {
+    //     type: { summary: Object.keys(theme.variants).join('|') },
+    //   },
+    // },
     vertical: {
       control: 'boolean',
       type: 'boolean',
@@ -85,37 +83,6 @@ export const CustomColorsProps: Story = {
   args: {
     mainColor: '#E8523B',
     spinColor: '#111014',
-  },
-};
-
-export const CustomColorsStyled: Story = {
-  args: {},
-  parameters: {
-    docs: {
-      source: {
-        code: `
-          const Loader = styled(XZKUILoader)'
-            color: #e8523b;
-            .spin {
-              stroke: #111014;
-            }
-          ';
-          <Loader />;
-        `,
-        language: 'tsx',
-        format: true,
-        type: 'auto',
-      },
-    },
-  },
-  render: (args) => {
-    const Loader = styled(XZKUILoader)`
-      color: #e8523b;
-      .spin {
-        stroke: #111014;
-      }
-    `;
-    return <Loader {...args} />;
   },
 };
 

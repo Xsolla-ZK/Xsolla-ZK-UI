@@ -1,9 +1,7 @@
 import type { TextStyle } from '@tamagui/core';
 
-const shorthands = createShorthands({
-  b: 'bottom',
+export const shorthands = createShorthands({
   bg: 'backgroundColor',
-  l: 'left',
   m: 'margin',
   maxH: 'maxHeight',
   maxW: 'maxWidth',
@@ -22,14 +20,9 @@ const shorthands = createShorthands({
   pt: 'paddingTop',
   px: 'paddingHorizontal',
   py: 'paddingVertical',
-  r: 'right',
   rounded: 'borderRadius',
-  t: 'top',
-  z: 'zIndex',
 });
 
 function createShorthands<A extends Record<string, keyof TextStyle>>(a: A) {
   return a;
 }
-
-export default shorthands;

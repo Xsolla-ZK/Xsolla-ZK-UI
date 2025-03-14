@@ -1,0 +1,89 @@
+import { getFormatConfig } from '../utils/config.mjs';
+import { camelize, isNumeric, withoutEmpty } from '../utils/helpers.mjs';
+
+const validProps = {
+  borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
+  width: true,
+  height: true,
+  minWidth: true,
+  minHeight: true,
+  maxWidth: true,
+  maxHeight: true,
+  gap: true,
+  columnGap: true,
+  rowGap: true,
+  margin: true,
+  marginBottom: true,
+  marginHorizontal: true,
+  marginLeft: true,
+  marginRight: true,
+  marginTop: true,
+  marginVertical: true,
+  padding: true,
+  paddingBottom: true,
+  paddingLeft: true,
+  paddingRight: true,
+  paddingTop: true,
+  paddingHorizontal: true,
+  paddingVertical: true,
+  borderBottomWidth: true,
+  borderLeftWidth: true,
+  borderRightWidth: true,
+  borderTopWidth: true,
+  borderWidth: true,
+  size: true,
+  minSize: true,
+  maxSize: true,
+};
+
+function checkTokenByPath(obj, path) {
+  const { transformKey } = getFormatConfig();
+  const o = obj;
+  const clearPathArray = path.replace(/{|}/g, '').split('.');
+  const result = clearPathArray.reduce((acc, key) => (acc ? acc[key] : undefined), o);
+
+  if (!result) return path;
+
+  const token = clearPathArray.map((key) => transformKey(key)).join('.');
+
+  return `$${token}`;
+}
+
+function getStrictTokenValue(obj, sources, key) {
+  if (obj && typeof obj === 'object' && 'type' in obj) {
+    const currentKey = camelize(key);
+    if (!validProps[currentKey]) {
+      return null;
+    }
+    if (/{|}/g.test(obj.value)) {
+      return checkTokenByPath(sources, obj.value);
+    }
+    return obj.value;
+  }
+
+  if (obj && typeof obj === 'object') {
+    const result = {};
+    for (const [key, value] of Object.entries(obj)) {
+      const val = getStrictTokenValue(value, sources, key);
+      if (val !== null) {
+        const tokenizedKey = isNumeric(key) ? `$${key}` : camelize(key);
+        result[tokenizedKey] = val;
+      }
+    }
+    return withoutEmpty(result);
+  }
+
+  return obj;
+}
+
+async function transformGroupComponents(rawData, sources, _variant) {
+  const data = getStrictTokenValue(rawData, sources);
+
+  return data;
+}
+
+export default transformGroupComponents;

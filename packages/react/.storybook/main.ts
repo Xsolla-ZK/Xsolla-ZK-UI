@@ -1,4 +1,5 @@
 import { StorybookConfig } from '@storybook/react-vite';
+import path from 'path';
 
 const config: StorybookConfig = {
   stories: [
@@ -28,6 +29,20 @@ const config: StorybookConfig = {
   //     exclude: ['node_modules/.cache/storybook'],
   //   },
   // }),
+
+  viteFinal: async (config) => {
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve?.alias,
+          '@xsolla-zk-ui/config/web': path.resolve(__dirname, '../../config/src/web.ts'),
+          '@xsolla-zk-ui/icons': path.resolve(__dirname, '../../icons/src')
+        },
+      },
+    };
+  },
 };
 
 export default config;

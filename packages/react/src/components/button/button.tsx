@@ -1,22 +1,26 @@
-import CreateComponent from '../../utils/component-constructor';
+import { withStaticProperties } from '@tamagui/core';
 import Loader from '../loader/loader';
-import { ButtonContext, ButtonIcon, ButtonOverlay, ButtonRoot, ButtonText } from './button.styled';
+import { ButtonContext, ButtonIcon, ButtonOverlay, ButtonFrame, ButtonText } from './button.styled';
+import type { ButtonProps } from './button.types';
+import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-export const ButtonComponent = CreateComponent(
-  ButtonRoot,
-  {
-    Props: ButtonContext.Provider,
-    Text: ButtonText,
-    Icon: ButtonIcon,
-  },
-  (Root, { children, isLoading, ...props }, ref) => (
-    <Root group isLoading={isLoading} {...props} ref={ref}>
+export const ButtonComponent = ButtonFrame.styleable<ButtonProps>(
+  ({ children, isLoading, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => (
+    <ButtonFrame group isLoading={isLoading} theme={tone} tone={tone} {...props} ref={ref}>
       <ButtonOverlay />
       {isLoading ? <Loader /> : children}
-    </Root>
+    </ButtonFrame>
   ),
+  {
+    disableTheme: true,
+  },
 );
 
-const Button = ButtonComponent();
+const Button = withStaticProperties(ButtonComponent, {
+  Props: ButtonContext.Provider,
+  Text: ButtonText,
+  Icon: ButtonIcon,
+});
 
 export default Button;

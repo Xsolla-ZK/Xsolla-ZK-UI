@@ -1,9 +1,7 @@
-import generatePresetsFile from '../templates/typography-presets.mjs';
 import generateSimpleFile from '../templates/simple.mjs';
 import { writeToBuildDir } from '../utils/files.mjs';
 import { flattenObject, withoutEmpty } from '../utils/helpers.mjs';
 import { getValueByPath, getValueRecursively } from '../utils/values.mjs';
-import generateTamaguiSettingsFile from '../templates/tamagui-settings.mjs';
 import { getFormatConfig } from '../utils/config.mjs';
 
 const allowedKeys = {
@@ -124,8 +122,8 @@ async function transformTypographyToFonts(rawData, sources) {
   });
 
   await writeToBuildDir('fonts', generateSimpleFile(fonts, 'fonts'));
-  await writeToBuildDir('presets', generatePresetsFile(presets, separator));
-  await writeToBuildDir('settings', generateTamaguiSettingsFile(Object.keys(fonts)[0] ?? 'body'));
+  // await writeToBuildDir('presets', generatePresetsFile(presets, separator));
+  // await writeToBuildDir('settings', generateTamaguiSettingsFile(Object.keys(fonts)[0] ?? 'body'));
 }
 
 export default transformTypographyToFonts;

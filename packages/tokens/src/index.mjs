@@ -21,16 +21,30 @@ const version = packageJson.version;
 
 dotenv.config({ path: resolve(ROOT_DIR, '.env.local') });
 
-const REPO_URL = `https://${process.env.GITHUB_TOKEN}@github.com/Xsolla-ZK/Design-Tokens.git`;
 const TEMP_CLONE_DIR = path.resolve(ROOT_DIR, '.temp-tokens');
 
 const formatKeys = Object.keys(formatMap);
+
+function getRepoUrl(source, isPrivate) {
+  const sourceWithGit = source.endsWith('.git') ? source : `${source}.git`;
+
+  if (isPrivate) {
+    return `https://${process.env.GITHUB_TOKEN}@${sourceWithGit.replace(/^https?:\/\//, '')}`;
+  }
+  return sourceWithGit;
+}
+
+function isValidGitUrl(url) {
+  const gitUrlPattern = /^(https?:\/\/|git@)([^\s:]+)(:|\/)[^\s]+(\.git)?$/;
+  return gitUrlPattern.test(url);
+}
 
 /**
  * @param {string} branch
  * @returns {Promise<string>}
  */
-async function getTokensFromRepo(branch) {
+async function getTokensFromRepo(source, branch, isPrivate) {
+  const repoUrl = getRepoUrl(source, isPrivate);
   try {
     logger.info(`Cloning tokens from branch ${chalk.cyan(branch)}...`);
     if (await fs.pathExists(TEMP_CLONE_DIR)) {
@@ -38,7 +52,7 @@ async function getTokensFromRepo(branch) {
       await fs.remove(TEMP_CLONE_DIR);
     }
     await fs.ensureDir(TEMP_CLONE_DIR);
-    execSync(`git clone -b ${branch} ${REPO_URL} ${TEMP_CLONE_DIR}`, {
+    execSync(`git clone -b ${branch} ${repoUrl} ${TEMP_CLONE_DIR}`, {
       stdio: 'inherit',
       cwd: ROOT_DIR,
     });
@@ -77,10 +91,21 @@ yargs(hideBin(process.argv))
         })
         .option('source', {
           alias: 's',
-          describe: 'Token source (local or repo)',
+          describe: 'Token source (local or repo-url)',
           type: 'string',
-          default: 'repo',
-          choices: ['local', 'repo'],
+          default: 'local',
+          validate: (input) => {
+            if (input === 'local') return true;
+            return (
+              isValidGitUrl(input) || 'Please enter either "local" or a valid Git repository URL'
+            );
+          },
+        })
+        .option('private', {
+          alias: 'p',
+          describe: 'Private repository',
+          type: 'boolean',
+          default: false,
         }),
     handler: async (argv) => {
       try {
@@ -98,7 +123,7 @@ yargs(hideBin(process.argv))
           logger.info(`Using local tokens from: ${chalk.cyan(inputPath)}`);
         } else {
           logger.info(`Getting tokens from repository, branch: ${chalk.cyan(argv.input)}`);
-          inputPath = await getTokensFromRepo(argv.input);
+          inputPath = await getTokensFromRepo(argv.source, argv.input, argv.private);
         }
 
         process.env.XSOLLA_ZK_UI_TOKENS_INPUT_PATH = inputPath;

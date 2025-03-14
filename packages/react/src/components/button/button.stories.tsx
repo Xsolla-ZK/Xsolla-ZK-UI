@@ -1,9 +1,9 @@
-import { within, expect } from '@storybook/test';
-import { styled, withStaticProperties } from '@tamagui/core';
-import { Plus } from '@xsolla-zk-ui/icons';
+import { expect, within } from '@storybook/test';
+import { styled, View } from '@tamagui/core';
+import { ArrowDown, Plus } from '@xsolla-zk-ui/icons';
 import { useContext, useState } from 'react';
 import Button, { ButtonComponent } from './button';
-import { ButtonContext, ButtonIcon, ButtonRoot, ButtonText } from './button.styled';
+import { ButtonContext, ButtonFrame, ButtonText } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -25,15 +25,19 @@ const meta = {
       //   type: { summary: sizes.join('|') },
       // },
     },
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'tertiary'],
+    },
     theme: {
       control: 'check',
-      options: ['secondary'],
+      options: ['neutral', 'warning'],
       // table: {
       //   defaultValue: { summary: 'primary' },
       //   type: { summary: variants.join('|') },
       // },
     },
-    hasBackground: { type: 'boolean' },
+    // hasBackground: { type: 'boolean' },
     isLoading: { type: 'boolean' },
     children: { control: 'text' },
     // startAdornment: {
@@ -53,7 +57,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    $md: {
+      scale: 1.2,
+    },
+    $lg: {
+      scale: 1.5,
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Button')).toBeInTheDocument();
@@ -90,43 +101,42 @@ export const Default: Story = {
 //   ),
 // };
 
-const CustomButtonRoot = styled(ButtonRoot, {
-  context: ButtonContext,
-  variants: {
-    size: {
-      $1000: (_, { tokens }) => ({
-        paddingHorizontal: tokens.space['$300'],
-      }),
-    },
-  } as const,
-});
+// const CustomButtonRoot = styled(ButtonFrame, {
+//   context: ButtonContext,
+//   variants: {
+//     size: {
+//       $7000: (_) => ({}),
+//       $500: (_, { tokens }) => ({
+//         gap: tokens.space['$150'],
+//         // paddingHorizontal: tokens.space['$300'],
+//       }),
+//     },
+//   } as const,
+// });
 
-const CustomButtonText = styled(ButtonText, {
-  context: ButtonContext,
-  variants: {
-    size: {
-      $5000: (_, { tokens }) => ({
-        py: 40,
-      }),
-      $1000: (_, { tokens }) => ({
-        p: 40,
-      }),
-    },
-  } as const,
-});
+// const CustomButtonText = styled(ButtonText, {
+//   context: ButtonContext,
+//   variants: {
+//     size: {
+//       $1000: (_, { tokens }) => ({
+//         p: 40,
+//       }),
+//     },
+//   } as const,
+// });
 
-const CustomButton = ButtonComponent.overrides(
-  {
-    Root: CustomButtonRoot,
-    Text: CustomButtonText,
-  },
-  (Root, { children, ...props }, ref) => (
-    <Root {...props} ref={ref}>
-      Hello
-      {children}
-    </Root>
-  ),
-);
+// const CustomButton = ButtonComponent.overrides(
+//   {
+//     Root: CustomButtonRoot,
+//     Text: CustomButtonText,
+//   },
+//   // (Root, { children, ...props }, ref) => (
+//   //   <Root {...props} ref={ref}>
+//   //     Hello
+//   //     {children}
+//   //   </Root>
+//   // ),
+// );
 
 const SomeComponent = () => {
   const ctx = useContext(ButtonContext);
@@ -134,33 +144,36 @@ const SomeComponent = () => {
   return 'SomeComponent';
 };
 
-export const Test: Story = {
-  render: (args) => {
-    const TestButton = () => {
-      const [isLoading, setIsLoading] = useState(false);
-      return (
-        <CustomButton
-          {...args}
-          size="$1000"
-          isLoading={isLoading}
-          disabled={isLoading}
-          onPress={() => {
-            setIsLoading(true);
-            setTimeout(() => setIsLoading(false), 2000);
-          }}
-        >
-          <CustomButton.Icon>
-            <Plus />
-          </CustomButton.Icon>
-          <CustomButton.Text>
-            <SomeComponent />
-          </CustomButton.Text>
-        </CustomButton>
-      );
-    };
-    return <TestButton />;
-  },
-};
+// export const Test: Story = {
+//   render: (args) => {
+//     const TestButton = () => {
+//       const [isLoading, setIsLoading] = useState(false);
+//       return (
+//         <CustomButton
+//           {...args}
+//           // size="$1000"
+//           // size="$7000"
+//           // theme="secondary"
+//           // isLoading={isLoading}
+//           disabled={isLoading}
+//           onPress={() => {
+//             setIsLoading(true);
+//             setTimeout(() => setIsLoading(false), 2000);
+//           }}
+//         >
+//           <CustomButton.Text color="$content.neutral-secondary">Label</CustomButton.Text>
+//           <CustomButton.Text size="$1000">Value</CustomButton.Text>
+//           <View animation="state" rotate={isLoading ? '180deg' : '0deg'}>
+//             <CustomButton.Icon>
+//               <ArrowDown />
+//             </CustomButton.Icon>
+//           </View>
+//         </CustomButton>
+//       );
+//     };
+//     return <TestButton />;
+//   },
+// };
 
 export const Disabled: Story = {
   args: {
@@ -171,6 +184,21 @@ export const Disabled: Story = {
 export const Themable: Story = {
   args: {
     theme: 'secondary',
+  },
+};
+export const Warning: Story = {
+  args: {
+    theme: 'warning',
+  },
+};
+export const Positive: Story = {
+  args: {
+    theme: 'positive',
+  },
+};
+export const Info: Story = {
+  args: {
+    theme: 'info',
   },
 };
 
