@@ -1,35 +1,68 @@
 import { createTamagui } from '@tamagui/core';
-import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk-ui/config';
+import { createTheme, createThemes } from '@xsolla-zk-ui/config';
 import { webConfig } from '@xsolla-zk-ui/config/web';
+import { buttonTheme } from './src/components/button/button.theme';
+import { loaderTheme } from './src/components/loader/loader.theme';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
   color: tokens['content.neutral-primary'],
 }));
 
-const buttonTheme = createComponentTheme(
-  'Button',
-  (tokens) => ({
-    background: tokens['background.brand-high'],
-    color: tokens['content.static-dark-primary'],
-  }),
-  {
-    secondary: (tokens) => ({
-      background: tokens['overlay.neutral'],
-      color: tokens['content.neutral-primary'],
-    }),
-  },
-);
-
 const themesCompose = createThemes(webConfig.themes, {
   base: baseTheme,
   components: {
     button: buttonTheme,
+    loader: loaderTheme,
   },
 });
 
+// console.log(
+//   createThemes(
+//     {
+//       light: {
+//         'background.brand-high': '#000',
+//         'overlay.brand': '#000',
+//         'content.static-dark-primary': '#000',
+//         'content.brand-primary': '#000',
+//         'background.neutral-high': '#000',
+//         'content.neutral-primary-inverted': '#000',
+//         'overlay.warning': '#000',
+//         'content.warning-primary': '#000',
+//       },
+//       dark: {
+//         'background.brand-high': '#fff',
+//         'overlay.brand': '#fff',
+//         'content.static-dark-primary': '#fff',
+//         'content.brand-primary': '#fff',
+//         'background.neutral-high': '#fff',
+//         'content.neutral-primary-inverted': '#fff',
+//         'overlay.warning': '#fff',
+//         'content.warning-primary': '#fff',
+//       },
+//     },
+//     {
+//       components: {
+//         button: buttonTheme,
+//       },
+//     },
+//   ),
+// );
+
 export const config = createTamagui({
   ...webConfig,
+  tokens: {
+    ...webConfig.tokens,
+    color: {
+      background: '#fff',
+      color: '#000',
+      backgroundSecondary: '#fff',
+      backgroundTertiary: '#fff',
+      colorSecondary: '#000',
+      colorTertiary: '#000',
+      colorSpin: '#000',
+    },
+  },
   themes: themesCompose,
 });
 

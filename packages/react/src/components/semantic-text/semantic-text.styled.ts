@@ -1,5 +1,6 @@
 import { styled, Text } from '@tamagui/core';
-import { getTypographyPreset } from '@xsolla-zk-ui/config';
+import { getComponentsConfig } from '../../utils/components-config';
+import { getTypographyPreset } from '../../utils/get-typography-preset';
 
 export const SemanticTextRoot = styled(
   Text,
@@ -10,55 +11,71 @@ export const SemanticTextRoot = styled(
 
     variants: {
       variant: {
-        headingXl: {
-          role: 'heading',
-          marginTop: '$400',
-          marginBottom: '$100',
-          ...getTypographyPreset('display.500.accent'),
+        headerXl: () => {
+          const config = getComponentsConfig();
+          return {
+            role: 'heading',
+            ...config.semanticText['headerXl'],
+            ...getTypographyPreset('display.500.accent'),
+          };
         },
-        headingLg: {
-          role: 'heading',
-          marginTop: '$350',
-          marginBottom: '$100',
-          ...getTypographyPreset('display.450.accent'),
+        headerL: () => {
+          const config = getComponentsConfig();
+          return {
+            role: 'heading',
+            ...config.semanticText['headerL'],
+            ...getTypographyPreset('display.450.accent'),
+          };
         },
-        headingMd: {
-          role: 'heading',
-          marginTop: '$300',
-          marginBottom: '$100',
-          ...getTypographyPreset('display.400.accent'),
+        headerM: () => {
+          const config = getComponentsConfig();
+          return {
+            role: 'heading',
+            ...config.semanticText['headerM'],
+            ...getTypographyPreset('display.400.accent'),
+          };
         },
-        headingSm: {
-          role: 'heading',
-          marginTop: '$200',
-          marginBottom: '$100',
-          ...getTypographyPreset('display.350.accent'),
+        headerS: () => {
+          const config = getComponentsConfig();
+          return {
+            role: 'heading',
+            ...config.semanticText['headerS'],
+            ...getTypographyPreset('display.350.accent'),
+          };
         },
-        headingXs: {
-          role: 'heading',
-          marginTop: '$200',
-          marginBottom: '$100',
-          ...getTypographyPreset('compact.300.accent'),
+        headingXs: () => {
+          const config = getComponentsConfig();
+          return {
+            role: 'heading',
+            ...config.semanticText['headerXs'],
+            ...getTypographyPreset('compact.300.accent'),
+          };
         },
-        paragraphLg: {
-          marginTop: '$100',
-          marginBottom: '$100',
-          ...getTypographyPreset('text.350.default'),
+        paragraphL: () => {
+          const config = getComponentsConfig();
+          return {
+            ...config.semanticText['paragraphL'],
+            ...getTypographyPreset('text.350.default'),
+          };
         },
-        paragraphMd: {
-          marginTop: '$100',
-          marginBottom: '$100',
-          ...getTypographyPreset('text.300.default'),
+        paragraphM: () => {
+          const config = getComponentsConfig();
+          return {
+            ...config.semanticText['paragraphM'],
+            ...getTypographyPreset('text.300.default'),
+          };
         },
-        paragraphSm: {
-          marginTop: '$100',
-          marginBottom: '$100',
-          ...getTypographyPreset('text.250.default'),
+        paragraphS: () => {
+          const config = getComponentsConfig();
+          return {
+            ...config.semanticText['paragraphS'],
+            ...getTypographyPreset('text.250.default'),
+          };
         },
       },
     } as const,
     defaultVariants: {
-      variant: 'paragraphMd',
+      variant: 'paragraphM',
     },
   },
   {

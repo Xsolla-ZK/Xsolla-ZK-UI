@@ -24,3 +24,8 @@ export type AddPrefix<T, Prefix extends string> = {
 export type ExcludeStartsWith<T, Prefix extends string> = T extends `${Prefix}${string}`
   ? never
   : T;
+
+export type ExtractSubthemeKeys<
+  T,
+  Namespace extends string,
+> = T extends `${infer _Base}_${infer SubTheme}_${Namespace}` ? SubTheme : never;

@@ -1,6 +1,7 @@
 import { writeToBuildDir } from './files.mjs';
 import { camelize, withoutEmpty, flattenObject } from './helpers.mjs';
 import { getFormatConfig } from './config.mjs';
+import { getTransformGroup } from './transforms.mjs';
 
 /**
  * @param {Record<string, Record<string, any>>} files
@@ -11,11 +12,14 @@ export async function processGroupFiles(files, groupTransform) {
 
   const exports = [];
   const { separator, transformKey, flatten } = getFormatConfig();
+  const transformGroupMap = getTransformGroup();
+  const transformGroup = transformGroupMap[groupTransform];
+  const currentFlatten = typeof transformGroup === 'object' ? transformGroup.flatten : flatten;
 
   const summaryKeys = Object.entries(files[groupTransform]).map(([key, value]) => {
     const transformedKey = transformKey(key);
     const processedValue = withoutEmpty(value);
-    const finalValue = flatten ? flattenObject(processedValue, separator) : processedValue;
+    const finalValue = currentFlatten ? flattenObject(processedValue, separator) : processedValue;
 
     exports.push(
       `export const ${camelize(transformedKey)} = ${JSON.stringify(finalValue, null, 2)};`,

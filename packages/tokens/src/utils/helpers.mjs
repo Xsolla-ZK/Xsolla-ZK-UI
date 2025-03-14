@@ -52,7 +52,7 @@ export function capitalizeFirstLetter(val) {
  * @returns {boolean}
  */
 export function isNumeric(str) {
-  if (typeof str !== 'string') return false;
+  if (typeof str !== 'string' && typeof str !== 'number') return false;
   return !isNaN(str) && !isNaN(parseFloat(str));
 }
 

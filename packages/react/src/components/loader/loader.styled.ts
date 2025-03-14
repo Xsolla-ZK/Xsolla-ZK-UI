@@ -1,5 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import type { ThemeTokens } from '@tamagui/core';
+import { Circle } from 'react-native-svg';
 
 // const progress = () => keyframes`
 //   0% {
@@ -71,4 +72,33 @@ export const LoaderText = styled(Text, {
     },
   },
   // font-size: 0.75em;
+});
+
+export const LoaderSpin = styled(Circle, {
+  name: 'Loader',
+  context: LoaderContext,
+  // animation: {
+  //   type: 'keyframes',
+  //   keyframes: {
+  //     '0%': {
+  //       strokeDasharray: '0 150',
+  //       strokeDashoffset: '150',
+  //     },
+  //     '50%': {
+  //       strokeDasharray: '18 150',
+  //       strokeDashoffset: '150',
+  //     },
+  //     '75%': {
+  //       strokeDasharray: '18 150',
+  //       strokeDashoffset: '112',
+  //     },
+  //     '100%': {
+  //       strokeDasharray: '0 150',
+  //       strokeDashoffset: '75',
+  //     },
+  //   },
+  // },
+  transformOrigin: 'center',
+  transform: 'rotate(-90deg)',
+  // stroke: '$spinColor',
 });

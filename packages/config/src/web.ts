@@ -1,8 +1,8 @@
+import { settings } from './settings';
 import { sharedConfig } from './shared';
 import { fonts } from './tokens/fonts';
 import { media } from './tokens/media/web';
 import { web } from './tokens/platform';
-import { settings } from './tokens/settings';
 import { themes } from './tokens/themes';
 import { tokens } from './tokens/tokens';
 import { typography } from './tokens/typography';

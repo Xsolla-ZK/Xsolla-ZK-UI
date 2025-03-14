@@ -15,6 +15,7 @@
     "build:storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook:build -o ../../storybook-build/react",
     "build:react": "pnpm --filter @xsolla-zk-ui/react build",
     "generate:tokens": "node ./scripts/root-exec.mjs tokens generate",
+    "generate:config": "pnpm --filter @xsolla-zk-ui/config generate",
     "hygen": "cross-env HYGEN_TMPLS=tools/hygen npx hygen",
     "hygen:react": "pnpm hygen react new --name",
     "lint:react": "pnpm --filter @xsolla-zk-ui/react lint",

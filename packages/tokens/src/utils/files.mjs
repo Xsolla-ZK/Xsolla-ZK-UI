@@ -5,6 +5,7 @@ import { GENERATED_FILES_PATH, GENERATED_FILES_VALIDITY_PERIOD_MS } from './cons
 import { getBuildPath } from './helpers.mjs';
 import { getFormatConfig } from './config.mjs';
 import generateFileHeader from '../templates/header.mjs';
+import { logger } from './log.mjs';
 const { promises } = fse;
 
 // Local storage for the current session
@@ -68,7 +69,7 @@ async function cleanEmptyDirectories(directories) {
         removedCount++;
       }
     } catch (error) {
-      console.error(`Error removing directory ${dir}:`, error);
+      logger.error(`Error removing directory ${dir}:`, error);
     }
   }
 
@@ -100,7 +101,7 @@ async function initializeStorage() {
       }
     }
   } catch (error) {
-    console.error('Error initializing storage:', error);
+    logger.error('Error initializing storage:', error);
   }
 
   currentSessionFiles = new Set();
@@ -123,7 +124,7 @@ async function persistStorage() {
 
     await fse.outputJson(GENERATED_FILES_PATH, data, { spaces: 2 });
   } catch (error) {
-    console.error('Error saving state:', error);
+    logger.error('Error saving state:', error);
   }
 }
 
@@ -178,7 +179,7 @@ export async function cleanGeneratedFiles() {
         removedFiles++;
       }
     } catch (error) {
-      console.error(`Error removing file ${filePath}:`, error);
+      logger.error(`Error removing file ${filePath}:`, error);
     }
   }
 

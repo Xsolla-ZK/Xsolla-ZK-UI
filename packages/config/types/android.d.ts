@@ -166,6 +166,13 @@ export declare const androidConfig: {
             'content.warning-tertiary': string;
             'content.negative-tertiary': string;
             'content.info-tertiary': string;
+            'content.on-neutral': string;
+            'content.on-brand': string;
+            'content.on-brand-extra': string;
+            'content.on-positive': string;
+            'content.on-warning': string;
+            'content.on-negative': string;
+            'content.on-info': string;
             'content.neutral-primary-inverted': string;
             'content.static-light-primary': string;
             'content.static-light-secondary': string;
@@ -205,6 +212,12 @@ export declare const androidConfig: {
             'border.negative-primary': string;
             'border.info-primary': string;
             'border.neutral-secondary': string;
+            'border.brand-secondary': string;
+            'border.brand-extra-secondary': string;
+            'border.positive-secondary': string;
+            'border.warning-secondary': string;
+            'border.negative-secondary': string;
+            'border.info-secondary': string;
             'border.neutral-tertiary': string;
             'layer.floor-0': string;
             'layer.floor-1': string;
@@ -304,6 +317,13 @@ export declare const androidConfig: {
             'content.warning-tertiary': string;
             'content.negative-tertiary': string;
             'content.info-tertiary': string;
+            'content.on-neutral': string;
+            'content.on-brand': string;
+            'content.on-brand-extra': string;
+            'content.on-positive': string;
+            'content.on-warning': string;
+            'content.on-negative': string;
+            'content.on-info': string;
             'content.neutral-primary-inverted': string;
             'content.static-light-primary': string;
             'content.static-light-secondary': string;
@@ -343,6 +363,12 @@ export declare const androidConfig: {
             'border.negative-primary': string;
             'border.info-primary': string;
             'border.neutral-secondary': string;
+            'border.brand-secondary': string;
+            'border.brand-extra-secondary': string;
+            'border.positive-secondary': string;
+            'border.warning-secondary': string;
+            'border.negative-secondary': string;
+            'border.info-secondary': string;
             'border.neutral-tertiary': string;
             'layer.floor-0': string;
             'layer.floor-1': string;
@@ -539,9 +565,7 @@ export declare const androidConfig: {
         state: string;
     }>;
     shorthands: {
-        b: "bottom";
         bg: "backgroundColor";
-        l: "left";
         m: "margin";
         maxH: "maxHeight";
         maxW: "maxWidth";
@@ -560,10 +584,7 @@ export declare const androidConfig: {
         pt: "paddingTop";
         px: "paddingHorizontal";
         py: "paddingVertical";
-        r: "right";
         rounded: "borderRadius";
-        t: "top";
-        z: "zIndex";
     };
 };
 //# sourceMappingURL=android.d.ts.map

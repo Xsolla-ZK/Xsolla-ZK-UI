@@ -1,7 +1,5 @@
-declare const shorthands: {
-    b: "bottom";
+export declare const shorthands: {
     bg: "backgroundColor";
-    l: "left";
     m: "margin";
     maxH: "maxHeight";
     maxW: "maxWidth";
@@ -20,10 +18,6 @@ declare const shorthands: {
     pt: "paddingTop";
     px: "paddingHorizontal";
     py: "paddingVertical";
-    r: "right";
     rounded: "borderRadius";
-    t: "top";
-    z: "zIndex";
 };
-export default shorthands;
 //# sourceMappingURL=shorthands.d.ts.map

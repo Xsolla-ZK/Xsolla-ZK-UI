@@ -15,7 +15,7 @@
     "directory": "packages/config"
   },
   "scripts": {
-    "generate": "xzkui-tokens generate -t tamagui -o ./src/tokens",
+    "generate": "xzkui-tokens generate -t tamagui -s https://github.com/Xsolla-ZK/Design-Tokens.git -o ./src/tokens -p",
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
@@ -62,6 +62,8 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "catalog:tamagui",
+    "@tamagui/animations-moti": "catalog:tamagui",
+    "@tamagui/animations-react-native": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
     "react-native-reanimated": "^3.16.7"
   },

@@ -1,28 +1,14 @@
-import animations from './animations';
-import shorthands from './shorthands';
-import { fonts } from './tokens/fonts';
-import getTypographyPreset from './tokens/presets';
-import { settings } from './tokens/settings';
-import { themes } from './tokens/themes';
-import { tokens } from './tokens/tokens';
-import {
+export { animations } from './animations';
+export { settings } from './settings';
+export { shorthands } from './shorthands';
+export { fonts } from './tokens/fonts';
+export { themes } from './tokens/themes';
+export { tokens } from './tokens/tokens';
+export {
   deepMerge,
   createTheme,
   createThemes,
   createComponentTheme,
 } from './utils/create-component-theme';
-
 export { sharedConfig } from './shared';
-export {
-  animations,
-  shorthands,
-  settings,
-  tokens,
-  fonts,
-  themes,
-  getTypographyPreset,
-  deepMerge,
-  createTheme,
-  createThemes,
-  createComponentTheme,
-};
+export { components } from './tokens/components';

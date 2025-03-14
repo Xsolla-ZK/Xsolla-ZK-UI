@@ -3,10 +3,15 @@ import { getDesignTokensFile } from './helpers.mjs';
 import { getFormatConfig } from './config.mjs';
 let globalGroup;
 
-const bannedGroups = ['semantic', 'figma-only'];
+const bannedGroups = ['semantic/_', 'figma-only'];
 const whitelistGroup = {
   theme: true,
   platform: true,
+};
+
+const ungroupedTokensMap = {
+  semantic: 'components',
+  common: 'common',
 };
 
 /**
@@ -73,32 +78,53 @@ export async function getGroupMap(metadata) {
     return acc;
   }, {});
 
-  const commonRaw = metadata.tokenSetOrder.filter(
+  const ungroupedRaw = metadata.tokenSetOrder.filter(
     (item) => !Array.from(used).some((group) => item.includes(group)),
   );
 
-  const common = commonRaw.reduce(
-    (acc, curr) => {
-      const key = curr.split('/').pop();
-      const currentKey = getFormatConfig().transformKey(key);
-      acc.input[currentKey] = curr;
-      acc.source[currentKey] = curr;
+  const processUngroupedToken = (acc, rawKey) => {
+    const pathParts = rawKey.split('/');
+    const ungroupedRawKey = pathParts[0];
+    const fileKey = pathParts.pop();
+    const currentKey = getFormatConfig().transformKey(fileKey);
+    const ungroupedKey = ungroupedTokensMap[ungroupedRawKey];
 
-      if (groupMap.common) {
-        groupMap.common.push(currentKey);
-      } else {
-        groupMap.common = [currentKey];
-      }
-      return acc;
-    },
-    { input: {}, source: {} },
-  );
+    if (!ungroupedKey) return acc;
+
+    acc[ungroupedKey] ??= { input: {}, source: {} };
+    acc[ungroupedKey].input[currentKey] = rawKey;
+    acc[ungroupedKey].source[currentKey] = rawKey;
+
+    if (ungroupedKey === 'common') {
+      Object.keys(acc).forEach((key) => {
+        if (key !== 'common') {
+          acc[key].source[currentKey] = rawKey;
+        }
+      });
+    }
+
+    // Update groupMap
+    if (groupMap[ungroupedKey]) {
+      groupMap[ungroupedKey].push(currentKey);
+    } else {
+      groupMap[ungroupedKey] = [currentKey];
+    }
+
+    return acc;
+  };
+
+  const initialAcc = Object.values(ungroupedTokensMap).reduce((acc, curr) => {
+    acc[curr] = { input: {}, source: {} };
+    return acc;
+  }, {});
+
+  const ungroupedPathsData = ungroupedRaw.reduce(processUngroupedToken, initialAcc);
 
   globalGroup = {
     groupMap,
     pathsGroupData: {
       ...groupData,
-      common,
+      ...ungroupedPathsData,
     },
   };
 
