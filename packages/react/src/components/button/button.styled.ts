@@ -1,13 +1,6 @@
-import {
-  createStyledContext,
-  getTokenValue,
-  Stack,
-  styled,
-  stylePropsText,
-  Text,
-  validStyles,
-} from '@tamagui/core';
+import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { cloneElement, isValidElement, useContext } from 'react';
 import { BUTTON_COMPONENT_NAME } from './button.theme';
 import type {
@@ -26,34 +19,6 @@ export const ButtonContext = createStyledContext<ButtonContextType>({
   tone: 'brand',
 });
 
-function camelize(str: string) {
-  return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-}
-
-function isValidStyleProp(key: string, isText: boolean) {
-  return isText ? key in stylePropsText : key in validStyles;
-}
-
-function extractStyleProps(
-  obj: Record<string, unknown>,
-  opts = { componentKey: '', isText: false },
-) {
-  const { componentKey, isText } = opts;
-  return Object.keys(obj).reduce(
-    (acc, key) => {
-      if (!componentKey || key.startsWith(componentKey)) {
-        const currentKey = componentKey ? key.split('__')[1] : key;
-        const formattedKey = camelize(currentKey);
-        if (isValidStyleProp(formattedKey, isText)) {
-          acc[formattedKey] = obj[key];
-        }
-      }
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-}
-
 const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ButtonVariants> = (val, extras) => {
   const { props } = extras as ButtonVariantSpreadExtras<typeof Stack>;
   if (val === 'secondary') {
@@ -71,31 +36,6 @@ const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ButtonVariants> 
     backgroundColor: '$background',
   };
 };
-
-const propsMap = {
-  minSize: ['minWidth', 'minHeight'],
-  size: ['width', 'height'],
-  maxSize: ['maxWidth', 'maxHeight'],
-};
-
-function getMappedProps(obj: Record<string, unknown>) {
-  return Object.entries(obj).reduce((acc, [key, value]) => {
-    const mappedKey = propsMap[key as keyof typeof propsMap];
-    if (mappedKey) {
-      if (Array.isArray(mappedKey)) {
-        mappedKey.forEach((prop) => {
-          acc[prop] = value;
-        });
-      } else {
-        acc[mappedKey] = value;
-      }
-    } else {
-      acc[key] = value;
-    }
-
-    return acc;
-  }, {});
-}
 
 export const ButtonFrame = styled(Stack, {
   name: BUTTON_COMPONENT_NAME,
@@ -121,18 +61,11 @@ export const ButtonFrame = styled(Stack, {
       const button = config.button[val];
       const control = config.control[val];
 
-      if (!button) return {};
-
-      const buttonProps = Object.entries(button).reduce((acc, [key, value]) => {
-        if (typeof value !== 'object') {
-          acc[key] = value;
-        }
-        return acc;
-      }, {});
+      if (!button || !control) return {};
 
       return {
-        ...getMappedProps(buttonProps),
-        ...getMappedProps(control),
+        ...getMappedProps(button.frame),
+        ...getMappedProps(control.frame),
       };
     },
     disabled: {
@@ -160,7 +93,13 @@ const getButtonTextVariant: VariantSpreadFunction<GetProps<typeof Text>, ButtonV
   extras,
 ) => {
   const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
-  if (!props.disabled && props.variant !== 'primary') {
+  if (props.disabled) {
+    return {
+      color: '$content.neutral-tertiary',
+    };
+  }
+
+  if (props.variant !== 'primary') {
     return {
       color: `$content.${props.tone}-primary`,
     };
@@ -173,7 +112,6 @@ const getButtonTextVariant: VariantSpreadFunction<GetProps<typeof Text>, ButtonV
 
 export const ButtonOverlay = styled(Stack, {
   name: BUTTON_COMPONENT_NAME,
-  // context: ButtonContext,
   tag: 'span',
   position: 'absolute',
   top: 0,
@@ -213,60 +151,24 @@ export const ButtonText = styled(Text, {
 
   variants: {
     variant: getButtonTextVariant,
-    disabled: {
-      true: {
-        color: '$content.neutral-tertiary',
-      },
-    },
     size: (val: ButtonSizes, { props, tokens, ...rest }) => {
       const config = getComponentsConfig();
       const button = config.button[val];
 
       if (!button) return {};
 
-      const buttonText = button['label'];
-
-      return {
-        ...buttonText,
-      };
+      return getMappedProps(button.label);
     },
-    // size: {
-    // $200: getTypographyPreset('compact.200.accent'),
-    // $300: getTypographyPreset('compact.200.accent'),
-    // $400: getTypographyPreset('compact.250.accent'),
-    // $500: getTypographyPreset('compact.350.accent'),
-    // $600: getTypographyPreset('compact.350.accent'),
-    // $700: getTypographyPreset('compact.350.accent'),
-    // },
   } as const,
 });
 
-// const getIconColor = (ctx: ButtonContextType): ThemeTokens => {
-//   if (ctx.disabled) {
-//     return '$content.neutral-tertiary';
-//   }
-
-//   if (ctx.variant === 'primary') {
-//     if (!ctx.hasBackground) {
-//       return '$content.brand-primary';
-//     }
-//     return '$content.static-dark-primary';
-//   }
-
-//   if (ctx.variant === 'secondary') {
-//     return '$content.neutral-primary';
-//   }
-
-//   return '$content.neutral-primary';
-// };
-
 const getIconColor = (ctx: ButtonContextType): ColorTokens => {
-  if (ctx.variant === 'secondary') {
-    return '$colorSecondary';
+  if (ctx.disabled) {
+    return '$content.neutral-tertiary';
   }
 
-  if (ctx.variant === 'tertiary') {
-    return '$colorTertiary';
+  if (ctx.variant !== 'primary') {
+    return `$content.${ctx.tone}-primary`;
   }
 
   return '$color';
@@ -280,23 +182,15 @@ export const ButtonIcon = ({ children, ...rest }: { children: ReactNode }) => {
       'Xsolla-ZK UI: ButtonContext is missing. Button parts must be placed within <Button>.',
     );
   }
-
-  const size = {
-    $200: getTokenValue('$100', 'size') as number,
-    $300: getTokenValue('$100', 'size') as number,
-    $400: getTokenValue('$150', 'size') as number,
-    $500: getTokenValue('$200', 'size') as number,
-    $600: getTokenValue('$200', 'size') as number,
-    $700: getTokenValue('$200', 'size') as number,
-  } as Record<string, number>;
+  const config = getComponentsConfig();
+  const button = config.button[ctx.size];
 
   return isValidElement(children)
     ? cloneElement(children, {
         name: BUTTON_COMPONENT_NAME,
-        size: size[ctx.size],
+        size: button.icon.size,
         color: getIconColor(ctx),
         ...rest,
-        // color: getIconColor(ctx),
       } as {})
     : null;
 };

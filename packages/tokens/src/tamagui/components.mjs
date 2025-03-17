@@ -38,6 +38,7 @@ const validProps = {
   size: true,
   minSize: true,
   maxSize: true,
+  typography: true,
 };
 
 function checkTokenByPath(obj, path) {

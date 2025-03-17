@@ -4,105 +4,141 @@
  */
 export const button = {
   $200: {
-    paddingHorizontal: '$space.100',
+    frame: {
+      paddingHorizontal: '$space.100',
+    },
     icon: {
       size: '$size.100',
     },
     label: {
+      typography: 'compact.200.accent',
       paddingHorizontal: '$space.100',
     },
   },
   $300: {
-    paddingHorizontal: '$space.200',
+    frame: {
+      paddingHorizontal: '$space.200',
+    },
     icon: {
       size: '$size.100',
     },
     label: {
+      typography: 'compact.200.accent',
       paddingHorizontal: '$space.100',
     },
   },
   $400: {
-    paddingHorizontal: '$space.250',
+    frame: {
+      paddingHorizontal: '$space.250',
+    },
     icon: {
       size: '$size.150',
     },
     label: {
+      typography: 'compact.250.accent',
       paddingHorizontal: '$space.150',
     },
   },
   $500: {
-    paddingHorizontal: '$space.300',
+    frame: {
+      paddingHorizontal: '$space.300',
+    },
     icon: {
-      size: '$size.200',
+      size: '$size.150',
     },
     label: {
+      typography: 'compact.350.accent',
       paddingHorizontal: '$space.200',
     },
   },
   $600: {
-    paddingHorizontal: '$space.350',
+    frame: {
+      paddingHorizontal: '$space.350',
+    },
     icon: {
       size: '$size.200',
     },
     label: {
+      typography: 'compact.350.accent',
       paddingHorizontal: '$space.200',
     },
   },
   $700: {
-    paddingHorizontal: '$space.400',
+    frame: {
+      paddingHorizontal: '$space.400',
+    },
     icon: {
       size: '$size.200',
     },
     label: {
+      typography: 'compact.350.accent',
       paddingHorizontal: '$space.200',
     },
   },
 };
 export const control = {
   $100: {
-    minSize: '$size.100',
-    borderRadius: '$radius.200',
-    gap: '$space.0',
+    frame: {
+      minSize: '$size.100',
+      borderRadius: '$radius.200',
+      gap: '$space.0',
+    },
   },
   $200: {
-    minSize: '$size.200',
-    borderRadius: '$radius.300',
-    gap: '$space.100',
+    frame: {
+      minSize: '$size.200',
+      borderRadius: '$radius.300',
+      gap: '$space.50',
+    },
   },
   $300: {
-    minSize: '$size.300',
-    borderRadius: '$radius.300',
-    gap: '$space.100',
+    frame: {
+      minSize: '$size.300',
+      borderRadius: '$radius.300',
+      gap: '$space.100',
+    },
   },
   $400: {
-    minSize: '$size.400',
-    borderRadius: '$radius.400',
-    gap: '$space.100',
+    frame: {
+      minSize: '$size.400',
+      borderRadius: '$radius.400',
+      gap: '$space.100',
+    },
   },
   $500: {
-    minSize: '$size.500',
-    borderRadius: '$radius.500',
-    gap: '$space.100',
+    frame: {
+      minSize: '$size.500',
+      borderRadius: '$radius.500',
+      gap: '$space.100',
+    },
   },
   $600: {
-    minSize: '$size.600',
-    borderRadius: '$radius.500',
-    gap: '$space.150',
+    frame: {
+      minSize: '$size.600',
+      borderRadius: '$radius.500',
+      gap: '$space.150',
+    },
   },
   $700: {
-    minSize: '$size.700',
-    borderRadius: '$radius.550',
-    gap: '$space.150',
+    frame: {
+      minSize: '$size.700',
+      borderRadius: '$radius.550',
+      gap: '$space.150',
+    },
   },
   $800: {
-    minSize: '$size.800',
-    borderRadius: '$radius.600',
-    gap: '$space.200',
+    frame: {
+      minSize: '$size.800',
+      borderRadius: '$radius.600',
+      gap: '$space.200',
+    },
   },
   $900: {
-    minSize: '$size.900',
-    borderRadius: '$radius.700',
-    gap: '$space.200',
+    frame: {
+      minSize: '$size.900',
+      borderRadius: '$radius.700',
+      gap: '$space.200',
+    },
   },
 };
 export const richIcon = {
@@ -154,36 +190,52 @@ export const richIcon = {
 };
 export const semanticText = {
   headerXl: {
-    paddingTop: '$space.400',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.400',
+      paddingBottom: '$space.100',
+    },
   },
   headerL: {
-    paddingTop: '$space.350',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.350',
+      paddingBottom: '$space.100',
+    },
   },
   headerM: {
-    paddingTop: '$space.300',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.300',
+      paddingBottom: '$space.100',
+    },
   },
   headerS: {
-    paddingTop: '$space.200',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.200',
+      paddingBottom: '$space.100',
+    },
   },
   headerXs: {
-    paddingTop: '$space.200',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.200',
+      paddingBottom: '$space.100',
+    },
   },
   paragraphL: {
-    paddingTop: '$space.100',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.100',
+      paddingBottom: '$space.100',
+    },
   },
   paragraphM: {
-    paddingTop: '$space.100',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.100',
+      paddingBottom: '$space.100',
+    },
   },
   paragraphS: {
-    paddingTop: '$space.100',
-    paddingBottom: '$space.100',
+    frame: {
+      paddingTop: '$space.100',
+      paddingBottom: '$space.100',
+    },
   },
 };
 export const components = { button, control, richIcon, semanticText };

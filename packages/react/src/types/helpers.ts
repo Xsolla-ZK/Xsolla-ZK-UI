@@ -29,3 +29,11 @@ export type ExtractSubthemeKeys<
   T,
   Namespace extends string,
 > = T extends `${infer _Base}_${infer SubTheme}_${Namespace}` ? SubTheme : never;
+
+export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
+
+export type RecordToArray<T> = T extends Record<string, unknown> ? Array<T[keyof T]> : never;
