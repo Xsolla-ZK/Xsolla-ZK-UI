@@ -1,4 +1,5 @@
-import { components } from '@xsolla-zk-ui/config';
+import { components, deepMerge } from '@xsolla-zk-ui/config';
+import type { ValidProps } from './valid-props';
 
 export const defaultComponentsConfig = components;
 
@@ -12,16 +13,20 @@ export interface ComponentsConfig
 
 let currentComponentConfig = defaultComponentsConfig;
 
-type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
-
-type TokenShape<T, K extends keyof T> = T[K][keyof T[K]];
-
 type InitialConfig<T> = {
-  [K in keyof T]?: {
-    [P in keyof T[K]]?: DeepPartial<T[K][P]>;
-  } & {
-    [key: string]: Partial<TokenShape<T, K>>;
-  };
+  [K in keyof T]?: T[K] extends object
+    ? InitialConfig<T[K]>
+    : K extends keyof ValidProps
+      ? ValidProps[K]
+      : never;
+};
+
+type ReturnTypeConfig<T> = {
+  [K in keyof T]: T[K] extends object
+    ? ReturnTypeConfig<T[K]>
+    : K extends keyof ValidProps
+      ? ValidProps[K]
+      : never;
 };
 
 type MergeConfig<T extends InitialConfig<DefaultComponentsConfig>> = {
@@ -31,16 +36,17 @@ type MergeConfig<T extends InitialConfig<DefaultComponentsConfig>> = {
 export function initializeComponentsConfig<T extends InitialConfig<DefaultComponentsConfig>>(
   userConfig: T,
 ) {
-  const mergedConfig = (
-    Object.entries(defaultComponentsConfig) as Array<
-      [keyof DefaultComponentsConfig, DefaultComponentsConfig[keyof DefaultComponentsConfig]]
-    >
-  ).reduce((acc, [key, value]) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    acc[key] = { ...value, ...userConfig[key] };
-    return acc;
-  }, {} as MergeConfig<T>);
+  const mergedConfig = deepMerge(defaultComponentsConfig, userConfig) as MergeConfig<T>;
+  // const mergedConfig = (
+  //   Object.entries(defaultComponentsConfig) as Array<
+  //     [keyof DefaultComponentsConfig, DefaultComponentsConfig[keyof DefaultComponentsConfig]]
+  //   >
+  // ).reduce((acc, [key, value]) => {
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore
+  //   acc[key] = { ...value, ...userConfig[key] };
+  //   return acc;
+  // }, {} as MergeConfig<T>);
 
   currentComponentConfig = mergedConfig;
 }
@@ -48,26 +54,24 @@ export function initializeComponentsConfig<T extends InitialConfig<DefaultCompon
 // const cfg = initializeComponentsConfig({
 //   button: {
 //     $200: {
+//       frame: {
+//         paddingHorizontal: '$25',
+//       },
 //       icon: {
-//         size: '',
+//         size: '$80',
+//       },
+//       label: {
+//         typography: 'compact.200.numeric',
 //       },
 //     },
 //   },
-//   controlTokens: {
-//     $300: {
-//       'min-size': 32,
-//     },
-//   },
+//   // control: {
+//   //   $300: {
+//   //     'min-size': 32,
+//   //   },
+//   // },
 // });
 
-// type CFG = typeof cfg;
-// type ButtonTokens = CFG['buttonTokens'];
-// type asfasf = ButtonTokens['$1000'];
-
-// declare module '@xsolla-zk-ui/react' {
-//   interface ComponentCustomConfig extends CFG {}
-// }
-
-export function getComponentsConfig<T extends ComponentsConfig>() {
+export function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>() {
   return currentComponentConfig as T;
 }

@@ -4,105 +4,141 @@
  */
 export declare const button: {
     $200: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
     $300: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
     $400: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
     $500: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
     $600: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
     $700: {
-        paddingHorizontal: string;
+        frame: {
+            paddingHorizontal: string;
+        };
         icon: {
             size: string;
         };
         label: {
+            typography: string;
             paddingHorizontal: string;
         };
     };
 };
 export declare const control: {
     $100: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $200: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $300: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $400: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $500: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $600: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $700: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $800: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
     $900: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
+        };
     };
 };
 export declare const richIcon: {
@@ -154,140 +190,192 @@ export declare const richIcon: {
 };
 export declare const semanticText: {
     headerXl: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     headerL: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     headerM: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     headerS: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     headerXs: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     paragraphL: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     paragraphM: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
     paragraphS: {
-        paddingTop: string;
-        paddingBottom: string;
+        frame: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
     };
 };
 export declare const components: {
     button: {
         $200: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
         $300: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
         $400: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
         $500: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
         $600: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
         $700: {
-            paddingHorizontal: string;
+            frame: {
+                paddingHorizontal: string;
+            };
             icon: {
                 size: string;
             };
             label: {
+                typography: string;
                 paddingHorizontal: string;
             };
         };
     };
     control: {
         $100: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $200: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $300: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $400: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $500: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $600: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $700: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $800: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
         $900: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
+            };
         };
     };
     richIcon: {
@@ -339,36 +427,52 @@ export declare const components: {
     };
     semanticText: {
         headerXl: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         headerL: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         headerM: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         headerS: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         headerXs: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         paragraphL: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         paragraphM: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
         paragraphS: {
-            paddingTop: string;
-            paddingBottom: string;
+            frame: {
+                paddingTop: string;
+                paddingBottom: string;
+            };
         };
     };
 };

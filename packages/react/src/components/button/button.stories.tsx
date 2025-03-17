@@ -1,9 +1,8 @@
 import { expect, within } from '@storybook/test';
-import { styled, View } from '@tamagui/core';
-import { ArrowDown, Plus } from '@xsolla-zk-ui/icons';
+import { Plus } from '@xsolla-zk-ui/icons';
 import { useContext, useState } from 'react';
-import Button, { ButtonComponent } from './button';
-import { ButtonContext, ButtonFrame, ButtonText } from './button.styled';
+import Button from './button';
+import { ButtonContext } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 

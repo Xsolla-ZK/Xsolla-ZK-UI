@@ -11,6 +11,7 @@
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "references": [
-    { "path": "../config" }
+    { "path": "../config" },
+    { "path": "../icons" }
   ]
 }
