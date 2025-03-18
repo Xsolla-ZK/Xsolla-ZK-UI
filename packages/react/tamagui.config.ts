@@ -1,8 +1,10 @@
 import { createTamagui } from '@tamagui/core';
 import { createTheme, createThemes } from '@xsolla-zk-ui/config';
 import { webConfig } from '@xsolla-zk-ui/config/web';
+import { badgeTheme } from './src/components/badge/badge.theme';
 import { buttonTheme } from './src/components/button/button.theme';
 import { loaderTheme } from './src/components/loader/loader.theme';
+import { pimpleTheme } from './src/components/pimple/pimple.theme';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
@@ -14,6 +16,8 @@ const themesCompose = createThemes(webConfig.themes, {
   components: {
     button: buttonTheme,
     loader: loaderTheme,
+    badge: badgeTheme,
+    pimple: pimpleTheme,
   },
 });
 

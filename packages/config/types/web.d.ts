@@ -392,6 +392,14 @@ export declare const webConfig: {
             'layout.gutter.md': number;
             'layout.gutter.lg': number;
             'layout.gutter.xl': number;
+            'layout.margin-horizontal.sm': number;
+            'layout.margin-horizontal.md': number;
+            'layout.margin-horizontal.lg': number;
+            'layout.margin-horizontal.xl': number;
+            'layout.content-compensation.sm': number;
+            'layout.content-compensation.md': number;
+            'layout.content-compensation.lg': number;
+            'layout.content-compensation.xl': number;
         };
         typography: {
             'font.brand': string;
@@ -493,6 +501,8 @@ export declare const webConfig: {
             '999': number;
         };
         size: {
+            '0': number;
+            '20': number;
             '40': number;
             '60': number;
             '80': number;

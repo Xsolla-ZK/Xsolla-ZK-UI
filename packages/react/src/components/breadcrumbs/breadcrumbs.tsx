@@ -1,10 +1,8 @@
-import type { XZKUIBreadcrumbsProps } from './breadcrumbs.types';
-import Styled from './breadcrumbs.styled';
+import { withStaticProperties } from '@tamagui/core';
+import { BreadcrumbsFrame, BreadcrumbsItem } from './breadcrumbs.styled';
 
-function XZKUIBreadcrumbs({ children }: XZKUIBreadcrumbsProps) {
-  return (
-    <Styled.Root>{children}</Styled.Root>
-  );
-}
+const Breadcrumbs = withStaticProperties(BreadcrumbsFrame, {
+  Item: BreadcrumbsItem,
+});
 
-export default XZKUIBreadcrumbs;
+export default Breadcrumbs;

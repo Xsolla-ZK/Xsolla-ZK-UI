@@ -1,32 +1,35 @@
-import XZKUISvgIcon from '../svg-icon/svg-icon';
-import SvgPlus from '../svg-icons/plus';
-import XZKUIPimple from './pimple';
-import { pimpleThemeSizes } from './pimple.theme';
+import { View } from '@tamagui/core';
+import { Plus } from '@xsolla-zk-ui/icons';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import Pimple from './pimple';
+import type { PimpleProps } from './pimple.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
+const sizes = Object.keys(getComponentsConfig().pimple) as Array<PimpleProps['size']>;
+
 const meta = {
-  component: XZKUIPimple,
+  component: Pimple,
   parameters: {
     layout: 'centered',
   },
   tags: ['stable'],
   argTypes: {
-    children: { control: 'text' },
+    onPress: { table: { disable: true } },
+    children: { table: { disable: true } },
     size: {
       control: 'select',
-      options: pimpleThemeSizes,
+      options: sizes,
       table: {
-        defaultValue: { summary: '500' },
-        type: { summary: pimpleThemeSizes.join('|') },
+        defaultValue: { summary: '$500' },
+        type: { summary: sizes.join('|') },
       },
     },
   },
   args: {
-    children: '5',
-    // onClick: fn(),
+    children: <Pimple.Text>5</Pimple.Text>,
   },
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUIPimple>;
+} satisfies Meta<typeof Pimple>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -43,11 +46,11 @@ export const AllSizes: Story = {
   },
   args: {},
   render: ({ size, ...args }) => (
-    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-      {pimpleThemeSizes.map((size) => (
-        <XZKUIPimple key={size} size={size} {...args} />
+    <View display="flex" gap={6} alignItems="center">
+      {sizes.map((size) => (
+        <Pimple key={size} size={size} {...args} />
       ))}
-    </div>
+    </View>
   ),
 };
 
@@ -61,14 +64,14 @@ export const AllSizesWithIcon: Story = {
     },
   },
   args: {
-    children: <XZKUISvgIcon icon={SvgPlus} />,
+    children: <Pimple.Icon icon={Plus} />,
   },
   render: ({ size, ...args }) => (
-    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-      {pimpleThemeSizes.map((size) => (
-        <XZKUIPimple key={size} size={size} {...args} />
+    <View display="flex" gap={6} alignItems="center">
+      {sizes.map((size) => (
+        <Pimple key={size} size={size} {...args} />
       ))}
-    </div>
+    </View>
   ),
 };
 

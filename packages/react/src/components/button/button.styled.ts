@@ -1,8 +1,7 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
-import { cloneElement, isValidElement, useContext } from 'react';
-import { BUTTON_COMPONENT_NAME } from './button.theme';
 import type {
   ButtonContextType,
   ButtonSizes,
@@ -10,7 +9,8 @@ import type {
   ButtonVariantSpreadExtras,
 } from './button.types';
 import type { ColorTokens, GetProps, VariantSpreadFunction } from '@tamagui/core';
-import type { ReactNode } from 'react';
+
+export const BUTTON_COMPONENT_NAME = 'Button';
 
 export const ButtonContext = createStyledContext<ButtonContextType>({
   size: '$500',
@@ -49,14 +49,21 @@ export const ButtonFrame = styled(Stack, {
   alignItems: 'center',
   flexDirection: 'row',
   justifyContent: 'center',
-  maxWidth: '100%',
+  maxWidth: 'max-content',
   borderWidth: 0,
   overflow: 'hidden',
   cursor: 'pointer',
+  userSelect: 'none',
 
   variants: {
+    tone: {} as Record<ButtonContextType['tone'], GetProps<typeof Stack>>,
+    blured: {
+      true: {
+        backdropFilter: 'blur(200px)',
+      },
+    },
     variant: getVariant,
-    size: (val: ButtonSizes, { props, tokens, ...rest }) => {
+    size: (val: ButtonSizes, _extras) => {
       const config = getComponentsConfig();
       const button = config.button[val];
       const control = config.control[val];
@@ -65,7 +72,7 @@ export const ButtonFrame = styled(Stack, {
 
       return {
         ...getMappedProps(button.frame),
-        ...getMappedProps(control.frame),
+        ...getMappedProps(control),
       };
     },
     disabled: {
@@ -85,6 +92,7 @@ export const ButtonFrame = styled(Stack, {
     size: '$500',
     variant: 'primary',
     disabled: false,
+    tone: 'brand',
   },
 });
 
@@ -174,23 +182,36 @@ const getIconColor = (ctx: ButtonContextType): ColorTokens => {
   return '$color';
 };
 
-export const ButtonIcon = ({ children, ...rest }: { children: ReactNode }) => {
-  const ctx = useContext(ButtonContext.context);
+// export const ButtonIcon = ({ children, icon, ...rest }: XORIconProps) => {
+//   const ctx = useContext(ButtonContext.context);
 
-  if (!ctx) {
-    throw new Error(
-      'Xsolla-ZK UI: ButtonContext is missing. Button parts must be placed within <Button>.',
-    );
-  }
-  const config = getComponentsConfig();
-  const button = config.button[ctx.size];
+//   if (!ctx) {
+//     throw new Error(
+//       'Xsolla-ZK UI: ButtonContext is missing. Button parts must be placed within <Button>.',
+//     );
+//   }
+//   const config = getComponentsConfig();
+//   const button = config.button[ctx.size];
 
-  return isValidElement(children)
-    ? cloneElement(children, {
-        name: BUTTON_COMPONENT_NAME,
-        size: button.icon.size,
-        color: getIconColor(ctx),
-        ...rest,
-      } as {})
-    : null;
-};
+//   if (icon) {
+//     return createElement(icon, {
+//       name: BUTTON_COMPONENT_NAME,
+//       size: button.icon.size,
+//       color: getIconColor(ctx),
+//       ...rest,
+//     } as IconProps);
+//   }
+
+//   return isValidElement(children)
+//     ? cloneElement(children, {
+//         name: BUTTON_COMPONENT_NAME,
+//         size: button.icon.size,
+//         color: getIconColor(ctx),
+//         ...rest,
+//       } as {})
+//     : null;
+// };
+
+export const ButtonIcon = createIconComponent(BUTTON_COMPONENT_NAME, ButtonContext, 'button', {
+  getColorFn: getIconColor,
+});

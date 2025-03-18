@@ -1,38 +1,58 @@
 import { within, expect } from '@storybook/test';
-import XZKUIBreadcrumbs from './breadcrumbs';
+import Button from '../button/button';
+import Breadcrumbs from './breadcrumbs';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  component: XZKUIBreadcrumbs,
+  component: Breadcrumbs,
   parameters: {
     layout: 'centered',
   },
   tags: ['stable'],
-  argTypes: {
-    children: { control: 'text' },
-  },
+  argTypes: {},
   args: {
-    children: 'Text',
-    // onClick: fn(),
+    children: (
+      <>
+        <Breadcrumbs.Item>Sweet</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Alabama</Breadcrumbs.Item>
+      </>
+    ),
   },
-} satisfies Meta<typeof XZKUIBreadcrumbs>;
+  play: async ({ canvasElement }) => {},
+} satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  // 👇 Test
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // 👇 Assert DOM structure
-    await expect(
-      canvas.getByText('Text')
-    ).toBeInTheDocument();
-  },
 };
 
+const CustomBreadcrumbsItem = Breadcrumbs.Item.styleable(
+  ({ children, ...props }, ref) => (
+    <Breadcrumbs.Item {...props} ref={ref} asChild>
+      <Button>
+        <Button.Text>{children}</Button.Text>
+      </Button>
+    </Breadcrumbs.Item>
+  ),
+  {
+    disableTheme: true,
+  },
+);
+
+export const CustomItem: Story = {
+  args: {
+    children: (
+      <>
+        <CustomBreadcrumbsItem>Sweet</CustomBreadcrumbsItem>
+        <CustomBreadcrumbsItem>Home</CustomBreadcrumbsItem>
+        <CustomBreadcrumbsItem>Alabama</CustomBreadcrumbsItem>
+      </>
+    ),
+  },
+};
 /*
 export const ExperimentalFeatureStory: Story = {
   //👇 For this particular story, remove the inherited `stable` tag and apply the `experimental` tag

@@ -4,8 +4,13 @@ import path from 'path';
 const config: StorybookConfig = {
   stories: [
     '../src/components/semantic-text/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/separator/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/button/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/badge/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/rich-icon/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/breadcrumbs/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/flex-button/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/pimple/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 

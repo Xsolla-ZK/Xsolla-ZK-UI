@@ -39,6 +39,8 @@ export const radius = {
   '999': 999,
 };
 export const size = {
+  '0': 0,
+  '20': 4,
   '40': 8,
   '60': 10,
   '80': 12,

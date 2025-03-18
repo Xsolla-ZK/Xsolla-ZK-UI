@@ -1,13 +1,13 @@
-import type { pimpleThemeSizes } from './pimple.theme';
-import type { ReactNode } from 'react';
+import type { PimpleFrame } from './pimple.styled';
+import type { GetProps } from '@tamagui/core';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 
-type Sizes = (typeof pimpleThemeSizes)[number];
+export type PimpleSizes = keyof ComponentsConfig['pimple'];
 
-export interface PimpleBaseProps {
-  size: Sizes;
-}
+export type PimpleContextType = {
+  size: PimpleSizes;
+};
 
-export interface PimpleProps extends Partial<PimpleBaseProps> {
-  children: ReactNode;
-  className?: string;
-}
+export type PimpleSharedProps = GetProps<typeof PimpleFrame>;
+
+export interface PimpleProps extends PimpleSharedProps {}
