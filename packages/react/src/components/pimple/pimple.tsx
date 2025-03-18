@@ -1,23 +1,23 @@
-import clsx from 'clsx';
-import { isValidElement } from 'react';
-import xzkuiPimpleClasses from './pimple.classes';
-import Styled from './pimple.styled';
+import { withStaticProperties } from '@tamagui/core';
+import { PimpleFrame, PimpleIcon, PimpleText } from './pimple.styled';
 import type { PimpleProps } from './pimple.types';
+import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-function XZKUIPimple({ children, className, size = 500 }: PimpleProps) {
-  return (
-    <Styled.Root
-      className={clsx([
-        className,
-        isValidElement(children) &&
-          Object.prototype.hasOwnProperty.call(children.props, 'icon') &&
-          xzkuiPimpleClasses.withIcon,
-      ])}
-      xzkuiSize={size}
-    >
-      {size > 200 ? children : null}
-    </Styled.Root>
-  );
-}
+const PimpleComponent = PimpleFrame.styleable<PimpleProps>(
+  ({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
+    <PimpleFrame {...props} ref={ref}>
+      {props.size !== '$200' ? children : null}
+    </PimpleFrame>
+  ),
+  {
+    disableTheme: true,
+  },
+);
 
-export default XZKUIPimple;
+const Pimple = withStaticProperties(PimpleComponent, {
+  Text: PimpleText,
+  Icon: PimpleIcon,
+});
+
+export default Pimple;

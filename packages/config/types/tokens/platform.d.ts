@@ -11,6 +11,14 @@ export declare const ios: {
     'layout.gutter.md': number;
     'layout.gutter.lg': number;
     'layout.gutter.xl': number;
+    'layout.margin-horizontal.sm': number;
+    'layout.margin-horizontal.md': number;
+    'layout.margin-horizontal.lg': number;
+    'layout.margin-horizontal.xl': number;
+    'layout.content-compensation.sm': number;
+    'layout.content-compensation.md': number;
+    'layout.content-compensation.lg': number;
+    'layout.content-compensation.xl': number;
 };
 export declare const android: {
     'layout.col-number.sm': number;
@@ -21,6 +29,14 @@ export declare const android: {
     'layout.gutter.md': number;
     'layout.gutter.lg': number;
     'layout.gutter.xl': number;
+    'layout.margin-horizontal.sm': number;
+    'layout.margin-horizontal.md': number;
+    'layout.margin-horizontal.lg': number;
+    'layout.margin-horizontal.xl': number;
+    'layout.content-compensation.sm': number;
+    'layout.content-compensation.md': number;
+    'layout.content-compensation.lg': number;
+    'layout.content-compensation.xl': number;
 };
 export declare const web: {
     'layout.col-number.sm': number;
@@ -31,6 +47,14 @@ export declare const web: {
     'layout.gutter.md': number;
     'layout.gutter.lg': number;
     'layout.gutter.xl': number;
+    'layout.margin-horizontal.sm': number;
+    'layout.margin-horizontal.md': number;
+    'layout.margin-horizontal.lg': number;
+    'layout.margin-horizontal.xl': number;
+    'layout.content-compensation.sm': number;
+    'layout.content-compensation.md': number;
+    'layout.content-compensation.lg': number;
+    'layout.content-compensation.xl': number;
 };
 export declare const platform: {
     ios: {
@@ -42,6 +66,14 @@ export declare const platform: {
         'layout.gutter.md': number;
         'layout.gutter.lg': number;
         'layout.gutter.xl': number;
+        'layout.margin-horizontal.sm': number;
+        'layout.margin-horizontal.md': number;
+        'layout.margin-horizontal.lg': number;
+        'layout.margin-horizontal.xl': number;
+        'layout.content-compensation.sm': number;
+        'layout.content-compensation.md': number;
+        'layout.content-compensation.lg': number;
+        'layout.content-compensation.xl': number;
     };
     android: {
         'layout.col-number.sm': number;
@@ -52,6 +84,14 @@ export declare const platform: {
         'layout.gutter.md': number;
         'layout.gutter.lg': number;
         'layout.gutter.xl': number;
+        'layout.margin-horizontal.sm': number;
+        'layout.margin-horizontal.md': number;
+        'layout.margin-horizontal.lg': number;
+        'layout.margin-horizontal.xl': number;
+        'layout.content-compensation.sm': number;
+        'layout.content-compensation.md': number;
+        'layout.content-compensation.lg': number;
+        'layout.content-compensation.xl': number;
     };
     web: {
         'layout.col-number.sm': number;
@@ -62,6 +102,14 @@ export declare const platform: {
         'layout.gutter.md': number;
         'layout.gutter.lg': number;
         'layout.gutter.xl': number;
+        'layout.margin-horizontal.sm': number;
+        'layout.margin-horizontal.md': number;
+        'layout.margin-horizontal.lg': number;
+        'layout.margin-horizontal.xl': number;
+        'layout.content-compensation.sm': number;
+        'layout.content-compensation.md': number;
+        'layout.content-compensation.lg': number;
+        'layout.content-compensation.xl': number;
     };
 };
 //# sourceMappingURL=platform.d.ts.map

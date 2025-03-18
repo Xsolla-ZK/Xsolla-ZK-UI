@@ -135,7 +135,7 @@ const preview: Preview = {
     },
   },
   args: {
-    onClick: fn(),
+    onPress: fn(),
   },
   decorators: [
     withCorrectPropsOrder,

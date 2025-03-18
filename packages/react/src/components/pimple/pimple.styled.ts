@@ -1,32 +1,51 @@
-import styled from '@emotion/styled';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import xzkuiPimpleClasses from './pimple.classes';
-import type { PimpleBaseProps } from './pimple.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
+import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import type { PimpleContextType, PimpleSizes } from './pimple.types';
 
-type StyledProps = XZKUIStyledProps<PimpleBaseProps>;
+const PimpleContext = createStyledContext<PimpleContextType>({
+  size: '$500',
+});
 
-const Root = styled('div', {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme }) => `
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    border-radius: ${theme.common.radius[999]};
-    background-color: ${theme.theme.background.negativeHigh};
-    color: ${theme.theme.content.staticLightPrimary};
+export const PIMPLE_COMPONENT_NAME = 'Pimple';
 
-    &.${xzkuiPimpleClasses.withIcon} {
-      padding: 0;
-    }
-  `,
-  ({ theme, xzkuiSize }) => theme.components.pimple.sizes[xzkuiSize],
-);
+export const PimpleFrame = styled(Stack, {
+  name: PIMPLE_COMPONENT_NAME,
+  context: PimpleContext,
 
-const XZKUIPimpleStyled = {
-  Root,
-};
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '$background',
 
-export default XZKUIPimpleStyled;
+  variants: {
+    size: (val: PimpleSizes) => {
+      const config = getComponentsConfig();
+      const pimple = config.pimple[val];
+
+      if (!pimple) {
+        return {};
+      }
+      return getMappedProps(pimple.frame);
+    },
+  },
+});
+
+export const PimpleText = styled(Text, {
+  name: PIMPLE_COMPONENT_NAME,
+  context: PimpleContext,
+  color: '$color',
+
+  variants: {
+    size: (val: PimpleSizes) => {
+      const config = getComponentsConfig();
+      const pimple = config.pimple[val];
+      if (!pimple) {
+        return {};
+      }
+      return getMappedProps(pimple.label);
+    },
+  },
+});
+
+export const PimpleIcon = createIconComponent(PIMPLE_COMPONENT_NAME, PimpleContext, 'pimple');

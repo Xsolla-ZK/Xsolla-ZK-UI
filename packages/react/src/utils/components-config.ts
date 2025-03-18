@@ -51,27 +51,6 @@ export function initializeComponentsConfig<T extends InitialConfig<DefaultCompon
   currentComponentConfig = mergedConfig;
 }
 
-// const cfg = initializeComponentsConfig({
-//   button: {
-//     $200: {
-//       frame: {
-//         paddingHorizontal: '$25',
-//       },
-//       icon: {
-//         size: '$80',
-//       },
-//       label: {
-//         typography: 'compact.200.numeric',
-//       },
-//     },
-//   },
-//   // control: {
-//   //   $300: {
-//   //     'min-size': 32,
-//   //   },
-//   // },
-// });
-
 export function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>() {
   return currentComponentConfig as T;
 }

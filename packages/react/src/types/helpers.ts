@@ -37,3 +37,9 @@ export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never
   : never;
 
 export type RecordToArray<T> = T extends Record<string, unknown> ? Array<T[keyof T]> : never;
+
+export type ExtractDotNotationKeys<T, Prefix extends string = ''> = {
+  [K in keyof T & (string | number)]: T[K] extends Record<string, unknown>
+    ? `${Prefix}${K}` | ExtractDotNotationKeys<T[K], `${Prefix}${K}.`>
+    : `${Prefix}${K}`;
+}[keyof T & (string | number)];

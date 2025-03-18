@@ -1,12 +1,25 @@
 import { expect, within } from '@storybook/test';
+import { View } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
-import { useContext, useState } from 'react';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Fragment, useState } from 'react';
+import { Image } from '../image/image';
+import Separator from '../separator/separator';
 import Button from './button';
-import { ButtonContext } from './button.styled';
 import type { ButtonProps } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const sizes = Object.keys(Button.staticConfig?.variants?.size ?? {}) as Array<ButtonProps['size']>;
+const sizes = Object.keys(getComponentsConfig().button) as Array<ButtonProps['size']>;
+const variants = ['primary', 'secondary', 'tertiary'] as const;
+const tones = [
+  'brand',
+  'neutral',
+  'positive',
+  'warning',
+  'info',
+  'negative',
+  'brand-extra',
+] as const;
 
 const meta = {
   component: Button,
@@ -15,36 +28,32 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
-    // as: { control: false },
     size: {
       control: 'select',
       options: sizes,
-      // table: {
-      //   defaultValue: { summary: '$500' },
-      //   type: { summary: sizes.join('|') },
-      // },
+      table: {
+        defaultValue: { summary: '$500' },
+        type: { summary: sizes.join('|') },
+      },
     },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary'],
+      options: variants,
+      table: {
+        defaultValue: { summary: 'primary' },
+        type: { summary: variants.join('|') },
+      },
     },
-    theme: {
-      control: 'check',
-      options: ['neutral', 'warning'],
-      // table: {
-      //   defaultValue: { summary: 'primary' },
-      //   type: { summary: variants.join('|') },
-      // },
+    tone: {
+      control: 'inline-radio',
+      options: tones,
+      table: {
+        defaultValue: { summary: 'brand' },
+        type: { summary: tones.join('|') },
+      },
     },
-    // hasBackground: { type: 'boolean' },
     isLoading: { type: 'boolean' },
     children: { control: 'text' },
-    // startAdornment: {
-    //   control: false,
-    // },
-    // endAdornment: {
-    //   control: false,
-    // },
   },
   args: {
     children: <Button.Text>Button</Button.Text>,
@@ -56,123 +65,61 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    $md: {
-      scale: 1.2,
-    },
-    $lg: {
-      scale: 1.5,
-    },
-  },
+  args: {},
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Button')).toBeInTheDocument();
   },
 };
 
-// export const AllVariants: Story = {
-//   argTypes: {
-//     bgOff: { table: { disable: true } },
-//     variant: { table: { disable: true } },
-//   },
-//   args: {},
-//   render: (args) => (
-//     <div style={{ display: 'flex', gap: '12px' }}>
-//       {(Object.keys(theme.variants) as Array<keyof typeof theme.variants>).map((variant) => (
-//         <div key={variant} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-//           <XZKUIButton {...args} variant={variant} />
-//           <XZKUIButton {...args} bgOff variant={variant} />
-//         </div>
-//       ))}
-//       <XZKUISeparator />
-//     </div>
-//   ),
-// };
-
-// export const AllSizes: Story = {
-//   args: {},
-//   render: (args) => (
-//     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-//       {buttonThemeSizes.map((size) => (
-//         <XZKUIButton key={size} {...args} size={size} />
-//       ))}
-//     </div>
-//   ),
-// };
-
-// const CustomButtonRoot = styled(ButtonFrame, {
-//   context: ButtonContext,
-//   variants: {
-//     size: {
-//       $7000: (_) => ({}),
-//       $500: (_, { tokens }) => ({
-//         gap: tokens.space['$150'],
-//         // paddingHorizontal: tokens.space['$300'],
-//       }),
-//     },
-//   } as const,
-// });
-
-// const CustomButtonText = styled(ButtonText, {
-//   context: ButtonContext,
-//   variants: {
-//     size: {
-//       $1000: (_, { tokens }) => ({
-//         p: 40,
-//       }),
-//     },
-//   } as const,
-// });
-
-// const CustomButton = ButtonComponent.overrides(
-//   {
-//     Root: CustomButtonRoot,
-//     Text: CustomButtonText,
-//   },
-//   // (Root, { children, ...props }, ref) => (
-//   //   <Root {...props} ref={ref}>
-//   //     Hello
-//   //     {children}
-//   //   </Root>
-//   // ),
-// );
-
-const SomeComponent = () => {
-  const ctx = useContext(ButtonContext);
-  console.log(ctx);
-  return 'SomeComponent';
+export const AllVariants: Story = {
+  argTypes: {
+    variant: { table: { disable: true } },
+  },
+  args: {},
+  render: (args) => (
+    <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+      {variants.map((variant, idx) => (
+        <Fragment key={variant}>
+          <View display="flex" flexDirection="column" alignItems="center" gap={12}>
+            <Button {...args} variant={variant} />
+            <Button {...args} variant={variant} disabled />
+            <Button {...args} variant={variant} isLoading />
+          </View>
+          {idx < variants.length - 1 && <Separator vertical />}
+        </Fragment>
+      ))}
+    </View>
+  ),
 };
 
-// export const Test: Story = {
-//   render: (args) => {
-//     const TestButton = () => {
-//       const [isLoading, setIsLoading] = useState(false);
-//       return (
-//         <CustomButton
-//           {...args}
-//           // size="$1000"
-//           // size="$7000"
-//           // theme="secondary"
-//           // isLoading={isLoading}
-//           disabled={isLoading}
-//           onPress={() => {
-//             setIsLoading(true);
-//             setTimeout(() => setIsLoading(false), 2000);
-//           }}
-//         >
-//           <CustomButton.Text color="$content.neutral-secondary">Label</CustomButton.Text>
-//           <CustomButton.Text size="$1000">Value</CustomButton.Text>
-//           <View animation="state" rotate={isLoading ? '180deg' : '0deg'}>
-//             <CustomButton.Icon>
-//               <ArrowDown />
-//             </CustomButton.Icon>
-//           </View>
-//         </CustomButton>
-//       );
-//     };
-//     return <TestButton />;
-//   },
-// };
+export const AllSizes: Story = {
+  argTypes: {
+    size: { table: { disable: true } },
+  },
+  args: {},
+  render: (args) => (
+    <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+      {sizes.map((size) => (
+        <Button key={size} {...args} size={size} />
+      ))}
+    </View>
+  ),
+};
+
+export const AllTones: Story = {
+  argTypes: {
+    tone: { table: { disable: true } },
+  },
+  args: {},
+  render: (args) => (
+    <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+      {tones.map((tone) => (
+        <Button key={tone} {...args} tone={tone as ButtonProps['tone']} />
+      ))}
+    </View>
+  ),
+};
 
 export const Disabled: Story = {
   args: {
@@ -180,25 +127,28 @@ export const Disabled: Story = {
   },
 };
 
-export const Themable: Story = {
+export const BluredOnImage: Story = {
   args: {
-    theme: 'secondary',
+    blured: true,
   },
-};
-export const Warning: Story = {
-  args: {
-    theme: 'warning',
+  parameters: {
+    layout: 'fullscreen',
   },
-};
-export const Positive: Story = {
-  args: {
-    theme: 'positive',
-  },
-};
-export const Info: Story = {
-  args: {
-    theme: 'info',
-  },
+  render: (args) => (
+    <View width="100vw" height="100vh" alignItems="center" justifyContent="center">
+      <Image
+        source={{ uri: 'https://picsum.photos/id/28/4928/3264', width: 2464, height: 1632 }}
+        width="100%"
+        height="100%"
+        objectFit="cover"
+        position="absolute"
+      />
+      <View flexDirection="column" gap={12}>
+        <Button {...args} variant="secondary" />
+        <Button {...args} disabled />
+      </View>
+    </View>
+  ),
 };
 
 export const SimulateRequest: Story = {
@@ -242,31 +192,45 @@ export const IconLeft: Story = {
     ),
   },
 };
+export const IconRight: Story = {
+  args: {
+    children: (
+      <>
+        <Button.Text>Button</Button.Text>
+        <Button.Icon icon={Plus} />
+      </>
+    ),
+  },
+};
+export const IconLeftAndRight: Story = {
+  args: {
+    children: (
+      <>
+        <Button.Icon icon={Plus} />
+        <Button.Text>Button</Button.Text>
+        <Button.Icon>
+          <Plus />
+        </Button.Icon>
+      </>
+    ),
+  },
+};
 
-// export const IconRight: Story = {
-//   args: {
-//     endAdornment: <XZKUISvgIcon icon={SvgPlus} />,
-//   },
-// };
-
-// export const IconLeftAndRight: Story = {
-//   args: {
-//     startAdornment: <XZKUISvgIcon icon={SvgPlus} />,
-//     endAdornment: <XZKUISvgIcon icon={SvgPlus} />,
-//   },
-// };
-
-// export const TruncatedText: Story = {
-//   args: {
-//     children:
-//       'A very long label with a character limit because it is important to show all the text and there is no cell navigation to view in more detail',
-//   },
-//   render: (args) => (
-//     <div style={{ width: 200 }}>
-//       <XZKUIButton {...args} />
-//     </div>
-//   ),
-// };
+export const TruncatedText: Story = {
+  args: {
+    children: (
+      <Button.Text>
+        A very long label with a character limit because it is important to show all the text and
+        there is no cell navigation to view in more detail
+      </Button.Text>
+    ),
+  },
+  render: (args) => (
+    <View width={200}>
+      <Button {...args} />
+    </View>
+  ),
+};
 
 // export const FullWidth: Story = {
 //   args: {

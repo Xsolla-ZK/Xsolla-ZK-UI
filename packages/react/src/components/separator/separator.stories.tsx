@@ -1,8 +1,10 @@
-import XZKUISeparator from './separator';
+import { View } from '@tamagui/core';
+import Separator from './separator';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { ColorTokens } from '@tamagui/core';
 
 const meta = {
-  component: XZKUISeparator,
+  component: Separator,
   parameters: {
     layout: 'centered',
   },
@@ -22,13 +24,13 @@ const meta = {
   args: {},
   decorators: [
     (Story) => (
-      <div style={{ display: 'flex', alignItems: 'center', width: 400, height: 200 }}>
+      <View alignItems="center" width={400} height={200}>
         <Story />
-      </div>
+      </View>
     ),
   ],
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUISeparator>;
+} as Meta<typeof Separator>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -39,7 +41,7 @@ export const Default: Story = {
 
 export const CustomColor: Story = {
   args: {
-    color: '#ff0000',
+    color: '#ff0000' as ColorTokens,
   },
 };
 

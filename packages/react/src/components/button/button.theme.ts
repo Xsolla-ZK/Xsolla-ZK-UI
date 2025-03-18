@@ -1,6 +1,5 @@
-import { components, createComponentTheme } from '@xsolla-zk-ui/config';
-
-export const BUTTON_COMPONENT_NAME = 'Button';
+import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { BUTTON_COMPONENT_NAME } from './button.styled';
 
 export const buttonTheme = createComponentTheme(
   BUTTON_COMPONENT_NAME,
@@ -13,6 +12,26 @@ export const buttonTheme = createComponentTheme(
     neutral: (tokens) => ({
       background: tokens['background.neutral-high'],
       color: tokens['content.on-neutral'],
+    }),
+    positive: (tokens) => ({
+      background: tokens['background.positive-high'],
+      color: tokens['content.on-positive'],
+    }),
+    warning: (tokens) => ({
+      background: tokens['background.warning-high'],
+      color: tokens['content.on-warning'],
+    }),
+    info: (tokens) => ({
+      background: tokens['background.info-high'],
+      color: tokens['content.on-info'],
+    }),
+    negative: (tokens) => ({
+      background: tokens['background.negative-high'],
+      color: tokens['content.on-negative'],
+    }),
+    'brand-extra': (tokens) => ({
+      background: tokens['background.brand-extra-high'],
+      color: tokens['content.on-brand-extra'],
     }),
   },
 );

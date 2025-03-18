@@ -39,6 +39,8 @@ export declare const radius: {
     '999': number;
 };
 export declare const size: {
+    '0': number;
+    '20': number;
     '40': number;
     '60': number;
     '80': number;
@@ -122,6 +124,8 @@ export declare const tokens: {
         '999': number;
     };
     size: {
+        '0': number;
+        '20': number;
         '40': number;
         '60': number;
         '80': number;
