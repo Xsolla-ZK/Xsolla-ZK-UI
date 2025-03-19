@@ -1,18 +1,15 @@
-import {
-  createStyledContext,
-  getTokenValue,
-  Stack,
-  styled,
-  ThemeKeys,
-  useTheme,
-} from '@tamagui/core';
-import { withStaticProperties } from '@tamagui/core';
-import { createElement, useContext } from 'react';
-import { cloneElement } from 'react';
-import { isValidElement } from 'react';
+import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { Svg as _Svg } from 'react-native-svg';
-import { ButtonContext } from '../button/button.styled';
-import type { SizeTokens, ThemeTokens } from '@tamagui/core';
+import Pimple from '../pimple/pimple';
+import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
+import type { GetProps } from '@tamagui/core';
+import type { IconProps } from '@tamagui/helpers-icon';
+import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
+
+export const RICH_ICON_COMPONENT_NAME = 'RichIcon';
 
 export const richIconPaths = {
   circle:
@@ -38,52 +35,123 @@ export const richIconPaths = {
     'M0 60C0 71.0457 8.95431 80 20 80C31.0457 80 40 71.0457 40 60C40 71.0457 48.9543 80 60 80C71.0457 80 80 71.0457 80 60V20C80 8.9543 71.0457 0 60 0C48.9543 0 40 8.9543 40 20C40 8.9543 31.0457 0 20 0C8.95431 0 0 8.9543 0 20V60Z',
 };
 
-export const RichIconContext = createStyledContext({
-  size: '$500' as SizeTokens,
-  bg: '$background.brand-high' as ThemeTokens,
+export const RichIconContext = createStyledContext<RichIconContextType>({
+  size: '$500',
+  backgroundColor: '$overlay.neutral',
+  noShape: false,
 });
 
-export const Root = styled(Stack, {
-  name: 'RichIcon',
+export const RichIconFrame = styled(Stack, {
+  name: RICH_ICON_COMPONENT_NAME,
   context: RichIconContext,
   position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'transparent',
 
   variants: {
-    button: {
+    backgroundColor: () => ({}),
+    noShape: {
+      false: {},
+    },
+    pressable: {
       true: {
         tag: 'button',
         role: 'button',
         border: 'none',
-        background: 'transparent',
+        backgroundColor: 'transparent',
         padding: 0,
         cursor: 'pointer',
       },
     },
+    size: (val: RichIconSizes) => {
+      const config = getComponentsConfig();
+      const control = config.control[val];
+
+      if (!control) {
+        return {};
+      }
+
+      return {
+        minWidth: getMappedProps(control).minWidth,
+        minHeight: getMappedProps(control).minHeight,
+      };
+    },
   } as const,
+  defaultVariants: {
+    noShape: false,
+    size: '$500',
+    backgroundColor: '$overlay.neutral',
+    pressable: false,
+  },
 });
 
-export const Svg = styled(_Svg, {
+const Svg = styled(_Svg, {
   position: 'relative',
   userSelect: 'none',
 });
 
-export const Icon = (props) => {
-  const { size, bg } = useContext(RichIconContext.context);
-  // const theme = useTheme();
+export const RichIconShapeIcon = (props: Omit<GetProps<typeof Svg>, 'width' | 'height'>) => {
+  const { size, backgroundColor } = useContext(RichIconContext.context);
+
+  const config = getComponentsConfig();
+  const control = config.control[size];
+
+  if (!control) {
+    return null;
+  }
+
   return createElement(Svg, {
-    width: getTokenValue(size, 'size'),
-    height: getTokenValue(size, 'size'),
-    color: bg,
+    width: control.minSize,
+    height: control.minSize,
+    color: backgroundColor,
     ...props,
   });
 };
 
-export const Content = styled(Stack, {
-  name: 'RichIconContent',
+export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
+  const ctx = useContext(RichIconContext.context);
+
+  if (!ctx) {
+    throw new Error(
+      `Xsolla-ZK UI: ${RICH_ICON_COMPONENT_NAME}Context is missing. ${RICH_ICON_COMPONENT_NAME} parts must be placed within <${RICH_ICON_COMPONENT_NAME}>.`,
+    );
+  }
+
+  const config = getComponentsConfig();
+  const control = config.control[ctx.size];
+  const componentProps = config.richIcon[ctx.size];
+
+  if (!componentProps || !control) {
+    throw new Error(
+      `Xsolla-ZK UI: ${RICH_ICON_COMPONENT_NAME} component props for size ${ctx.size} not found.`,
+    );
+  }
+
+  const iconSize = ctx.noShape ? control.minSize : componentProps.icon.size;
+
+  if (icon) {
+    return createElement(icon, {
+      name: RICH_ICON_COMPONENT_NAME,
+      size: iconSize,
+      color: '$color',
+      ...rest,
+    } as IconProps);
+  }
+
+  return isValidElement(children)
+    ? cloneElement(children, {
+        name: RICH_ICON_COMPONENT_NAME,
+        size: iconSize,
+        color: '$color',
+        ...rest,
+      } as {})
+    : null;
+};
+
+export const Content = styled(Text, {
+  name: RICH_ICON_COMPONENT_NAME,
+  context: RichIconContext,
   position: 'absolute',
   top: 0,
   left: 0,
@@ -92,21 +160,19 @@ export const Content = styled(Stack, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '$5',
+  color: '$color',
 
   variants: {
-    noShape: {
-      true: {
-        fontSize: '$6',
-      },
-    },
+    noShape: () => ({
+      backgroundColor: 'transparent',
+    }),
   },
 });
 
-const RichIconStyled = withStaticProperties(Root, {
-  Props: RichIconContext.Provider,
-  Icon,
-  Content,
+const Pimp = styled(Pimple, {
+  context: RichIconContext,
 });
 
-export default RichIconStyled;
+export const RichIconPimple = Object.assign(Pimp, {
+  Text: Pimple.Text,
+});

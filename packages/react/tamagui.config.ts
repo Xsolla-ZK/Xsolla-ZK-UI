@@ -21,38 +21,6 @@ const themesCompose = createThemes(webConfig.themes, {
   },
 });
 
-// console.log(
-//   createThemes(
-//     {
-//       light: {
-//         'background.brand-high': '#000',
-//         'overlay.brand': '#000',
-//         'content.static-dark-primary': '#000',
-//         'content.brand-primary': '#000',
-//         'background.neutral-high': '#000',
-//         'content.neutral-primary-inverted': '#000',
-//         'overlay.warning': '#000',
-//         'content.warning-primary': '#000',
-//       },
-//       dark: {
-//         'background.brand-high': '#fff',
-//         'overlay.brand': '#fff',
-//         'content.static-dark-primary': '#fff',
-//         'content.brand-primary': '#fff',
-//         'background.neutral-high': '#fff',
-//         'content.neutral-primary-inverted': '#fff',
-//         'overlay.warning': '#fff',
-//         'content.warning-primary': '#fff',
-//       },
-//     },
-//     {
-//       components: {
-//         button: buttonTheme,
-//       },
-//     },
-//   ),
-// );
-
 export const config = createTamagui({
   ...webConfig,
   tokens: {

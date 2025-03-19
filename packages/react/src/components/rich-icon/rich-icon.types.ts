@@ -1,14 +1,22 @@
-import type { richIconPaths } from './rich-icon.styled';
-import type { richIconThemeSizes } from './rich-icon.theme';
-import type { PimpleProps } from '../pimple/pimple.types';
-import type { ElementType, SVGAttributes } from 'react';
+import type { RichIconFrame, richIconPaths } from './rich-icon.styled';
+import type { ColorTokens, GetProps } from '@tamagui/core';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { Path } from 'react-native-svg';
 
 export type RichIconShape = keyof typeof richIconPaths;
+export type RichIconSizes = keyof ComponentsConfig['richIcon'];
 
-type Sizes = (typeof richIconThemeSizes)[number];
-export interface RichIconProps {
+export type RichIconContextType = {
+  size: RichIconSizes;
+  backgroundColor: ColorTokens;
+  noShape: boolean;
+};
+
+export type RichIconSharedProps = GetProps<typeof RichIconFrame>;
+
+export interface RichIconProps extends RichIconSharedProps {
   shape?: RichIconShape | false;
-  backdropProps?: SVGAttributes<SVGPathElement>;
+  backdropProps?: GetProps<typeof Path>;
   imageSrc?: string;
-  pimple?: Omit<PimpleProps, 'size'>;
+  color?: ColorTokens;
 }

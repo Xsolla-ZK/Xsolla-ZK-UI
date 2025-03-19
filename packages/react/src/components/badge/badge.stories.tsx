@@ -67,7 +67,7 @@ export const AllTones: Story = {
   render: (args) => (
     <View display="flex" flexDirection="row" alignItems="center" gap={12}>
       {tones.map((tone) => (
-        <Badge key={tone} {...args} tone={tone} />
+        <Badge key={tone} {...args} tone={tone as BadgeProps['tone']} />
       ))}
     </View>
   ),
