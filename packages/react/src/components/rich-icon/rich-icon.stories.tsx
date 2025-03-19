@@ -1,10 +1,12 @@
-import { expect, within } from '@storybook/test';
+import { Plus } from '@xsolla-zk-ui/icons';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import Pimple from '../pimple/pimple';
 import RichIcon from './rich-icon';
 import { richIconPaths } from './rich-icon.styled';
-import { richIconThemeSizes } from './rich-icon.theme';
+import type { RichIconProps } from './rich-icon.types';
 import type { Meta, StoryObj } from '@storybook/react';
-import SemanticText from '../semantic-text/semantic-text';
-import { Text } from '@tamagui/core';
+
+const sizes = Object.keys(getComponentsConfig().richIcon) as Array<RichIconProps['size']>;
 
 const meta = {
   component: RichIcon,
@@ -18,24 +20,25 @@ const meta = {
         type: { summary: Object.keys(richIconPaths).join('|') },
       },
       control: 'select',
-      options: Object.keys(richIconPaths),
+      options: [...Object.keys(richIconPaths), false],
     },
     size: {
       control: 'select',
-      options: richIconThemeSizes,
+      options: sizes,
       table: {
-        defaultValue: { summary: '500' },
-        type: { summary: richIconThemeSizes.join('|') },
+        defaultValue: { summary: '$500' },
+        type: { summary: sizes.join('|') },
       },
     },
-    bg: {
+    backgroundColor: {
       control: 'color',
+    },
+    pressable: {
+      control: 'boolean',
     },
   },
   args: {
-    children: <Text>Test</Text>,
-    // children: <XZKUISvgIcon data-testid="children-icon" icon={SvgPlus} />,
-    // onClick: fn(),
+    children: <RichIcon.Icon data-testid="children-icon" icon={Plus} />,
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof RichIcon>;
@@ -44,34 +47,38 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {},
+};
+
+export const Pressable: Story = {
   args: {
-    button: true,
+    pressable: true,
   },
 };
 
-// export const CustomBg: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             bg="#a81caf"
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     bg: '#a81caf',
-//   },
-// };
+export const CustomBg: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon
+            backgroundColor="#a81caf"
+          >
+            <RichIcon.Icon
+              icon={Plus}
+            />
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    backgroundColor: '#a81caf',
+  },
+};
 
 // export const CustomBgThemeBased: Story = {
 //   parameters: {
@@ -152,29 +159,29 @@ export const Default: Story = {
 //   ),
 // };
 
-// export const WithoutShape: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             shape={false}
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     shape: false,
-//   },
-// };
+export const WithoutShape: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon
+            shape={false}
+          >
+            <RichIcon.Icon
+              icon={Plus}
+            />
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    shape: false,
+  },
+};
 
 // export const WithStrokeShape: Story = {
 //   parameters: {
@@ -236,33 +243,36 @@ export const Default: Story = {
 //   },
 // };
 
-// export const WithPimple: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             pimple={{
-//               children: 5,
-//             }}
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     pimple: {
-//       children: 5,
-//     },
-//   },
-// };
+export const WithPimple: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon>
+            <RichIcon.Icon
+              icon={Plus}
+            />
+            <RichIcon.Pimple>
+              <RichIcon.Pimple.Text>5</RichIcon.Pimple.Text>
+            </RichIcon.Pimple>
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {},
+  render: (args) => (
+    <RichIcon {...args}>
+      <RichIcon.Icon icon={Plus} />
+      <RichIcon.Pimple>
+        <RichIcon.Pimple.Text>5</RichIcon.Pimple.Text>
+      </RichIcon.Pimple>
+    </RichIcon>
+  ),
+};
 
 {
   /* export const SShapeRounded: Story = {

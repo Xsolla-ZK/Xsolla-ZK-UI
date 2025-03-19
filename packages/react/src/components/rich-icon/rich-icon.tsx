@@ -1,31 +1,26 @@
-import { ClipPath, Defs, G, Image, Path, Rect, Svg } from 'react-native-svg';
-// import XZKUIPimple from '../pimple/pimple';
-import { Content, Icon, richIconPaths } from './rich-icon.styled';
-import RichIconStyled from './rich-icon.styled';
-import type { RichIconShape } from './rich-icon.types';
-import type { GetProps, ThemeTokens } from '@tamagui/core';
+import { withStaticProperties } from '@tamagui/core';
+import { ClipPath, Defs, G, Image, Path, Rect } from 'react-native-svg';
+import {
+  Content,
+  RichIconContext,
+  RichIconFrame,
+  RichIconIcon,
+  richIconPaths,
+  RichIconPimple,
+  RichIconShapeIcon,
+} from './rich-icon.styled';
+import type { RichIconProps } from './rich-icon.types';
+import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-export interface RichIconProps extends GetProps<typeof RichIconStyled> {
-  shape?: RichIconShape | false;
-  backdropProps?: GetProps<typeof Path>;
-  imageSrc?: string;
-  color?: ThemeTokens;
-  // pimple?: Omit<ComponentProps<typeof XZKUIPimple>, 'size'>;
-}
-
-const RichIcon = function RichIcon({
-  shape = 'circle',
-  children,
-  backdropProps,
-  imageSrc,
-  color = '$background.brand-high',
-  // pimple,
-  ...rest
-}: RichIconProps) {
-  return (
-    <RichIconStyled {...rest}>
+const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
+  (
+    { shape = 'circle', children, backdropProps, imageSrc, ...rest },
+    ref: ForwardedRef<TamaguiElement>,
+  ) => (
+    <RichIconFrame noShape={!shape} {...rest} ref={ref}>
       {shape && (
-        <Icon color={color} viewBox="0 0 80 80">
+        <RichIconShapeIcon viewBox="0 0 80 80">
           <Defs>
             <ClipPath id={`icon-clip-${shape}`}>
               <Path d={richIconPaths[shape]} {...backdropProps} />
@@ -56,12 +51,18 @@ const RichIcon = function RichIcon({
               clipPath={`url(#icon-clip-${shape}`}
             />
           )}
-        </Icon>
+        </RichIconShapeIcon>
       )}
-      <Content noShape={!shape}>{children}</Content>
+      {shape ? <Content>{children}</Content> : children}
       {/* {pimple && <XZKUIPimple {...pimple} />} */}
-    </RichIconStyled>
-  );
-};
+    </RichIconFrame>
+  ),
+);
+
+const RichIcon = withStaticProperties(RichIconComponent, {
+  Props: RichIconContext.Provider,
+  Icon: RichIconIcon,
+  Pimple: RichIconPimple,
+});
 
 export default RichIcon;

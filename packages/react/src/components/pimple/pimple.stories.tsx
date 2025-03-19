@@ -26,7 +26,7 @@ const meta = {
     },
   },
   args: {
-    children: <Pimple.Text>5</Pimple.Text>,
+    children: <Pimple.Text>2</Pimple.Text>,
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof Pimple>;
@@ -36,6 +36,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
+};
+
+export const MoreContent: Story = {
+  args: {
+    children: <Pimple.Text>9+</Pimple.Text>,
+  },
 };
 
 export const AllSizes: Story = {

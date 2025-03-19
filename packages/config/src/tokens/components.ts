@@ -26,75 +26,77 @@ export const badge = {
     },
   },
 };
-export const boardList = {
-  large: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '{layout.content-compensation.md}',
-      paddingVertical: '$space.350',
-      borderRadius: '$radius.550',
+export const board = {
+  list: {
+    large: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$platform.layout.content-compensation.md',
+        paddingVertical: '$space.350',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.200',
+      },
     },
-    content: {
-      minHeight: '$size.200',
-    },
-  },
-  medium: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '{layout.content-compensation.md}',
-      paddingVertical: '$space.350',
-      borderRadius: '$radius.550',
-    },
-    content: {
-      minHeight: '$size.200',
-    },
-  },
-};
-export const boardCell = {
-  large: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '{layout.content-compensation.md}',
-      paddingVertical: '$space.200',
-      borderRadius: '$radius.550',
-    },
-    content: {
-      minHeight: '$size.700',
+    medium: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$platform.layout.content-compensation.md',
+        paddingVertical: '$space.350',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.200',
+      },
     },
   },
-  medium: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '{layout.content-compensation.md}',
-      paddingVertical: '$space.200',
-      borderRadius: '$radius.550',
+  cell: {
+    large: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$platform.layout.content-compensation.md',
+        paddingVertical: '$space.200',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.700',
+      },
     },
-    content: {
-      minHeight: '$size.600',
+    medium: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$platform.layout.content-compensation.md',
+        paddingVertical: '$space.200',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.600',
+      },
+    },
+    small: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$platform.layout.content-compensation.md',
+        paddingVertical: '$space.100',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.600',
+      },
     },
   },
-  small: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '{layout.content-compensation.md}',
-      paddingVertical: '$space.100',
-      borderRadius: '$radius.550',
-    },
-    content: {
-      minHeight: '$size.600',
-    },
-  },
-};
-export const boardAccordion = {
-  medium: {
-    frame: {
-      paddingLeft: '{layout.content-compensation.md}',
-      paddingRight: '$space.200',
-      paddingVertical: '$space.200',
-      borderRadius: '$radius.500',
-    },
-    content: {
-      minHeight: '$size.0',
+  accordion: {
+    medium: {
+      frame: {
+        paddingLeft: '$platform.layout.content-compensation.md',
+        paddingRight: '$space.200',
+        paddingVertical: '$space.200',
+        borderRadius: '$radius.500',
+      },
+      content: {
+        minHeight: '$size.0',
+      },
     },
   },
 };
@@ -183,35 +185,37 @@ export const button = {
   },
 };
 export const cell = {
-  large: {
-    frame: {
-      gap: '$space.300',
-      paddingVertical: '$space.200',
+  size: {
+    large: {
+      frame: {
+        gap: '$space.300',
+        paddingVertical: '$space.200',
+      },
+      content: {
+        minHeight: '$size.250',
+        paddingVertical: '$space.100',
+      },
+      slot: {
+        minHeight: '$size.500',
+      },
     },
-    content: {
-      minHeight: '$size.250',
-      paddingVertical: '$space.100',
-    },
-    slot: {
-      minHeight: '$size.500',
+    medium: {
+      frame: {
+        gap: '$space.250',
+        paddingVertical: '$space.150',
+      },
+      content: {
+        minHeight: '$size.200',
+        paddingVertical: '$space.50',
+      },
+      slot: {
+        minHeight: '$size.400',
+      },
     },
   },
-  medium: {
-    frame: {
-      gap: '$space.250',
-      paddingVertical: '$space.150',
-    },
-    content: {
-      minHeight: '$size.200',
-      paddingVertical: '$space.50',
-    },
-    slot: {
-      minHeight: '$size.400',
-    },
+  addon: {
+    gap: '$space.200',
   },
-};
-export const addon = {
-  gap: '$space.200',
 };
 export const chips = {
   $200: {
@@ -312,25 +316,31 @@ export const control = {
 };
 export const dropdown = {
   $400: {
-    marginTop: '$space.100',
-    padding: '$space.100',
-    borderRadius: '$radius.400',
+    frame: {
+      marginTop: '$space.100',
+      padding: '$space.100',
+      borderRadius: '$radius.400',
+    },
     content: {
       paddingHorizontal: '$space.200',
     },
   },
   $500: {
-    marginTop: '$space.200',
-    padding: '$space.200',
-    borderRadius: '$radius.500',
+    frame: {
+      marginTop: '$space.200',
+      padding: '$space.200',
+      borderRadius: '$radius.500',
+    },
     content: {
       paddingHorizontal: '$space.200',
     },
   },
   $600: {
-    marginTop: '$space.200',
-    padding: '$space.200',
-    borderRadius: '$radius.500',
+    frame: {
+      marginTop: '$space.200',
+      padding: '$space.200',
+      borderRadius: '$radius.500',
+    },
     content: {
       paddingHorizontal: '$space.200',
     },
@@ -343,14 +353,16 @@ export const field = {
     },
     label: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
     hint: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
   },
   $500: {
@@ -359,14 +371,16 @@ export const field = {
     },
     label: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
     hint: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
   },
   $600: {
@@ -375,45 +389,84 @@ export const field = {
     },
     label: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
     hint: {
       gap: '$space.200',
-      typography: '$compact.250.default',
+      paddingHorizontal: '$space.350',
+      typography: 'compact.250.default',
     },
   },
 };
 export const flexButton = {
   $300: {
-    gap: '$space.0',
+    frame: {
+      gap: '$space.0',
+    },
     slot: {
       paddingLeft: '$space.50',
     },
   },
   $400: {
-    gap: '$space.0',
+    frame: {
+      gap: '$space.0',
+    },
     slot: {
       paddingLeft: '$space.50',
     },
   },
   $500: {
-    gap: '$space.0',
+    frame: {
+      gap: '$space.0',
+    },
     slot: {
       paddingLeft: '$space.50',
     },
   },
   $600: {
-    gap: '$space.50',
+    frame: {
+      gap: '$space.50',
+    },
     slot: {
       paddingLeft: '$space.50',
     },
   },
 };
 export const input = {
-  borderWidth: '$stroke.400',
+  $400: {
+    frame: {
+      borderWidth: '$stroke.200',
+      paddingVertical: '$space.300',
+      paddingHorizontal: '$space.350',
+    },
+    label: {
+      typography: 'compact.250.default',
+    },
+  },
+  $500: {
+    frame: {
+      borderWidth: '$stroke.200',
+      paddingVertical: '$space.300',
+      paddingHorizontal: '$space.350',
+    },
+    label: {
+      typography: 'compact.350.default',
+    },
+  },
+  $600: {
+    frame: {
+      borderWidth: '$stroke.200',
+      paddingVertical: '$space.300',
+      paddingHorizontal: '$space.350',
+    },
+    label: {
+      typography: 'compact.350.default',
+    },
+  },
 };
 export const list = {
   $500: {
@@ -441,6 +494,11 @@ export const list = {
       gap: '$space.200',
       typography: 'compact.250.default',
     },
+  },
+};
+export const loader = {
+  $500: {
+    borderWidth: '$stroke.400',
   },
 };
 export const modal = {
@@ -714,13 +772,10 @@ export const semanticText = {
 export const components = {
   accordion,
   badge,
-  boardList,
-  boardCell,
-  boardAccordion,
+  board,
   breadcrumbs,
   button,
   cell,
-  addon,
   chips,
   control,
   dropdown,
@@ -728,6 +783,7 @@ export const components = {
   flexButton,
   input,
   list,
+  loader,
   modal,
   navBar,
   pimple,

@@ -1,14 +1,10 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
-import { cloneElement, createElement } from 'react';
-import { isValidElement } from 'react';
-import { useContext } from 'react';
 import { ButtonOverlay } from '../button/button.styled';
-import type { BadgeIconProps, BadgeSizes } from './badge.types';
-import type { BadgeContextType } from './badge.types';
-import type { ColorTokens, GetProps } from '@tamagui/core';
-import type { IconProps } from '@tamagui/helpers-icon';
+import type { BadgeContextType, BadgeSizes } from './badge.types';
+import type { GetProps } from '@tamagui/core';
 
 export const BADGE_COMPONENT_NAME = 'Badge';
 
@@ -91,40 +87,12 @@ export const BadgeText = styled(Text, {
   } as const,
 });
 
-const getIconColor = (ctx: BadgeContextType): ColorTokens => {
-  if (ctx.disabled) {
-    return '$content.neutral-tertiary';
-  }
+// const getIconColor = (ctx: BadgeContextType): ColorTokens => {
+//   if (ctx.disabled) {
+//     return '$content.neutral-tertiary';
+//   }
 
-  return '$color';
-};
+//   return '$color';
+// };
 
-export const BadgeIcon = ({ children, icon, ...rest }: BadgeIconProps) => {
-  const ctx = useContext(BadgeContext.context);
-
-  if (!ctx) {
-    throw new Error(
-      'Xsolla-ZK UI: BadgeContext is missing. Badge parts must be placed within <Badge>.',
-    );
-  }
-  const config = getComponentsConfig();
-  const badge = config.badge[ctx.size];
-
-  if (icon) {
-    return createElement(icon, {
-      name: BADGE_COMPONENT_NAME,
-      size: badge.icon.size,
-      color: getIconColor(ctx),
-      ...rest,
-    } as IconProps);
-  }
-
-  return isValidElement(children)
-    ? cloneElement(children, {
-        name: BADGE_COMPONENT_NAME,
-        size: badge.icon.size,
-        color: getIconColor(ctx),
-        ...rest,
-      } as {})
-    : null;
-};
+export const BadgeIcon = createIconComponent(BADGE_COMPONENT_NAME, BadgeContext, 'badge');

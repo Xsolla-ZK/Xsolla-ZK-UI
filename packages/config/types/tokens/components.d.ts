@@ -26,75 +26,77 @@ export declare const badge: {
         };
     };
 };
-export declare const boardList: {
-    large: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
+export declare const board: {
+    list: {
+        large: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
         };
-        content: {
-            minHeight: string;
-        };
-    };
-    medium: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
-        };
-        content: {
-            minHeight: string;
-        };
-    };
-};
-export declare const boardCell: {
-    large: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
-        };
-        content: {
-            minHeight: string;
+        medium: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
         };
     };
-    medium: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
+    cell: {
+        large: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
         };
-        content: {
-            minHeight: string;
+        medium: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
+        };
+        small: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
         };
     };
-    small: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
-        };
-        content: {
-            minHeight: string;
-        };
-    };
-};
-export declare const boardAccordion: {
-    medium: {
-        frame: {
-            paddingLeft: string;
-            paddingRight: string;
-            paddingVertical: string;
-            borderRadius: string;
-        };
-        content: {
-            minHeight: string;
+    accordion: {
+        medium: {
+            frame: {
+                paddingLeft: string;
+                paddingRight: string;
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
         };
     };
 };
@@ -183,35 +185,37 @@ export declare const button: {
     };
 };
 export declare const cell: {
-    large: {
-        frame: {
-            gap: string;
-            paddingVertical: string;
+    size: {
+        large: {
+            frame: {
+                gap: string;
+                paddingVertical: string;
+            };
+            content: {
+                minHeight: string;
+                paddingVertical: string;
+            };
+            slot: {
+                minHeight: string;
+            };
         };
-        content: {
-            minHeight: string;
-            paddingVertical: string;
-        };
-        slot: {
-            minHeight: string;
+        medium: {
+            frame: {
+                gap: string;
+                paddingVertical: string;
+            };
+            content: {
+                minHeight: string;
+                paddingVertical: string;
+            };
+            slot: {
+                minHeight: string;
+            };
         };
     };
-    medium: {
-        frame: {
-            gap: string;
-            paddingVertical: string;
-        };
-        content: {
-            minHeight: string;
-            paddingVertical: string;
-        };
-        slot: {
-            minHeight: string;
-        };
+    addon: {
+        gap: string;
     };
-};
-export declare const addon: {
-    gap: string;
 };
 export declare const chips: {
     $200: {
@@ -312,25 +316,31 @@ export declare const control: {
 };
 export declare const dropdown: {
     $400: {
-        marginTop: string;
-        padding: string;
-        borderRadius: string;
+        frame: {
+            marginTop: string;
+            padding: string;
+            borderRadius: string;
+        };
         content: {
             paddingHorizontal: string;
         };
     };
     $500: {
-        marginTop: string;
-        padding: string;
-        borderRadius: string;
+        frame: {
+            marginTop: string;
+            padding: string;
+            borderRadius: string;
+        };
         content: {
             paddingHorizontal: string;
         };
     };
     $600: {
-        marginTop: string;
-        padding: string;
-        borderRadius: string;
+        frame: {
+            marginTop: string;
+            padding: string;
+            borderRadius: string;
+        };
         content: {
             paddingHorizontal: string;
         };
@@ -343,6 +353,7 @@ export declare const field: {
         };
         label: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
         inputs: {
@@ -350,6 +361,7 @@ export declare const field: {
         };
         hint: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
     };
@@ -359,6 +371,7 @@ export declare const field: {
         };
         label: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
         inputs: {
@@ -366,6 +379,7 @@ export declare const field: {
         };
         hint: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
     };
@@ -375,6 +389,7 @@ export declare const field: {
         };
         label: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
         inputs: {
@@ -382,38 +397,76 @@ export declare const field: {
         };
         hint: {
             gap: string;
+            paddingHorizontal: string;
             typography: string;
         };
     };
 };
 export declare const flexButton: {
     $300: {
-        gap: string;
+        frame: {
+            gap: string;
+        };
         slot: {
             paddingLeft: string;
         };
     };
     $400: {
-        gap: string;
+        frame: {
+            gap: string;
+        };
         slot: {
             paddingLeft: string;
         };
     };
     $500: {
-        gap: string;
+        frame: {
+            gap: string;
+        };
         slot: {
             paddingLeft: string;
         };
     };
     $600: {
-        gap: string;
+        frame: {
+            gap: string;
+        };
         slot: {
             paddingLeft: string;
         };
     };
 };
 export declare const input: {
-    borderWidth: string;
+    $400: {
+        frame: {
+            borderWidth: string;
+            paddingVertical: string;
+            paddingHorizontal: string;
+        };
+        label: {
+            typography: string;
+        };
+    };
+    $500: {
+        frame: {
+            borderWidth: string;
+            paddingVertical: string;
+            paddingHorizontal: string;
+        };
+        label: {
+            typography: string;
+        };
+    };
+    $600: {
+        frame: {
+            borderWidth: string;
+            paddingVertical: string;
+            paddingHorizontal: string;
+        };
+        label: {
+            typography: string;
+        };
+    };
 };
 export declare const list: {
     $500: {
@@ -441,6 +494,11 @@ export declare const list: {
             gap: string;
             typography: string;
         };
+    };
+};
+export declare const loader: {
+    $500: {
+        borderWidth: string;
     };
 };
 export declare const modal: {
@@ -736,75 +794,77 @@ export declare const components: {
             };
         };
     };
-    boardList: {
-        large: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
+    board: {
+        list: {
+            large: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
             };
-            content: {
-                minHeight: string;
-            };
-        };
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-    };
-    boardCell: {
-        large: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
+            medium: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
             };
         };
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
+        cell: {
+            large: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
             };
-            content: {
-                minHeight: string;
+            medium: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
+            };
+            small: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
             };
         };
-        small: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-    };
-    boardAccordion: {
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
+        accordion: {
+            medium: {
+                frame: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
             };
         };
     };
@@ -893,35 +953,37 @@ export declare const components: {
         };
     };
     cell: {
-        large: {
-            frame: {
-                gap: string;
-                paddingVertical: string;
+        size: {
+            large: {
+                frame: {
+                    gap: string;
+                    paddingVertical: string;
+                };
+                content: {
+                    minHeight: string;
+                    paddingVertical: string;
+                };
+                slot: {
+                    minHeight: string;
+                };
             };
-            content: {
-                minHeight: string;
-                paddingVertical: string;
-            };
-            slot: {
-                minHeight: string;
+            medium: {
+                frame: {
+                    gap: string;
+                    paddingVertical: string;
+                };
+                content: {
+                    minHeight: string;
+                    paddingVertical: string;
+                };
+                slot: {
+                    minHeight: string;
+                };
             };
         };
-        medium: {
-            frame: {
-                gap: string;
-                paddingVertical: string;
-            };
-            content: {
-                minHeight: string;
-                paddingVertical: string;
-            };
-            slot: {
-                minHeight: string;
-            };
+        addon: {
+            gap: string;
         };
-    };
-    addon: {
-        gap: string;
     };
     chips: {
         $200: {
@@ -1022,25 +1084,31 @@ export declare const components: {
     };
     dropdown: {
         $400: {
-            marginTop: string;
-            padding: string;
-            borderRadius: string;
+            frame: {
+                marginTop: string;
+                padding: string;
+                borderRadius: string;
+            };
             content: {
                 paddingHorizontal: string;
             };
         };
         $500: {
-            marginTop: string;
-            padding: string;
-            borderRadius: string;
+            frame: {
+                marginTop: string;
+                padding: string;
+                borderRadius: string;
+            };
             content: {
                 paddingHorizontal: string;
             };
         };
         $600: {
-            marginTop: string;
-            padding: string;
-            borderRadius: string;
+            frame: {
+                marginTop: string;
+                padding: string;
+                borderRadius: string;
+            };
             content: {
                 paddingHorizontal: string;
             };
@@ -1053,6 +1121,7 @@ export declare const components: {
             };
             label: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
             inputs: {
@@ -1060,6 +1129,7 @@ export declare const components: {
             };
             hint: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
         };
@@ -1069,6 +1139,7 @@ export declare const components: {
             };
             label: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
             inputs: {
@@ -1076,6 +1147,7 @@ export declare const components: {
             };
             hint: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
         };
@@ -1085,6 +1157,7 @@ export declare const components: {
             };
             label: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
             inputs: {
@@ -1092,38 +1165,76 @@ export declare const components: {
             };
             hint: {
                 gap: string;
+                paddingHorizontal: string;
                 typography: string;
             };
         };
     };
     flexButton: {
         $300: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             slot: {
                 paddingLeft: string;
             };
         };
         $400: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             slot: {
                 paddingLeft: string;
             };
         };
         $500: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             slot: {
                 paddingLeft: string;
             };
         };
         $600: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             slot: {
                 paddingLeft: string;
             };
         };
     };
     input: {
-        borderWidth: string;
+        $400: {
+            frame: {
+                borderWidth: string;
+                paddingVertical: string;
+                paddingHorizontal: string;
+            };
+            label: {
+                typography: string;
+            };
+        };
+        $500: {
+            frame: {
+                borderWidth: string;
+                paddingVertical: string;
+                paddingHorizontal: string;
+            };
+            label: {
+                typography: string;
+            };
+        };
+        $600: {
+            frame: {
+                borderWidth: string;
+                paddingVertical: string;
+                paddingHorizontal: string;
+            };
+            label: {
+                typography: string;
+            };
+        };
     };
     list: {
         $500: {
@@ -1151,6 +1262,11 @@ export declare const components: {
                 gap: string;
                 typography: string;
             };
+        };
+    };
+    loader: {
+        $500: {
+            borderWidth: string;
         };
     };
     modal: {
