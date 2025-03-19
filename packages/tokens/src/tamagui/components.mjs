@@ -1,5 +1,6 @@
 import { getFormatConfig } from '../utils/config.mjs';
 import { camelize, isNumeric, withoutEmpty } from '../utils/helpers.mjs';
+import { getTokensStorage } from '../utils/tokens-storage.mjs';
 
 const validProps = {
   borderRadius: true,
@@ -41,27 +42,32 @@ const validProps = {
   typography: true,
 };
 
-function checkTokenByPath(obj, path) {
+function checkTokenByPath(path) {
+  const tokensStorage = getTokensStorage();
   const { transformKey } = getFormatConfig();
-  const o = obj;
-  const clearPathArray = path.replace(/{|}/g, '').split('.');
-  const result = clearPathArray.reduce((acc, key) => (acc ? acc[key] : undefined), o);
+  const clearPath = path.replace(/{|}/g, '');
+  const clearPathArray = clearPath.split('.');
+  const tokenInStorage = tokensStorage.get(clearPath);
 
-  if (!result) return path;
+  if (!tokenInStorage) return path;
 
   const token = clearPathArray.map((key) => transformKey(key)).join('.');
+
+  if (tokenInStorage.group) {
+    return `$${tokenInStorage.group}.${token}`;
+  }
 
   return `$${token}`;
 }
 
-function getStrictTokenValue(obj, sources, key) {
+function getStrictTokenValue(obj, key) {
   if (obj && typeof obj === 'object' && 'type' in obj) {
     const currentKey = camelize(key);
     if (!validProps[currentKey]) {
       return null;
     }
     if (/{|}/g.test(obj.value)) {
-      return checkTokenByPath(sources, obj.value);
+      return checkTokenByPath(obj.value);
     }
     return obj.value;
   }
@@ -69,7 +75,7 @@ function getStrictTokenValue(obj, sources, key) {
   if (obj && typeof obj === 'object') {
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
-      const val = getStrictTokenValue(value, sources, key);
+      const val = getStrictTokenValue(value, key);
       if (val !== null) {
         const tokenizedKey = isNumeric(key) ? `$${key}` : camelize(key);
         result[tokenizedKey] = val;
@@ -81,8 +87,8 @@ function getStrictTokenValue(obj, sources, key) {
   return obj;
 }
 
-async function transformGroupComponents(rawData, sources, _variant) {
-  const data = getStrictTokenValue(rawData, sources);
+async function transformGroupComponents(rawData, _sources, _variant) {
+  const data = getStrictTokenValue(rawData);
 
   return data;
 }
