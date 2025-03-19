@@ -1,11 +1,14 @@
-import { processGroupFiles } from './utils/file-processing.mjs';
-import { readJsonFile, cleanGeneratedFiles, finalizeGeneration } from './utils/files.mjs';
-import { getDesignTokensFile } from './utils/helpers.mjs';
 import { getFormatConfig } from './utils/config.mjs';
+import { processGroupFiles } from './utils/file-processing.mjs';
+import { cleanGeneratedFiles, finalizeGeneration, readJsonFile } from './utils/files.mjs';
+import { flattenObject, getDesignTokensFile } from './utils/helpers.mjs';
+import { setTokensStorage } from './utils/tokens-storage.mjs';
 import { logger } from './utils/log.mjs';
 import { getGroupMap } from './utils/parser.mjs';
-import { getValueRecursively } from './utils/values.mjs';
 import { getTransform, getTransformGroup } from './utils/transforms.mjs';
+import { getValueRecursively } from './utils/values.mjs';
+
+const groupOrder = ['common', 'platform'];
 
 /**
  * @param {string} variant
@@ -49,7 +52,18 @@ async function processVariant(variant, group, groupData, pathsGroupData) {
   const mergedInputs = Object.assign({}, ...inputs);
   const groupTransform = transformGroupKey(group);
 
-  if (pathsGroupData[`${group}/${variant}`]) {
+  const isGroupVarianted = pathsGroupData[`${group}/${variant}`];
+
+  if (groupOrder.includes(group)) {
+    Object.entries(flattenObject(mergedInputs)).forEach(([key, value]) => {
+      setTokensStorage(key, {
+        group: isGroupVarianted ? group : null,
+        value,
+      });
+    });
+  }
+
+  if (isGroupVarianted) {
     return {
       [groupTransform]: {
         [variant]: mergedInputs,
@@ -60,6 +74,50 @@ async function processVariant(variant, group, groupData, pathsGroupData) {
   return {
     [groupTransform]: mergedInputs,
   };
+}
+
+async function processVariants(data, group, pathsGroupData) {
+  const { transformGroupKey } = getFormatConfig();
+  const groupTransform = transformGroupKey(group);
+
+  const variantResults = await Promise.all(
+    data.map(async (variant) => {
+      const groupData = pathsGroupData[`${group}/${variant}`] ?? pathsGroupData[group];
+      return processVariant(variant, group, groupData, pathsGroupData);
+    }),
+  );
+
+  const files = variantResults.reduce((acc, result) => {
+    Object.entries(result).forEach(([key, value]) => {
+      acc[key] = acc[key] || {};
+      Object.assign(acc[key], value);
+    });
+    return acc;
+  }, {});
+
+  await processGroupFiles(files, groupTransform);
+}
+
+async function processAllGroups(groupOrder) {
+  const $metadata = await readJsonFile(getDesignTokensFile('$metadata'));
+  const { groupMap, pathsGroupData } = await getGroupMap($metadata);
+
+  const orders = Array.isArray(groupOrder) ? groupOrder : [groupOrder];
+  const groups = new Map(Object.entries(groupMap));
+
+  for (const group of orders) {
+    const variants = groups.get(group);
+    if (variants) {
+      await processVariants(variants, group, pathsGroupData);
+      groups.delete(group);
+    }
+  }
+
+  await Promise.all(
+    Array.from(groups.entries()).map(([group, variants]) =>
+      processVariants(variants, group, pathsGroupData),
+    ),
+  );
 }
 
 async function run() {
@@ -75,31 +133,7 @@ async function run() {
       logger.success(`Removed ${details.join(' and ')}`);
     }
 
-    const $metadata = await readJsonFile(getDesignTokensFile('$metadata'));
-    const { groupMap, pathsGroupData } = await getGroupMap($metadata);
-    const { transformGroupKey } = getFormatConfig();
-
-    await Promise.all(
-      Object.entries(groupMap).map(async ([group, variants]) => {
-        const groupTransform = transformGroupKey(group);
-        const variantResults = await Promise.all(
-          variants.map(async (variant) => {
-            const groupData = pathsGroupData[`${group}/${variant}`] ?? pathsGroupData[group];
-            return processVariant(variant, group, groupData, pathsGroupData);
-          }),
-        );
-
-        const files = variantResults.reduce((acc, result) => {
-          Object.entries(result).forEach(([key, value]) => {
-            acc[key] = acc[key] || {};
-            Object.assign(acc[key], value);
-          });
-          return acc;
-        }, {});
-
-        await processGroupFiles(files, groupTransform);
-      }),
-    );
+    await processAllGroups(groupOrder);
 
     // Save the list of generated files
     await finalizeGeneration();
