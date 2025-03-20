@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const QrCode = memo<IconProps>(themed(Icon));
+export const QrCode = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Repeat = memo<IconProps>(themed(Icon));
+export const Repeat = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

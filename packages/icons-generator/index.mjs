@@ -217,7 +217,7 @@ async function generateIcons({ input, output }) {
         return ${svgContent}
       }
 
-      export const ${cname} = memo<IconProps>(themed(Icon))
+      export const ${cname} = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }))
     `;
 
     const formattedCode = await formatCode(componentCode);

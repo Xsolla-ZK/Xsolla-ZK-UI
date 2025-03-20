@@ -17,4 +17,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const ArrowRight = memo<IconProps>(themed(Icon));
+export const ArrowRight = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

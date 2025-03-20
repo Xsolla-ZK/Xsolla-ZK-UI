@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const SwapVertical = memo<IconProps>(themed(Icon));
+export const SwapVertical = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

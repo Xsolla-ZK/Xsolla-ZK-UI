@@ -1,12 +1,15 @@
+import { Stack } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import Pimple from '../pimple/pimple';
 import RichIcon from './rich-icon';
-import { richIconPaths } from './rich-icon.styled';
+import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import type { RichIconProps } from './rich-icon.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const sizes = Object.keys(getComponentsConfig().richIcon) as Array<RichIconProps['size']>;
+const shapes = [...Object.keys(RICH_ICON_SHAPES), false] as Array<
+  keyof typeof RICH_ICON_SHAPES | false
+>;
 
 const meta = {
   component: RichIcon,
@@ -17,10 +20,10 @@ const meta = {
   argTypes: {
     shape: {
       table: {
-        type: { summary: Object.keys(richIconPaths).join('|') },
+        type: { summary: shapes.join('|') },
       },
       control: 'select',
-      options: [...Object.keys(richIconPaths), false],
+      options: shapes,
     },
     size: {
       control: 'select',
@@ -80,84 +83,51 @@ export const CustomBg: Story = {
   },
 };
 
-// export const CustomBgThemeBased: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             bg={({ theme }) => theme.overlay.neutral}
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     bg: ({ theme }) => theme.overlay.neutral,
-//   },
-// };
+export const CustomColor: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon
+            color="#1f37f1"
+          >
+            <RichIcon.Icon
+              icon={Plus}
+            />
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    color: '#1f37f1',
+  },
+};
 
-// export const ButtonType: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             component="button"
-//           >
-//             <XZKUISvgIcon icon={SvgPlus} />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     component: 'button',
-//     onClick: (event) => {
-//       alert('event.currentTarget.tagName = ' + event.currentTarget.tagName);
-//     },
-//   },
-//   render: (args) => (
-//     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-//       Click on button and check TagName
-//       <XZKUIRichIcon data-testid="rich-icon-button-type" {...args} />
-//     </div>
-//   ),
-//   play: async ({ canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const element = canvas.queryByTestId('rich-icon-button-type');
-//     await expect(element?.tagName).toEqual('BUTTON');
-//   },
-// };
+export const AllShapes: Story = {
+  args: {},
+  render: (args) => (
+    <Stack flexWrap="wrap" gap={12} alignItems="center" justifyContent="center" flexDirection="row">
+      {shapes.map((item) => (
+        <RichIcon key={`shape-${item}`} shape={item} {...args} />
+      ))}
+    </Stack>
+  ),
+};
 
-// export const All: Story = {
-//   args: {},
-//   render: (args) => (
-//     <div
-//       style={{
-//         display: 'flex',
-//         justifyContent: 'center',
-//         flexWrap: 'wrap',
-//         alignItems: 'center',
-//         gap: '12px',
-//       }}
-//     >
-//       {(Object.keys(richIconPaths) as Array<keyof typeof richIconPaths>).map((item) => (
-//         <XZKUIRichIcon key={item} shape={item} {...args} />
-//       ))}
-//     </div>
-//   ),
-// };
+export const AllSizes: Story = {
+  args: {},
+  render: (args) => (
+    <Stack flexWrap="wrap" gap={12} alignItems="center" justifyContent="center" flexDirection="row">
+      {sizes.map((item) => (
+        <RichIcon key={`size-${item}`} size={item} {...args} />
+      ))}
+    </Stack>
+  ),
+};
 
 export const WithoutShape: Story = {
   parameters: {
@@ -183,65 +153,65 @@ export const WithoutShape: Story = {
   },
 };
 
-// export const WithStrokeShape: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             backdropProps={{
-//               stroke: 'rgba(17, 16, 20, 0.16)',
-//               strokeWidth: 1,
-//             }}
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     backdropProps: {
-//       stroke: 'rgba(17, 16, 20, 0.16)',
-//       strokeWidth: 1,
-//     },
-//   },
-// };
+export const WithStrokeShape: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon
+            backdropProps={{
+              stroke: 'rgba(17, 16, 20, 0.16)',
+              strokeWidth: 3,
+            }}
+          >
+            <RichIcon.Icon
+              icon={Plus}
+            />
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    backdropProps: {
+      stroke: 'rgba(17, 16, 20, 0.16)',
+      strokeWidth: 3,
+    },
+  },
+};
 
-// export const WithImage: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUIRichIcon
-//             imageSrc="shiba.png"
-//           >
-//             <XZKUISvgIcon
-//               icon={SvgPlus}
-//             />
-//           </XZKUIRichIcon>
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     imageSrc: 'shiba.png',
-//   },
-// };
+export const WithImage: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <RichIcon
+            imageSrc="shiba.png"
+          >
+            <RichIcon.Icon
+              icon={Plus}
+            />
+          </RichIcon>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    imageSrc: 'shiba.png',
+  },
+};
 
-// export const WithImageFill: Story = {
-//   args: {
-//     imageSrc: 'blank-image.png',
-//   },
-// };
+export const WithImageFill: Story = {
+  args: {
+    imageSrc: 'blank-image.png',
+  },
+};
 
 export const WithPimple: Story = {
   parameters: {
@@ -273,13 +243,6 @@ export const WithPimple: Story = {
     </RichIcon>
   ),
 };
-
-{
-  /* export const SShapeRounded: Story = {
-  args: {
-  },
-}; */
-}
 
 /*
 export const ExperimentalFeatureStory: Story = {

@@ -17,4 +17,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Grid2x2 = memo<IconProps>(themed(Icon));
+export const Grid2x2 = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

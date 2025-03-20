@@ -1,17 +1,18 @@
 import { withStaticProperties } from '@tamagui/core';
-import { ClipPath, Defs, G, Image, Path, Rect } from 'react-native-svg';
+import { type ForwardedRef } from 'react';
+import { ClipPath, Defs, G, Image, Rect } from 'react-native-svg';
+import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import {
   Content,
   RichIconContext,
   RichIconFrame,
   RichIconIcon,
-  richIconPaths,
   RichIconPimple,
-  RichIconShapeIcon,
+  RichIconShapePath,
+  RichIconShapeSvg,
 } from './rich-icon.styled';
 import type { RichIconProps } from './rich-icon.types';
 import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 
 const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   (
@@ -20,10 +21,10 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   ) => (
     <RichIconFrame noShape={!shape} {...rest} ref={ref}>
       {shape && (
-        <RichIconShapeIcon viewBox="0 0 80 80">
+        <RichIconShapeSvg viewBox="0 0 80 80">
           <Defs>
             <ClipPath id={`icon-clip-${shape}`}>
-              <Path d={richIconPaths[shape]} {...backdropProps} />
+              <RichIconShapePath d={RICH_ICON_SHAPES[shape]} {...backdropProps} />
             </ClipPath>
           </Defs>
           {imageSrc ? (
@@ -44,17 +45,16 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
               </G>
             </>
           ) : (
-            <Path
-              d={richIconPaths[shape]}
+            <RichIconShapePath
+              d={RICH_ICON_SHAPES[shape]}
               {...backdropProps}
               fill="currentColor"
               clipPath={`url(#icon-clip-${shape}`}
             />
           )}
-        </RichIconShapeIcon>
+        </RichIconShapeSvg>
       )}
       {shape ? <Content>{children}</Content> : children}
-      {/* {pimple && <XZKUIPimple {...pimple} />} */}
     </RichIconFrame>
   ),
 );

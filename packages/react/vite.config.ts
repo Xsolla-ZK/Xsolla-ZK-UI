@@ -1,4 +1,5 @@
 // import react from '@vitejs/plugin-react';
+import path from 'path';
 import { tamaguiPlugin } from '@tamagui/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
@@ -18,4 +19,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ].filter(Boolean),
+  resolve: {
+    alias: {
+      '@tamagui/stacks': path.resolve(__dirname, 'src/components/stacks'),
+    },
+  },
 });

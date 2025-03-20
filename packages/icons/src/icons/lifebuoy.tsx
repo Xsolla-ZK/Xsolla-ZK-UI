@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Lifebuoy = memo<IconProps>(themed(Icon));
+export const Lifebuoy = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
