@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Moon = memo<IconProps>(themed(Icon));
+export const Moon = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

@@ -11,6 +11,8 @@ const config: StorybookConfig = {
     '../src/components/breadcrumbs/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/flex-button/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/pimple/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
@@ -43,7 +45,8 @@ const config: StorybookConfig = {
         alias: {
           ...config.resolve?.alias,
           '@xsolla-zk-ui/config/web': path.resolve(__dirname, '../../config/src/web.ts'),
-          '@xsolla-zk-ui/icons': path.resolve(__dirname, '../../icons/src')
+          '@xsolla-zk-ui/icons': path.resolve(__dirname, '../../icons/src'),
+          '@tamagui/stacks': path.resolve(__dirname, '../src/components/stacks')
         },
       },
     };

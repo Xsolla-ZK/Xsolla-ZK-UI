@@ -1,9 +1,9 @@
 import { expect, within } from '@storybook/test';
 import { View } from '@tamagui/core';
+import { Image } from '@tamagui/image';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { Fragment, useState } from 'react';
-import { Image } from '../image/image';
 import Separator from '../separator/separator';
 import Button from './button';
 import type { ButtonProps } from './button.types';

@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Wallet = memo<IconProps>(themed(Icon));
+export const Wallet = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

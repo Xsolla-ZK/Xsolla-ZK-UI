@@ -17,4 +17,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const ChevronLeft = memo<IconProps>(themed(Icon));
+export const ChevronLeft = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

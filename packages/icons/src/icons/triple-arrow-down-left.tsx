@@ -19,4 +19,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const TripleArrowDownLeft = memo<IconProps>(themed(Icon));
+export const TripleArrowDownLeft = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const BankCard = memo<IconProps>(themed(Icon));
+export const BankCard = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

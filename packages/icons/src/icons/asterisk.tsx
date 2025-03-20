@@ -20,4 +20,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const Asterisk = memo<IconProps>(themed(Icon));
+export const Asterisk = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

@@ -17,4 +17,4 @@ const Icon: FC = (props) => {
   );
 };
 
-export const SortDown = memo<IconProps>(themed(Icon));
+export const SortDown = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

@@ -1,1 +1,1 @@
-{"version":3,"file":"swap-vertical.d.ts","sourceRoot":"","sources":["../../src/icons/swap-vertical.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAmBvD,eAAO,MAAM,YAAY,iDAAgC,CAAC"}
+{"version":3,"file":"swap-vertical.d.ts","sourceRoot":"","sources":["../../src/icons/swap-vertical.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAmBvD,eAAO,MAAM,YAAY,iDAA2D,CAAC"}

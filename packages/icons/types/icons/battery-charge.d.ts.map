@@ -1,1 +1,1 @@
-{"version":3,"file":"battery-charge.d.ts","sourceRoot":"","sources":["../../src/icons/battery-charge.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAmBvD,eAAO,MAAM,aAAa,iDAAgC,CAAC"}
+{"version":3,"file":"battery-charge.d.ts","sourceRoot":"","sources":["../../src/icons/battery-charge.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAmBvD,eAAO,MAAM,aAAa,iDAA2D,CAAC"}

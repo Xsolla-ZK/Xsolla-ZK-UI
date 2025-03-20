@@ -20,4 +20,6 @@ const Icon: FC = (props) => {
   );
 };
 
-export const ArrowBidirectionalHorizontal = memo<IconProps>(themed(Icon));
+export const ArrowBidirectionalHorizontal = memo<IconProps>(
+  themed(Icon, { defaultStrokeWidth: 0 }),
+);
