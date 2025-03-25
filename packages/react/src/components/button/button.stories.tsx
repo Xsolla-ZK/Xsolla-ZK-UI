@@ -192,6 +192,7 @@ export const IconLeft: Story = {
     ),
   },
 };
+
 export const IconRight: Story = {
   args: {
     children: (
@@ -202,6 +203,7 @@ export const IconRight: Story = {
     ),
   },
 };
+
 export const IconLeftAndRight: Story = {
   args: {
     children: (
@@ -213,6 +215,12 @@ export const IconLeftAndRight: Story = {
         </Button.Icon>
       </>
     ),
+  },
+};
+
+export const IconOnly: Story = {
+  args: {
+    children: <Button.Icon icon={Plus} />,
   },
 };
 

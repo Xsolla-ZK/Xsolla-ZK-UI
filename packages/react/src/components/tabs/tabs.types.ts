@@ -1,20 +1,54 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import type { tabsThemeSizes } from './tabs.theme';
-import type { PimpleProps } from '../pimple/pimple.types';
-import type { TabPanelProps, TabProps, TabsListProps, TabsProps } from '@mui/base';
+import type { TabsFrame } from './tabs.styled';
+import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
+import type { RovingFocusGroup } from '@tamagui/roving-focus';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ComponentPropsWithoutRef } from 'react';
 
-type Sizes = (typeof tabsThemeSizes)[number];
+export type TabsSizes = '$200' | '$300' | '$400' | '$500';
+// export type TabsSizes = keyof ComponentsConfig['tabs'];
+export type TabsVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
+  GetProps<T> & TabsContextType
+>;
 
-export interface XZKUITabsBaseProps {
-  size: Sizes;
-}
+export type TabsContextType = {
+  baseId: string;
+  value?: string;
+  onChange: (value: string) => void;
+  orientation?: TabsProps['orientation'];
+  dir?: TabsProps['dir'];
+  activationMode?: TabsProps['activationMode'];
+  size: TabsSizes;
+  registerTrigger: () => void;
+  unregisterTrigger: () => void;
+  triggersCount: number;
+};
 
-export interface XZKUITabsProps extends TabsProps {}
+type RovingFocusGroupProps = ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 
-export interface XZKUITabsListProps extends Partial<XZKUITabsBaseProps>, TabsListProps {}
+export type TabsExtraProps<Tab = string> = {
+  /** The value for the selected tab, if controlled */
+  value?: string;
+  /** The value of the tab to select by default, if uncontrolled */
+  defaultValue?: Tab;
+  /** A function called when a new tab is selected */
+  onValueChange?: (value: Tab) => void;
+  /**
+   * The orientation the tabs are layed out.
+   * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
+   * @defaultValue horizontal
+   */
+  orientation?: RovingFocusGroupProps['orientation'];
+  /**
+   * The direction of navigation between toolbar items.
+   */
+  dir?: RovingFocusGroupProps['dir'];
+  /**
+   * Whether a tab is activated automatically or manually. Only supported in web.
+   * @defaultValue automatic
+   * */
+  activationMode?: 'automatic' | 'manual';
+};
 
-export interface XZKUITabProps extends Partial<XZKUITabsBaseProps>, TabProps {
-  pimple?: Omit<PimpleProps, 'size'>;
-}
+export type TabsSharedProps = GetProps<typeof TabsFrame>;
 
-export interface XZKUITabPanelProps extends TabPanelProps {}
+export type TabsProps<Tab = string> = TabsSharedProps & TabsExtraProps<Tab>;

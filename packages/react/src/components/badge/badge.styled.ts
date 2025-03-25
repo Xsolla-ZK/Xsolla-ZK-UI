@@ -1,10 +1,10 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
-import { ButtonOverlay } from '../button/button.styled';
+import Board from '../board/board';
 import type { BadgeContextType, BadgeSizes } from './badge.types';
-import type { GetProps } from '@tamagui/core';
+import type { GetProps, Stack } from '@tamagui/core';
 
 export const BADGE_COMPONENT_NAME = 'Badge';
 
@@ -14,7 +14,7 @@ export const BadgeContext = createStyledContext<BadgeContextType>({
   tone: 'brand',
 });
 
-export const BadgeFrame = styled(Stack, {
+export const BadgeFrame = styled(Board, {
   name: BADGE_COMPONENT_NAME,
   context: BadgeContext,
   containerType: 'normal',
@@ -29,14 +29,6 @@ export const BadgeFrame = styled(Stack, {
   userSelect: 'none',
 
   variants: {
-    pressable: {
-      true: {
-        tag: 'button',
-        role: 'button',
-        position: 'relative',
-        cursor: 'pointer',
-      },
-    },
     tone: {} as Record<BadgeContextType['tone'], GetProps<typeof Stack>>,
     size: (val: BadgeSizes, _extras) => {
       const config = getComponentsConfig();
@@ -59,10 +51,6 @@ export const BadgeFrame = styled(Stack, {
     disabled: false,
     tone: 'brand',
   },
-});
-
-export const BadgeOverlay = styled(ButtonOverlay, {
-  name: BADGE_COMPONENT_NAME,
 });
 
 export const BadgeText = styled(Text, {

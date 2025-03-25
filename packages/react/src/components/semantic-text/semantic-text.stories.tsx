@@ -1,10 +1,11 @@
 import { expect, within } from '@storybook/test';
 import { View } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import SemanticText from './semantic-text';
 import type { SemanticTextProps } from './semantic-text.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const variants = Object.keys(SemanticText.staticConfig?.variants?.variant ?? {}) as Array<
+const variants = Object.keys(getComponentsConfig().semanticText) as Array<
   SemanticTextProps['variant']
 >;
 
@@ -38,7 +39,7 @@ const meta = {
       </View>
     ),
   ],
-} satisfies Meta<typeof SemanticText>;
+} as Meta<typeof SemanticText>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

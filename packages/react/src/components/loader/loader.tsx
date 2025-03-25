@@ -1,8 +1,8 @@
-import { isWeb, styled, useTheme } from '@tamagui/core';
-import { useContext, useEffect } from 'react';
+import { styled, useTheme } from '@tamagui/core';
+import { useContext } from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import CreateComponent from '../../utils/component-constructor';
-import { LoaderContext, LoaderRoot, LoaderSpin, LoaderText } from './loader.styled';
+import { LoaderContext, LoaderRoot, LoaderText } from './loader.styled';
 
 const LoaderComponent = CreateComponent(
   LoaderRoot,

@@ -7,7 +7,7 @@ import {
   RichIconContext,
   RichIconFrame,
   RichIconIcon,
-  RichIconPimple,
+  // RichIconPimple,
   RichIconShapePath,
   RichIconShapeSvg,
 } from './rich-icon.styled';
@@ -24,7 +24,10 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
         <RichIconShapeSvg viewBox="0 0 80 80">
           <Defs>
             <ClipPath id={`icon-clip-${shape}`}>
-              <RichIconShapePath d={RICH_ICON_SHAPES[shape]} {...backdropProps} />
+              <RichIconShapePath
+                d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
+                {...backdropProps}
+              />
             </ClipPath>
           </Defs>
           {imageSrc ? (
@@ -46,7 +49,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
             </>
           ) : (
             <RichIconShapePath
-              d={RICH_ICON_SHAPES[shape]}
+              d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
               {...backdropProps}
               fill="currentColor"
               clipPath={`url(#icon-clip-${shape}`}
@@ -62,7 +65,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
 const RichIcon = withStaticProperties(RichIconComponent, {
   Props: RichIconContext.Provider,
   Icon: RichIconIcon,
-  Pimple: RichIconPimple,
+  // Pimple: RichIconPimple,
 });
 
 export default RichIcon;

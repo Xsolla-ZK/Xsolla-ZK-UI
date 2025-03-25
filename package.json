@@ -47,6 +47,10 @@
     "vite": "catalog:",
     "vite-tsconfig-paths": "^5.1.4"
   },
+  "resolutions": {
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
   "packageManager": "pnpm@10.3.0",
   "engines": {
     "pnpm": "10.3.0",

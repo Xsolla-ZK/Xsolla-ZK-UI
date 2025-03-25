@@ -1,112 +1,140 @@
-import styled from '@emotion/styled';
-import {
-  Tabs as MuiTabs,
-  TabsList as MuiTabsList,
-  Tab as MuiTab,
-  TabPanel as MuiTabPanel,
-  tabPanelClasses,
-  tabClasses,
-} from '@mui/base';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
-import XZKUIPimpleStyled from '../pimple/pimple.styled';
-import type { XZKUITabsBaseProps } from './tabs.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import { createStyledContext, ScopedProps, Stack, styled, Text } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { TABS_COMPONENT_NAME } from './tabs.constants';
+import type { TabsContextType, TabsSizes } from './tabs.types';
 
-const Root = styled(MuiTabs)`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-`;
+export const TabsContext = createStyledContext<TabsContextType>({
+  size: '$500',
+});
 
-type StyledProps = XZKUIStyledProps<XZKUITabsBaseProps>;
+export const TabsFrame = styled(Stack, {
+  name: TABS_COMPONENT_NAME,
+  context: TabsContext,
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+  overflow: 'hidden',
+});
 
-const Tab = styled(MuiTab, {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme }) => `
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: ${theme.common.spacing[100]};
-    min-width: ${theme.common.size[200]};
-    min-height: ${theme.common.size[200]};
-    padding: 0;
-    background: none;
-    border: none;
-    color: ${theme.theme.content.neutralPrimary};
-    cursor: pointer;
+export const TabsList = styled(Stack, {
+  name: TABS_COMPONENT_NAME,
+  context: TabsContext,
+  display: 'flex',
+  alignItems: 'center',
+  flexShrink: 0,
+  borderBottomWidth: 1,
+  borderStyle: 'solid',
+  borderBottomColor: '$border.neutral-secondary',
 
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      right: 0;
-      height: 8px;
-      border-radius: ${theme.common.radius[200]};
-      background-color: ${theme.theme.content.neutralPrimary};
-      opacity: 0;
-    }
+  variants: {
+    size: (val: TabsSizes) => {
+      const config = getComponentsConfig();
+      const tabs = config.tabs[val]?.list;
 
-    &.${tabClasses.selected} {
-      &:before {
-        opacity: 1;
-      }
+      if (!tabs) return {};
 
-      ${XZKUIPimpleStyled.Root} {
-        background-color: ${theme.theme.background.neutralHigh};
-        color: ${theme.theme.content.staticLightPrimary};
-      }
-    }
-    &.${tabClasses.disabled} {
-      text-decoration: line-through;
-      cursor: not-allowed;
-    }
+      return getMappedProps(tabs);
+    },
+  },
+});
 
-    ${XZKUIPimpleStyled.Root} {
-      background-color: ${theme.theme.overlay.neutral};
-      color: ${theme.theme.content.neutralPrimary};
-    }
-  `,
-);
+export const TabsTabFrame = styled(Stack, {
+  name: TABS_COMPONENT_NAME,
+  context: TabsContext,
+  tag: 'button',
+  role: 'tab',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: 0,
+  background: 'none',
+  borderWidth: 0,
+  cursor: 'pointer',
+  userSelect: 'none',
 
-const List = styled(MuiTabsList, {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme }) => `
-    display: flex;
-    align-items: center;
-    flex: none;
-    white-space: nowrap;
-    border-bottom: 1px solid ${theme.theme.border.neutralSecondary};
-    overflow-x: auto;
-  `,
-  ({ theme, xzkuiSize }) => theme.components.tabs.list.sizes[xzkuiSize],
-  ({ theme, xzkuiSize }) => ({
-    [`${Tab}`]: theme.components.tabs.tab.sizes[xzkuiSize],
-  }),
-);
+  variants: {
+    size: (val: TabsSizes) => {
+      const config = getComponentsConfig();
+      const tabs = config.tabs[val]?.tab;
 
-const Panel = styled(MuiTabPanel)(
-  () => `
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 20px;
-    flex: 1;
-    overflow: auto;
+      if (!tabs) return {};
 
-    &.${tabPanelClasses.hidden} {
-      display: none;
-    }
-  `,
-);
+      return getMappedProps(tabs);
+    },
+    selected: {
+      true: {},
+    },
+    disabled: {
+      true: {
+        textDecoration: 'line-through',
+        cursor: 'not-allowed',
+      },
+    },
+  } as const,
+});
 
-const XZKUITabsStyled = {
-  Root,
-  List,
-  Panel,
-  Tab,
-};
+export const TabsTriggerFrame = styled(Stack, {
+  name: TABS_COMPONENT_NAME,
+  tag: 'button',
 
-export default XZKUITabsStyled;
+  borderWidth: 0,
+  backgroundColor: '$background',
+  userSelect: 'none',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexWrap: 'nowrap',
+  flexDirection: 'row',
+  cursor: 'pointer',
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  focusStyle: {
+    backgroundColor: '$backgroundFocus',
+  },
+
+  variants: {
+    size: {},
+
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+      },
+    },
+
+    active: {
+      true: {
+        hoverStyle: {
+          backgroundColor: '$background',
+        },
+
+        focusStyle: {
+          backgroundColor: '$background',
+        },
+      },
+    },
+  } as const,
+
+  defaultVariants: {},
+});
+
+export const TabPanel = styled(Stack, {
+  name: 'TabPanel',
+  context: TabsContext,
+  role: 'tabpanel',
+  flex: 1,
+
+  variants: {
+    hidden: {
+      true: {
+        display: 'none',
+      },
+    },
+  },
+});

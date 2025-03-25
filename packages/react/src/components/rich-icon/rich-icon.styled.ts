@@ -149,54 +149,62 @@ export const Content = styled(Text, {
   justifyContent: 'center',
 
   variants: {
+    size: (val: RichIconSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.richIcon[val];
+      if (!componentProps) {
+        return {};
+      }
+      return getMappedProps(componentProps.label);
+    },
     noShape: () => ({
       backgroundColor: 'transparent',
     }),
   },
 });
 
-const pimpleSizeMap: Record<RichIconSizes, PimpleSizes> = {
-  $100: '$200',
-  $200: '$300',
-  $300: '$400',
-  $400: '$500',
-  $500: '$500',
-  $600: '$600',
-  $700: '$600',
-  $800: '$700',
-  $900: '$700',
-};
+// const pimpleSizeMap: Record<RichIconSizes, PimpleSizes> = {
+//   $100: '$200',
+//   $200: '$300',
+//   $300: '$400',
+//   $400: '$500',
+//   $500: '$500',
+//   $600: '$600',
+//   $700: '$600',
+//   $800: '$700',
+//   $900: '$700',
+// };
 
-const PimpleStyled = styled(PimpleBase, {
-  position: 'absolute',
+// const PimpleStyled = styled(PimpleBase, {
+//   position: 'absolute',
 
-  variants: {
-    size: (val: PimpleSizes) => {
-      const config = getComponentsConfig();
-      const componentSize = config.pimple[val];
-      if (!componentSize) {
-        return {};
-      }
-      const offset = getTokenValue(componentSize.frame.minSize as Token) < 16 ? -2 : -4;
+//   variants: {
+//     size: (val: PimpleSizes) => {
+//       const config = getComponentsConfig();
+//       const componentSize = config.pimple[val];
+//       if (!componentSize) {
+//         return {};
+//       }
+//       const offset = getTokenValue(componentSize.frame.minSize as Token) < 16 ? -2 : -4;
 
-      return {
-        top: offset,
-        right: offset,
-      };
-    },
-  } as const,
-});
+//       return {
+//         top: offset,
+//         right: offset,
+//       };
+//     },
+//   } as const,
+// });
 
-const Pimple = PimpleStyled.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
-  const { size } = useContext(RichIconContext.context);
-  return createElement(PimpleStyled, {
-    size: pimpleSizeMap[size],
-    ...props,
-    ref,
-  });
-});
+// const Pimple = PimpleStyled.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
+//   const { size } = useContext(RichIconContext.context);
+//   return createElement(PimpleStyled, {
+//     size: pimpleSizeMap[size],
+//     ...props,
+//     ref,
+//   });
+// });
 
-export const RichIconPimple = Object.assign(Pimple, {
-  Text: PimpleBase.Text,
-  Icon: PimpleBase.Icon,
-});
+// export const RichIconPimple = Object.assign(Pimple, {
+//   Text: PimpleBase.Text,
+//   Icon: PimpleBase.Icon,
+// });

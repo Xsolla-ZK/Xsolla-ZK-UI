@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import type { ThemeTokens } from '@tamagui/core';
 import { Circle } from 'react-native-svg';
+import type { ThemeTokens } from '@tamagui/core';
 
 // const progress = () => keyframes`
 //   0% {
