@@ -4,7 +4,7 @@ import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-compo
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import type { PimpleContextType, PimpleSizes } from './pimple.types';
 
-const PimpleContext = createStyledContext<PimpleContextType>({
+export const PimpleContext = createStyledContext<PimpleContextType>({
   size: '$500',
 });
 
@@ -17,6 +17,7 @@ export const PimpleFrame = styled(Stack, {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '$background',
+  userSelect: 'none',
 
   variants: {
     size: (val: PimpleSizes) => {

@@ -1,12 +1,6 @@
-import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
-import type { ReactNode } from 'react';
+import type { BoardFrame } from './board.styled';
+import type { GetProps } from '@tamagui/core';
 
-export interface XZKUIBoardBaseProps {
-  bg?: XZKUICustomColor;
-}
+type BoardSharedProps = GetProps<typeof BoardFrame>;
 
-export interface XZKUIBoardProps extends Partial<XZKUIBoardBaseProps> {
-  className?: string;
-  children?: ReactNode;
-  isClosable?: boolean;
-}
+export interface BoardProps extends BoardSharedProps {}

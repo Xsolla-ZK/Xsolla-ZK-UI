@@ -1,6 +1,7 @@
 import { Stack } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import Pimple from '../pimple/pimple';
 import RichIcon from './rich-icon';
 import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import type { RichIconProps } from './rich-icon.types';
@@ -129,6 +130,13 @@ export const AllSizes: Story = {
   ),
 };
 
+export const WithCustomShape: Story = {
+  args: {
+    shape:
+      'M5.88745 5.88745C-1.96248 13.7374 -1.96248 26.4646 5.88745 34.3146L11.5729 40L5.88745 45.6854C-1.96248 53.5354 -1.96248 66.2626 5.88745 74.1125C13.7374 81.9625 26.4646 81.9625 34.3146 74.1125L40 68.4271L45.6854 74.1125C53.5354 81.9625 66.2626 81.9625 74.1125 74.1125C81.9625 66.2626 81.9625 53.5354 74.1125 45.6854L68.4271 40L74.1125 34.3146C81.9625 26.4646 81.9625 13.7374 74.1125 5.88745C66.2626 -1.96248 53.5354 -1.96248 45.6854 5.88745L40 11.5729L34.3146 5.88745C26.4646 -1.96248 13.7374 -1.96248 5.88745 5.88745Z',
+  },
+};
+
 export const WithoutShape: Story = {
   parameters: {
     docs: {
@@ -222,9 +230,9 @@ export const WithPimple: Story = {
             <RichIcon.Icon
               icon={Plus}
             />
-            <RichIcon.Pimple>
-              <RichIcon.Pimple.Text>5</RichIcon.Pimple.Text>
-            </RichIcon.Pimple>
+            <Pimple size="$500" position="absolute" top={-4} right={-4}>
+              <Pimple.Text>5</Pimple.Text>
+            </Pimple>
           </RichIcon>
         `,
         language: 'tsx',
@@ -237,9 +245,9 @@ export const WithPimple: Story = {
   render: (args) => (
     <RichIcon {...args}>
       <RichIcon.Icon icon={Plus} />
-      <RichIcon.Pimple>
-        <RichIcon.Pimple.Text>5</RichIcon.Pimple.Text>
-      </RichIcon.Pimple>
+      <Pimple size="$500" position="absolute" top={-4} right={-4}>
+        <Pimple.Text>5</Pimple.Text>
+      </Pimple>
     </RichIcon>
   ),
 };

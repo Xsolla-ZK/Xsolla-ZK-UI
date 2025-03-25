@@ -436,6 +436,22 @@ export const flexButton = {
     },
   },
 };
+export const gallery = {
+  $500: {
+    gap: '$space.100',
+  },
+};
+export const inlineInput = {
+  $400: {
+    typography: 'compact.250.default',
+  },
+  $500: {
+    typography: 'compact.350.default',
+  },
+  $600: {
+    typography: 'display.500.default',
+  },
+};
 export const input = {
   $400: {
     frame: {
@@ -519,18 +535,24 @@ export const modal = {
   },
 };
 export const navBar = {
-  minHeight: '$size.450',
-  addonLeft: {
-    paddingLeft: '$space.100',
-    paddingRight: '$space.300',
-    gap: '$space.200',
+  size: {
+    $500: {
+      frame: {
+        minHeight: '$size.450',
+      },
+      addonLeft: {
+        paddingLeft: '$space.100',
+        paddingRight: '$space.300',
+        gap: '$space.200',
+      },
+      addonRight: {
+        paddingLeft: '$space.300',
+        paddingRight: '$space.100',
+        gap: '$space.200',
+      },
+    },
   },
-  addonRight: {
-    paddingLeft: '$space.300',
-    paddingRight: '$space.100',
-    gap: '$space.200',
-  },
-  center: {
+  content: {
     gap: '$space.50',
   },
 };
@@ -565,7 +587,7 @@ export const pimple = {
     frame: {
       minSize: '$size.100',
       borderRadius: '$radius.999',
-      paddingHorizontal: '$space.100',
+      paddingHorizontal: '$space.50',
     },
     icon: {
       size: '$size.60',
@@ -591,7 +613,7 @@ export const pimple = {
     frame: {
       minSize: '$size.200',
       borderRadius: '$radius.999',
-      paddingHorizontal: '$space.150',
+      paddingHorizontal: '$space.100',
     },
     icon: {
       size: '$size.100',
@@ -627,45 +649,72 @@ export const richIcon = {
     icon: {
       size: '$size.80',
     },
+    label: {
+      typography: 'compact.150.numeric',
+    },
   },
   $200: {
     icon: {
       size: '$size.100',
+    },
+    label: {
+      typography: 'compact.200.numeric',
     },
   },
   $300: {
     icon: {
       size: '$size.150',
     },
+    label: {
+      typography: 'compact.250.numeric',
+    },
   },
   $400: {
     icon: {
       size: '$size.200',
+    },
+    label: {
+      typography: 'compact.300.numeric',
     },
   },
   $500: {
     icon: {
       size: '$size.250',
     },
+    label: {
+      typography: 'compact.350.numeric',
+    },
   },
   $600: {
     icon: {
       size: '$size.300',
+    },
+    label: {
+      typography: 'compact.350.numeric',
     },
   },
   $700: {
     icon: {
       size: '$size.350',
     },
+    label: {
+      typography: 'compact.400.numeric',
+    },
   },
   $800: {
     icon: {
       size: '$size.400',
     },
+    label: {
+      typography: 'compact.400.numeric',
+    },
   },
   $900: {
     icon: {
       size: '$size.450',
+    },
+    label: {
+      typography: 'compact.400.numeric',
     },
   },
 };
@@ -739,34 +788,42 @@ export const semanticText = {
   headerXl: {
     paddingTop: '$space.400',
     paddingBottom: '$space.100',
+    typography: 'display.500.accent',
   },
   headerL: {
     paddingTop: '$space.350',
     paddingBottom: '$space.100',
+    typography: 'display.450.accent',
   },
   headerM: {
     paddingTop: '$space.300',
     paddingBottom: '$space.100',
+    typography: 'display.400.accent',
   },
   headerS: {
     paddingTop: '$space.200',
     paddingBottom: '$space.100',
+    typography: 'display.350.accent',
   },
   headerXs: {
     paddingTop: '$space.200',
     paddingBottom: '$space.100',
+    typography: 'compact.300.accent',
   },
   paragraphL: {
     paddingTop: '$space.100',
     paddingBottom: '$space.100',
+    typography: 'text.350.default',
   },
   paragraphM: {
     paddingTop: '$space.100',
     paddingBottom: '$space.100',
+    typography: 'text.300.default',
   },
   paragraphS: {
     paddingTop: '$space.100',
     paddingBottom: '$space.100',
+    typography: 'text.250.default',
   },
 };
 export const components = {
@@ -781,6 +838,8 @@ export const components = {
   dropdown,
   field,
   flexButton,
+  gallery,
+  inlineInput,
   input,
   list,
   loader,

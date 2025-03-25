@@ -1,8 +1,8 @@
-import XZKUIBoard from './board';
+import Board from './board';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  component: XZKUIBoard,
+  component: Board,
   parameters: {
     layout: 'centered',
   },
@@ -14,7 +14,7 @@ const meta = {
     // onClick: fn(),
   },
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUIBoard>;
+} satisfies Meta<typeof Board>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -25,17 +25,16 @@ export const Default: Story = {
   },
 };
 
-export const Closable: Story = {
-  args: {
-    children: 'Some text',
-    isClosable: true,
-  },
-};
+// export const Closable: Story = {
+//   args: {
+//     children: 'Some text',
+//     isClosable: true,
+//   },
+// };
 
 export const CustomBg: Story = {
   args: {
-    children: 'Some text',
-    bg: ({ theme }) => theme.background.brandLow,
+    backgroundColor: '$background.positive-high',
   },
 };
 

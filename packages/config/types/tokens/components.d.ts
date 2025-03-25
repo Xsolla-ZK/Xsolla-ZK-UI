@@ -436,6 +436,22 @@ export declare const flexButton: {
         };
     };
 };
+export declare const gallery: {
+    $500: {
+        gap: string;
+    };
+};
+export declare const inlineInput: {
+    $400: {
+        typography: string;
+    };
+    $500: {
+        typography: string;
+    };
+    $600: {
+        typography: string;
+    };
+};
 export declare const input: {
     $400: {
         frame: {
@@ -519,18 +535,24 @@ export declare const modal: {
     };
 };
 export declare const navBar: {
-    minHeight: string;
-    addonLeft: {
-        paddingLeft: string;
-        paddingRight: string;
-        gap: string;
+    size: {
+        $500: {
+            frame: {
+                minHeight: string;
+            };
+            addonLeft: {
+                paddingLeft: string;
+                paddingRight: string;
+                gap: string;
+            };
+            addonRight: {
+                paddingLeft: string;
+                paddingRight: string;
+                gap: string;
+            };
+        };
     };
-    addonRight: {
-        paddingLeft: string;
-        paddingRight: string;
-        gap: string;
-    };
-    center: {
+    content: {
         gap: string;
     };
 };
@@ -627,45 +649,72 @@ export declare const richIcon: {
         icon: {
             size: string;
         };
+        label: {
+            typography: string;
+        };
     };
     $200: {
         icon: {
             size: string;
+        };
+        label: {
+            typography: string;
         };
     };
     $300: {
         icon: {
             size: string;
         };
+        label: {
+            typography: string;
+        };
     };
     $400: {
         icon: {
             size: string;
+        };
+        label: {
+            typography: string;
         };
     };
     $500: {
         icon: {
             size: string;
         };
+        label: {
+            typography: string;
+        };
     };
     $600: {
         icon: {
             size: string;
+        };
+        label: {
+            typography: string;
         };
     };
     $700: {
         icon: {
             size: string;
         };
+        label: {
+            typography: string;
+        };
     };
     $800: {
         icon: {
             size: string;
         };
+        label: {
+            typography: string;
+        };
     };
     $900: {
         icon: {
             size: string;
+        };
+        label: {
+            typography: string;
         };
     };
 };
@@ -739,34 +788,42 @@ export declare const semanticText: {
     headerXl: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     headerL: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     headerM: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     headerS: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     headerXs: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     paragraphL: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     paragraphM: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
     paragraphS: {
         paddingTop: string;
         paddingBottom: string;
+        typography: string;
     };
 };
 export declare const components: {
@@ -1204,6 +1261,22 @@ export declare const components: {
             };
         };
     };
+    gallery: {
+        $500: {
+            gap: string;
+        };
+    };
+    inlineInput: {
+        $400: {
+            typography: string;
+        };
+        $500: {
+            typography: string;
+        };
+        $600: {
+            typography: string;
+        };
+    };
     input: {
         $400: {
             frame: {
@@ -1287,18 +1360,24 @@ export declare const components: {
         };
     };
     navBar: {
-        minHeight: string;
-        addonLeft: {
-            paddingLeft: string;
-            paddingRight: string;
-            gap: string;
+        size: {
+            $500: {
+                frame: {
+                    minHeight: string;
+                };
+                addonLeft: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    gap: string;
+                };
+                addonRight: {
+                    paddingLeft: string;
+                    paddingRight: string;
+                    gap: string;
+                };
+            };
         };
-        addonRight: {
-            paddingLeft: string;
-            paddingRight: string;
-            gap: string;
-        };
-        center: {
+        content: {
             gap: string;
         };
     };
@@ -1395,45 +1474,72 @@ export declare const components: {
             icon: {
                 size: string;
             };
+            label: {
+                typography: string;
+            };
         };
         $200: {
             icon: {
                 size: string;
+            };
+            label: {
+                typography: string;
             };
         };
         $300: {
             icon: {
                 size: string;
             };
+            label: {
+                typography: string;
+            };
         };
         $400: {
             icon: {
                 size: string;
+            };
+            label: {
+                typography: string;
             };
         };
         $500: {
             icon: {
                 size: string;
             };
+            label: {
+                typography: string;
+            };
         };
         $600: {
             icon: {
                 size: string;
+            };
+            label: {
+                typography: string;
             };
         };
         $700: {
             icon: {
                 size: string;
             };
+            label: {
+                typography: string;
+            };
         };
         $800: {
             icon: {
                 size: string;
             };
+            label: {
+                typography: string;
+            };
         };
         $900: {
             icon: {
                 size: string;
+            };
+            label: {
+                typography: string;
             };
         };
     };
@@ -1507,34 +1613,42 @@ export declare const components: {
         headerXl: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         headerL: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         headerM: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         headerS: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         headerXs: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         paragraphL: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         paragraphM: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
         paragraphS: {
             paddingTop: string;
             paddingBottom: string;
+            typography: string;
         };
     };
 };

@@ -1,14 +1,20 @@
 import { createTamagui } from '@tamagui/core';
-import { createTheme, createThemes } from '@xsolla-zk-ui/config';
+import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk-ui/config';
 import { webConfig } from '@xsolla-zk-ui/config/web';
 import { badgeTheme } from './src/components/badge/badge.theme';
 import { buttonTheme } from './src/components/button/button.theme';
+import { flexButtonTheme } from './src/components/flex-button/flex-button.theme';
+import { inputTheme } from './src/components/input/input.theme';
 import { loaderTheme } from './src/components/loader/loader.theme';
 import { pimpleTheme } from './src/components/pimple/pimple.theme';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
   color: tokens['content.neutral-primary'],
+}));
+
+const sheetTheme = createComponentTheme('SheetOverlay', (tokens) => ({
+  background: tokens['layer.floor-scrim'],
 }));
 
 const themesCompose = createThemes(webConfig.themes, {
@@ -18,6 +24,9 @@ const themesCompose = createThemes(webConfig.themes, {
     loader: loaderTheme,
     badge: badgeTheme,
     pimple: pimpleTheme,
+    input: inputTheme,
+    flexButton: flexButtonTheme,
+    sheet: sheetTheme,
   },
 });
 
@@ -27,15 +36,29 @@ export const config = createTamagui({
     ...webConfig.tokens,
     color: {
       background: '#fff',
+      backgroundHover: 'transparent',
+      backgroundPress: 'transparent',
+      backgroundFocus: 'transparent',
       color: '#000',
-      backgroundSecondary: '#fff',
-      backgroundTertiary: '#fff',
-      colorSecondary: '#000',
-      colorTertiary: '#000',
-      colorSpin: '#000',
+      colorHover: 'transparent',
+      colorPress: 'transparent',
+      colorFocus: 'transparent',
+      borderColor: 'transparent',
+      borderColorHover: 'transparent',
+      borderColorPress: 'transparent',
+      borderColorFocus: 'transparent',
+      shadowColor: 'transparent',
+      shadowColorHover: 'transparent',
+      shadowColorPress: 'transparent',
+      shadowColorFocus: 'transparent',
+      placeholderColor: 'transparent',
     },
   },
   themes: themesCompose,
+  selectionStyles: (theme) => ({
+    backgroundColor: theme['overlay.brand'],
+    color: theme['content.neutral-primary'],
+  }),
 });
 
 export type AppConfig = typeof config;

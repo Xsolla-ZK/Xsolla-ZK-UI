@@ -1,13 +1,9 @@
-import type { inputThemeSizes } from './input.theme';
-import type { InputProps } from '@mui/base';
+import type { Input } from './input.styled';
+import type { GetProps } from '@tamagui/core';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 
-type Sizes = (typeof inputThemeSizes)[number];
+export type InputSizes = keyof ComponentsConfig['input'];
 
-export interface XZKUIInputBaseProps {
-  size: Sizes;
-}
+export type InputSharedProps = GetProps<typeof Input>;
 
-export type XZKUIInputProps = InputProps &
-  Partial<XZKUIInputBaseProps> & {
-    fullWidth?: boolean;
-  };
+export interface InputProps extends InputSharedProps {}

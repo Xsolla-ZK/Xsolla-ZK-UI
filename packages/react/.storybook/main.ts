@@ -11,8 +11,11 @@ const config: StorybookConfig = {
     '../src/components/breadcrumbs/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/flex-button/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/pimple/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/typography/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/input/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
+    // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
+    // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 

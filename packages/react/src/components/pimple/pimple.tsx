@@ -1,5 +1,5 @@
 import { withStaticProperties } from '@tamagui/core';
-import { PimpleFrame, PimpleIcon, PimpleText } from './pimple.styled';
+import { PimpleContext, PimpleFrame, PimpleIcon, PimpleText } from './pimple.styled';
 import type { PimpleProps } from './pimple.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
@@ -16,6 +16,7 @@ const PimpleComponent = PimpleFrame.styleable<PimpleProps>(
 );
 
 const Pimple = withStaticProperties(PimpleComponent, {
+  Props: PimpleContext.Provider,
   Text: PimpleText,
   Icon: PimpleIcon,
 });

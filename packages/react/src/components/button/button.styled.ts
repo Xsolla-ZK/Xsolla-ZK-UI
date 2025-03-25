@@ -1,22 +1,24 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import Board from '../board/board';
+import { BUTTON_COMPONENT_NAME } from './button.constants';
 import type {
   ButtonContextType,
   ButtonSizes,
   ButtonVariants,
   ButtonVariantSpreadExtras,
 } from './button.types';
-import type { ColorTokens, GetProps, VariantSpreadFunction } from '@tamagui/core';
-
-export const BUTTON_COMPONENT_NAME = 'Button';
+import type { ColorTokens, GetProps, VariantSpreadFunction, Stack } from '@tamagui/core';
 
 export const ButtonContext = createStyledContext<ButtonContextType>({
   size: '$500',
   disabled: false,
   variant: 'primary',
   tone: 'brand',
+  hasIconLeft: undefined,
+  hasIconRight: undefined,
 });
 
 const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ButtonVariants> = (val, extras) => {
@@ -37,9 +39,10 @@ const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ButtonVariants> 
   };
 };
 
-export const ButtonFrame = styled(Stack, {
+export const ButtonFrame = styled(Board, {
   name: BUTTON_COMPONENT_NAME,
   context: ButtonContext,
+  pressable: true,
   tag: 'button',
   role: 'button',
   containerType: 'normal',
@@ -57,10 +60,13 @@ export const ButtonFrame = styled(Stack, {
 
   variants: {
     tone: {} as Record<ButtonContextType['tone'], GetProps<typeof Stack>>,
-    blured: {
-      true: {
-        backdropFilter: 'blur(200px)',
-      },
+    hasIconLeft: {
+      true: {},
+      false: {},
+    },
+    hasIconRight: {
+      true: {},
+      false: {},
     },
     variant: getVariant,
     size: (val: ButtonSizes, _extras) => {
@@ -118,35 +124,6 @@ const getButtonTextVariant: VariantSpreadFunction<GetProps<typeof Text>, ButtonV
   };
 };
 
-export const ButtonOverlay = styled(Stack, {
-  name: BUTTON_COMPONENT_NAME,
-  tag: 'span',
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  pointerEvents: 'none',
-  opacity: 0,
-  zIndex: 2,
-  borderWidth: 1,
-  borderStyle: 'solid',
-  borderColor: '$border.neutral-primary',
-  borderRadius: 'inherit',
-  mixBlendMode: 'overlay',
-  animation: 'state',
-  animateOnly: ['opacity'],
-  backgroundColor: '$overlay.static-light',
-
-  '$group-hover': {
-    opacity: 0.5,
-  },
-  '$group-press': {
-    opacity: 0.3,
-    backgroundColor: '$background.static-dark-high',
-  },
-});
-
 export const ButtonText = styled(Text, {
   name: BUTTON_COMPONENT_NAME,
   context: ButtonContext,
@@ -159,13 +136,20 @@ export const ButtonText = styled(Text, {
 
   variants: {
     variant: getButtonTextVariant,
-    size: (val: ButtonSizes, { props, tokens, ...rest }) => {
+    size: (val: ButtonSizes, extras) => {
+      const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
       const config = getComponentsConfig();
       const button = config.button[val];
 
       if (!button) return {};
 
-      return getMappedProps(button.label);
+      const { paddingHorizontal, ...styles } = getMappedProps(button.label);
+
+      return {
+        ...styles,
+        paddingLeft: props.hasIconRight ? paddingHorizontal : undefined,
+        paddingRight: props.hasIconLeft ? paddingHorizontal : undefined,
+      };
     },
   } as const,
 });

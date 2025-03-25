@@ -1,5 +1,5 @@
 import { createComponentTheme } from '@xsolla-zk-ui/config';
-import { BUTTON_COMPONENT_NAME } from './button.styled';
+import { BUTTON_COMPONENT_NAME } from './button.constants';
 
 export const buttonTheme = createComponentTheme(
   BUTTON_COMPONENT_NAME,
