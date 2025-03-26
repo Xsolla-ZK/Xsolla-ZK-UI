@@ -2,7 +2,7 @@ import { getFormatConfig } from './utils/config.mjs';
 import { processGroupFiles } from './utils/file-processing.mjs';
 import { cleanGeneratedFiles, finalizeGeneration, readJsonFile } from './utils/files.mjs';
 import { flattenObject, getDesignTokensFile } from './utils/helpers.mjs';
-import { setTokensStorage } from './utils/tokens-storage.mjs';
+import { setTokensStorage } from './utils/storage.mjs';
 import { logger } from './utils/log.mjs';
 import { getGroupMap } from './utils/parser.mjs';
 import { getTransform, getTransformGroup } from './utils/transforms.mjs';
