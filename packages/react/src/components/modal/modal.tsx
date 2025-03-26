@@ -18,9 +18,13 @@
 // import type { XZKUISlotComponent } from '@xsolla-zk-ui/react/types/components';
 // import type { ElementType, MouseEventHandler, PropsWithChildren, ReactElement } from 'react';
 
-import { ModalContent, ModalContentInner } from './modal.styled';
+import { withStaticProperties } from '@tamagui/core';
+import { Dialog, type DialogProps } from '@tamagui/dialog';
+import { Sheet } from '@tamagui/sheet';
+import { forwardRef, ReactNode, type ForwardedRef } from 'react';
+import { ModalContent, ModalContentInner, ModalHeader } from './modal.styled';
 import type { ScrollView } from '@tamagui/scroll-view';
-import type { ForwardedRef } from 'react';
+import type { SheetProps } from '@tamagui/sheet';
 
 // interface BackdropProps {
 //   children?: ReactElement;
@@ -215,6 +219,43 @@ import type { ForwardedRef } from 'react';
 
 // export default XZKUIModal;
 
+type ModalVariant = 'dialog' | 'sheet';
+
+interface BaseModalProps {
+  variant: ModalVariant;
+}
+
+interface DialogModalProps extends BaseModalProps, DialogProps {
+  variant: 'dialog';
+}
+
+interface SheetModalProps extends BaseModalProps, SheetProps {
+  variant: 'sheet';
+}
+
+type ModalProps = DialogModalProps | SheetModalProps;
+
+const ModalComponent = ({ variant, ...rest }: ModalProps) => {
+  if (variant === 'dialog') {
+    const { children, ...dialogProps } = rest as DialogModalProps;
+    return (
+      <Dialog {...dialogProps}>
+        <Dialog.Trigger>Открыть диалог</Dialog.Trigger>
+        <Dialog.Content>{children}</Dialog.Content>
+      </Dialog>
+    );
+  }
+  const { children, ...sheetProps } = rest as SheetModalProps;
+  return (
+    <Sheet {...sheetProps}>
+      <Sheet.Overlay enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+
+      <Sheet.Handle />
+      <Sheet.Frame>{children}</Sheet.Frame>
+    </Sheet>
+  );
+};
+
 const ModalContentComponent = ModalContent.styleable(
   ({ children, ...props }, ref: ForwardedRef<ScrollView>) => (
     <ModalContent {...props} ref={ref}>
@@ -222,3 +263,9 @@ const ModalContentComponent = ModalContent.styleable(
     </ModalContent>
   ),
 );
+
+const Modal = withStaticProperties(ModalComponent, {
+  Header: ModalHeader,
+});
+
+export default Modal;

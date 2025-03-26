@@ -37,6 +37,10 @@ export function initializeComponentsConfig<T extends InitialConfig<DefaultCompon
   userConfig: T,
 ) {
   const mergedConfig = deepMerge(defaultComponentsConfig, userConfig) as MergeConfig<T>;
+  currentComponentConfig = mergedConfig;
+
+  return currentComponentConfig as MergeConfig<T>;
+
   // const mergedConfig = (
   //   Object.entries(defaultComponentsConfig) as Array<
   //     [keyof DefaultComponentsConfig, DefaultComponentsConfig[keyof DefaultComponentsConfig]]
@@ -47,8 +51,6 @@ export function initializeComponentsConfig<T extends InitialConfig<DefaultCompon
   //   acc[key] = { ...value, ...userConfig[key] };
   //   return acc;
   // }, {} as MergeConfig<T>);
-
-  currentComponentConfig = mergedConfig;
 }
 
 export function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>() {
