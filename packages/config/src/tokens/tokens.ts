@@ -29,6 +29,8 @@ export const opacity = {
   'effect.shadow.dark.900': 0.64,
 };
 export const radius = {
+  '0': 0,
+  '100': 2,
   '200': 4,
   '300': 8,
   '400': 12,

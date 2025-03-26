@@ -435,6 +435,14 @@ export declare const flexButton: {
             paddingLeft: string;
         };
     };
+    $700: {
+        frame: {
+            gap: string;
+        };
+        slot: {
+            paddingLeft: string;
+        };
+    };
 };
 export declare const gallery: {
     $500: {
@@ -787,43 +795,206 @@ export declare const selectionControl: {
 export declare const semanticText: {
     headerXl: {
         paddingTop: string;
-        paddingBottom: string;
-        typography: string;
+        paddingBottom: {
+            base: string;
+            $lg: string;
+        };
+        typography: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
     };
     headerL: {
-        paddingTop: string;
+        paddingTop: {
+            base: string;
+            $xl: string;
+        };
         paddingBottom: string;
-        typography: string;
+        typography: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
     };
     headerM: {
         paddingTop: string;
         paddingBottom: string;
-        typography: string;
+        typography: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
     };
     headerS: {
-        paddingTop: string;
-        paddingBottom: string;
-        typography: string;
+        paddingTop: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
+        paddingBottom: {
+            base: string;
+            $lg: string;
+        };
+        typography: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
     };
     headerXs: {
-        paddingTop: string;
+        paddingTop: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
         paddingBottom: string;
-        typography: string;
+        typography: {
+            base: string;
+            $lg: string;
+            $xl: string;
+        };
     };
     paragraphL: {
         paddingTop: string;
         paddingBottom: string;
-        typography: string;
+        typography: {
+            base: string;
+            $lg: string;
+        };
     };
     paragraphM: {
-        paddingTop: string;
-        paddingBottom: string;
-        typography: string;
+        paddingTop: {
+            base: string;
+            $lg: string;
+        };
+        paddingBottom: {
+            base: string;
+            $lg: string;
+        };
+        typography: {
+            base: string;
+            $lg: string;
+        };
     };
     paragraphS: {
         paddingTop: string;
         paddingBottom: string;
-        typography: string;
+        typography: {
+            base: string;
+            $lg: string;
+        };
+    };
+};
+export declare const separator: {
+    $500: {
+        borderWidth: string;
+    };
+};
+export declare const skeleton: {
+    $500: {
+        borderRadius: string;
+    };
+};
+export declare const slider: {
+    $500: {
+        frame: {
+            height: string;
+            borderRadius: string;
+        };
+        knob: {
+            size: string;
+            borderWidth: string;
+        };
+    };
+};
+export declare const switchComponent: {
+    $500: {
+        frame: {
+            borderRadius: string;
+            borderWidth: string;
+            padding: string;
+        };
+        knob: {
+            size: string;
+            borderRadius: string;
+        };
+    };
+};
+export declare const tabs: {
+    $300: {
+        frame: {
+            gap: string;
+        };
+        line: {
+            height: string;
+            borderTopLeftRadius: string;
+            borderTopRightRadius: string;
+            borderBottomLeftRadius: string;
+            borderBottomRightRadius: string;
+        };
+    };
+    $400: {
+        frame: {
+            gap: string;
+        };
+        line: {
+            height: string;
+            borderTopLeftRadius: string;
+            borderTopRightRadius: string;
+            borderBottomLeftRadius: string;
+            borderBottomRightRadius: string;
+        };
+    };
+    $500: {
+        frame: {
+            gap: string;
+        };
+        line: {
+            height: string;
+            borderTopLeftRadius: string;
+            borderTopRightRadius: string;
+            borderBottomLeftRadius: string;
+            borderBottomRightRadius: string;
+        };
+    };
+    $600: {
+        frame: {
+            gap: string;
+        };
+        line: {
+            height: string;
+            borderTopLeftRadius: string;
+            borderTopRightRadius: string;
+            borderBottomLeftRadius: string;
+            borderBottomRightRadius: string;
+        };
+    };
+    $700: {
+        frame: {
+            gap: string;
+        };
+        line: {
+            height: string;
+            borderTopLeftRadius: string;
+            borderTopRightRadius: string;
+            borderBottomLeftRadius: string;
+            borderBottomRightRadius: string;
+        };
+    };
+};
+export declare const tabBar: {
+    $500: {
+        tab: {
+            minHeight: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            typography: string;
+        };
     };
 };
 export declare const components: {
@@ -1260,6 +1431,14 @@ export declare const components: {
                 paddingLeft: string;
             };
         };
+        $700: {
+            frame: {
+                gap: string;
+            };
+            slot: {
+                paddingLeft: string;
+            };
+        };
     };
     gallery: {
         $500: {
@@ -1612,43 +1791,206 @@ export declare const components: {
     semanticText: {
         headerXl: {
             paddingTop: string;
-            paddingBottom: string;
-            typography: string;
+            paddingBottom: {
+                base: string;
+                $lg: string;
+            };
+            typography: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
         };
         headerL: {
-            paddingTop: string;
+            paddingTop: {
+                base: string;
+                $xl: string;
+            };
             paddingBottom: string;
-            typography: string;
+            typography: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
         };
         headerM: {
             paddingTop: string;
             paddingBottom: string;
-            typography: string;
+            typography: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
         };
         headerS: {
-            paddingTop: string;
-            paddingBottom: string;
-            typography: string;
+            paddingTop: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
+            paddingBottom: {
+                base: string;
+                $lg: string;
+            };
+            typography: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
         };
         headerXs: {
-            paddingTop: string;
+            paddingTop: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
             paddingBottom: string;
-            typography: string;
+            typography: {
+                base: string;
+                $lg: string;
+                $xl: string;
+            };
         };
         paragraphL: {
             paddingTop: string;
             paddingBottom: string;
-            typography: string;
+            typography: {
+                base: string;
+                $lg: string;
+            };
         };
         paragraphM: {
-            paddingTop: string;
-            paddingBottom: string;
-            typography: string;
+            paddingTop: {
+                base: string;
+                $lg: string;
+            };
+            paddingBottom: {
+                base: string;
+                $lg: string;
+            };
+            typography: {
+                base: string;
+                $lg: string;
+            };
         };
         paragraphS: {
             paddingTop: string;
             paddingBottom: string;
-            typography: string;
+            typography: {
+                base: string;
+                $lg: string;
+            };
+        };
+    };
+    separator: {
+        $500: {
+            borderWidth: string;
+        };
+    };
+    skeleton: {
+        $500: {
+            borderRadius: string;
+        };
+    };
+    slider: {
+        $500: {
+            frame: {
+                height: string;
+                borderRadius: string;
+            };
+            knob: {
+                size: string;
+                borderWidth: string;
+            };
+        };
+    };
+    switchComponent: {
+        $500: {
+            frame: {
+                borderRadius: string;
+                borderWidth: string;
+                padding: string;
+            };
+            knob: {
+                size: string;
+                borderRadius: string;
+            };
+        };
+    };
+    tabs: {
+        $300: {
+            frame: {
+                gap: string;
+            };
+            line: {
+                height: string;
+                borderTopLeftRadius: string;
+                borderTopRightRadius: string;
+                borderBottomLeftRadius: string;
+                borderBottomRightRadius: string;
+            };
+        };
+        $400: {
+            frame: {
+                gap: string;
+            };
+            line: {
+                height: string;
+                borderTopLeftRadius: string;
+                borderTopRightRadius: string;
+                borderBottomLeftRadius: string;
+                borderBottomRightRadius: string;
+            };
+        };
+        $500: {
+            frame: {
+                gap: string;
+            };
+            line: {
+                height: string;
+                borderTopLeftRadius: string;
+                borderTopRightRadius: string;
+                borderBottomLeftRadius: string;
+                borderBottomRightRadius: string;
+            };
+        };
+        $600: {
+            frame: {
+                gap: string;
+            };
+            line: {
+                height: string;
+                borderTopLeftRadius: string;
+                borderTopRightRadius: string;
+                borderBottomLeftRadius: string;
+                borderBottomRightRadius: string;
+            };
+        };
+        $700: {
+            frame: {
+                gap: string;
+            };
+            line: {
+                height: string;
+                borderTopLeftRadius: string;
+                borderTopRightRadius: string;
+                borderBottomLeftRadius: string;
+                borderBottomRightRadius: string;
+            };
+        };
+    };
+    tabBar: {
+        $500: {
+            tab: {
+                minHeight: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                typography: string;
+            };
         };
     };
 };

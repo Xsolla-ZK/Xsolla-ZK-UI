@@ -4,9 +4,9 @@
  */
 export const ios = {
   'layout.col-number.sm': 1,
-  'layout.col-number.md': 12,
-  'layout.col-number.lg': 12,
-  'layout.col-number.xl': 12,
+  'layout.col-number.md': 6,
+  'layout.col-number.lg': 6,
+  'layout.col-number.xl': 6,
   'layout.gutter.sm': 0,
   'layout.gutter.md': 0,
   'layout.gutter.lg': 0,

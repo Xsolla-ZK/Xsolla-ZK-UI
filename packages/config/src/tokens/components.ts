@@ -435,6 +435,14 @@ export const flexButton = {
       paddingLeft: '$space.50',
     },
   },
+  $700: {
+    frame: {
+      gap: '$space.50',
+    },
+    slot: {
+      paddingLeft: '$space.100',
+    },
+  },
 };
 export const gallery = {
   $500: {
@@ -786,44 +794,207 @@ export const selectionControl = {
 };
 export const semanticText = {
   headerXl: {
-    paddingTop: '$space.400',
-    paddingBottom: '$space.100',
-    typography: 'display.500.accent',
+    paddingTop: '$space.0',
+    paddingBottom: {
+      base: '$space.150',
+      $lg: '$space.200',
+    },
+    typography: {
+      base: 'display.500.accent',
+      $lg: 'display.600.accent',
+      $xl: 'display.700.accent',
+    },
   },
   headerL: {
-    paddingTop: '$space.350',
-    paddingBottom: '$space.100',
-    typography: 'display.450.accent',
+    paddingTop: {
+      base: '$space.50',
+      $xl: '$space.100',
+    },
+    paddingBottom: '$space.200',
+    typography: {
+      base: 'display.450.accent',
+      $lg: 'display.500.accent',
+      $xl: 'display.600.accent',
+    },
   },
   headerM: {
-    paddingTop: '$space.300',
-    paddingBottom: '$space.100',
-    typography: 'display.400.accent',
+    paddingTop: '$space.100',
+    paddingBottom: '$space.200',
+    typography: {
+      base: 'display.400.accent',
+      $lg: 'display.450.accent',
+      $xl: 'display.500.accent',
+    },
   },
   headerS: {
-    paddingTop: '$space.200',
-    paddingBottom: '$space.100',
-    typography: 'display.350.accent',
+    paddingTop: {
+      base: '$space.150',
+      $lg: '$space.50',
+      $xl: '$space.100',
+    },
+    paddingBottom: {
+      base: '$space.250',
+      $lg: '$space.200',
+    },
+    typography: {
+      base: 'display.350.accent',
+      $lg: 'display.400.accent',
+      $xl: 'display.450.accent',
+    },
   },
   headerXs: {
-    paddingTop: '$space.200',
-    paddingBottom: '$space.100',
-    typography: 'compact.300.accent',
+    paddingTop: {
+      base: '$space.150',
+      $lg: '$space.50',
+      $xl: '$space.100',
+    },
+    paddingBottom: '$space.250',
+    typography: {
+      base: 'compact.300.accent',
+      $lg: 'display.350.accent',
+      $xl: 'display.400.accent',
+    },
   },
   paragraphL: {
     paddingTop: '$space.100',
-    paddingBottom: '$space.100',
-    typography: 'text.350.default',
+    paddingBottom: '$space.200',
+    typography: {
+      base: 'text.350.default',
+      $lg: 'text.400.default',
+    },
   },
   paragraphM: {
-    paddingTop: '$space.100',
-    paddingBottom: '$space.100',
-    typography: 'text.300.default',
+    paddingTop: {
+      base: '$space.0',
+      $lg: '$space.100',
+    },
+    paddingBottom: {
+      base: '$space.100',
+      $lg: '$space.200',
+    },
+    typography: {
+      base: 'text.300.default',
+      $lg: 'text.350.default',
+    },
   },
   paragraphS: {
-    paddingTop: '$space.100',
+    paddingTop: '$space.0',
     paddingBottom: '$space.100',
-    typography: 'text.250.default',
+    typography: {
+      base: 'text.250.default',
+      $lg: 'text.300.default',
+    },
+  },
+};
+export const separator = {
+  $500: {
+    borderWidth: '$stroke.100',
+  },
+};
+export const skeleton = {
+  $500: {
+    borderRadius: '$radius.300',
+  },
+};
+export const slider = {
+  $500: {
+    frame: {
+      height: '$size.20',
+      borderRadius: '$radius.999',
+    },
+    knob: {
+      size: '$size.150',
+      borderWidth: '$stroke.100',
+    },
+  },
+};
+export const switchComponent = {
+  $500: {
+    frame: {
+      borderRadius: '$radius.999',
+      borderWidth: '$stroke.200',
+      padding: '$space.100',
+    },
+    knob: {
+      size: '$size.200',
+      borderRadius: '$radius.999',
+    },
+  },
+};
+export const tabs = {
+  $300: {
+    frame: {
+      gap: '$space.300',
+    },
+    line: {
+      height: '$size.20',
+      borderTopLeftRadius: '$radius.999',
+      borderTopRightRadius: '$radius.999',
+      borderBottomLeftRadius: '$radius.0',
+      borderBottomRightRadius: '$radius.0',
+    },
+  },
+  $400: {
+    frame: {
+      gap: '$space.350',
+    },
+    line: {
+      height: '$size.20',
+      borderTopLeftRadius: '$radius.999',
+      borderTopRightRadius: '$radius.999',
+      borderBottomLeftRadius: '$radius.0',
+      borderBottomRightRadius: '$radius.0',
+    },
+  },
+  $500: {
+    frame: {
+      gap: '$space.400',
+    },
+    line: {
+      height: '$size.20',
+      borderTopLeftRadius: '$radius.999',
+      borderTopRightRadius: '$radius.999',
+      borderBottomLeftRadius: '$radius.0',
+      borderBottomRightRadius: '$radius.0',
+    },
+  },
+  $600: {
+    frame: {
+      gap: '$space.400',
+    },
+    line: {
+      height: '$size.20',
+      borderTopLeftRadius: '$radius.999',
+      borderTopRightRadius: '$radius.999',
+      borderBottomLeftRadius: '$radius.0',
+      borderBottomRightRadius: '$radius.0',
+    },
+  },
+  $700: {
+    frame: {
+      gap: '$space.450',
+    },
+    line: {
+      height: '$size.20',
+      borderTopLeftRadius: '$radius.999',
+      borderTopRightRadius: '$radius.999',
+      borderBottomLeftRadius: '$radius.0',
+      borderBottomRightRadius: '$radius.0',
+    },
+  },
+};
+export const tabBar = {
+  $500: {
+    tab: {
+      minHeight: '$size.600',
+      gap: '$space.100',
+    },
+    icon: {
+      size: '$size.250',
+    },
+    label: {
+      typography: 'compact.200.default',
+    },
   },
 };
 export const components = {
@@ -851,4 +1022,10 @@ export const components = {
   segmentedControl,
   selectionControl,
   semanticText,
+  separator,
+  skeleton,
+  slider,
+  switchComponent,
+  tabs,
+  tabBar,
 };
