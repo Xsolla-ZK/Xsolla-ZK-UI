@@ -4,9 +4,6 @@
  */
 
 export const media = {
-  sm: {
-    minWidth: 576,
-  },
   md: {
     minWidth: 768,
   },

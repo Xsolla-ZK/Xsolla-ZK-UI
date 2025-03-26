@@ -3,9 +3,6 @@
  * Do not edit it manually
  */
 export declare const media: {
-    sm: {
-        minWidth: number;
-    };
     md: {
         minWidth: number;
     };

@@ -29,6 +29,8 @@ export declare const opacity: {
     'effect.shadow.dark.900': number;
 };
 export declare const radius: {
+    '0': number;
+    '100': number;
     '200': number;
     '300': number;
     '400': number;
@@ -114,6 +116,8 @@ export declare const tokens: {
         'effect.shadow.dark.900': number;
     };
     radius: {
+        '0': number;
+        '100': number;
         '200': number;
         '300': number;
         '400': number;

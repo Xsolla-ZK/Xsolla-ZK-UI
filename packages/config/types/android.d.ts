@@ -402,8 +402,9 @@ export declare const androidConfig: {
             'layout.content-compensation.xl': number;
         };
         typography: {
-            'font.brand': string;
+            'font.display': string;
             'font.text': string;
+            'font.compact': string;
             'font-size.150': number;
             'font-size.200': number;
             'font-size.250': number;
@@ -417,19 +418,32 @@ export declare const androidConfig: {
             'font-size.700': number;
             'font-size.800': number;
             'font-size.900': number;
-            'line-height.default.150': number;
-            'line-height.default.200': number;
-            'line-height.default.250': number;
-            'line-height.default.300': number;
-            'line-height.default.350': number;
-            'line-height.default.400': number;
-            'line-height.default.450': number;
-            'line-height.default.500': number;
-            'line-height.default.600': number;
-            'line-height.default.650': number;
-            'line-height.default.700': number;
-            'line-height.default.800': number;
-            'line-height.default.900': number;
+            'line-height.display.150': number;
+            'line-height.display.200': number;
+            'line-height.display.250': number;
+            'line-height.display.300': number;
+            'line-height.display.350': number;
+            'line-height.display.400': number;
+            'line-height.display.450': number;
+            'line-height.display.500': number;
+            'line-height.display.600': number;
+            'line-height.display.650': number;
+            'line-height.display.700': number;
+            'line-height.display.800': number;
+            'line-height.display.900': number;
+            'line-height.text.150': number;
+            'line-height.text.200': number;
+            'line-height.text.250': number;
+            'line-height.text.300': number;
+            'line-height.text.350': number;
+            'line-height.text.400': number;
+            'line-height.text.450': number;
+            'line-height.text.500': number;
+            'line-height.text.600': number;
+            'line-height.text.650': number;
+            'line-height.text.700': number;
+            'line-height.text.800': number;
+            'line-height.text.900': number;
             'line-height.compact.150': number;
             'line-height.compact.200': number;
             'line-height.compact.250': number;
@@ -443,26 +457,15 @@ export declare const androidConfig: {
             'line-height.compact.700': number;
             'line-height.compact.800': number;
             'line-height.compact.900': number;
-            'font-weight.brand.light': number;
-            'font-weight.brand.default': number;
-            'font-weight.brand.accent': number;
+            'font-weight.display.light': number;
+            'font-weight.display.default': number;
+            'font-weight.display.accent': number;
             'font-weight.text.light': number;
             'font-weight.text.default': number;
             'font-weight.text.accent': number;
-            'paragraph-spacing.0': number;
-            'paragraph-spacing.150': number;
-            'paragraph-spacing.200': number;
-            'paragraph-spacing.250': number;
-            'paragraph-spacing.300': number;
-            'paragraph-spacing.350': number;
-            'paragraph-spacing.400': number;
-            'paragraph-spacing.450': number;
-            'paragraph-spacing.500': number;
-            'paragraph-spacing.600': number;
-            'paragraph-spacing.650': number;
-            'paragraph-spacing.700': number;
-            'paragraph-spacing.800': number;
-            'paragraph-spacing.900': number;
+            'font-weight.compact.light': number;
+            'font-weight.compact.default': number;
+            'font-weight.compact.accent': number;
         };
         opacity: {
             'content.secondary.light': number;
@@ -491,6 +494,8 @@ export declare const androidConfig: {
             'effect.shadow.dark.900': number;
         };
         radius: {
+            '0': number;
+            '100': number;
             '200': number;
             '300': number;
             '400': number;
@@ -550,9 +555,6 @@ export declare const androidConfig: {
         };
     };
     media: {
-        sm: {
-            minWidth: number;
-        };
         md: {
             minWidth: number;
         };
