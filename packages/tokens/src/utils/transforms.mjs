@@ -16,6 +16,7 @@ const transformGroupMap = {
   tamagui: {
     components: {
       flatten: false,
+      postfix: 'Component',
       values: transformGroupComponents,
     },
   },

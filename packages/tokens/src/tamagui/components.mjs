@@ -1,46 +1,40 @@
+import { VALID_PROPS } from '../utils/constants.mjs';
 import { getFormatConfig } from '../utils/config.mjs';
 import { camelize, isNumeric, withoutEmpty } from '../utils/helpers.mjs';
-import { getTokensStorage } from '../utils/tokens-storage.mjs';
+import { getBreakpointsStorage, getTokensStorage } from '../utils/storage.mjs';
 
-const validProps = {
-  borderRadius: true,
-  borderTopLeftRadius: true,
-  borderTopRightRadius: true,
-  borderBottomLeftRadius: true,
-  borderBottomRightRadius: true,
-  width: true,
-  height: true,
-  minWidth: true,
-  minHeight: true,
-  maxWidth: true,
-  maxHeight: true,
-  gap: true,
-  columnGap: true,
-  rowGap: true,
-  margin: true,
-  marginBottom: true,
-  marginHorizontal: true,
-  marginLeft: true,
-  marginRight: true,
-  marginTop: true,
-  marginVertical: true,
-  padding: true,
-  paddingBottom: true,
-  paddingLeft: true,
-  paddingRight: true,
-  paddingTop: true,
-  paddingHorizontal: true,
-  paddingVertical: true,
-  borderBottomWidth: true,
-  borderLeftWidth: true,
-  borderRightWidth: true,
-  borderTopWidth: true,
-  borderWidth: true,
-  size: true,
-  minSize: true,
-  maxSize: true,
-  typography: true,
-};
+function deepEqual(a, b) {
+  if (a === b) return true;
+  if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) return false;
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (const key of keysA) {
+    if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
+function processBreakpointObject(obj, orderList, breakpointsStorage) {
+  let lastValue;
+  const result = {};
+  for (const bpKey of orderList) {
+    if (!(bpKey in obj)) continue;
+    const current = getStrictTokenValue(obj[bpKey], bpKey);
+    if (lastValue !== undefined && deepEqual(lastValue, current)) {
+      continue;
+    }
+    const breakpointKeyMap = breakpointsStorage.get(bpKey);
+    result[breakpointKeyMap] = current;
+    lastValue = current;
+  }
+  const resultKeys = Object.keys(result);
+
+  if (resultKeys.length === 1) {
+    return result[resultKeys[0]];
+  }
+  return withoutEmpty(result);
+}
 
 function checkTokenByPath(path) {
   const tokensStorage = getTokensStorage();
@@ -61,26 +55,42 @@ function checkTokenByPath(path) {
 }
 
 function getStrictTokenValue(obj, key) {
+  const breakpointsStorage = getBreakpointsStorage();
+
   if (obj && typeof obj === 'object' && 'type' in obj) {
-    const currentKey = camelize(key);
-    if (!validProps[currentKey]) {
+    if (obj.description === 'figma-only') {
       return null;
     }
-    if (/{|}/g.test(obj.value)) {
-      return checkTokenByPath(obj.value);
+    const currentKey = camelize(key);
+
+    if (VALID_PROPS[currentKey] || breakpointsStorage.has(currentKey)) {
+      if (/{|}/g.test(obj.value)) {
+        return checkTokenByPath(obj.value);
+      }
+      return obj.value;
     }
-    return obj.value;
+
+    return null;
   }
 
   if (obj && typeof obj === 'object') {
     const result = {};
+    const orderList = breakpointsStorage.get('order');
+    const isBreakpointObject = orderList && orderList.some((k) => Object.hasOwn(obj, k));
+
+    if (isBreakpointObject) {
+      return processBreakpointObject(obj, orderList, breakpointsStorage);
+    }
+
     for (const [key, value] of Object.entries(obj)) {
       const val = getStrictTokenValue(value, key);
       if (val !== null) {
         const tokenizedKey = isNumeric(key) ? `$${key}` : camelize(key);
+
         result[tokenizedKey] = val;
       }
     }
+
     return withoutEmpty(result);
   }
 

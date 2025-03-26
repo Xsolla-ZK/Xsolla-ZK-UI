@@ -166,3 +166,21 @@ export function flattenObject(obj, separator = '.', prefix = '') {
     return acc;
   }, {});
 }
+
+/**
+ * @param {string} val
+ * @param {string} group
+ * @returns {string}
+ */
+export function getByReservedWords(val, group = '') {
+  const reservedWords = {
+    switch: true,
+    case: true,
+    default: true,
+    break: true,
+    continue: true,
+    return: true,
+  };
+
+  return reservedWords[val] ? val + group : val;
+}
