@@ -18,6 +18,18 @@ const meta = {
     children: { control: 'text' },
     color: { control: 'color' },
     textAlign: { control: 'inline-radio', options: ['left', 'center', 'right'] },
+    variant: {
+      control: 'inline-radio',
+      options: variants,
+      table: {
+        defaultValue: {
+          summary: 'paragraphM',
+        },
+        type: {
+          summary: variants.join('|'),
+        },
+      },
+    },
     tag: {
       control: 'inline-radio',
       options: ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'p'],
