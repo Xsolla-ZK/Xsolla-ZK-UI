@@ -2,7 +2,7 @@ import { styled, useTheme } from '@tamagui/core';
 import { useContext } from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import CreateComponent from '../../utils/component-constructor';
-import { LoaderContext, LoaderRoot, LoaderText } from './loader.styled';
+import { LoaderContext, LoaderRoot, LoaderSpin, LoaderText } from './loader.styled';
 
 const LoaderComponent = CreateComponent(
   LoaderRoot,
@@ -12,7 +12,40 @@ const LoaderComponent = CreateComponent(
     Icon: styled(Text),
   },
   (Root, { children, ...props }, ref) => (
-    <Root ref={ref} {...props}>
+    <Root
+      ref={ref}
+      {...props}
+      // animation={{
+      //   animationDuration: '0.75s',
+      //   animationKeyframes: [
+      //     {
+      //       '0%': { transform: 'rotate(0deg)' },
+      //       '100%': { transform: 'rotate(360deg)' },
+      //     },
+      //   ],
+      //   animationTimingFunction: 'linear',
+      //   animationIterationCount: 'infinite',
+      // }}
+      // opacity={0.2}
+      // animation={{
+      //   // only x and y will apply animations
+      //   opacity: {
+      //     type: 'slow',
+      //     repeat: 2,
+      //   },
+      //   scale: {
+      //     type: 'state',
+      //     repeat: 2,
+      //     overshootClamping: true,
+      //   },
+      // }}
+      // animation="slow"
+      // hoverStyle={{
+      //   // scale: 2,
+      //   opacity: 1,
+      // }}
+      pointerEvents="auto"
+    >
       <LoaderSpinner />
       {children}
     </Root>
@@ -26,7 +59,7 @@ export function LoaderSpinner() {
   return (
     <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
       <Circle cx={14} cy={14} r={12} strokeWidth={4} stroke={theme[ctx.color]?.get()} />
-      <Circle
+      <LoaderSpin
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeDashoffset={150}
@@ -35,8 +68,22 @@ export function LoaderSpinner() {
         cx={14}
         cy={14}
         r={12}
-        stroke={theme['$spinColor']?.get()}
+        stroke={'black'}
+        // stroke={theme['$spinColor']?.get()}
       />
+
+      {/* <animate
+        attributeName="stroke-dasharray"
+        values="0 150;18 150;18 150;0 150"
+        dur="2s"
+        repeatCount="indefinite"
+    />
+    <animate
+        attributeName="stroke-dashoffset"
+        values="150;150;112;75"
+        dur="2s"
+        repeatCount="indefinite"
+    /> */}
     </Svg>
   );
 }

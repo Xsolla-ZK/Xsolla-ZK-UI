@@ -13,6 +13,7 @@ const config: StorybookConfig = {
     '../src/components/pimple/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/typography/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/input/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/checkbox/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',

@@ -1,91 +1,123 @@
-import styled from '@emotion/styled';
-import { Stack } from '@tamagui/core';
+import { getVariableValue, styled } from '@tamagui/core';
+import { RADIO_GROUP_ITEM_NAME } from './radio-group.constants';
+import { RADIO_GROUP_INDICATOR_NAME } from './radio-group.constants';
+import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
+import Board from '../board/board';
 
-// const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem';
+export const RadioGroupItemFrame = styled(Board, {
+  name: RADIO_GROUP_ITEM_NAME,
+  tag: 'button',
 
-// export const RadioGroupItemFrame = styled(Stack, {
-//   name: RADIO_GROUP_ITEM_NAME,
-//   tag: 'button',
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        borderRadius: 1000,
+        backgroundColor: '$background',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        padding: 0,
 
-//   variants: {
-//     unstyled: {
-//       false: {
-//         size: '$true',
-//         borderRadius: 1000,
-//         backgroundColor: '$background',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         borderWidth: 1,
-//         borderColor: '$borderColor',
-//         padding: 0,
+        hoverStyle: {
+          borderColor: '$borderColorHover',
+          backgroundColor: '$backgroundHover',
+        },
 
-//         hoverStyle: {
-//           borderColor: '$borderColorHover',
-//           backgroundColor: '$backgroundHover',
-//         },
+        focusStyle: {
+          borderColor: '$borderColorHover',
+          backgroundColor: '$backgroundHover',
+        },
 
-//         focusStyle: {
-//           borderColor: '$borderColorHover',
-//           backgroundColor: '$backgroundHover',
-//         },
+        focusVisibleStyle: {
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$outlineColor',
+        },
 
-//         focusVisibleStyle: {
-//           outlineStyle: 'solid',
-//           outlineWidth: 2,
-//           outlineColor: '$outlineColor',
-//         },
+        pressStyle: {
+          borderColor: '$borderColorFocus',
+          backgroundColor: '$backgroundFocus',
+        },
+      },
+    },
 
-//         pressStyle: {
-//           borderColor: '$borderColorFocus',
-//           backgroundColor: '$backgroundFocus',
-//         },
-//       },
-//     },
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
 
-//     disabled: {
-//       true: {
-//         pointerEvents: 'none',
-//         userSelect: 'none',
-//         cursor: 'not-allowed',
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
 
-//         hoverStyle: {
-//           borderColor: '$borderColor',
-//           backgroundColor: '$background',
-//         },
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
 
-//         pressStyle: {
-//           borderColor: '$borderColor',
-//           backgroundColor: '$background',
-//         },
+        focusVisibleStyle: {
+          outlineWidth: 0,
+        },
+      },
+    },
 
-//         focusVisibleStyle: {
-//           outlineWidth: 0,
-//         },
-//       },
-//     },
+    size: {
+      '...size': (value, { props }) => {
+        const size = Math.floor(
+          getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
+        )
+        return {
+          width: size,
+          height: size,
+        }
+      },
+    },
+  } as const,
 
-//     size: {
-//       '...size': (value, { props }) => {
-//         const size = Math.floor(
-//           getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
-//         )
-//         return {
-//           width: size,
-//           height: size,
-//         }
-//       },
-//     },
-//   } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
 
-//   defaultVariants: {
-//     unstyled: process.env.TAMAGUI_HEADLESS === '1',
-//   },
-// })
 
-const Root = styled('div')``;
 
-const XZKUIRadioGroupStyled = {
-  Root,
-};
+export const RadioGroupIndicatorFrame = styled(ThemeableStack, {
+  name: RADIO_GROUP_INDICATOR_NAME,
 
-export default XZKUIRadioGroupStyled;
+  variants: {
+    unstyled: {
+      false: {
+        width: '33%',
+        height: '33%',
+        borderRadius: 1000,
+        backgroundColor: '$color',
+        pressTheme: true,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+export const RadioGroupFrame = styled(ThemeableStack, {
+  name: RADIO_GROUP_COMPONENT_NAME,
+
+  variants: {
+    orientation: {
+      horizontal: {
+        flexDirection: 'row',
+        spaceDirection: 'horizontal',
+      },
+      vertical: {
+        flexDirection: 'column',
+        spaceDirection: 'vertical',
+      },
+    },
+  } as const,
+})
