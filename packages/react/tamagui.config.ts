@@ -3,6 +3,7 @@ import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk-ui/c
 import { webConfig } from '@xsolla-zk-ui/config/web';
 import { badgeTheme } from './src/components/badge/badge.theme';
 import { buttonTheme } from './src/components/button/button.theme';
+import { checkboxTheme } from './src/components/checkbox/checkbox.theme';
 import { flexButtonTheme } from './src/components/flex-button/flex-button.theme';
 import { inputTheme } from './src/components/input/input.theme';
 import { loaderTheme } from './src/components/loader/loader.theme';
@@ -27,6 +28,7 @@ const themesCompose = createThemes(webConfig.themes, {
     input: inputTheme,
     flexButton: flexButtonTheme,
     sheet: sheetTheme,
+    checkbox: checkboxTheme,
   },
 });
 
