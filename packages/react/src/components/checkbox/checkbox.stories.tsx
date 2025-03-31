@@ -5,6 +5,7 @@ import { Checkmark, Star } from '@xsolla-zk-ui/icons';
 import { useId, useState } from 'react';
 import Button from '../button/button';
 import Label from '../label/label';
+import Typography from '../typography/typography';
 import Checkbox from './checkbox';
 import { checkboxComponentConfig } from './checkbox.styled';
 import type { CheckboxProps, CheckboxSizes } from './checkbox.types';

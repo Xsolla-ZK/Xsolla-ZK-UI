@@ -1,54 +1,16 @@
-import { styled, useTheme } from '@tamagui/core';
+import { useTheme, withStaticProperties } from '@tamagui/core';
 import { useContext } from 'react';
 import Svg, { Circle } from 'react-native-svg';
-import CreateComponent from '../../utils/component-constructor';
-import { LoaderContext, LoaderRoot, LoaderSpin, LoaderText } from './loader.styled';
+import { LoaderContext, LoaderFrame, LoaderSpin, LoaderText } from './loader.styled';
+import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-const LoaderComponent = CreateComponent(
-  LoaderRoot,
-  {
-    Props: LoaderContext.Provider,
-    Text: LoaderText,
-    Icon: styled(Text),
-  },
-  (Root, { children, ...props }, ref) => (
-    <Root
-      ref={ref}
-      {...props}
-      // animation={{
-      //   animationDuration: '0.75s',
-      //   animationKeyframes: [
-      //     {
-      //       '0%': { transform: 'rotate(0deg)' },
-      //       '100%': { transform: 'rotate(360deg)' },
-      //     },
-      //   ],
-      //   animationTimingFunction: 'linear',
-      //   animationIterationCount: 'infinite',
-      // }}
-      // opacity={0.2}
-      // animation={{
-      //   // only x and y will apply animations
-      //   opacity: {
-      //     type: 'slow',
-      //     repeat: 2,
-      //   },
-      //   scale: {
-      //     type: 'state',
-      //     repeat: 2,
-      //     overshootClamping: true,
-      //   },
-      // }}
-      // animation="slow"
-      // hoverStyle={{
-      //   // scale: 2,
-      //   opacity: 1,
-      // }}
-      pointerEvents="auto"
-    >
+const LoaderComponent = LoaderFrame.styleable(
+  ({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
+    <LoaderFrame {...props} ref={ref}>
       <LoaderSpinner />
       {children}
-    </Root>
+    </LoaderFrame>
   ),
 );
 
@@ -58,177 +20,38 @@ export function LoaderSpinner() {
 
   return (
     <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
-      <Circle cx={14} cy={14} r={12} strokeWidth={4} stroke={theme[ctx.color]?.get()} />
+      <Circle cx={14} cy={14} r={12} strokeWidth={4} stroke={theme[ctx.mainColor]?.get()} />
       <LoaderSpin
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeDashoffset={150}
-        strokeDasharray="18 150"
+        strokeDasharray="0 150"
         strokeWidth={4}
         cx={14}
         cy={14}
         r={12}
-        stroke={'black'}
-        // stroke={theme['$spinColor']?.get()}
-      />
-
-      {/* <animate
-        attributeName="stroke-dasharray"
-        values="0 150;18 150;18 150;0 150"
-        dur="2s"
-        repeatCount="indefinite"
-    />
-    <animate
-        attributeName="stroke-dashoffset"
-        values="150;150;112;75"
-        dur="2s"
-        repeatCount="indefinite"
-    /> */}
+        stroke={theme[ctx.spinColor]?.get()}
+      >
+        <animate
+          attributeName="stroke-dasharray"
+          values="0 150;18 150;18 150;0 150"
+          dur="1s"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="stroke-dashoffset"
+          values="150;150;112;75"
+          dur="1s"
+          repeatCount="indefinite"
+        />
+      </LoaderSpin>
     </Svg>
   );
 }
 
-// const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-// export function AnimatedStrokeCircle() {
-//   const progress = useSharedValue(0);
-//   const theme = useTheme();
-
-//   useEffect(() => {
-//     progress.value = withRepeat(withTiming(1, { duration: 2000 }), -1);
-//   }, []);
-
-//   const animatedProps = useAnimatedProps(() => {
-//     const p = progress.value % 1;
-//     // Вычисляем strokeDash* сами
-//     return {
-//       strokeDasharray: [Math.floor(18 - 18 * p), 150],
-//       strokeDashoffset: 150 - 75 * p,
-//     };
-//   });
-
-//   return (
-//     <AnimatedCircle
-//       cx="50"
-//       cy="50"
-//       r="40"
-//       fill="none"
-//       strokeWidth={8}
-//       animatedProps={animatedProps}
-//       transform="rotate(-90, 50, 50)"
-//       stroke={theme['$spinColor']?.get()}
-//     />
-//   );
-// }
-
-// const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-// export function LoaderSpinnerNative() {
-//   const ctx = useContext(LoaderContext);
-//   const theme = useTheme();
-
-//   const progress = useSharedValue(0);
-
-//   // При монтировании запускаем «бесконечный цикл»
-//   useEffect(() => {
-//     progress.value = withRepeat(
-//       withTiming(1, {
-//         duration: 1000,
-//         easing: Easing.linear,
-//       }),
-//       -1, // бесконечно
-//       false,
-//     );
-//   }, []);
-
-//   const animatedProps = useAnimatedProps(() => {
-//     // progress.value идёт от 0 до 1
-//     // допусти, 0..0.5 = первый ключ, 0.5..0.75 = второй, 0.75..1 = третий
-
-//     // Ниже – очень «прямолинейная» кусочно‐линейная интерполяция
-//     if (progress.value < 0.5) {
-//       // от 0% до 50%
-//       return {
-//         strokeDasharray: [18, 150],
-//         strokeDashoffset: 150,
-//       };
-//     } else if (progress.value < 0.75) {
-//       // от 50% до 75%
-//       return {
-//         strokeDasharray: [18, 150],
-//         strokeDashoffset: 112,
-//       };
-//     } else {
-//       // от 75% до 100%
-//       return {
-//         strokeDasharray: [0, 150],
-//         strokeDashoffset: 75,
-//       };
-//     }
-//   });
-
-//   return (
-//     <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
-//       <Circle cx={14} cy={14} r={12} strokeWidth={4} stroke={theme[ctx.color]?.get()} />
-//       <AnimatedCircle
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         strokeDashoffset={150}
-//         strokeDasharray="0 150"
-//         strokeWidth={4}
-//         animatedProps={animatedProps}
-//         transform="rotate(-90, 50, 50)"
-//         cx={14}
-//         cy={14}
-//         r={12}
-//         stroke={theme['$spinColor']?.get()}
-//       />
-//     </Svg>
-//   );
-// }
-
-// const CustomLoader = LoaderComponent.overrides(
-//   {
-//     Root: {
-//       color: 'black',
-//       variants: {
-//         size: {
-//           ':string': (val) => ({
-//             color: val,
-//           }),
-//         },
-//       },
-//     },
-
-//     Text: {
-//       variants: {
-//         size: {
-//           $5000: (val) => ({
-//             color: 'red',
-//           }),
-//         },
-//       },
-//     },
-//   },
-//   (Root, { children, ...props }, ref) => (
-//     <Root ref={ref} {...props}>
-//       <LoaderSpinner />
-//       {children}
-//     </Root>
-//   ),
-// );
-
-// function Fsasd() {
-//   return (
-//     <CustomLoader size="qweq">
-//       {' '}
-//       // wrong return type - size must be string | number | undefined
-//       <CustomLoader.Text size="">sfdsaf</CustomLoader.Text> // wrong return type size - must be
-//       number | $5000 | undefined
-//     </CustomLoader>
-//   );
-// }
-
-const Loader = LoaderComponent();
+const Loader = withStaticProperties(LoaderComponent, {
+  Props: LoaderContext.Provider,
+  Text: LoaderText,
+});
 
 export default Loader;

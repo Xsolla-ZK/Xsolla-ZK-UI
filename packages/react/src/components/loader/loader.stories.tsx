@@ -1,10 +1,10 @@
-import XZKUILoader from './loader';
+import Loader from './loader';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // const theme = loaderTheme('dark');
 
 const meta = {
-  component: XZKUILoader,
+  component: Loader,
   parameters: {
     layout: 'centered',
   },
@@ -28,7 +28,7 @@ const meta = {
   },
   args: {},
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUILoader>;
+} satisfies Meta<typeof Loader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -60,7 +60,7 @@ export const AllVariants: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: '12px' }}>
       {(Object.keys(theme.variants) as Array<keyof typeof theme.variants>).map((variant) => (
-        <XZKUILoader key={variant} {...args} variant={variant} />
+        <Loader key={variant} {...args} variant={variant} />
       ))}
     </div>
   ),
