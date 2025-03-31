@@ -1,7 +1,7 @@
 import { VALID_PROPS } from '../utils/constants.mjs';
 import { getFormatConfig } from '../utils/config.mjs';
 import { camelize, isNumeric, withoutEmpty } from '../utils/helpers.mjs';
-import { getBreakpointsStorage, getTokensStorage } from '../utils/storage.mjs';
+import { getBreakpointsStorage, getSharedStorage, getTokensStorage } from '../utils/storage.mjs';
 
 function deepEqual(a, b) {
   if (a === b) return true;
@@ -15,12 +15,12 @@ function deepEqual(a, b) {
   return true;
 }
 
-function processBreakpointObject(obj, orderList, breakpointsStorage) {
+function processBreakpointObject(obj, orderList, breakpointsStorage, refOnly) {
   let lastValue;
   const result = {};
   for (const bpKey of orderList) {
     if (!(bpKey in obj)) continue;
-    const current = getStrictTokenValue(obj[bpKey], bpKey);
+    const current = getStrictTokenValue(obj[bpKey], bpKey, refOnly);
     if (lastValue !== undefined && deepEqual(lastValue, current)) {
       continue;
     }
@@ -36,14 +36,30 @@ function processBreakpointObject(obj, orderList, breakpointsStorage) {
   return withoutEmpty(result);
 }
 
+function extractVariables(text) {
+  return text.match(/\{[^}]+\}|[^.]+/g);
+}
+
 function checkTokenByPath(path) {
   const tokensStorage = getTokensStorage();
+  const sharedStorage = getSharedStorage();
   const { transformKey } = getFormatConfig();
   const clearPath = path.replace(/{|}/g, '');
   const clearPathArray = clearPath.split('.');
   const tokenInStorage = tokensStorage.get(clearPath);
 
-  if (!tokenInStorage) return path;
+  const match = extractVariables(path);
+  if (match.length > 1) {
+    return match.map((item) => checkTokenByPath(item)).join('.');
+  }
+
+  if (!tokenInStorage) {
+    const tokenInSharedStorage = sharedStorage.get(clearPath);
+    if (tokenInSharedStorage) {
+      return tokenInSharedStorage;
+    }
+    return path;
+  }
 
   const token = clearPathArray.map((key) => transformKey(key)).join('.');
 
@@ -54,20 +70,21 @@ function checkTokenByPath(path) {
   return `$${token}`;
 }
 
-function getStrictTokenValue(obj, key) {
+function getStrictTokenValue(obj, key, refOnly = false) {
   const breakpointsStorage = getBreakpointsStorage();
 
   if (obj && typeof obj === 'object' && 'type' in obj) {
     if (obj.description === 'figma-only') {
       return null;
     }
+
     const currentKey = camelize(key);
 
-    if (VALID_PROPS[currentKey] || breakpointsStorage.has(currentKey)) {
+    if (refOnly || VALID_PROPS[currentKey] || breakpointsStorage.has(currentKey)) {
       if (/{|}/g.test(obj.value)) {
         return checkTokenByPath(obj.value);
       }
-      return obj.value;
+      return obj.type === 'number' || obj.type === 'opacity' ? Number(obj.value) : obj.value;
     }
 
     return null;
@@ -79,13 +96,13 @@ function getStrictTokenValue(obj, key) {
     const isBreakpointObject = orderList && orderList.some((k) => Object.hasOwn(obj, k));
 
     if (isBreakpointObject) {
-      return processBreakpointObject(obj, orderList, breakpointsStorage);
+      return processBreakpointObject(obj, orderList, breakpointsStorage, refOnly);
     }
 
     for (const [key, value] of Object.entries(obj)) {
-      const val = getStrictTokenValue(value, key);
+      const val = getStrictTokenValue(value, key, refOnly);
       if (val !== null) {
-        const tokenizedKey = isNumeric(key) ? `$${key}` : camelize(key);
+        const tokenizedKey = refOnly ? key : isNumeric(key) ? `$${key}` : camelize(key);
 
         result[tokenizedKey] = val;
       }
@@ -101,6 +118,10 @@ async function transformGroupComponents(rawData, _sources, _variant) {
   const data = getStrictTokenValue(rawData);
 
   return data;
+}
+
+export function transformGroupComponentsSource(rawData, _sources, _variant) {
+  return getStrictTokenValue(rawData, null, true);
 }
 
 export default transformGroupComponents;

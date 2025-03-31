@@ -1,7 +1,9 @@
 import transformTypographyToFonts from '../tamagui/typography.mjs';
 import transformMedia from '../tamagui/media.mjs';
 import { getArgValue } from './helpers.mjs';
-import transformGroupComponents from '../tamagui/components.mjs';
+import transformGroupComponents, {
+  transformGroupComponentsSource,
+} from '../tamagui/components.mjs';
 
 const transformMap = {
   object: {},
@@ -18,6 +20,9 @@ const transformGroupMap = {
       flatten: false,
       postfix: 'Component',
       values: transformGroupComponents,
+    },
+    shared: {
+      values: transformGroupComponentsSource,
     },
   },
 };
