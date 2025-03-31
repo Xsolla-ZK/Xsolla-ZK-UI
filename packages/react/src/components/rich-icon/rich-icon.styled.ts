@@ -1,16 +1,13 @@
-import { createStyledContext, getTokenValue, Stack, styled, Text } from '@tamagui/core';
+import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
-import { Svg as _Svg, Path as _Path } from 'react-native-svg';
-import PimpleBase from '../pimple/pimple';
+import { Path as _Path, Svg as _Svg } from 'react-native-svg';
 import { RICH_ICON_COMPONENT_NAME } from './rich-icon.constants';
 import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
-import type { PimpleSizes } from '../pimple/pimple.types';
-import type { GetProps, TamaguiElement, Token } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
 import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
-import type { ForwardedRef } from 'react';
 
 export const RichIconContext = createStyledContext<RichIconContextType>({
   size: '$500',
@@ -41,6 +38,10 @@ export const RichIconFrame = styled(Stack, {
         backgroundColor: 'transparent',
         padding: 0,
         cursor: 'pointer',
+        animation: 'pop',
+        pressStyle: {
+          scale: 0.96,
+        },
       },
     },
     size: (val: RichIconSizes) => {

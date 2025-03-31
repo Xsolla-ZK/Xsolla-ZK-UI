@@ -1,5 +1,7 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { Circle } from 'react-native-svg';
+import { LOADER_COMPONENT_NAME } from './loader.constants';
+import type { LoaderContextType } from './loader.types';
 import type { ThemeTokens } from '@tamagui/core';
 
 // const progress = () => keyframes`
@@ -29,22 +31,24 @@ import type { ThemeTokens } from '@tamagui/core';
 //   }
 // `;
 
-export const LoaderContext = createStyledContext({
+export const LoaderContext = createStyledContext<LoaderContextType>({
   size: 24,
-  color: '$border.neutral-secondary' as ThemeTokens,
-  spinColor: '$border.brand-primary' as ThemeTokens,
+  mainColor: '$border.neutral-secondary',
+  spinColor: '$border.brand-primary',
 });
 
-export const LoaderRoot = styled(Stack, {
-  name: 'Loader',
+export const LoaderFrame = styled(Stack, {
+  name: LOADER_COMPONENT_NAME,
   context: LoaderContext,
   display: 'inline-flex',
   flexDirection: 'row',
   alignItems: 'center',
 
   variants: {
+    mainColor: (_val: LoaderContextType['mainColor']) => ({}),
+    spinColor: (_val: LoaderContextType['spinColor']) => ({}),
     size: {
-      ':number': (val, { tokens }) => ({
+      ':number': (val) => ({
         gap: val * 0.25,
       }),
     },
@@ -61,44 +65,25 @@ export const LoaderRoot = styled(Stack, {
 });
 
 export const LoaderText = styled(Text, {
-  name: 'Loader',
+  name: LOADER_COMPONENT_NAME,
   context: LoaderContext,
+  color: '$content.neutral-primary',
 
   variants: {
+    spinColor: (val: ThemeTokens) => ({
+      color: val,
+    }),
     size: {
       ':number': (val, { tokens }) => ({
         fontSize: val * 0.75,
       }),
     },
   },
-  // font-size: 0.75em;
 });
 
 export const LoaderSpin = styled(Circle, {
-  name: 'Loader',
+  name: LOADER_COMPONENT_NAME,
   context: LoaderContext,
-  // animation: {
-  //   type: 'keyframes',
-  //   keyframes: {
-  //     '0%': {
-  //       strokeDasharray: '0 150',
-  //       strokeDashoffset: '150',
-  //     },
-  //     '50%': {
-  //       strokeDasharray: '18 150',
-  //       strokeDashoffset: '150',
-  //     },
-  //     '75%': {
-  //       strokeDasharray: '18 150',
-  //       strokeDashoffset: '112',
-  //     },
-  //     '100%': {
-  //       strokeDasharray: '0 150',
-  //       strokeDashoffset: '75',
-  //     },
-  //   },
-  // },
   transformOrigin: 'center',
   transform: 'rotate(-90deg)',
-  // stroke: '$spinColor',
 });

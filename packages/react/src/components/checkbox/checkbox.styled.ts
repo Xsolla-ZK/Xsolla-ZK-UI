@@ -1,110 +1,15 @@
-// const Root = styled('div')<Pick<StyledProps, 'xzkuiSize'>>(
-//   ({ theme }) => `
-//     position: relative;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     max-width: 100%;
-//     cursor: pointer;
-//     color: ${theme.theme.content.neutralPrimary};
-
-//     &.${xzkuiCheckboxClasses.focusVisible} {
-//       outline: auto;
-//     }
-
-//     &.${xzkuiCheckboxClasses.disabled} {
-//       cursor: not-allowed;
-//     }
-//   `,
-//   ({ theme, xzkuiSize }) => theme.components.radio.sizes[xzkuiSize],
-// );
-
-// const Indicator = styled('span', {
-//   shouldForwardProp,
-// })<StyledProps>(
-//   ({ theme, xzkuiBg, xzkuiColor }) => `
-//     position: relative;
-//     display: inline-flex;
-//     justify-content: center;
-//     align-items: center;
-//     border-style: solid;
-//     border-color: ${theme.theme.border.neutralSecondary};
-//     background-color: ${theme.theme.overlay.neutral};
-//     color: ${xzkuiColor ? pickCustomColor(theme, xzkuiColor) : theme.theme.content.staticDarkPrimary};
-//     overflow: hidden;
-
-//     &:before {
-//       content: '';
-//       position: absolute;
-//       top: 0;
-//       bottom: 0;
-//       left: 0;
-//       right: 0;
-//       border-radius: inherit;
-//       background-color: ${theme.theme.background.neutralHigh};
-//       mix-blend-mode: color-dodge;
-//       transition: ${theme.transitions.state};
-//       transition-property: opacity, background;
-//       opacity: 0;
-//     }
-
-//     .${xzkuiCheckboxClasses.checked} & {
-//       background-color: ${xzkuiBg ? pickCustomColor(theme, xzkuiBg) : theme.theme.background.brandHigh};
-//     }
-
-//     .${xzkuiCheckboxClasses.disabled} & {
-//       background-color: ${theme.theme.overlay.neutral};
-//       color: ${theme.theme.content.neutralTertiary};
-//       &:before {
-//         border-color: ${theme.theme.border.neutralTertiary};
-//       }
-//     }
-//   `,
-//   ({ theme, xzkuiSize }) => {
-//     const box = theme.components.checkbox.box.sizes[xzkuiSize];
-
-//     return {
-//       ...box,
-//       [`&:before`]: {
-//         top: `-${box.borderWidth}`,
-//         left: `-${box.borderWidth}`,
-//         right: `-${box.borderWidth}`,
-//         bottom: `-${box.borderWidth}`,
-//       },
-//       [`.${xzkuiCheckboxClasses.checked} &`]: theme.components.checkbox.indicator.sizes[xzkuiSize],
-//     };
-//   },
-// );
-
-// const Input = styled('input')(
-//   () => `
-//     cursor: inherit;
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-//     top: 0;
-//     left: 0;
-//     margin: 0;
-//     padding: 0;
-//     opacity: 0;
-//     z-index: 1;
-
-//     @media (pointer: fine) {
-//       &:not([disabled]):hover + ${Indicator} {
-//         &:before {
-//           opacity: 1;
-//         }
-//       }
-//     }
-//   `,
-// );
-
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
-import type { CheckboxContextType, CheckboxIndicatorProps, CheckboxSizes } from './checkbox.types';
+import type {
+  CheckboxContextType,
+  CheckboxIndicatorProps,
+  CheckboxSizes,
+  CheckboxVariantSpreadExtras,
+} from './checkbox.types';
+import type { Token } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
 
 export const checkboxComponentConfig = {
@@ -222,17 +127,17 @@ export const CheckboxOverlay = styled(Stack, {
   },
   variants: {
     size: (val: CheckboxSizes, extras) => {
-      const { props } = extras;
+      const { props } = extras as CheckboxVariantSpreadExtras<typeof Stack>;
       const checkboxConfig = checkboxComponentConfig[val];
 
       if (!checkboxConfig) return {};
 
       const { borderRadius, borderWidth } = getMappedProps(checkboxConfig.frame);
-      const offset = -getTokenValue(borderWidth);
+      const offset = -getTokenValue(borderWidth as Token);
 
       return {
         borderRadius: props.checked
-          ? getTokenValue(borderRadius) - getTokenValue(borderWidth)
+          ? getTokenValue(borderRadius as Token) - getTokenValue(borderWidth as Token)
           : borderRadius,
         top: offset,
         bottom: offset,

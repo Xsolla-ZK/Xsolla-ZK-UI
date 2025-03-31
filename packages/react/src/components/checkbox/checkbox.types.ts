@@ -1,9 +1,12 @@
 import type { checkboxComponentConfig, CheckboxFrame } from './checkbox.styled';
 import type { CheckboxExtraProps, CheckedState } from '@tamagui/checkbox-headless';
-import type { GetProps, NativeValue } from '@tamagui/core';
+import type { GetProps, NativeValue, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
 
 export type CheckboxSizes = keyof typeof checkboxComponentConfig;
+export type CheckboxVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
+  GetProps<T> & CheckboxContextType
+>;
 
 export type CheckboxContextType = {
   size: CheckboxSizes;
