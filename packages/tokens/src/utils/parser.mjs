@@ -10,8 +10,9 @@ const whitelistGroup = {
 };
 
 const ungroupedTokensMap = {
-  semantic: 'components',
+  component: 'components',
   common: 'common',
+  shared: 'shared',
 };
 
 /**

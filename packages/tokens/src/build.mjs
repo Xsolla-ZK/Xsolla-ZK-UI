@@ -2,13 +2,13 @@ import { getFormatConfig } from './utils/config.mjs';
 import { processGroupFiles } from './utils/file-processing.mjs';
 import { cleanGeneratedFiles, finalizeGeneration, readJsonFile } from './utils/files.mjs';
 import { flattenObject, getDesignTokensFile } from './utils/helpers.mjs';
-import { setTokensStorage } from './utils/storage.mjs';
+import { setSharedStorage, setTokensStorage } from './utils/storage.mjs';
 import { logger } from './utils/log.mjs';
 import { getGroupMap } from './utils/parser.mjs';
 import { getTransform, getTransformGroup } from './utils/transforms.mjs';
 import { getValueRecursively } from './utils/values.mjs';
 
-const groupOrder = ['common', 'platform'];
+const groupOrder = ['common', 'shared', 'platform']; // important order. platform must be after shared. shared must be after common
 
 /**
  * @param {string} variant
@@ -55,12 +55,19 @@ async function processVariant(variant, group, groupData, pathsGroupData) {
   const isGroupVarianted = pathsGroupData[`${group}/${variant}`];
 
   if (groupOrder.includes(group)) {
-    Object.entries(flattenObject(mergedInputs)).forEach(([key, value]) => {
-      setTokensStorage(key, {
-        group: isGroupVarianted ? group : null,
-        value,
+    const flattenedInputs = Object.entries(flattenObject(mergedInputs));
+    if (group === 'shared') {
+      flattenedInputs.forEach(([key, value]) => {
+        setSharedStorage(key, value);
       });
-    });
+    } else {
+      flattenedInputs.forEach(([key, value]) => {
+        setTokensStorage(key, {
+          group: isGroupVarianted ? group : null,
+          value,
+        });
+      });
+    }
   }
 
   if (isGroupVarianted) {
@@ -95,7 +102,9 @@ async function processVariants(data, group, pathsGroupData) {
     return acc;
   }, {});
 
-  await processGroupFiles(files, groupTransform);
+  if (group !== 'shared') {
+    await processGroupFiles(files, groupTransform);
+  }
 }
 
 async function processAllGroups(groupOrder) {
