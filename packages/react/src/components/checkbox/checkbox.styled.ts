@@ -165,7 +165,6 @@ export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
   if (forceMount || isIndeterminate(ctx.checked) || ctx.checked === true) {
     if (icon) {
       return createElement(icon, {
-        name: CHECKBOX_COMPONENT_NAME,
         size: checkboxConfig.icon.size,
         color: '$color',
         ...indicatorProps,
@@ -174,7 +173,6 @@ export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
 
     return isValidElement(children)
       ? cloneElement(children, {
-          name: CHECKBOX_COMPONENT_NAME,
           size: checkboxConfig.icon.size,
           color: '$color',
           ...indicatorProps,

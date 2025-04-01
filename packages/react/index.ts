@@ -1,4 +1,6 @@
 export { default as Button } from './src/components/button/button';
+export { default as RadioGroup } from './src/components/radio-group/radio-group';
+export { default as Label } from './src/components/label/label';
 export { default as RichIcon } from './src/components/rich-icon/rich-icon';
 export { default as SemanticText } from './src/components/semantic-text/semantic-text';
 export { default as Typography } from './src/components/typography/typography';

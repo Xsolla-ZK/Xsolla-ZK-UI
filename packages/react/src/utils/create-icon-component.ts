@@ -61,7 +61,7 @@ export function createIconComponent<ContextType extends { size: string }, Config
 
     if (icon) {
       return createElement(icon, {
-        name: componentName,
+        // name: componentName,
         size: componentProps.icon.size,
         color: getColorFn(ctx),
         ...rest,
@@ -70,7 +70,7 @@ export function createIconComponent<ContextType extends { size: string }, Config
 
     return isValidElement(children)
       ? cloneElement(children, {
-          name: componentName,
+          // name: componentName,
           size: componentProps.icon.size,
           color: getColorFn(ctx),
           ...rest,

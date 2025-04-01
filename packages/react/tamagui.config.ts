@@ -8,6 +8,8 @@ import { flexButtonTheme } from './src/components/flex-button/flex-button.theme'
 import { inputTheme } from './src/components/input/input.theme';
 import { loaderTheme } from './src/components/loader/loader.theme';
 import { pimpleTheme } from './src/components/pimple/pimple.theme';
+import { radioGroupTheme } from './src/components/radio-group/radio-group.theme';
+import { richIconTheme } from './src/components/rich-icon/rich-icon.theme';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
@@ -29,6 +31,8 @@ const themesCompose = createThemes(webConfig.themes, {
     flexButton: flexButtonTheme,
     sheet: sheetTheme,
     checkbox: checkboxTheme,
+    radioGroup: radioGroupTheme,
+    richIcon: richIconTheme,
   },
 });
 

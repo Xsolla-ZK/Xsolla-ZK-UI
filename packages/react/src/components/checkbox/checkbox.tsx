@@ -1,4 +1,4 @@
-// rework tamagui implementation of Checkbox component
+// rework tamagui implementation of Checkbox component - @tamagui/switch-headless based
 // https://github.com/tamagui/tamagui/blob/main/code/ui/checkbox/src/createCheckbox.tsx
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */

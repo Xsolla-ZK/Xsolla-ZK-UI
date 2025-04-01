@@ -144,7 +144,7 @@ const preview: Preview = {
         <TamaguiProvider config={config} defaultTheme="light">
           <Theme name={globals.theme || 'light'}>
             <GlobalStyles />
-              <Story />
+            <Story />
           </Theme>
         </TamaguiProvider>
       );

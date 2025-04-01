@@ -12,7 +12,7 @@ import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
 export const RichIconContext = createStyledContext<RichIconContextType>({
   size: '$500',
   color: '$color',
-  backgroundColor: '$overlay.neutral',
+  backgroundColor: '$background',
   noShape: false,
 });
 
@@ -46,22 +46,19 @@ export const RichIconFrame = styled(Stack, {
     },
     size: (val: RichIconSizes) => {
       const config = getComponentsConfig();
-      const control = config.control[val];
+      const componentProps = config.richIcon[val];
 
-      if (!control) {
+      if (!componentProps) {
         return {};
       }
 
-      return {
-        minWidth: getMappedProps(control).minWidth,
-        minHeight: getMappedProps(control).minHeight,
-      };
+      return getMappedProps(componentProps.frame);
     },
   } as const,
   defaultVariants: {
     noShape: false,
     size: '$500',
-    backgroundColor: '$overlay.neutral',
+    backgroundColor: '$background',
     pressable: false,
   },
 });
@@ -75,15 +72,15 @@ export const RichIconShapeSvg = (props: Omit<GetProps<typeof Svg>, 'width' | 'he
   const { size, backgroundColor } = useContext(RichIconContext.context);
 
   const config = getComponentsConfig();
-  const control = config.control[size];
+  const componentProps = config.richIcon[size];
 
-  if (!control) {
+  if (!componentProps) {
     return null;
   }
 
   return createElement(Svg, {
-    width: control.minSize,
-    height: control.minSize,
+    width: componentProps.frame.minSize,
+    height: componentProps.frame.minSize,
     color: backgroundColor,
     ...props,
   });
@@ -109,16 +106,15 @@ export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
   }
 
   const config = getComponentsConfig();
-  const control = config.control[ctx.size];
   const componentProps = config.richIcon[ctx.size];
 
-  if (!componentProps || !control) {
+  if (!componentProps) {
     throw new Error(
       `Xsolla-ZK UI: ${RICH_ICON_COMPONENT_NAME} component props for size ${ctx.size} not found.`,
     );
   }
 
-  const iconSize = ctx.noShape ? control.minSize : componentProps.icon.size;
+  const iconSize = ctx.noShape ? componentProps.frame.minSize : componentProps.icon.size;
 
   if (icon) {
     return createElement(icon, {

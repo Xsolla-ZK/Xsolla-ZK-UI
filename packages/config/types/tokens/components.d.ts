@@ -26,80 +26,6 @@ export declare const badge: {
         };
     };
 };
-export declare const board: {
-    list: {
-        large: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-    };
-    cell: {
-        large: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-        small: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-    };
-    accordion: {
-        medium: {
-            frame: {
-                paddingLeft: string;
-                paddingRight: string;
-                paddingVertical: string;
-                borderRadius: string;
-            };
-            content: {
-                minHeight: string;
-            };
-        };
-    };
-};
 export declare const breadcrumbs: {
     $500: {
         frame: {
@@ -113,7 +39,10 @@ export declare const breadcrumbs: {
 export declare const button: {
     $200: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -125,7 +54,10 @@ export declare const button: {
     };
     $300: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -137,7 +69,10 @@ export declare const button: {
     };
     $400: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -149,7 +84,10 @@ export declare const button: {
     };
     $500: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -161,7 +99,10 @@ export declare const button: {
     };
     $600: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -173,7 +114,10 @@ export declare const button: {
     };
     $700: {
         frame: {
+            minSize: string;
+            borderRadius: string;
             paddingHorizontal: string;
+            gap: string;
         };
         icon: {
             size: string;
@@ -216,102 +160,176 @@ export declare const cell: {
     addon: {
         gap: string;
     };
+    board: {
+        large: {
+            frame: {
+                paddingHorizontal: {
+                    base: string;
+                    $md: string;
+                    $lg: string;
+                    $xl: string;
+                };
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
+        };
+        medium: {
+            frame: {
+                paddingHorizontal: {
+                    base: string;
+                    $md: string;
+                    $lg: string;
+                    $xl: string;
+                };
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
+        };
+        small: {
+            frame: {
+                paddingHorizontal: {
+                    base: string;
+                    $md: string;
+                    $lg: string;
+                    $xl: string;
+                };
+                paddingVertical: string;
+                borderRadius: string;
+            };
+            content: {
+                minHeight: string;
+            };
+        };
+    };
+};
+export declare const chip: {
+    $200: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
+    $300: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
+    $400: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
+    $500: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
+    $600: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
+    $700: {
+        frame: {
+            minSize: string;
+            borderRadius: string;
+            paddingHorizontal: string;
+            gap: string;
+        };
+        icon: {
+            size: string;
+        };
+        label: {
+            paddingHorizontal: string;
+            typography: string;
+        };
+    };
 };
 export declare const chips: {
     $200: {
         frame: {
             gap: string;
         };
-        item: {
-            typography: string;
-        };
     };
     $300: {
         frame: {
             gap: string;
-        };
-        item: {
-            typography: string;
         };
     };
     $400: {
         frame: {
             gap: string;
         };
-        item: {
-            typography: string;
-        };
     };
     $500: {
         frame: {
             gap: string;
-        };
-        item: {
-            typography: string;
         };
     };
     $600: {
         frame: {
             gap: string;
         };
-        item: {
-            typography: string;
-        };
     };
     $700: {
         frame: {
             gap: string;
         };
-        item: {
-            typography: string;
-        };
-    };
-};
-export declare const control: {
-    $100: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $200: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $300: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $400: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $500: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $600: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $700: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $800: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
-    };
-    $900: {
-        minSize: string;
-        borderRadius: string;
-        gap: string;
     };
 };
 export declare const dropdown: {
@@ -406,41 +424,61 @@ export declare const flexButton: {
     $300: {
         frame: {
             gap: string;
+            minHeight: string;
         };
         slot: {
             paddingLeft: string;
+        };
+        label: {
+            typography: string;
+        };
+        icon: {
+            size: string;
         };
     };
     $400: {
         frame: {
             gap: string;
+            minHeight: string;
         };
         slot: {
             paddingLeft: string;
+        };
+        label: {
+            typography: string;
+        };
+        icon: {
+            size: string;
         };
     };
     $500: {
         frame: {
             gap: string;
+            minHeight: string;
         };
         slot: {
             paddingLeft: string;
+        };
+        label: {
+            typography: string;
+        };
+        icon: {
+            size: string;
         };
     };
     $600: {
         frame: {
             gap: string;
+            minHeight: string;
         };
         slot: {
             paddingLeft: string;
         };
-    };
-    $700: {
-        frame: {
-            gap: string;
+        label: {
+            typography: string;
         };
-        slot: {
-            paddingLeft: string;
+        icon: {
+            size: string;
         };
     };
 };
@@ -463,6 +501,9 @@ export declare const inlineInput: {
 export declare const input: {
     $400: {
         frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
             borderWidth: string;
             paddingVertical: string;
             paddingHorizontal: string;
@@ -473,6 +514,9 @@ export declare const input: {
     };
     $500: {
         frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
             borderWidth: string;
             paddingVertical: string;
             paddingHorizontal: string;
@@ -483,6 +527,9 @@ export declare const input: {
     };
     $600: {
         frame: {
+            minSize: string;
+            borderRadius: string;
+            gap: string;
             borderWidth: string;
             paddingVertical: string;
             paddingHorizontal: string;
@@ -1022,80 +1069,6 @@ export declare const components: {
             };
         };
     };
-    board: {
-        list: {
-            large: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-            medium: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-        };
-        cell: {
-            large: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-            medium: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-            small: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-        };
-        accordion: {
-            medium: {
-                frame: {
-                    paddingLeft: string;
-                    paddingRight: string;
-                    paddingVertical: string;
-                    borderRadius: string;
-                };
-                content: {
-                    minHeight: string;
-                };
-            };
-        };
-    };
     breadcrumbs: {
         $500: {
             frame: {
@@ -1109,7 +1082,10 @@ export declare const components: {
     button: {
         $200: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1121,7 +1097,10 @@ export declare const components: {
         };
         $300: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1133,7 +1112,10 @@ export declare const components: {
         };
         $400: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1145,7 +1127,10 @@ export declare const components: {
         };
         $500: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1157,7 +1142,10 @@ export declare const components: {
         };
         $600: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1169,7 +1157,10 @@ export declare const components: {
         };
         $700: {
             frame: {
+                minSize: string;
+                borderRadius: string;
                 paddingHorizontal: string;
+                gap: string;
             };
             icon: {
                 size: string;
@@ -1212,102 +1203,176 @@ export declare const components: {
         addon: {
             gap: string;
         };
+        board: {
+            large: {
+                frame: {
+                    paddingHorizontal: {
+                        base: string;
+                        $md: string;
+                        $lg: string;
+                        $xl: string;
+                    };
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
+            };
+            medium: {
+                frame: {
+                    paddingHorizontal: {
+                        base: string;
+                        $md: string;
+                        $lg: string;
+                        $xl: string;
+                    };
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
+            };
+            small: {
+                frame: {
+                    paddingHorizontal: {
+                        base: string;
+                        $md: string;
+                        $lg: string;
+                        $xl: string;
+                    };
+                    paddingVertical: string;
+                    borderRadius: string;
+                };
+                content: {
+                    minHeight: string;
+                };
+            };
+        };
+    };
+    chip: {
+        $200: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
+        $300: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
+        $400: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
+        $500: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
+        $600: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
+        $700: {
+            frame: {
+                minSize: string;
+                borderRadius: string;
+                paddingHorizontal: string;
+                gap: string;
+            };
+            icon: {
+                size: string;
+            };
+            label: {
+                paddingHorizontal: string;
+                typography: string;
+            };
+        };
     };
     chips: {
         $200: {
             frame: {
                 gap: string;
             };
-            item: {
-                typography: string;
-            };
         };
         $300: {
             frame: {
                 gap: string;
-            };
-            item: {
-                typography: string;
             };
         };
         $400: {
             frame: {
                 gap: string;
             };
-            item: {
-                typography: string;
-            };
         };
         $500: {
             frame: {
                 gap: string;
-            };
-            item: {
-                typography: string;
             };
         };
         $600: {
             frame: {
                 gap: string;
             };
-            item: {
-                typography: string;
-            };
         };
         $700: {
             frame: {
                 gap: string;
             };
-            item: {
-                typography: string;
-            };
-        };
-    };
-    control: {
-        $100: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $200: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $300: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $400: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $500: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $600: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $700: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $800: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
-        };
-        $900: {
-            minSize: string;
-            borderRadius: string;
-            gap: string;
         };
     };
     dropdown: {
@@ -1402,41 +1467,61 @@ export declare const components: {
         $300: {
             frame: {
                 gap: string;
+                minHeight: string;
             };
             slot: {
                 paddingLeft: string;
+            };
+            label: {
+                typography: string;
+            };
+            icon: {
+                size: string;
             };
         };
         $400: {
             frame: {
                 gap: string;
+                minHeight: string;
             };
             slot: {
                 paddingLeft: string;
+            };
+            label: {
+                typography: string;
+            };
+            icon: {
+                size: string;
             };
         };
         $500: {
             frame: {
                 gap: string;
+                minHeight: string;
             };
             slot: {
                 paddingLeft: string;
+            };
+            label: {
+                typography: string;
+            };
+            icon: {
+                size: string;
             };
         };
         $600: {
             frame: {
                 gap: string;
+                minHeight: string;
             };
             slot: {
                 paddingLeft: string;
             };
-        };
-        $700: {
-            frame: {
-                gap: string;
+            label: {
+                typography: string;
             };
-            slot: {
-                paddingLeft: string;
+            icon: {
+                size: string;
             };
         };
     };
@@ -1459,6 +1544,9 @@ export declare const components: {
     input: {
         $400: {
             frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
                 borderWidth: string;
                 paddingVertical: string;
                 paddingHorizontal: string;
@@ -1469,6 +1557,9 @@ export declare const components: {
         };
         $500: {
             frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
                 borderWidth: string;
                 paddingVertical: string;
                 paddingHorizontal: string;
@@ -1479,6 +1570,9 @@ export declare const components: {
         };
         $600: {
             frame: {
+                minSize: string;
+                borderRadius: string;
+                gap: string;
                 borderWidth: string;
                 paddingVertical: string;
                 paddingHorizontal: string;

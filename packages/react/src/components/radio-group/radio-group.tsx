@@ -1,93 +1,43 @@
-// rework tamagui implementation of RadioGroup component
+// rework tamagui implementation of RadioGroup component - @tamagui/radio-headless based
 // https://github.com/tamagui/tamagui/blob/main/code/ui/radio-group/src/createRadioGroup.tsx
 
 import { isWeb, withStaticProperties } from '@tamagui/core';
-
+import { themed } from '@tamagui/helpers-icon';
 import {
   useRadioGroup,
   useRadioGroupItem,
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
-import React from 'react';
-import { RadioGroupFrame, RadioGroupIndicatorFrame, RadioGroupItemFrame } from './radio-group.styled';
-import type { GetProps } from '@tamagui/core';
-import type { RadioGroupContextValue, RadioGroupItemContextValue } from '@tamagui/radio-headless';
+import { createContext, memo, useContext } from 'react';
 
-const ensureContext = (x: any) => {
-  if (!x.context) {
-    x.context = RadioGroupContext;
-  }
-};
+import Svg, { Circle } from 'react-native-svg';
+import {
+  radioGroupComponentConfig,
+  RadioGroupContext,
+  RadioGroupFrame,
+  RadioGroupItemFrame,
+  RadioGroupOverlay,
+} from './radio-group.styled';
+import type {
+  RadioGroupContextType,
+  RadioGroupItemProps,
+  RadioGroupProps,
+} from './radio-group.types';
+import type { ColorTokens, TamaguiElement } from '@tamagui/core';
+import type { IconProps } from '@tamagui/helpers-icon';
+import type { RadioGroupItemContextValue } from '@tamagui/radio-headless';
+import type { ForwardedRef } from 'react';
 
-type RadioIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> & {
-  forceMount?: boolean;
-  unstyled?: boolean;
-};
+// const RadioGroupContext = createContext<RadioGroupContextValue>({});
 
-const RadioGroupContext = React.createContext<RadioGroupContextValue>({});
-const RadioGroupItemContext = React.createContext<RadioGroupItemContextValue>({
+const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
   disabled: false,
 });
 
-export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
-  value: string;
-  id?: string;
-  labelledBy?: string;
-  disabled?: boolean;
-};
-
-export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-  required?: boolean;
-  disabled?: boolean;
-  name?: string;
-  native?: boolean;
-  accentColor?: string;
-};
-
-type RadioGroupComponent = (props: RadioGroupProps) => any;
-
-type RadioGroupIndicatorComponent = (props: RadioIndicatorProps) => any;
-
-type RadioGroupItemComponent = (props: RadioGroupItemProps) => any;
-
-export function createRadioGroup<
-  F extends RadioGroupComponent,
-  D extends RadioGroupIndicatorComponent,
-  I extends RadioGroupItemComponent,
->(createProps: { disableActiveTheme?: boolean; Frame?: F; Indicator?: D; Item?: I }) {
-  const {
-    disableActiveTheme,
-    Frame = RadioGroupFrame,
-    Indicator = RadioGroupIndicatorFrame,
-    Item = RadioGroupItemFrame,
-  } = createProps as any as {
-    disableActiveTheme?: boolean;
-    Frame: typeof RadioGroupFrame;
-    Indicator: typeof RadioGroupIndicatorFrame;
-    Item: typeof RadioGroupItemFrame;
-  };
-
-  ensureContext(Frame);
-  ensureContext(Indicator);
-  ensureContext(Item);
-
-  type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
-    value?: string;
-    defaultValue?: string;
-    onValueChange?: (value: string) => void;
-    required?: boolean;
-    disabled?: boolean;
-    name?: string;
-    native?: boolean;
-    accentColor?: string;
-  };
-
-  const RadioGroupImp = Frame.styleable<RadioGroupProps>((props, ref) => {
+const RadioGroupComponent = RadioGroupFrame.styleable<RadioGroupProps>(
+  (props, ref: ForwardedRef<TamaguiElement>) => {
     const {
       value,
       defaultValue,
@@ -114,25 +64,18 @@ export function createRadioGroup<
     });
 
     return (
-      <RadioGroupContext.Provider value={providerValue}>
+      <RadioGroupContext.Provider {...providerValue}>
         <RovingFocusGroup {...rovingFocusGroupAttrs}>
           <RadioGroupFrame {...frameAttrs} ref={ref} {...rest} />
         </RovingFocusGroup>
       </RadioGroupContext.Provider>
     );
-  });
+  },
+);
 
-  const RadioGroupItemImp = Item.styleable<RadioGroupItemProps>((props, ref) => {
-    const {
-      value,
-      labelledBy,
-      onPress,
-      //@ts-expect-error
-      onKeyDown,
-      disabled,
-      id,
-      ...rest
-    } = props;
+const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProps>(
+  (props, ref: ForwardedRef<TamaguiElement>) => {
+    const { value, labelledBy, onPress, onKeyDown, disabled, id, children, ...rest } = props;
 
     const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl, native } =
       useRadioGroupItem({
@@ -152,40 +95,100 @@ export function createRadioGroup<
         ) : (
           <>
             <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
-              <RadioGroupItemFrame {...frameAttrs} ref={ref} {...rest} />
+              <RadioGroupItemFrame
+                group
+                theme={providerValue.checked ? 'active' : undefined}
+                {...frameAttrs}
+                ref={ref}
+                {...rest}
+              >
+                {!frameAttrs.disabled && <RadioGroupOverlay />}
+                {children}
+              </RadioGroupItemFrame>
             </RovingFocusGroup.Item>
             {isFormControl && bubbleInput}
           </>
         )}
       </RadioGroupItemContext.Provider>
     );
-  });
+  },
+  {
+    disableTheme: true,
+  },
+);
 
-  RadioGroupItemImp.displayName = 'RadioGroupItem';
-
-  const RadioIndicator = Indicator.styleable<RadioIndicatorProps>(
-    (props: RadioIndicatorProps, forwardedRef) => {
-      const { forceMount, disabled, ...indicatorProps } = props;
-      const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
-        radioGroupItemContext: RadioGroupItemContext,
-        disabled,
-      });
-
-      if (forceMount || checked) {
-        return <Indicator {...useIndicatorRest} ref={forwardedRef} {...indicatorProps} />;
-      }
-
-      return null;
+const Indicator = memo<IconProps>(
+  themed(
+    (props) => {
+      const { color = 'black', size = 24, ...otherProps } = props;
+      return (
+        <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
+          <Circle cx="12" cy="12" r="8" fill={color} />
+        </Svg>
+      );
     },
-  );
+    { defaultStrokeWidth: 0 },
+  ),
+);
 
-  RadioIndicator.displayName = 'RadioIndicator';
+const getIndicatorColor = (ctx: RadioGroupContextType): ColorTokens => {
+  if (ctx.disabled) {
+    return '$content.neutral-tertiary';
+  }
 
-  const RadioGroup = withStaticProperties(RadioGroupImp, {
-    Item: RadioGroupItemImp,
-    Indicator: RadioIndicator,
+  return '$color';
+};
+
+const RadioIndicator = (props) => {
+  const { forceMount, ...indicatorProps } = props;
+  const ctx = useContext(RadioGroupContext);
+  const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
+    radioGroupItemContext: RadioGroupItemContext,
+    disabled: ctx.disabled,
   });
-  RadioGroup.displayName = 'RadioGroup';
 
-  return RadioGroup;
-}
+  const radioGroupConfig = radioGroupComponentConfig[ctx.size];
+
+  if (forceMount || checked) {
+    return (
+      <Indicator
+        {...useIndicatorRest}
+        size={radioGroupConfig.icon.size}
+        color={getIndicatorColor(ctx)}
+        {...indicatorProps}
+      />
+    );
+  }
+
+  return null;
+};
+// const RadioIndicator = RadioGroupIndicatorFrame.styleable<RadioGroupIndicatorProps>(
+//   (props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+//     const { forceMount, disabled, ...indicatorProps } = props;
+//     const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
+//       radioGroupItemContext: RadioGroupItemContext,
+//       disabled,
+//     });
+
+//     if (forceMount || checked) {
+//       return (
+//         <RadioGroupIndicatorFrame {...useIndicatorRest} ref={forwardedRef} {...indicatorProps} />
+//       );
+//     }
+
+//     return null;
+//   },
+// );
+
+const RadioGroup = withStaticProperties(RadioGroupComponent, {
+  Item: RadioGroupItemComponent,
+  Indicator: RadioIndicator,
+});
+
+// function RadioGroup() {
+//   return (
+//     <div>hello</div>
+//   )
+// }
+
+export default RadioGroup;

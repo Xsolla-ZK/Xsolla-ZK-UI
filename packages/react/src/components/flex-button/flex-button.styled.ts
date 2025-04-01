@@ -41,14 +41,11 @@ export const FlexButtonFrame = styled(Stack, {
     size: (val: FlexButtonSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.flexButton[val];
-      const buttonProps = config.button[val];
-      if (!componentProps || !buttonProps) {
+      // const buttonProps = config.button[val];
+      if (!componentProps) {
         return {};
       }
-      return {
-        ...getMappedProps(buttonProps.icon),
-        ...getMappedProps(componentProps.frame),
-      };
+      return getMappedProps(componentProps.frame);
     },
     isLoading: {
       true: {

@@ -72,14 +72,10 @@ export const ButtonFrame = styled(Board, {
     size: (val: ButtonSizes, _extras) => {
       const config = getComponentsConfig();
       const button = config.button[val];
-      const control = config.control[val];
 
-      if (!button || !control) return {};
+      if (!button) return {};
 
-      return {
-        ...getMappedProps(button.frame),
-        ...getMappedProps(control),
-      };
+      return getMappedProps(button.frame);
     },
     disabled: {
       true: {
