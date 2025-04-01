@@ -133,6 +133,8 @@ function transformSvg(svg) {
     )
     .replace(/(?:width|height)="24"/g, (match) => match.replace('"24"', '{size}'))
     .replace(/px/g, '')
+    // Camelize kebab-case attributes (simpler approach)
+    .replace(/([a-z])-([a-z])/gi, (_match, p1, p2) => p1 + p2.toUpperCase())
     // Replace SVG tags with React Native components
     .replace(
       new RegExp(`<(/?)(${Object.keys(SVG_COMPONENT_MAP).join('|')})([^>]*)>`, 'g'),
