@@ -139,16 +139,14 @@ export const Input = styled(InputBase, {
     size: (val: InputSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.input[val];
-      const controlProps = config.control[val];
 
-      if (!componentProps || !controlProps) {
+      if (!componentProps) {
         return {};
       }
 
       return {
         ...getMappedProps(componentProps.frame),
         ...getMappedProps(componentProps.label),
-        ...getMappedProps(controlProps),
       };
     },
   } as const,

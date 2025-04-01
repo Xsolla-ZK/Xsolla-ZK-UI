@@ -26,80 +26,6 @@ export const badge = {
     },
   },
 };
-export const board = {
-  list: {
-    large: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$platform.layout.content-compensation.md',
-        paddingVertical: '$space.350',
-        borderRadius: '$radius.550',
-      },
-      content: {
-        minHeight: '$size.200',
-      },
-    },
-    medium: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$platform.layout.content-compensation.md',
-        paddingVertical: '$space.350',
-        borderRadius: '$radius.550',
-      },
-      content: {
-        minHeight: '$size.200',
-      },
-    },
-  },
-  cell: {
-    large: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$platform.layout.content-compensation.md',
-        paddingVertical: '$space.200',
-        borderRadius: '$radius.550',
-      },
-      content: {
-        minHeight: '$size.700',
-      },
-    },
-    medium: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$platform.layout.content-compensation.md',
-        paddingVertical: '$space.200',
-        borderRadius: '$radius.550',
-      },
-      content: {
-        minHeight: '$size.600',
-      },
-    },
-    small: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$platform.layout.content-compensation.md',
-        paddingVertical: '$space.100',
-        borderRadius: '$radius.550',
-      },
-      content: {
-        minHeight: '$size.600',
-      },
-    },
-  },
-  accordion: {
-    medium: {
-      frame: {
-        paddingLeft: '$platform.layout.content-compensation.md',
-        paddingRight: '$space.200',
-        paddingVertical: '$space.200',
-        borderRadius: '$radius.500',
-      },
-      content: {
-        minHeight: '$size.0',
-      },
-    },
-  },
-};
 export const breadcrumbs = {
   $500: {
     frame: {
@@ -113,7 +39,10 @@ export const breadcrumbs = {
 export const button = {
   $200: {
     frame: {
+      minSize: '$size.200',
+      borderRadius: '$radius.300',
       paddingHorizontal: '$space.100',
+      gap: '$space.50',
     },
     icon: {
       size: '$size.100',
@@ -125,31 +54,40 @@ export const button = {
   },
   $300: {
     frame: {
+      minSize: '$size.300',
+      borderRadius: '$radius.300',
       paddingHorizontal: '$space.200',
+      gap: '$space.50',
     },
     icon: {
       size: '$size.100',
     },
     label: {
       paddingHorizontal: '$space.100',
-      typography: 'compact.200.accent',
+      typography: 'compact.250.accent',
     },
   },
   $400: {
     frame: {
+      minSize: '$size.400',
+      borderRadius: '$radius.400',
       paddingHorizontal: '$space.250',
+      gap: '$space.100',
     },
     icon: {
       size: '$size.150',
     },
     label: {
       paddingHorizontal: '$space.150',
-      typography: 'compact.250.accent',
+      typography: 'compact.300.accent',
     },
   },
   $500: {
     frame: {
+      minSize: '$size.500',
+      borderRadius: '$radius.500',
       paddingHorizontal: '$space.300',
+      gap: '$space.100',
     },
     icon: {
       size: '$size.150',
@@ -161,7 +99,10 @@ export const button = {
   },
   $600: {
     frame: {
+      minSize: '$size.600',
+      borderRadius: '$radius.500',
       paddingHorizontal: '$space.350',
+      gap: '$space.150',
     },
     icon: {
       size: '$size.200',
@@ -173,14 +114,17 @@ export const button = {
   },
   $700: {
     frame: {
+      minSize: '$size.700',
+      borderRadius: '$radius.550',
       paddingHorizontal: '$space.400',
+      gap: '$space.150',
     },
     icon: {
       size: '$size.200',
     },
     label: {
       paddingHorizontal: '$space.200',
-      typography: 'compact.350.accent',
+      typography: 'compact.400.accent',
     },
   },
 };
@@ -216,102 +160,176 @@ export const cell = {
   addon: {
     gap: '$space.200',
   },
+  board: {
+    large: {
+      frame: {
+        paddingHorizontal: {
+          base: '$platform.layout.content-compensation.sm',
+          $md: '$platform.layout.content-compensation.md',
+          $lg: '$platform.layout.content-compensation.lg',
+          $xl: '$platform.layout.content-compensation.xl',
+        },
+        paddingVertical: '$space.200',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.700',
+      },
+    },
+    medium: {
+      frame: {
+        paddingHorizontal: {
+          base: '$platform.layout.content-compensation.sm',
+          $md: '$platform.layout.content-compensation.md',
+          $lg: '$platform.layout.content-compensation.lg',
+          $xl: '$platform.layout.content-compensation.xl',
+        },
+        paddingVertical: '$space.200',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.600',
+      },
+    },
+    small: {
+      frame: {
+        paddingHorizontal: {
+          base: '$platform.layout.content-compensation.sm',
+          $md: '$platform.layout.content-compensation.md',
+          $lg: '$platform.layout.content-compensation.lg',
+          $xl: '$platform.layout.content-compensation.xl',
+        },
+        paddingVertical: '$space.100',
+        borderRadius: '$radius.550',
+      },
+      content: {
+        minHeight: '$size.600',
+      },
+    },
+  },
+};
+export const chip = {
+  $200: {
+    frame: {
+      minSize: '$size.200',
+      borderRadius: '$radius.300',
+      paddingHorizontal: '$space.100',
+      gap: '$space.50',
+    },
+    icon: {
+      size: '$size.100',
+    },
+    label: {
+      paddingHorizontal: '$space.100',
+      typography: 'compact.200.default',
+    },
+  },
+  $300: {
+    frame: {
+      minSize: '$size.300',
+      borderRadius: '$radius.300',
+      paddingHorizontal: '$space.200',
+      gap: '$space.50',
+    },
+    icon: {
+      size: '$size.100',
+    },
+    label: {
+      paddingHorizontal: '$space.100',
+      typography: 'compact.250.default',
+    },
+  },
+  $400: {
+    frame: {
+      minSize: '$size.400',
+      borderRadius: '$radius.400',
+      paddingHorizontal: '$space.250',
+      gap: '$space.100',
+    },
+    icon: {
+      size: '$size.150',
+    },
+    label: {
+      paddingHorizontal: '$space.150',
+      typography: 'compact.300.default',
+    },
+  },
+  $500: {
+    frame: {
+      minSize: '$size.500',
+      borderRadius: '$radius.500',
+      paddingHorizontal: '$space.300',
+      gap: '$space.100',
+    },
+    icon: {
+      size: '$size.150',
+    },
+    label: {
+      paddingHorizontal: '$space.200',
+      typography: 'compact.350.default',
+    },
+  },
+  $600: {
+    frame: {
+      minSize: '$size.600',
+      borderRadius: '$radius.500',
+      paddingHorizontal: '$space.350',
+      gap: '$space.150',
+    },
+    icon: {
+      size: '$size.200',
+    },
+    label: {
+      paddingHorizontal: '$space.200',
+      typography: 'compact.350.default',
+    },
+  },
+  $700: {
+    frame: {
+      minSize: '$size.700',
+      borderRadius: '$radius.550',
+      paddingHorizontal: '$space.400',
+      gap: '$space.150',
+    },
+    icon: {
+      size: '$size.200',
+    },
+    label: {
+      paddingHorizontal: '$space.200',
+      typography: 'compact.400.default',
+    },
+  },
 };
 export const chips = {
   $200: {
     frame: {
       gap: '$space.100',
     },
-    item: {
-      typography: 'compact.200.default',
-    },
   },
   $300: {
     frame: {
       gap: '$space.100',
-    },
-    item: {
-      typography: 'compact.200.default',
     },
   },
   $400: {
     frame: {
       gap: '$space.100',
     },
-    item: {
-      typography: 'compact.250.default',
-    },
   },
   $500: {
     frame: {
       gap: '$space.100',
-    },
-    item: {
-      typography: 'compact.350.default',
     },
   },
   $600: {
     frame: {
       gap: '$space.100',
     },
-    item: {
-      typography: 'compact.350.default',
-    },
   },
   $700: {
     frame: {
       gap: '$space.100',
     },
-    item: {
-      typography: 'compact.350.default',
-    },
-  },
-};
-export const control = {
-  $100: {
-    minSize: '$size.100',
-    borderRadius: '$radius.200',
-    gap: '$space.0',
-  },
-  $200: {
-    minSize: '$size.200',
-    borderRadius: '$radius.300',
-    gap: '$space.50',
-  },
-  $300: {
-    minSize: '$size.300',
-    borderRadius: '$radius.300',
-    gap: '$space.100',
-  },
-  $400: {
-    minSize: '$size.400',
-    borderRadius: '$radius.400',
-    gap: '$space.100',
-  },
-  $500: {
-    minSize: '$size.500',
-    borderRadius: '$radius.500',
-    gap: '$space.100',
-  },
-  $600: {
-    minSize: '$size.600',
-    borderRadius: '$radius.500',
-    gap: '$space.150',
-  },
-  $700: {
-    minSize: '$size.700',
-    borderRadius: '$radius.550',
-    gap: '$space.150',
-  },
-  $800: {
-    minSize: '$size.800',
-    borderRadius: '$radius.600',
-    gap: '$space.200',
-  },
-  $900: {
-    minSize: '$size.900',
-    borderRadius: '$radius.700',
-    gap: '$space.200',
   },
 };
 export const dropdown = {
@@ -406,41 +424,61 @@ export const flexButton = {
   $300: {
     frame: {
       gap: '$space.0',
+      minHeight: '$size.100',
     },
     slot: {
       paddingLeft: '$space.50',
+    },
+    label: {
+      typography: 'compact.250.accent',
+    },
+    icon: {
+      size: '$size.100',
     },
   },
   $400: {
     frame: {
       gap: '$space.0',
+      minHeight: '$size.150',
     },
     slot: {
       paddingLeft: '$space.50',
+    },
+    label: {
+      typography: 'compact.300.accent',
+    },
+    icon: {
+      size: '$size.150',
     },
   },
   $500: {
     frame: {
       gap: '$space.0',
+      minHeight: '$size.150',
     },
     slot: {
-      paddingLeft: '$space.50',
+      paddingLeft: '$space.100',
+    },
+    label: {
+      typography: 'compact.350.accent',
+    },
+    icon: {
+      size: '$size.150',
     },
   },
   $600: {
     frame: {
       gap: '$space.50',
-    },
-    slot: {
-      paddingLeft: '$space.50',
-    },
-  },
-  $700: {
-    frame: {
-      gap: '$space.50',
+      minHeight: '$size.200',
     },
     slot: {
       paddingLeft: '$space.100',
+    },
+    label: {
+      typography: 'compact.350.accent',
+    },
+    icon: {
+      size: '$size.200',
     },
   },
 };
@@ -463,16 +501,22 @@ export const inlineInput = {
 export const input = {
   $400: {
     frame: {
+      minSize: '$size.400',
+      borderRadius: '$radius.400',
+      gap: '$space.100',
       borderWidth: '$stroke.200',
       paddingVertical: '$space.300',
       paddingHorizontal: '$space.350',
     },
     label: {
-      typography: 'compact.250.default',
+      typography: 'compact.300.default',
     },
   },
   $500: {
     frame: {
+      minSize: '$size.500',
+      borderRadius: '$radius.500',
+      gap: '$space.100',
       borderWidth: '$stroke.200',
       paddingVertical: '$space.300',
       paddingHorizontal: '$space.350',
@@ -483,6 +527,9 @@ export const input = {
   },
   $600: {
     frame: {
+      minSize: '$size.600',
+      borderRadius: '$radius.500',
+      gap: '$space.150',
       borderWidth: '$stroke.200',
       paddingVertical: '$space.300',
       paddingHorizontal: '$space.350',
@@ -1000,12 +1047,11 @@ export const tabBar = {
 export const components = {
   accordion,
   badge,
-  board,
   breadcrumbs,
   button,
   cell,
+  chip,
   chips,
-  control,
   dropdown,
   field,
   flexButton,

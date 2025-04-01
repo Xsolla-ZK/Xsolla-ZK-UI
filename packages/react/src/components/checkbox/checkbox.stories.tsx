@@ -5,7 +5,6 @@ import { Checkmark, Star } from '@xsolla-zk-ui/icons';
 import { useId, useState } from 'react';
 import Button from '../button/button';
 import Label from '../label/label';
-import Typography from '../typography/typography';
 import Checkbox from './checkbox';
 import { checkboxComponentConfig } from './checkbox.styled';
 import type { CheckboxProps, CheckboxSizes } from './checkbox.types';
@@ -22,7 +21,6 @@ const meta = {
   tags: ['stable'],
   argTypes: {
     children: { control: 'text' },
-    // label: { control: 'text' },
     disabled: { control: 'boolean' },
     size: {
       control: 'select',
@@ -70,47 +68,52 @@ export const Native: Story = {
 
 export const CustomCheckIcon: Story = {
   args: {
+    defaultChecked: true,
     children: <Checkbox.Indicator icon={Star} />,
   },
 };
 
-// export const CustomCheckedColor: Story = {
-//   args: {
-//     defaultChecked: true,
-//     bg: '#8a6511',
-//     color: '#f5ff62',
-//   },
-// };
+export const CustomCheckedColor: Story = {
+  args: {
+    defaultChecked: true,
+  },
+  render: (args) => (
+    <Checkbox {...args}>
+      <Checkbox.Indicator color="#d600ff">
+        <Checkmark />
+      </Checkbox.Indicator>
+    </Checkbox>
+  ),
+};
 
-// export const CustomCheckedColorThemeBased: Story = {
-//   parameters: {
-//     docs: {
-//       source: {
-//         code: `
-//           <XZKUICheckbox
-//             bg={({ theme }) => theme.background.negativeHigh}
-//             color={({ theme }) => theme.content.staticLightPrimary}
-//             defaultChecked
-//           />
-//         `,
-//         language: 'tsx',
-//         format: true,
-//         type: 'auto',
-//       },
-//     },
-//   },
-//   args: {
-//     defaultChecked: true,
-//     bg: ({ theme }) => theme.background.negativeHigh,
-//     color: ({ theme }) => theme.content.staticLightPrimary,
-//   },
-// };
-
-// export const WithChildren: Story = {
-//   args: {
-//     children: 'Some children',
-//   },
-// };
+export const CustomCheckedColorThemeBased: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+          <Checkbox defaultChecked>
+            <Checkbox.Indicator color="$content.static-light-primary">
+              <Checkmark />
+            </Checkbox.Indicator>
+          </Checkbox>
+        `,
+        language: 'tsx',
+        format: true,
+        type: 'auto',
+      },
+    },
+  },
+  args: {
+    defaultChecked: true,
+  },
+  render: (args) => (
+    <Checkbox {...args}>
+      <Checkbox.Indicator color="$content.static-light-primary">
+        <Checkmark />
+      </Checkbox.Indicator>
+    </Checkbox>
+  ),
+};
 
 function CheckboxWithLabel({
   size,

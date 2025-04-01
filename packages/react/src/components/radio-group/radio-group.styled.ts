@@ -1,112 +1,64 @@
-import { getVariableValue, styled } from '@tamagui/core';
-import { RADIO_GROUP_ITEM_NAME } from './radio-group.constants';
-import { RADIO_GROUP_INDICATOR_NAME } from './radio-group.constants';
+import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
-import Board from '../board/board';
+import type {
+  RadioGroupContextType,
+  RadioGroupSizes,
+  RadioGroupVariantSpreadExtras,
+} from './radio-group.types';
+import type { Token } from '@tamagui/core';
 
-export const RadioGroupItemFrame = styled(Board, {
-  name: RADIO_GROUP_ITEM_NAME,
-  tag: 'button',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        borderRadius: 1000,
-        backgroundColor: '$background',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        padding: 0,
-
-        hoverStyle: {
-          borderColor: '$borderColorHover',
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColorHover',
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusVisibleStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
-
-        pressStyle: {
-          borderColor: '$borderColorFocus',
-          backgroundColor: '$backgroundFocus',
-        },
-      },
+export const radioGroupComponentConfig = {
+  $400: {
+    frame: {
+      size: '$size.100',
+      borderWidth: '$stroke.100',
+      borderRadius: '$radius.999',
     },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-        userSelect: 'none',
-        cursor: 'not-allowed',
-
-        hoverStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
-
-        pressStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
-
-        focusVisibleStyle: {
-          outlineWidth: 0,
-        },
-      },
+    icon: {
+      size: '$size.80',
     },
-
-    size: {
-      '...size': (value, { props }) => {
-        const size = Math.floor(
-          getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
-        )
-        return {
-          width: size,
-          height: size,
-        }
-      },
+    label: {
+      typography: 'compact.300.accent',
     },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
-})
-
-
-
-export const RadioGroupIndicatorFrame = styled(ThemeableStack, {
-  name: RADIO_GROUP_INDICATOR_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        width: '33%',
-        height: '33%',
-        borderRadius: 1000,
-        backgroundColor: '$color',
-        pressTheme: true,
-      },
+  $500: {
+    frame: {
+      size: '$size.200',
+      borderWidth: '$stroke.100',
+      borderRadius: '$radius.999',
     },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    icon: {
+      size: '$size.100',
+    },
+    label: {
+      typography: 'compact.300.accent',
+    },
   },
-})
+  $600: {
+    frame: {
+      size: '$size.300',
+      borderWidth: '$stroke.200',
+      borderRadius: '$radius.999',
+    },
+    icon: {
+      size: '$size.150',
+    },
+    label: {
+      typography: 'compact.350.accent',
+    },
+  },
+};
 
-export const RadioGroupFrame = styled(ThemeableStack, {
-  name: RADIO_GROUP_COMPONENT_NAME,
+export const RadioGroupContext = createStyledContext<RadioGroupContextType>({
+  size: '$500',
+  checked: false,
+  disabled: false,
+});
+
+export const RadioGroupFrame = styled(Stack, {
+  // name: RADIO_GROUP_COMPONENT_NAME,
+  // context: RadioGroupContext,
 
   variants: {
     orientation: {
@@ -119,5 +71,129 @@ export const RadioGroupFrame = styled(ThemeableStack, {
         spaceDirection: 'vertical',
       },
     },
+    // disabled: {
+    //   true: {
+    //     pointerEvents: 'none',
+    //     userSelect: 'none',
+    //     cursor: 'not-allowed',
+
+    //     // focusStyle: {
+    //     //   outlineWidth: 0,
+    //     // },
+    //   },
+    // },
   } as const,
-})
+
+  defaultVariants: {},
+});
+
+export const RadioGroupOverlay = styled(Stack, {
+  tag: 'span',
+  position: 'absolute',
+  context: RadioGroupContext,
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  pointerEvents: 'none',
+  opacity: 0,
+  zIndex: 2,
+  borderRadius: 'inherit',
+  mixBlendMode: 'color-dodge',
+  animation: 'state',
+  animateOnly: ['opacity'],
+  backgroundColor: '$background.neutral-high',
+
+  '$group-hover': {
+    opacity: 1,
+  },
+  '$group-press': {
+    opacity: 0.5,
+  },
+  variants: {
+    size: (val: RadioGroupSizes, extras) => {
+      const { props } = extras as RadioGroupVariantSpreadExtras<typeof Stack>;
+      const radioGroupConfig = radioGroupComponentConfig[val];
+
+      if (!radioGroupConfig) return {};
+
+      const { borderRadius, borderWidth } = getMappedProps(radioGroupConfig.frame);
+      const offset = -getTokenValue(borderWidth as Token);
+
+      return {
+        borderRadius: props.checked
+          ? getTokenValue(borderRadius as Token) - getTokenValue(borderWidth as Token)
+          : borderRadius,
+        top: offset,
+        bottom: offset,
+        left: offset,
+        right: offset,
+      };
+    },
+    checked: {
+      true: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+    },
+  } as const,
+});
+
+export const RadioGroupItemFrame = styled(Stack, {
+  name: RADIO_GROUP_COMPONENT_NAME,
+  context: RadioGroupContext,
+  tag: 'button',
+
+  position: 'relative',
+  padding: 0,
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  backgroundColor: '$background',
+  cursor: 'pointer',
+
+  variants: {
+    size: (val: RadioGroupSizes) => {
+      const radioGroupConfig = radioGroupComponentConfig[val];
+
+      if (!radioGroupConfig) return {};
+
+      return getMappedProps(radioGroupConfig.frame);
+    },
+    disabled: {
+      true: {
+        backgroundColor: '$overlay.neutral',
+        borderColor: '$border.neutral-tertiary',
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        focusVisibleStyle: {
+          outlineWidth: 0,
+        },
+      },
+    },
+  } as const,
+
+  defaultVariants: {},
+});
+
+// export const RadioGroupIndicatorFrame = styled(Stack, {
+//   name: RADIO_GROUP_COMPONENT_NAME,
+//   context: RadioGroupContext,
+//   tag: 'span',
+//   backgroundColor: 'black',
+
+//   variants: {
+//     size: (val: RadioGroupSizes) => {
+//       const radioGroupConfig = radioGroupComponentConfig[val];
+
+//       if (!radioGroupConfig) return {};
+
+//       return getMappedProps(radioGroupConfig.icon);
+//     },
+//   } as const,
+// });

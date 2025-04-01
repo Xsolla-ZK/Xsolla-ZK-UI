@@ -1,11 +1,13 @@
 import type useIconsPosition from '../hooks/use-icons-position';
+import type { GetThemeValueForKey } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
 import type { ReactNode } from 'react';
 import type { NamedExoticComponent } from 'react';
+import type { OpaqueColorValue } from 'react-native';
 
 export type IconProp = NamedExoticComponent<IconProps>;
 
-export type XORIconProps =
+export type XORIconProps = (
   | {
       children?: never;
       icon: IconProp;
@@ -13,6 +15,8 @@ export type XORIconProps =
   | {
       children: ReactNode;
       icon?: never;
-    };
+    }
+) &
+  IconProps;
 
 export type IconsPosition = ReturnType<typeof useIconsPosition>;
