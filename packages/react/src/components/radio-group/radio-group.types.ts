@@ -1,14 +1,10 @@
-import type {
-  radioGroupComponentConfig,
-  RadioGroupFrame,
-  RadioGroupItemFrame,
-} from './radio-group.styled';
+import type { RadioGroupFrame, RadioGroupItemFrame } from './radio-group.styled';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { RadioGroupItemContextValue } from '@tamagui/radio-headless';
-import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import type { HTMLProps, ReactElement } from 'react';
 
-export type RadioGroupSizes = keyof typeof radioGroupComponentConfig;
+export type RadioGroupSizes = keyof ComponentsConfig['radio'];
 export type RadioGroupVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & RadioGroupContextType
 >;
@@ -38,7 +34,7 @@ type RadioGroupIndicatorExtraProps = {
   forceMount?: boolean;
 };
 
-export type RadioGroupIndicatorProps = XORIconProps & RadioGroupIndicatorExtraProps;
+export type RadioGroupIndicatorProps = RadioGroupIndicatorExtraProps;
 
 export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   value: string;

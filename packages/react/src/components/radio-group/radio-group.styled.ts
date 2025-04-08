@@ -1,4 +1,5 @@
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
 import type {
@@ -7,48 +8,6 @@ import type {
   RadioGroupVariantSpreadExtras,
 } from './radio-group.types';
 import type { Token } from '@tamagui/core';
-
-export const radioGroupComponentConfig = {
-  $400: {
-    frame: {
-      size: '$size.100',
-      borderWidth: '$stroke.100',
-      borderRadius: '$radius.999',
-    },
-    icon: {
-      size: '$size.80',
-    },
-    label: {
-      typography: 'compact.300.accent',
-    },
-  },
-  $500: {
-    frame: {
-      size: '$size.200',
-      borderWidth: '$stroke.100',
-      borderRadius: '$radius.999',
-    },
-    icon: {
-      size: '$size.100',
-    },
-    label: {
-      typography: 'compact.300.accent',
-    },
-  },
-  $600: {
-    frame: {
-      size: '$size.300',
-      borderWidth: '$stroke.200',
-      borderRadius: '$radius.999',
-    },
-    icon: {
-      size: '$size.150',
-    },
-    label: {
-      typography: 'compact.350.accent',
-    },
-  },
-};
 
 export const RadioGroupContext = createStyledContext<RadioGroupContextType>({
   size: '$500',
@@ -113,11 +72,12 @@ export const RadioGroupOverlay = styled(Stack, {
   variants: {
     size: (val: RadioGroupSizes, extras) => {
       const { props } = extras as RadioGroupVariantSpreadExtras<typeof Stack>;
-      const radioGroupConfig = radioGroupComponentConfig[val];
+      const config = getComponentsConfig();
+      const componentProps = config.radio[val];
 
-      if (!radioGroupConfig) return {};
+      if (!componentProps) return {};
 
-      const { borderRadius, borderWidth } = getMappedProps(radioGroupConfig.frame);
+      const { borderRadius, borderWidth } = getMappedProps(componentProps.frame);
       const offset = -getTokenValue(borderWidth as Token);
 
       return {
@@ -151,17 +111,19 @@ export const RadioGroupItemFrame = styled(Stack, {
   alignItems: 'center',
   justifyContent: 'center',
   borderWidth: 1,
+  borderRadius: '$999',
   borderColor: '$borderColor',
   backgroundColor: '$background',
   cursor: 'pointer',
 
   variants: {
     size: (val: RadioGroupSizes) => {
-      const radioGroupConfig = radioGroupComponentConfig[val];
+      const config = getComponentsConfig();
+      const componentProps = config.radio[val];
 
-      if (!radioGroupConfig) return {};
+      if (!componentProps) return {};
 
-      return getMappedProps(radioGroupConfig.frame);
+      return getMappedProps(componentProps.frame);
     },
     disabled: {
       true: {

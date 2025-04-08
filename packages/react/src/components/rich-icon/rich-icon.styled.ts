@@ -133,9 +133,7 @@ export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
     : null;
 };
 
-export const Content = styled(Text, {
-  name: RICH_ICON_COMPONENT_NAME,
-  context: RichIconContext,
+export const RichIconContent = styled(Stack, {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -146,6 +144,23 @@ export const Content = styled(Text, {
   justifyContent: 'center',
 
   variants: {
+    noShape: () => ({
+      backgroundColor: 'transparent',
+    }),
+  } as const,
+});
+
+export const RichIconText = styled(Text, {
+  name: RICH_ICON_COMPONENT_NAME,
+  context: RichIconContext,
+
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+
+  variants: {
+    backgroundColor: () => ({}),
     size: (val: RichIconSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.richIcon[val];
@@ -154,10 +169,7 @@ export const Content = styled(Text, {
       }
       return getMappedProps(componentProps.label);
     },
-    noShape: () => ({
-      backgroundColor: 'transparent',
-    }),
-  },
+  } as const,
 });
 
 // const pimpleSizeMap: Record<RichIconSizes, PimpleSizes> = {

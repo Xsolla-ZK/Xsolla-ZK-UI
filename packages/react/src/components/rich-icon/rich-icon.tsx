@@ -3,13 +3,14 @@ import { type ForwardedRef } from 'react';
 import { ClipPath, Defs, G, Image, Rect } from 'react-native-svg';
 import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import {
-  Content,
+  RichIconContent,
   RichIconContext,
   RichIconFrame,
   RichIconIcon,
   // RichIconPimple,
   RichIconShapePath,
   RichIconShapeSvg,
+  RichIconText,
 } from './rich-icon.styled';
 import type { RichIconProps } from './rich-icon.types';
 import type { TamaguiElement } from '@tamagui/core';
@@ -57,13 +58,14 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
           )}
         </RichIconShapeSvg>
       )}
-      {shape ? <Content>{children}</Content> : children}
+      {shape ? <RichIconContent>{children}</RichIconContent> : children}
     </RichIconFrame>
   ),
 );
 
 const RichIcon = withStaticProperties(RichIconComponent, {
   Props: RichIconContext.Provider,
+  Text: RichIconText,
   Icon: RichIconIcon,
   // Pimple: RichIconPimple,
 });

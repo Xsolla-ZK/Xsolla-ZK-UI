@@ -9,11 +9,11 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createContext, memo, useContext } from 'react';
 
 import Svg, { Circle } from 'react-native-svg';
 import {
-  radioGroupComponentConfig,
   RadioGroupContext,
   RadioGroupFrame,
   RadioGroupItemFrame,
@@ -23,12 +23,13 @@ import type {
   RadioGroupContextType,
   RadioGroupItemProps,
   RadioGroupProps,
+  RadioGroupIndicatorProps,
 } from './radio-group.types';
 import type { ColorTokens, TamaguiElement } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
 import type { RadioGroupItemContextValue } from '@tamagui/radio-headless';
 import type { ForwardedRef } from 'react';
-
+import type { ColorValue } from 'react-native';
 // const RadioGroupContext = createContext<RadioGroupContextValue>({});
 
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
@@ -75,7 +76,7 @@ const RadioGroupComponent = RadioGroupFrame.styleable<RadioGroupProps>(
 
 const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
-    const { value, labelledBy, onPress, onKeyDown, disabled, id, children, ...rest } = props;
+    const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props;
 
     const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl, native } =
       useRadioGroupItem({
@@ -103,7 +104,7 @@ const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProp
                 {...rest}
               >
                 {!frameAttrs.disabled && <RadioGroupOverlay />}
-                {children}
+                {props.children}
               </RadioGroupItemFrame>
             </RovingFocusGroup.Item>
             {isFormControl && bubbleInput}
@@ -122,8 +123,16 @@ const Indicator = memo<IconProps>(
     (props) => {
       const { color = 'black', size = 24, ...otherProps } = props;
       return (
-        <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
-          <Circle cx="12" cy="12" r="8" fill={color} />
+        <Svg
+          fill="none"
+          viewBox="0 0 24 24"
+          // @ts-expect-error - TODO: fix this
+          width={size}
+          // @ts-expect-error - TODO: fix this
+          height={size}
+          {...otherProps}
+        >
+          <Circle cx="12" cy="12" r="8" fill={color as ColorValue} />
         </Svg>
       );
     },
@@ -139,7 +148,7 @@ const getIndicatorColor = (ctx: RadioGroupContextType): ColorTokens => {
   return '$color';
 };
 
-const RadioIndicator = (props) => {
+const RadioIndicator = (props: RadioGroupIndicatorProps) => {
   const { forceMount, ...indicatorProps } = props;
   const ctx = useContext(RadioGroupContext);
   const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
@@ -147,13 +156,14 @@ const RadioIndicator = (props) => {
     disabled: ctx.disabled,
   });
 
-  const radioGroupConfig = radioGroupComponentConfig[ctx.size];
+  const config = getComponentsConfig();
+  const componentProps = config.radio[ctx.size];
 
   if (forceMount || checked) {
     return (
       <Indicator
         {...useIndicatorRest}
-        size={radioGroupConfig.icon.size}
+        size={componentProps.icon.size}
         color={getIndicatorColor(ctx)}
         {...indicatorProps}
       />

@@ -1,12 +1,12 @@
 import { Stack } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import Label from '../label/label';
 import RadioGroup from './radio-group';
-import { radioGroupComponentConfig } from './radio-group.styled';
 import type { RadioGroupItemProps, RadioGroupSizes } from './radio-group.types';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
 
-const sizes = Object.keys(radioGroupComponentConfig) as RadioGroupSizes[];
+const sizes = Object.keys(getComponentsConfig().radio) as RadioGroupSizes[];
 
 const meta = {
   component: RadioGroup,

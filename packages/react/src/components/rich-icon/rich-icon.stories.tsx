@@ -252,6 +252,15 @@ export const WithPimple: Story = {
   ),
 };
 
+export const WithContent: Story = {
+  args: {},
+  render: (args) => (
+    <RichIcon {...args}>
+      <RichIcon.Text>X</RichIcon.Text>
+    </RichIcon>
+  ),
+};
+
 /*
 export const ExperimentalFeatureStory: Story = {
   //👇 For this particular story, remove the inherited `stable` tag and apply the `experimental` tag

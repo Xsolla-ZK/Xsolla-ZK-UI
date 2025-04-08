@@ -1,5 +1,6 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
@@ -11,48 +12,6 @@ import type {
 } from './checkbox.types';
 import type { Token } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
-
-export const checkboxComponentConfig = {
-  $400: {
-    frame: {
-      size: '$size.100',
-      borderWidth: '$stroke.100',
-      borderRadius: '$radius.200',
-    },
-    icon: {
-      size: '$size.80',
-    },
-    label: {
-      typography: 'compact.300.accent',
-    },
-  },
-  $500: {
-    frame: {
-      size: '$size.200',
-      borderWidth: '$stroke.100',
-      borderRadius: '$radius.300',
-    },
-    icon: {
-      size: '$size.100',
-    },
-    label: {
-      typography: 'compact.300.accent',
-    },
-  },
-  $600: {
-    frame: {
-      size: '$size.300',
-      borderWidth: '$stroke.200',
-      borderRadius: '$radius.300',
-    },
-    icon: {
-      size: '$size.150',
-    },
-    label: {
-      typography: 'compact.350.accent',
-    },
-  },
-};
 
 export const CheckboxContext = createStyledContext<CheckboxContextType>({
   size: '$500',
@@ -77,11 +36,12 @@ export const CheckboxFrame = styled(Stack, {
 
   variants: {
     size: (val: CheckboxSizes) => {
-      const checkboxConfig = checkboxComponentConfig[val];
+      const config = getComponentsConfig();
+      const componentProps = config.checkbox[val];
 
-      if (!checkboxConfig) return {};
+      if (!componentProps) return {};
 
-      return getMappedProps(checkboxConfig.frame);
+      return getMappedProps(componentProps.frame);
     },
 
     disabled: {
@@ -128,11 +88,12 @@ export const CheckboxOverlay = styled(Stack, {
   variants: {
     size: (val: CheckboxSizes, extras) => {
       const { props } = extras as CheckboxVariantSpreadExtras<typeof Stack>;
-      const checkboxConfig = checkboxComponentConfig[val];
+      const config = getComponentsConfig();
+      const componentProps = config.checkbox[val];
 
-      if (!checkboxConfig) return {};
+      if (!componentProps) return {};
 
-      const { borderRadius, borderWidth } = getMappedProps(checkboxConfig.frame);
+      const { borderRadius, borderWidth } = getMappedProps(componentProps.frame);
       const offset = -getTokenValue(borderWidth as Token);
 
       return {
@@ -160,12 +121,13 @@ export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
   const { children, icon, forceMount, disablePassStyles, ...indicatorProps } = props;
   const ctx = useContext(CheckboxContext.context);
 
-  const checkboxConfig = checkboxComponentConfig[ctx.size];
+  const config = getComponentsConfig();
+  const componentProps = config.checkbox[ctx.size];
 
   if (forceMount || isIndeterminate(ctx.checked) || ctx.checked === true) {
     if (icon) {
       return createElement(icon, {
-        size: checkboxConfig.icon.size,
+        size: componentProps.icon.size,
         color: '$color',
         ...indicatorProps,
       } as IconProps);
@@ -173,7 +135,7 @@ export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
 
     return isValidElement(children)
       ? cloneElement(children, {
-          size: checkboxConfig.icon.size,
+          size: componentProps.icon.size,
           color: '$color',
           ...indicatorProps,
         } as {})
