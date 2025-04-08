@@ -2,16 +2,16 @@
 import { Stack } from '@tamagui/core';
 import { Text } from '@tamagui/core';
 import { Checkmark, Star } from '@xsolla-zk-ui/icons';
+import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { useId, useState } from 'react';
 import Button from '../button/button';
 import Label from '../label/label';
 import Checkbox from './checkbox';
-import { checkboxComponentConfig } from './checkbox.styled';
 import type { CheckboxProps, CheckboxSizes } from './checkbox.types';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FormEvent } from 'react';
 
-const sizes = Object.keys(checkboxComponentConfig) as CheckboxSizes[];
+const sizes = Object.keys(getComponentsConfig().checkbox) as CheckboxSizes[];
 
 const meta = {
   component: Checkbox,
