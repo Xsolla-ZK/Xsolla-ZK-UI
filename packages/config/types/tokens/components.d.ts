@@ -478,9 +478,6 @@ export declare const flexButton: {
             gap: string;
             minHeight: string;
         };
-        slot: {
-            paddingLeft: string;
-        };
         label: {
             typography: string;
         };
@@ -492,9 +489,6 @@ export declare const flexButton: {
         frame: {
             gap: string;
             minHeight: string;
-        };
-        slot: {
-            paddingLeft: string;
         };
         label: {
             typography: string;
@@ -508,9 +502,6 @@ export declare const flexButton: {
             gap: string;
             minHeight: string;
         };
-        slot: {
-            paddingLeft: string;
-        };
         label: {
             typography: string;
         };
@@ -522,9 +513,6 @@ export declare const flexButton: {
         frame: {
             gap: string;
             minHeight: string;
-        };
-        slot: {
-            paddingLeft: string;
         };
         label: {
             typography: string;
@@ -1266,9 +1254,6 @@ export declare const tab: {
         label: {
             typography: string;
         };
-        slot: {
-            paddingLeft: string;
-        };
         line: {
             height: string;
             borderTopLeftRadius: string;
@@ -1287,9 +1272,6 @@ export declare const tab: {
         };
         label: {
             typography: string;
-        };
-        slot: {
-            paddingLeft: string;
         };
         line: {
             height: string;
@@ -1310,9 +1292,6 @@ export declare const tab: {
         label: {
             typography: string;
         };
-        slot: {
-            paddingLeft: string;
-        };
         line: {
             height: string;
             borderTopLeftRadius: string;
@@ -1332,9 +1311,6 @@ export declare const tab: {
         label: {
             typography: string;
         };
-        slot: {
-            paddingLeft: string;
-        };
         line: {
             height: string;
             borderTopLeftRadius: string;
@@ -1353,9 +1329,6 @@ export declare const tab: {
         };
         label: {
             typography: string;
-        };
-        slot: {
-            paddingLeft: string;
         };
         line: {
             height: string;
@@ -1843,9 +1816,6 @@ export declare const components: {
                 gap: string;
                 minHeight: string;
             };
-            slot: {
-                paddingLeft: string;
-            };
             label: {
                 typography: string;
             };
@@ -1857,9 +1827,6 @@ export declare const components: {
             frame: {
                 gap: string;
                 minHeight: string;
-            };
-            slot: {
-                paddingLeft: string;
             };
             label: {
                 typography: string;
@@ -1873,9 +1840,6 @@ export declare const components: {
                 gap: string;
                 minHeight: string;
             };
-            slot: {
-                paddingLeft: string;
-            };
             label: {
                 typography: string;
             };
@@ -1887,9 +1851,6 @@ export declare const components: {
             frame: {
                 gap: string;
                 minHeight: string;
-            };
-            slot: {
-                paddingLeft: string;
             };
             label: {
                 typography: string;
@@ -2631,9 +2592,6 @@ export declare const components: {
             label: {
                 typography: string;
             };
-            slot: {
-                paddingLeft: string;
-            };
             line: {
                 height: string;
                 borderTopLeftRadius: string;
@@ -2652,9 +2610,6 @@ export declare const components: {
             };
             label: {
                 typography: string;
-            };
-            slot: {
-                paddingLeft: string;
             };
             line: {
                 height: string;
@@ -2675,9 +2630,6 @@ export declare const components: {
             label: {
                 typography: string;
             };
-            slot: {
-                paddingLeft: string;
-            };
             line: {
                 height: string;
                 borderTopLeftRadius: string;
@@ -2697,9 +2649,6 @@ export declare const components: {
             label: {
                 typography: string;
             };
-            slot: {
-                paddingLeft: string;
-            };
             line: {
                 height: string;
                 borderTopLeftRadius: string;
@@ -2718,9 +2667,6 @@ export declare const components: {
             };
             label: {
                 typography: string;
-            };
-            slot: {
-                paddingLeft: string;
             };
             line: {
                 height: string;
