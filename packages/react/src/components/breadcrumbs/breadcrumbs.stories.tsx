@@ -1,5 +1,6 @@
-import { within, expect } from '@storybook/test';
-import Button from '../button/button';
+import { ChevronRight } from '@xsolla-zk-ui/icons';
+import { Bookmark } from '@xsolla-zk-ui/icons';
+import FlexButton from '../flex-button/flex-button';
 import Breadcrumbs from './breadcrumbs';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -11,13 +12,7 @@ const meta = {
   tags: ['stable'],
   argTypes: {},
   args: {
-    children: (
-      <>
-        <Breadcrumbs.Item>Sweet</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Alabama</Breadcrumbs.Item>
-      </>
-    ),
+    iconDelimiter: ChevronRight,
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof Breadcrumbs>;
@@ -25,33 +20,49 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const content = (
+  <>
+    <Breadcrumbs.Item>Sweet</Breadcrumbs.Item>
+    <Breadcrumbs.Item>Home</Breadcrumbs.Item>
+    <Breadcrumbs.Item>Alabama</Breadcrumbs.Item>
+  </>
+);
+
 export const Default: Story = {
   args: {},
+  render: (args) => <Breadcrumbs {...args}>{content}</Breadcrumbs>,
 };
 
-const CustomBreadcrumbsItem = Breadcrumbs.Item.styleable(
-  ({ children, ...props }, ref) => (
-    <Breadcrumbs.Item {...props} ref={ref} asChild>
-      <Button>
-        <Button.Text>{children}</Button.Text>
-      </Button>
+const customBreadcrumbsItems = (
+  <>
+    <Breadcrumbs.Item asChild>
+      <FlexButton tone="neutral">
+        <FlexButton.Text>Sweet</FlexButton.Text>
+      </FlexButton>
     </Breadcrumbs.Item>
-  ),
-  {
-    disableTheme: true,
-  },
+    <Breadcrumbs.Item asChild>
+      <FlexButton tone="neutral">
+        <FlexButton.Text>Home</FlexButton.Text>
+      </FlexButton>
+    </Breadcrumbs.Item>
+    <Breadcrumbs.Item asChild>
+      <FlexButton tone="neutral" disabled>
+        <FlexButton.Text>Alabama</FlexButton.Text>
+      </FlexButton>
+    </Breadcrumbs.Item>
+  </>
 );
 
 export const CustomItem: Story = {
+  args: {},
+  render: (args) => <Breadcrumbs {...args}>{customBreadcrumbsItems}</Breadcrumbs>,
+};
+
+export const CustomDelimiter: Story = {
   args: {
-    children: (
-      <>
-        <CustomBreadcrumbsItem>Sweet</CustomBreadcrumbsItem>
-        <CustomBreadcrumbsItem>Home</CustomBreadcrumbsItem>
-        <CustomBreadcrumbsItem>Alabama</CustomBreadcrumbsItem>
-      </>
-    ),
+    iconDelimiter: Bookmark,
   },
+  render: (args) => <Breadcrumbs {...args}>{content}</Breadcrumbs>,
 };
 /*
 export const ExperimentalFeatureStory: Story = {

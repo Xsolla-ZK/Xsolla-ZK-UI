@@ -1,16 +1,9 @@
-import { Children, Fragment, isValidElement, useMemo } from 'react';
-import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import { isValidElement } from 'react';
+import useChildrenArray from './use-children-array';
+import type { ReactNode } from 'react';
 
 function useIconsPosition<T extends ReactNode, C>(children: T, componentTypeCondition: C) {
-  const childrenArray = useMemo(
-    () =>
-      Children.toArray(children).flatMap((child) =>
-        isValidElement(child) && child.type === Fragment
-          ? Children.toArray((child as ReactElement<PropsWithChildren>).props.children)
-          : child,
-      ),
-    [children],
-  );
+  const childrenArray = useChildrenArray(children);
 
   const firstElement = childrenArray[0];
   const hasIconLeft = Boolean(

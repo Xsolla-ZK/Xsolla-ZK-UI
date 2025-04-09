@@ -25,11 +25,6 @@ export type ExcludeStartsWith<T, Prefix extends string> = T extends `${Prefix}${
   ? never
   : T;
 
-export type ExtractSubthemeKeys<
-  T,
-  Namespace extends string,
-> = T extends `${infer _Base}_${infer SubTheme}_${Namespace}` ? SubTheme : never;
-
 export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
   k: infer I,
 ) => void

@@ -13,6 +13,10 @@ export const BreadcrumbsContext = createStyledContext<BreadcrumbsContextType>({
 export const BreadcrumbsFrame = styled(Stack, {
   name: BREADCRUMBS_COMPONENT_NAME,
   context: BreadcrumbsContext,
+
+  flexDirection: 'row',
+  alignItems: 'center',
+
   variants: {
     size: (val: BreadcrumbsSizes) => {
       const config = getComponentsConfig();
@@ -48,9 +52,12 @@ export const BreadcrumbsItem = styled(Text, {
     active: {
       true: {
         tag: 'span',
+        cursor: 'default',
+        pointerEvents: 'none',
+        color: '$content.neutral-tertiary',
       },
     },
-  },
+  } as const,
   defaultVariants: {
     size: '$500',
     active: false,

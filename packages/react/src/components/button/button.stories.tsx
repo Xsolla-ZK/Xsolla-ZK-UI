@@ -175,6 +175,9 @@ export const SimulateRequest: Story = {
 };
 
 export const Loading: Story = {
+  argTypes: {
+    isLoading: { table: { disable: true } },
+  },
   args: {
     isLoading: true,
   },

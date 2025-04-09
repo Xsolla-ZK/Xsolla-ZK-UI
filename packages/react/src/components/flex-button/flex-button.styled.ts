@@ -3,11 +3,13 @@ import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
 import { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
-import type { FlexButtonContextType, FlexButtonSizes } from './flex-button.types';
+import type { FlexButtonContextType, FlexButtonSizes, FlexButtonTone } from './flex-button.types';
+import type { GetProps } from '@tamagui/core';
 
 export const FlexButtonContext = createStyledContext<FlexButtonContextType>({
   size: '$500',
-  variant: 'primary',
+  tone: 'brand',
+  disabled: false,
 });
 
 export const FlexButtonFrame = styled(Stack, {
@@ -15,44 +17,72 @@ export const FlexButtonFrame = styled(Stack, {
   context: FlexButtonContext,
   tag: 'button',
   role: 'button',
+  containerType: 'normal',
 
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'row',
   justifyContent: 'center',
+  alignSelf: 'stretch',
   maxWidth: 'max-content',
   borderWidth: 0,
   paddingHorizontal: 0,
   cursor: 'pointer',
   userSelect: 'none',
-  animation: 'state',
-  animateOnly: ['backgroundColor'],
   backgroundColor: 'transparent',
 
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
   variants: {
+    tone: {} as Record<FlexButtonTone, GetProps<typeof Stack>>,
     size: (val: FlexButtonSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.flexButton[val];
-      // const buttonProps = config.button[val];
       if (!componentProps) {
         return {};
       }
       return getMappedProps(componentProps.frame);
     },
+    disabled: {
+      true: {
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+      },
+    },
     isLoading: {
       true: {
+        pointerEvents: 'none',
         backgroundColor: 'transparent',
       },
     },
   } as const,
+  defaultVariants: {
+    size: '$500',
+  },
+});
+
+export const FlexButtonOverlay = styled(Stack, {
+  name: FLEX_BUTTON_COMPONENT_NAME,
+
+  position: 'absolute',
+  top: -4,
+  left: -4,
+  right: -4,
+  bottom: -4,
+  borderRadius: '$300',
+  borderWidth: '$stroke.100',
+  animation: 'state',
+  animateOnly: ['background', 'border'],
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+
+  '$group-hover': {
+    backgroundColor: '$backgroundHover',
+  },
+
+  '$group-press': {
+    backgroundColor: '$backgroundPress',
+    borderColor: '$borderColorPress',
+  },
 });
 
 export const FlexButtonText = styled(Text, {
@@ -72,16 +102,16 @@ export const FlexButtonText = styled(Text, {
         paddingHorizontal: 'unset',
       };
     },
-    // variant: (val: FlexButtonVariants) => {
-    //   return {
-    //     color: '$color',
-    //   };
-    // },
+    disabled: {
+      true: {
+        color: '$content.neutral-tertiary',
+      },
+    },
   } as const,
 });
 
 export const FlexButtonIcon = createIconComponent(
   FLEX_BUTTON_COMPONENT_NAME,
   FlexButtonContext,
-  'button',
+  'flexButton',
 );
