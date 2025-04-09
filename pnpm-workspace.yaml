@@ -11,28 +11,30 @@ catalog:
 
 catalogs:
   tamagui:
-    "@tamagui/animations-css": 1.125.32
-    "@tamagui/animations-moti": 1.125.32
-    "@tamagui/animations-react-native": 1.125.32
-    "@tamagui/build": 1.125.32
-    "@tamagui/config": 1.125.32
-    "@tamagui/core": 1.125.32
-    "@tamagui/checkbox-headless": 1.125.32
-    "@tamagui/compose-refs": 1.125.32
-    "@tamagui/create-context": 1.125.32
-    "@tamagui/focusable": 1.125.32
-    "@tamagui/radio-headless": 1.125.32
-    "@tamagui/roving-focus": 1.125.32
-    "@tamagui/input": 1.125.32
-    "@tamagui/web": 1.125.32
-    "@tamagui/vite-plugin": 1.125.32
-    "@tamagui/helpers-icon": 1.125.32
-    "@tamagui/popover": 1.125.32
-    "@tamagui/scroll-view": 1.125.32
-    "@tamagui/image": 1.125.32
-    "@tamagui/sheet": 1.125.32
-    "@tamagui/dialog": 1.125.32
-    "@tamagui/use-controllable-state": 1.125.32
+    "@tamagui/animations-css": 1.125.33
+    "@tamagui/animations-moti": 1.125.33
+    "@tamagui/animations-react-native": 1.125.33
+    "@tamagui/build": 1.125.33
+    "@tamagui/config": 1.125.33
+    "@tamagui/core": 1.125.33
+    "@tamagui/checkbox-headless": 1.125.33
+    "@tamagui/compose-refs": 1.125.33
+    "@tamagui/create-context": 1.125.33
+    "@tamagui/focusable": 1.125.33
+    "@tamagui/radio-headless": 1.125.33
+    "@tamagui/roving-focus": 1.125.33
+    "@tamagui/input": 1.125.33
+    "@tamagui/web": 1.125.33
+    "@tamagui/vite-plugin": 1.125.33
+    "@tamagui/helpers-icon": 1.125.33
+    "@tamagui/popover": 1.125.33
+    "@tamagui/scroll-view": 1.125.33
+    "@tamagui/image": 1.125.33
+    "@tamagui/sheet": 1.125.33
+    "@tamagui/dialog": 1.125.33
+    "@tamagui/use-controllable-state": 1.125.33
+    "@tamagui/group": 1.125.33
+    "@tamagui/use-direction": 1.125.33
   eslint9:
     eslint: 9.16.0
     "@eslint/js": 9.16.0

@@ -10,6 +10,7 @@ import { loaderTheme } from './src/components/loader/loader.theme';
 import { pimpleTheme } from './src/components/pimple/pimple.theme';
 import { radioGroupTheme } from './src/components/radio-group/radio-group.theme';
 import { richIconTheme } from './src/components/rich-icon/rich-icon.theme';
+import { tabsListIndicatorTheme, tabsTabTheme } from './src/components/tabs/tabs.theme';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
@@ -33,6 +34,8 @@ const themesCompose = createThemes(webConfig.themes, {
     checkbox: checkboxTheme,
     radioGroup: radioGroupTheme,
     richIcon: richIconTheme,
+    tabsTab: tabsTabTheme,
+    tabsListIndicator: tabsListIndicatorTheme,
   },
 });
 

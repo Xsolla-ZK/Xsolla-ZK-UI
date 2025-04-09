@@ -1,10 +1,10 @@
 import type { BADGE_COMPONENT_NAME, BadgeFrame } from './badge.styled';
-import type { GetProps, StylableComponent, Themes, VariantSpreadExtras } from '@tamagui/core';
-import type { ExtractSubthemeKeys } from '@xsolla-zk-ui/react/types/helpers';
+import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
+import type { GetComponentTone } from '@xsolla-zk-ui/react/types/theme';
 import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 
 export type BadgeSizes = keyof ComponentsConfig['badge'];
-export type BadgeTone = 'brand' | ExtractSubthemeKeys<keyof Themes, typeof BADGE_COMPONENT_NAME>;
+export type BadgeTone = GetComponentTone<typeof BADGE_COMPONENT_NAME>;
 export type BadgeVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & BadgeContextType
 >;
