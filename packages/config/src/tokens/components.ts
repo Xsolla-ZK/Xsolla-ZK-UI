@@ -478,9 +478,6 @@ export const flexButton = {
       gap: '$space.0',
       minHeight: '$size.100',
     },
-    slot: {
-      paddingLeft: '$space.50',
-    },
     label: {
       typography: 'compact.200.accent',
     },
@@ -492,9 +489,6 @@ export const flexButton = {
     frame: {
       gap: '$space.0',
       minHeight: '$size.150',
-    },
-    slot: {
-      paddingLeft: '$space.50',
     },
     label: {
       typography: 'compact.250.accent',
@@ -508,9 +502,6 @@ export const flexButton = {
       gap: '$space.0',
       minHeight: '$size.150',
     },
-    slot: {
-      paddingLeft: '$space.100',
-    },
     label: {
       typography: 'compact.300.accent',
     },
@@ -522,9 +513,6 @@ export const flexButton = {
     frame: {
       gap: '$space.50',
       minHeight: '$size.200',
-    },
-    slot: {
-      paddingLeft: '$space.100',
     },
     label: {
       typography: 'compact.350.accent',
@@ -1266,9 +1254,6 @@ export const tab = {
     label: {
       typography: 'compact.200.accent',
     },
-    slot: {
-      paddingLeft: '$space.50',
-    },
     line: {
       height: '$size.20',
       borderTopLeftRadius: '$radius.999',
@@ -1287,9 +1272,6 @@ export const tab = {
     },
     label: {
       typography: 'compact.250.accent',
-    },
-    slot: {
-      paddingLeft: '$space.50',
     },
     line: {
       height: '$size.20',
@@ -1310,9 +1292,6 @@ export const tab = {
     label: {
       typography: 'compact.300.accent',
     },
-    slot: {
-      paddingLeft: '$space.100',
-    },
     line: {
       height: '$size.20',
       borderTopLeftRadius: '$radius.999',
@@ -1332,9 +1311,6 @@ export const tab = {
     label: {
       typography: 'compact.350.accent',
     },
-    slot: {
-      paddingLeft: '$space.100',
-    },
     line: {
       height: '$size.20',
       borderTopLeftRadius: '$radius.999',
@@ -1353,9 +1329,6 @@ export const tab = {
     },
     label: {
       typography: 'compact.350.accent',
-    },
-    slot: {
-      paddingLeft: '$space.100',
     },
     line: {
       height: '$size.20',
