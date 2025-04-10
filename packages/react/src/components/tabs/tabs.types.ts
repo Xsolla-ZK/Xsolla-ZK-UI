@@ -1,9 +1,13 @@
-import type { TabsContentFrame, TabsFrame, TabsTabFrame } from './tabs.styled';
-import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
-import type { GroupProps } from '@tamagui/group';
+import type { TabsContentFrame, TabsFrame, TabsListFrame, TabsTabFrame } from './tabs.styled';
+import type {
+  GetProps,
+  StylableComponent,
+  TamaguiElement,
+  VariantSpreadExtras,
+} from '@tamagui/core';
 import type { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, RefObject } from 'react';
 import type { LayoutRectangle } from 'react-native';
 
 export type TabsSizes = keyof ComponentsConfig['tabs'];
@@ -23,7 +27,8 @@ export type TabsContextType = {
   unregisterTab: () => void;
   tabsCount: number;
   activeTabLayout?: TabLayout;
-  selectActiveTabLayout: (layout: TabLayout) => void;
+  setActiveTabLayout: (layout: TabLayout) => void;
+  containerRef: RefObject<TamaguiElement> | null;
 };
 
 type RovingFocusGroupProps = ComponentPropsWithoutRef<typeof RovingFocusGroup>;
@@ -86,7 +91,9 @@ type TabsContentExtraProps = {
 
 export type TabsContentProps = TabsContentFrameProps & TabsContentExtraProps;
 
-export type TabsListProps = GroupProps & {
+type TabsListFrameProps = GetProps<typeof TabsListFrame>;
+
+export type TabsListProps = TabsListFrameProps & {
   /**
    * Whether to loop over after reaching the end or start of the items
    * @default true
