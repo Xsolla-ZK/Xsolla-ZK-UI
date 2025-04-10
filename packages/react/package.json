@@ -33,6 +33,7 @@
     "@tamagui/core": "catalog:tamagui"
   },
   "dependencies": {
+    "@tamagui/animate-presence": "catalog:tamagui",
     "@tamagui/animations-moti": "catalog:tamagui",
     "@tamagui/checkbox-headless": "catalog:tamagui",
     "@tamagui/compose-refs": "catalog:tamagui",
@@ -40,7 +41,6 @@
     "@tamagui/core": "catalog:tamagui",
     "@tamagui/dialog": "catalog:tamagui",
     "@tamagui/focusable": "catalog:tamagui",
-    "@tamagui/group": "catalog:tamagui",
     "@tamagui/helpers-icon": "catalog:tamagui",
     "@tamagui/image": "catalog:tamagui",
     "@tamagui/input": "catalog:tamagui",

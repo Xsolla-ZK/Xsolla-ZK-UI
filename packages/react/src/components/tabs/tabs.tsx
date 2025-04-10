@@ -2,6 +2,7 @@
 // https://github.com/tamagui/tamagui/blob/main/code/ui/tabs/src/Tabs.tsx
 /* eslint-disable max-lines */
 
+import { AnimatePresence } from '@tamagui/animate-presence';
 import {
   composeEventHandlers,
   composeRefs,
@@ -9,12 +10,12 @@ import {
   useEvent,
   withStaticProperties,
 } from '@tamagui/core';
-import { useGroupItem } from '@tamagui/group';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
+import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
-import { forwardRef, useEffect, useId, useRef, useState } from 'react';
-import { TABS_CONTEXT, TABS_LIST_COMPONENT_NAME } from './tabs.constants';
+import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { TABS_CONTEXT } from './tabs.constants';
 import {
   TabsContentFrame,
   TabsContext,
@@ -33,7 +34,8 @@ import type {
   TabsTabProps,
 } from './tabs.types';
 import type { ScopedProps, TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef, HTMLProps, MouseEvent } from 'react';
+import type { ScrollViewProps } from '@tamagui/scroll-view';
+import type { ForwardedRef, HTMLProps, MouseEvent, ReactNode } from 'react';
 
 const { Provider: TabsProvider, useStyledContext: useTabsContext } = TabsContext;
 
@@ -56,7 +58,7 @@ const TabsComponent = TabsFrame.styleable<ScopedProps<TabsProps, 'Tabs'>>(functi
     defaultValue,
     orientation = 'horizontal',
     dir,
-    activationMode = 'automatic',
+    activationMode = 'manual',
     size = '$500',
     ...tabsProps
   } = props;
@@ -67,10 +69,11 @@ const TabsComponent = TabsFrame.styleable<ScopedProps<TabsProps, 'Tabs'>>(functi
     defaultProp: defaultValue ?? '',
   });
   const [tabsCount, setTabsCount] = useState(0);
-  const [activeTabLayout, setActiveTabLayout] = useState<TabLayout>();
+  const [tabLayout, setTabLayout] = useState<TabLayout>();
   const registerTab = useEvent(() => setTabsCount((v) => v + 1));
   const unregisterTab = useEvent(() => setTabsCount((v) => v - 1));
-  const selectActiveTabLayout = useEvent((layout: TabLayout) => setActiveTabLayout(layout));
+  const setActiveTabLayout = useEvent((layout: TabLayout) => setTabLayout(layout));
+  const ref = useRef<TamaguiElement>(null);
 
   return (
     <TabsProvider
@@ -85,14 +88,16 @@ const TabsComponent = TabsFrame.styleable<ScopedProps<TabsProps, 'Tabs'>>(functi
       registerTab={registerTab}
       tabsCount={tabsCount}
       unregisterTab={unregisterTab}
-      activeTabLayout={activeTabLayout}
-      selectActiveTabLayout={selectActiveTabLayout}
+      activeTabLayout={tabLayout}
+      containerRef={ref}
+      setActiveTabLayout={setActiveTabLayout}
     >
       <TabsFrame
         direction={direction}
+        orientation={orientation}
         data-orientation={orientation}
         {...tabsProps}
-        ref={forwardedRef}
+        ref={composeRefs(forwardedRef, ref)}
       />
     </TabsProvider>
   );
@@ -100,36 +105,90 @@ const TabsComponent = TabsFrame.styleable<ScopedProps<TabsProps, 'Tabs'>>(functi
 
 const TabsList = forwardRef<TamaguiElement, ScopedProps<TabsListProps, 'Tabs'>>(
   (props, forwardedRef) => {
-    const { __scopeTabs, loop = true, disablePassBorderRadius = true, ...listProps } = props;
+    const { __scopeTabs, loop = true, ...listProps } = props;
     const context = useTabsContext(__scopeTabs);
+    const [hasScroll, setHasScroll] = useState(false);
+    const listRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+      if (!isWeb || !listRef.current) return;
+
+      const checkOverflow = () => {
+        if (!listRef.current) return;
+
+        const element = listRef.current;
+        const isHorizontal = context.orientation === 'horizontal';
+
+        const hasOverflow = isHorizontal
+          ? element.scrollWidth > element.clientWidth
+          : element.scrollHeight > element.clientHeight;
+
+        setHasScroll(hasOverflow);
+      };
+
+      checkOverflow();
+
+      const resizeObserver = new ResizeObserver(checkOverflow);
+      resizeObserver.observe(listRef.current);
+
+      return () => {
+        if (listRef.current) {
+          resizeObserver.unobserve(listRef.current);
+        }
+        resizeObserver.disconnect();
+      };
+    }, [context.orientation, context.tabsCount]);
 
     return (
-      <RovingFocusGroup
-        __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
-        orientation={context.orientation}
-        dir={context.dir}
-        loop={loop}
-        asChild
-      >
-        <TabsListFrame
-          role="tablist"
-          aria-orientation={context.orientation}
-          ref={forwardedRef}
+      <ScrollWrapper hasScroll={hasScroll} horizontal={context.orientation === 'horizontal'}>
+        <RovingFocusGroup
+          __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
           orientation={context.orientation}
-          disablePassBorderRadius={disablePassBorderRadius}
-          size={context.size}
-          {...listProps}
+          dir={context.dir}
+          loop={loop}
+          asChild
         >
-          {listProps.children}
-          <TabsListIndicator
-            width={context.activeTabLayout?.width}
-            x={context.activeTabLayout?.x}
-          />
-        </TabsListFrame>
-      </RovingFocusGroup>
+          <TabsListFrame
+            role="tablist"
+            aria-orientation={context.orientation}
+            ref={composeRefs(forwardedRef, listRef)}
+            orientation={context.orientation}
+            size={context.size}
+            {...listProps}
+          >
+            {listProps.children}
+            <AnimatePresence>
+              {context.activeTabLayout && (
+                <TabsListIndicator
+                  orientation={context.orientation}
+                  {...(context.orientation === 'horizontal'
+                    ? {
+                        width: context.activeTabLayout?.width,
+                        x: context.activeTabLayout?.x,
+                      }
+                    : {
+                        height: context.activeTabLayout?.height,
+                        y: context.activeTabLayout?.y,
+                      })}
+                />
+              )}
+            </AnimatePresence>
+          </TabsListFrame>
+        </RovingFocusGroup>
+      </ScrollWrapper>
     );
   },
 );
+
+type WithScrollProps = ScrollViewProps & {
+  hasScroll?: boolean;
+  children: ReactNode;
+};
+
+function ScrollWrapper({ children, hasScroll = false, ...props }: WithScrollProps) {
+  if (!hasScroll) return <>{children}</>;
+  return <ScrollView {...props}>{children}</ScrollView>;
+}
 
 const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
   (props, forwardedRef: ForwardedRef<TamaguiElement>) => {
@@ -147,7 +206,6 @@ const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
     const isSelected = value === context.value;
     const [layout, setLayout] = useState<TabLayout | null>(null);
     const tabRef = useRef<HTMLButtonElement>(null);
-    const groupItemProps = useGroupItem({ disabled: !!disabled });
 
     useEffect(() => {
       context.registerTab();
@@ -180,7 +238,7 @@ const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
     useEffect(() => {
       if (isSelected && layout) {
         onInteraction?.('select', layout);
-        context.selectActiveTabLayout(layout);
+        context.setActiveTabLayout(layout);
       }
     }, [isSelected, value, layout]);
 
@@ -217,7 +275,6 @@ const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
           {...(isSelected && {
             forceStyle: 'focus',
           })}
-          {...groupItemProps}
           {...tabProps}
           ref={composeRefs(forwardedRef, tabRef)}
           onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
