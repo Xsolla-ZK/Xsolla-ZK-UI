@@ -1,6 +1,7 @@
 import { ChevronRight } from '@xsolla-zk-ui/icons';
 import { Bookmark } from '@xsolla-zk-ui/icons';
-import FlexButton from '../flex-button/flex-button';
+import Badge from '../badge/badge';
+import RichIcon from '../rich-icon/rich-icon';
 import Breadcrumbs from './breadcrumbs';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -12,7 +13,7 @@ const meta = {
   tags: ['stable'],
   argTypes: {},
   args: {
-    iconDelimiter: ChevronRight,
+    delimiter: '',
   },
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof Breadcrumbs>;
@@ -20,49 +21,78 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const delimiter = (
+  <RichIcon size="$100">
+    <RichIcon.Icon icon={ChevronRight} />
+  </RichIcon>
+);
+
 const content = (
   <>
-    <Breadcrumbs.Item>Sweet</Breadcrumbs.Item>
-    <Breadcrumbs.Item>Home</Breadcrumbs.Item>
-    <Breadcrumbs.Item>Alabama</Breadcrumbs.Item>
+    <Breadcrumbs.Item>
+      <Breadcrumbs.Item.Text>Sweet</Breadcrumbs.Item.Text>
+    </Breadcrumbs.Item>
+    <Breadcrumbs.Item>
+      <Breadcrumbs.Item.Text>Home</Breadcrumbs.Item.Text>
+    </Breadcrumbs.Item>
+    <Breadcrumbs.Item>
+      <Breadcrumbs.Item.Text>Alabama</Breadcrumbs.Item.Text>
+    </Breadcrumbs.Item>
   </>
 );
 
 export const Default: Story = {
   args: {},
-  render: (args) => <Breadcrumbs {...args}>{content}</Breadcrumbs>,
+  render: (args) => (
+    <Breadcrumbs {...args} delimiter={delimiter}>
+      {content}
+    </Breadcrumbs>
+  ),
 };
 
 const customBreadcrumbsItems = (
   <>
     <Breadcrumbs.Item asChild>
-      <FlexButton tone="neutral">
-        <FlexButton.Text>Sweet</FlexButton.Text>
-      </FlexButton>
+      <Badge>
+        <Badge.Text>Sweet</Badge.Text>
+      </Badge>
     </Breadcrumbs.Item>
     <Breadcrumbs.Item asChild>
-      <FlexButton tone="neutral">
-        <FlexButton.Text>Home</FlexButton.Text>
-      </FlexButton>
+      <Badge tone="brand">
+        <Badge.Text>Home</Badge.Text>
+      </Badge>
     </Breadcrumbs.Item>
     <Breadcrumbs.Item asChild>
-      <FlexButton tone="neutral" disabled>
-        <FlexButton.Text>Alabama</FlexButton.Text>
-      </FlexButton>
+      <Badge>
+        <Badge.Text>Alabama</Badge.Text>
+      </Badge>
     </Breadcrumbs.Item>
   </>
 );
 
 export const CustomItem: Story = {
   args: {},
-  render: (args) => <Breadcrumbs {...args}>{customBreadcrumbsItems}</Breadcrumbs>,
+  render: (args) => (
+    <Breadcrumbs {...args} delimiter={delimiter}>
+      {customBreadcrumbsItems}
+    </Breadcrumbs>
+  ),
 };
 
 export const CustomDelimiter: Story = {
-  args: {
-    iconDelimiter: Bookmark,
-  },
-  render: (args) => <Breadcrumbs {...args}>{content}</Breadcrumbs>,
+  args: {},
+  render: (args) => (
+    <Breadcrumbs
+      {...args}
+      delimiter={
+        <RichIcon size="$200">
+          <RichIcon.Icon icon={Bookmark} />
+        </RichIcon>
+      }
+    >
+      {content}
+    </Breadcrumbs>
+  ),
 };
 /*
 export const ExperimentalFeatureStory: Story = {

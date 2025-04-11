@@ -1,7 +1,7 @@
 import type { BreadcrumbsFrame } from './breadcrumbs.styled';
 import type { GetProps } from '@tamagui/core';
-import type { IconProp } from '@xsolla-zk-ui/react/types/icon';
 import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ReactNode } from 'react';
 
 export type BreadcrumbsSizes = keyof ComponentsConfig['breadcrumbs'];
 
@@ -14,7 +14,7 @@ export type BreadcrumbsItemSharedProps = GetProps<typeof BreadcrumbsFrame>;
 
 export interface BreadcrumbsProps extends BreadcrumbsSharedProps {
   /** The icon to be used as a delimiter */
-  iconDelimiter: IconProp;
+  delimiter: ReactNode;
 }
 
 export interface BreadcrumbsItemProps extends BreadcrumbsItemSharedProps {}

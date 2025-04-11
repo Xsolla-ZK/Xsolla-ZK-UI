@@ -76,22 +76,18 @@ export const TabsTabFrame = styled(Stack, {
   flexGrow: 0,
   flexShrink: 0,
   flexBasis: 'auto',
-  padding: 0,
-  borderWidth: 0,
-  backgroundColor: '$background',
-  userSelect: 'none',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
   flexDirection: 'row',
+  padding: 0,
+  borderWidth: 0,
+  backgroundColor: '$background',
+  userSelect: 'none',
   cursor: 'pointer',
 
   // pressStyle: {
   //   backgroundColor: '$backgroundPress',
-  // },
-
-  // hoverStyle: {
-  //   backgroundColor: '$backgroundHover',
   // },
 
   // focusStyle: {
@@ -128,6 +124,27 @@ export const TabsTabFrame = styled(Stack, {
   } as const,
 
   defaultVariants: {},
+});
+
+export const TabsTabContent = styled(Stack, {
+  name: TABS_TAB_COMPONENT_NAME,
+  padding: 4,
+  borderRadius: '$300',
+  animation: 'state',
+  animateOnly: ['background'],
+
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  maxWidth: '100%',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+  focusStyle: {
+    backgroundColor: '$backgroundHover',
+  },
 });
 
 export const TabsContentFrame = styled(Stack, {
@@ -201,6 +218,10 @@ export const TabsListIndicator = styled(Stack, {
 export const TabsTabText = styled(Text, {
   name: TABS_TAB_COMPONENT_NAME,
   context: TabsContext,
+
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
   color: '$color',
 
   variants: {

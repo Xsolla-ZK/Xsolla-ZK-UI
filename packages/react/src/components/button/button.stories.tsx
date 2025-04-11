@@ -237,8 +237,12 @@ export const TruncatedText: Story = {
     ),
   },
   render: (args) => (
-    <View width={200}>
+    <View width={200} gap={12}>
       <Button {...args} />
+      <Button {...args}>
+        {args.children}
+        <Button.Icon icon={Plus} />
+      </Button>
     </View>
   ),
 };
