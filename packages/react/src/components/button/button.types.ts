@@ -22,7 +22,5 @@ export type ButtonContextType = Partial<IconsPosition> & {
 type ButtonSharedProps = GetProps<typeof ButtonFrame>;
 
 export interface ButtonProps extends ButtonSharedProps {
-  icon?: IconProp;
   tone?: ButtonTone;
-  iconAfter?: IconProp;
 }

@@ -51,9 +51,6 @@ export const breadcrumbs = {
     frame: {
       gap: '$space.200',
     },
-    item: {
-      typography: 'compact.300.accent',
-    },
   },
 };
 export const button = {
@@ -666,7 +663,10 @@ export const modal = {
       },
     },
     header: {
-      paddingVertical: '$space.300',
+      paddingTop: {
+        base: '$space.300',
+        $lg: '$space.450',
+      },
     },
     content: {
       paddingTop: {
@@ -733,7 +733,7 @@ export const navBar = {
     prominent: {
       gap: '$space.50',
       title: {
-        typography: '{semantic-typography.header-xs}',
+        typography: '{semantic-typography.header-m}',
       },
       subtitle: {
         typography: '{semantic-typography.compact-s}',

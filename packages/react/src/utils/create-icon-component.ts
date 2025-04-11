@@ -64,6 +64,9 @@ export function createIconComponent<ContextType extends { size: string }, Config
         // name: componentName,
         size: componentProps.icon.size,
         color: getColorFn(ctx),
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         ...rest,
       } as IconProps);
     }
@@ -73,6 +76,9 @@ export function createIconComponent<ContextType extends { size: string }, Config
           // name: componentName,
           size: componentProps.icon.size,
           color: getColorFn(ctx),
+          flexGrow: 0,
+          flexShrink: 0,
+          flexBasis: 'auto',
           ...rest,
         } as {})
       : null;

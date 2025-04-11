@@ -1,6 +1,7 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import FlexButton from '../flex-button/flex-button';
 import type { BreadcrumbsContextType } from './breadcrumbs.types';
 import type { BreadcrumbsSizes } from './breadcrumbs.types';
 
@@ -32,23 +33,15 @@ export const BreadcrumbsFrame = styled(Stack, {
   },
 });
 
-export const BreadcrumbsItem = styled(Text, {
-  name: BREADCRUMBS_COMPONENT_NAME,
-  context: BreadcrumbsContext,
+const Item = styled(FlexButton, {
   tag: 'a',
+  role: 'link',
+  tone: 'neutral',
 
   userSelect: 'none',
   cursor: 'pointer',
 
   variants: {
-    size: (val: BreadcrumbsSizes) => {
-      const config = getComponentsConfig();
-      const breadcrumbs = config.breadcrumbs[val];
-
-      if (!breadcrumbs) return {};
-
-      return getMappedProps(breadcrumbs.item);
-    },
     active: {
       true: {
         tag: 'span',
@@ -59,7 +52,10 @@ export const BreadcrumbsItem = styled(Text, {
     },
   } as const,
   defaultVariants: {
-    size: '$500',
     active: false,
   },
+});
+
+export const BreadcrumbsItem = Object.assign(Item, {
+  Text: FlexButton.Text,
 });

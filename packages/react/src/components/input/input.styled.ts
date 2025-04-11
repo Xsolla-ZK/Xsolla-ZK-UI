@@ -128,7 +128,7 @@ export const Input = styled(InputBase, {
   backgroundColor: '$background',
   color: '$color',
   animation: 'state',
-  animateOnly: ['borderColor'],
+  animateOnly: ['border'],
 
   focusStyle: {
     borderColor: '$borderColorFocus',

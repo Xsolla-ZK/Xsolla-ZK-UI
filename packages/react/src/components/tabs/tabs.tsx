@@ -14,7 +14,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus';
 import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
-import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { forwardRef, useEffect, useId, useRef, useState } from 'react';
 import { TABS_CONTEXT } from './tabs.constants';
 import {
   TabsContentFrame,
@@ -22,6 +22,7 @@ import {
   TabsFrame,
   TabsListFrame,
   TabsListIndicator,
+  TabsTabContent,
   TabsTabFrame,
   TabsTabIcon,
   TabsTabText,
@@ -246,7 +247,7 @@ const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
       <RovingFocusGroup.Item
         __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
         asChild
-        focusable={!disabled}
+        tabIndex={disabled ? -1 : 0}
         active={isSelected}
         theme={isSelected && !disableActiveTheme ? 'active' : null}
       >
@@ -318,7 +319,9 @@ const TabsTab = TabsTabFrame.styleable<ScopedProps<TabsTabProps, 'Tabs'>>(
               onInteraction?.('focus', null);
             }),
           })}
-        />
+        >
+          <TabsTabContent>{props.children}</TabsTabContent>
+        </TabsTabFrame>
       </RovingFocusGroup.Item>
     );
   },
