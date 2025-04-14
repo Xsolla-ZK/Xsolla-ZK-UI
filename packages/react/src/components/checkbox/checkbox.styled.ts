@@ -1,7 +1,7 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
 import type {
@@ -41,7 +41,7 @@ export const CheckboxFrame = styled(Stack, {
 
       if (!componentProps) return {};
 
-      return getMappedProps(componentProps.frame);
+      return getMappedStyles(componentProps.frame);
     },
 
     disabled: {
@@ -93,7 +93,7 @@ export const CheckboxOverlay = styled(Stack, {
 
       if (!componentProps) return {};
 
-      const { borderRadius, borderWidth } = getMappedProps(componentProps.frame);
+      const { borderRadius, borderWidth } = getMappedStyles(componentProps.frame);
       const offset = -getTokenValue(borderWidth as Token);
 
       return {

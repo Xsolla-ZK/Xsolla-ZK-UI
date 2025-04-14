@@ -1,7 +1,7 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import Board from '../board/board';
 import type { BadgeContextType, BadgeSizes } from './badge.types';
 import type { GetProps, Stack } from '@tamagui/core';
@@ -36,7 +36,7 @@ export const BadgeFrame = styled(Board, {
 
       if (!badge) return {};
 
-      return getMappedProps(badge.frame);
+      return getMappedStyles(badge.frame);
     },
     disabled: {
       true: {
@@ -70,7 +70,7 @@ export const BadgeText = styled(Text, {
 
       if (!badge) return {};
 
-      return getMappedProps(badge.label);
+      return getMappedStyles(badge.label);
     },
   } as const,
 });

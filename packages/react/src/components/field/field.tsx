@@ -1,7 +1,5 @@
-import clsx from 'clsx';
 import { createElement, forwardRef, useId } from 'react';
 import XZKUIInput from '../input/input';
-import xzkuiFieldClasses from './field.classes';
 import { useXZKUIFieldContext, XZKUIFieldContext } from './field.context';
 import Styled from './field.styled';
 import type {
@@ -10,12 +8,12 @@ import type {
   XZKUIFieldControlPropsDefault,
   XZKUIFieldControlPropsWithCallback,
   XZKUIFieldControlPropsWithElement,
-  XZKUIFieldProps,
+  FieldProps,
 } from './field.types';
 import type { ComponentProps, ElementType, ForwardedRef, ReactNode } from 'react';
 
-const XZKUIField = forwardRef(function XZKUIField(
-  { children, label, labelValue, error, errorValue, hint, hintValue, ...rest }: XZKUIFieldProps,
+const Field = forwardRef(function Field(
+  { children, label, labelValue, error, errorValue, hint, hintValue, ...rest }: FieldProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const uniqId = useId();
@@ -26,11 +24,7 @@ const XZKUIField = forwardRef(function XZKUIField(
       <Styled.Root {...rest} ref={ref}>
         <FieldRow titleAlias="label" htmlFor={id} title={label} value={labelValue} />
         {children}
-        <FieldRow
-          className={clsx([error && xzkuiFieldClasses.error])}
-          title={error}
-          value={errorValue}
-        />
+        <FieldRow title={error} value={errorValue} />
         <FieldRow title={hint} value={hintValue} />
       </Styled.Root>
     </XZKUIFieldContext.Provider>
@@ -85,10 +79,10 @@ function FieldRow<T extends ElementType = 'div'>({
   );
 }
 
-type XZKUIFieldType = typeof XZKUIField & {
+type XZKUIFieldType = typeof Field & {
   Control: typeof Control;
 };
 
-Object.assign(XZKUIField, { Control });
+Object.assign(Field, { Control });
 
-export default XZKUIField as XZKUIFieldType;
+export default Field as XZKUIFieldType;

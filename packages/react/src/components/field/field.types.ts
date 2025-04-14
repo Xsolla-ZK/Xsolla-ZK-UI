@@ -1,37 +1,15 @@
-import type { XZKUIInputProps } from '../input/input.types';
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
+import type { FieldFrame } from './field.styled';
+import type { GetProps } from '@tamagui/core';
+import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 
-export interface XZKUIFieldContextValues {
+export type FieldSizes = keyof ComponentsConfig['field'];
+
+export type FieldContextType = {
   error?: boolean;
   id?: string;
-}
+  size: FieldSizes;
+};
 
-export interface XZKUIFieldProps {
-  children: ReactNode;
-  className?: string;
-  label?: ReactNode;
-  labelValue?: ReactNode;
-  error?: ReactNode;
-  errorValue?: ReactNode;
-  hint?: ReactNode;
-  hintValue?: ReactNode;
-}
+export type FieldSharedProps = GetProps<typeof FieldFrame>;
 
-export type XZKUIFieldContextCallback = (context: XZKUIFieldContextValues) => ReactNode;
-
-export interface XZKUIFieldControlPropsWithCallback {
-  render?: XZKUIFieldContextCallback;
-}
-
-export type XZKUIFieldControlPropsWithElement<T extends ElementType> = {
-  render?: T;
-} & Omit<ComponentPropsWithoutRef<T>, 'render'>;
-
-export type XZKUIFieldControlPropsDefault = {
-  render?: never;
-} & XZKUIInputProps;
-
-export type XZKUIFieldControlProps<T extends ElementType> =
-  | XZKUIFieldControlPropsWithCallback
-  | XZKUIFieldControlPropsWithElement<T>
-  | XZKUIFieldControlPropsDefault;
+export interface FieldProps extends FieldSharedProps {}

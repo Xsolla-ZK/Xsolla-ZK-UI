@@ -1,5 +1,5 @@
 import { forwardRef, useRef } from 'react';
-import XZKUIField from '../field/field';
+import Field from '../field/field';
 import XZKUIInput from '../input/input';
 import Styled from './otp-field.styled';
 import type { XZKUIOtpFieldProps } from './otp-field.types';
@@ -121,7 +121,7 @@ const XZKUIOtpField = forwardRef(function XZKUIOtpField(
   };
 
   return (
-    <XZKUIField
+    <Field
       className={className}
       label={label}
       labelValue={labelValue}
@@ -130,7 +130,7 @@ const XZKUIOtpField = forwardRef(function XZKUIOtpField(
       hint={hint}
       hintValue={hintValue}
     >
-      <XZKUIField.Control
+      <Field.Control
         render={(context) => (
           <Styled.Main ref={ref}>
             {Array(length)
@@ -162,7 +162,7 @@ const XZKUIOtpField = forwardRef(function XZKUIOtpField(
           </Styled.Main>
         )}
       />
-    </XZKUIField>
+    </Field>
   );
 });
 

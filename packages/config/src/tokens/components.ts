@@ -724,19 +724,33 @@ export const navBar = {
     default: {
       gap: '$space.50',
       title: {
-        typography: '{semantic-typography.header-xs}',
+        typography: {
+          base: 'compact.300.accent',
+          $lg: 'display.350.accent',
+          $xl: 'display.400.accent',
+        },
       },
       subtitle: {
-        typography: '{semantic-typography.compact-s}',
+        typography: {
+          base: 'compact.250.default',
+          $lg: 'compact.300.default',
+        },
       },
     },
     prominent: {
       gap: '$space.50',
       title: {
-        typography: '{semantic-typography.header-m}',
+        typography: {
+          base: 'compact.300.accent',
+          $lg: 'display.350.accent',
+          $xl: 'display.400.accent',
+        },
       },
       subtitle: {
-        typography: '{semantic-typography.compact-s}',
+        typography: {
+          base: 'compact.250.default',
+          $lg: 'compact.300.default',
+        },
       },
     },
   },
@@ -1188,6 +1202,49 @@ export const slider = {
     },
   },
 };
+export const snackBar = {
+  $500: {
+    frame: {
+      maxWidth: 400,
+      marginHorizontal: {
+        base: '$platform.layout.margin-horizontal.sm',
+        $md: '$platform.layout.margin-horizontal.md',
+        $lg: '$platform.layout.margin-horizontal.lg',
+        $xl: '$platform.layout.margin-horizontal.xl',
+      },
+      marginTop: {
+        base: '$space.450',
+        $md: '$space.650',
+        $xl: '$space.900',
+      },
+      borderRadius: '$radius.550',
+      paddingTop: '$space.200',
+      paddingBottom: '$space.200',
+      paddingRight: '$space.650',
+      paddingLeft: '$space.300',
+    },
+    content: {
+      frame: {
+        gap: '$space.300',
+      },
+      icon: {
+        minHeight: '$space.800',
+      },
+      description: {
+        frame: {
+          paddingVertical: '$space.100',
+          gap: '$space.100',
+        },
+        list: {
+          gap: '$space.50',
+        },
+        actions: {
+          gap: '$space.350',
+        },
+      },
+    },
+  },
+};
 export const switchComponent = {
   $600: {
     frame: {
@@ -1339,6 +1396,29 @@ export const tab = {
     },
   },
 };
+export const toast = {
+  $500: {
+    frame: {
+      marginHorizontal: {
+        base: '$platform.layout.margin-horizontal.sm',
+        $md: '$platform.layout.margin-horizontal.md',
+        $lg: '$platform.layout.margin-horizontal.lg',
+        $xl: '$platform.layout.margin-horizontal.xl',
+      },
+      marginTop: {
+        base: '$space.450',
+        $md: '$space.650',
+        $xl: '$space.900',
+      },
+      borderRadius: '$radius.500',
+      paddingTop: '$space.100',
+      paddingBottom: '$space.100',
+      paddingRight: '$space.300',
+      paddingLeft: '$space.100',
+      gap: '$space.250',
+    },
+  },
+};
 export const components = {
   accordion,
   badge,
@@ -1367,8 +1447,10 @@ export const components = {
   semanticText,
   separator,
   slider,
+  snackBar,
   switchComponent,
   tabs,
   tabBar,
   tab,
+  toast,
 };

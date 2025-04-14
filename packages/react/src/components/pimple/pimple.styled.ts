@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import type { PimpleContextType, PimpleSizes } from './pimple.types';
 
 export const PimpleContext = createStyledContext<PimpleContextType>({
@@ -27,7 +27,7 @@ export const PimpleFrame = styled(Stack, {
       if (!pimple) {
         return {};
       }
-      return getMappedProps(pimple.frame);
+      return getMappedStyles(pimple.frame);
     },
   },
 });
@@ -44,7 +44,7 @@ export const PimpleText = styled(Text, {
       if (!pimple) {
         return {};
       }
-      return getMappedProps(pimple.label);
+      return getMappedStyles(pimple.label);
     },
   },
 });

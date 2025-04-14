@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { Path as _Path, Svg as _Svg } from 'react-native-svg';
 import { RICH_ICON_COMPONENT_NAME } from './rich-icon.constants';
@@ -52,7 +52,7 @@ export const RichIconFrame = styled(Stack, {
         return {};
       }
 
-      return getMappedProps(componentProps.frame);
+      return getMappedStyles(componentProps.frame);
     },
   } as const,
   defaultVariants: {
@@ -167,7 +167,7 @@ export const RichIconText = styled(Text, {
       if (!componentProps) {
         return {};
       }
-      return getMappedProps(componentProps.label);
+      return getMappedStyles(componentProps.label);
     },
   } as const,
 });
