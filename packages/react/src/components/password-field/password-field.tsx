@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react';
-import XZKUIField from '../field/field';
+import Field from '../field/field';
 import XZKUIRichIcon from '../rich-icon/rich-icon';
 import XZKUISvgIcon from '../svg-icon/svg-icon';
 import SvgCross from '../svg-icons/cross';
@@ -46,7 +46,7 @@ const XZKUIPasswordField = forwardRef(function XZKUIPasswordField(
   };
 
   return (
-    <XZKUIField
+    <Field
       className={className}
       label={label}
       labelValue={labelValue}
@@ -55,7 +55,7 @@ const XZKUIPasswordField = forwardRef(function XZKUIPasswordField(
       hint={hint}
       hintValue={hintValue}
     >
-      <XZKUIField.Control
+      <Field.Control
         type={show ? 'text' : 'password'}
         value={localValue}
         onChange={handleChange}
@@ -88,7 +88,7 @@ const XZKUIPasswordField = forwardRef(function XZKUIPasswordField(
         {...rest}
         ref={ref}
       />
-    </XZKUIField>
+    </Field>
   );
 });
 

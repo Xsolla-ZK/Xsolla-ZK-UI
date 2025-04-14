@@ -51,9 +51,6 @@ export declare const breadcrumbs: {
         frame: {
             gap: string;
         };
-        item: {
-            typography: string;
-        };
     };
 };
 export declare const button: {
@@ -666,7 +663,10 @@ export declare const modal: {
             };
         };
         header: {
-            paddingVertical: string;
+            paddingTop: {
+                base: string;
+                $lg: string;
+            };
         };
         content: {
             paddingTop: {
@@ -724,19 +724,33 @@ export declare const navBar: {
         default: {
             gap: string;
             title: {
-                typography: string;
+                typography: {
+                    base: string;
+                    $lg: string;
+                    $xl: string;
+                };
             };
             subtitle: {
-                typography: string;
+                typography: {
+                    base: string;
+                    $lg: string;
+                };
             };
         };
         prominent: {
             gap: string;
             title: {
-                typography: string;
+                typography: {
+                    base: string;
+                    $lg: string;
+                    $xl: string;
+                };
             };
             subtitle: {
-                typography: string;
+                typography: {
+                    base: string;
+                    $lg: string;
+                };
             };
         };
     };
@@ -1188,6 +1202,49 @@ export declare const slider: {
         };
     };
 };
+export declare const snackBar: {
+    $500: {
+        frame: {
+            maxWidth: number;
+            marginHorizontal: {
+                base: string;
+                $md: string;
+                $lg: string;
+                $xl: string;
+            };
+            marginTop: {
+                base: string;
+                $md: string;
+                $xl: string;
+            };
+            borderRadius: string;
+            paddingTop: string;
+            paddingBottom: string;
+            paddingRight: string;
+            paddingLeft: string;
+        };
+        content: {
+            frame: {
+                gap: string;
+            };
+            icon: {
+                minHeight: string;
+            };
+            description: {
+                frame: {
+                    paddingVertical: string;
+                    gap: string;
+                };
+                list: {
+                    gap: string;
+                };
+                actions: {
+                    gap: string;
+                };
+            };
+        };
+    };
+};
 export declare const switchComponent: {
     $600: {
         frame: {
@@ -1339,6 +1396,29 @@ export declare const tab: {
         };
     };
 };
+export declare const toast: {
+    $500: {
+        frame: {
+            marginHorizontal: {
+                base: string;
+                $md: string;
+                $lg: string;
+                $xl: string;
+            };
+            marginTop: {
+                base: string;
+                $md: string;
+                $xl: string;
+            };
+            borderRadius: string;
+            paddingTop: string;
+            paddingBottom: string;
+            paddingRight: string;
+            paddingLeft: string;
+            gap: string;
+        };
+    };
+};
 export declare const components: {
     accordion: {
         size: {
@@ -1388,9 +1468,6 @@ export declare const components: {
         $500: {
             frame: {
                 gap: string;
-            };
-            item: {
-                typography: string;
             };
         };
     };
@@ -2004,7 +2081,10 @@ export declare const components: {
                 };
             };
             header: {
-                paddingVertical: string;
+                paddingTop: {
+                    base: string;
+                    $lg: string;
+                };
             };
             content: {
                 paddingTop: {
@@ -2062,19 +2142,33 @@ export declare const components: {
             default: {
                 gap: string;
                 title: {
-                    typography: string;
+                    typography: {
+                        base: string;
+                        $lg: string;
+                        $xl: string;
+                    };
                 };
                 subtitle: {
-                    typography: string;
+                    typography: {
+                        base: string;
+                        $lg: string;
+                    };
                 };
             };
             prominent: {
                 gap: string;
                 title: {
-                    typography: string;
+                    typography: {
+                        base: string;
+                        $lg: string;
+                        $xl: string;
+                    };
                 };
                 subtitle: {
-                    typography: string;
+                    typography: {
+                        base: string;
+                        $lg: string;
+                    };
                 };
             };
         };
@@ -2526,6 +2620,49 @@ export declare const components: {
             };
         };
     };
+    snackBar: {
+        $500: {
+            frame: {
+                maxWidth: number;
+                marginHorizontal: {
+                    base: string;
+                    $md: string;
+                    $lg: string;
+                    $xl: string;
+                };
+                marginTop: {
+                    base: string;
+                    $md: string;
+                    $xl: string;
+                };
+                borderRadius: string;
+                paddingTop: string;
+                paddingBottom: string;
+                paddingRight: string;
+                paddingLeft: string;
+            };
+            content: {
+                frame: {
+                    gap: string;
+                };
+                icon: {
+                    minHeight: string;
+                };
+                description: {
+                    frame: {
+                        paddingVertical: string;
+                        gap: string;
+                    };
+                    list: {
+                        gap: string;
+                    };
+                    actions: {
+                        gap: string;
+                    };
+                };
+            };
+        };
+    };
     switchComponent: {
         $600: {
             frame: {
@@ -2674,6 +2811,29 @@ export declare const components: {
                 borderTopRightRadius: string;
                 borderBottomLeftRadius: string;
                 borderBottomRightRadius: string;
+            };
+        };
+    };
+    toast: {
+        $500: {
+            frame: {
+                marginHorizontal: {
+                    base: string;
+                    $md: string;
+                    $lg: string;
+                    $xl: string;
+                };
+                marginTop: {
+                    base: string;
+                    $md: string;
+                    $xl: string;
+                };
+                borderRadius: string;
+                paddingTop: string;
+                paddingBottom: string;
+                paddingRight: string;
+                paddingLeft: string;
+                gap: string;
             };
         };
     };

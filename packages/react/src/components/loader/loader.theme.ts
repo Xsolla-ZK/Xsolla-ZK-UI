@@ -1,7 +1,5 @@
-// import tokensThemes from '@xsolla-zk-ui/react/tokens/themes';
-// import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
-
 import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { LOADER_COMPONENT_NAME } from './loader.constants';
 
 // const loaderTheme = (mode: XZKUIThemeModeUnion) => {
 //   const selectedTheme = tokensThemes[mode];
@@ -39,7 +37,7 @@ import { createComponentTheme } from '@xsolla-zk-ui/config';
 // export default loaderTheme;
 
 export const loaderTheme = createComponentTheme(
-  'Loader',
+  LOADER_COMPONENT_NAME,
   (tokens) => ({
     color: tokens['border.neutral-secondary'],
     spinColor: tokens['border.brand-primary'],

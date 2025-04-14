@@ -1,5 +1,7 @@
 import { Stack } from '@tamagui/core';
+import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import RichIcon from '../rich-icon/rich-icon';
 import Input from './input';
 import type { InputSizes } from './input.types';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -11,7 +13,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  // tags: ['stable'],
+  tags: ['stable'],
   argTypes: {
     size: {
       control: 'select',
@@ -24,7 +26,6 @@ const meta = {
   },
   args: {
     placeholder: 'Placeholder',
-    // onClick: fn(),
   },
   play: async ({ canvasElement }) => {},
 } as Meta<typeof Input>;
@@ -34,6 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
+  render: (args) => <Input {...args} />,
 };
 
 export const AllSizes: Story = {
@@ -60,61 +62,71 @@ export const AllSizes: Story = {
 //   },
 // };
 
-// export const WithError: Story = {
-//   args: {
-//     error: true,
-//   },
-// };
+export const WithError: Story = {
+  args: {
+    error: true,
+  },
+};
 
-// export const WithStartAdornment: Story = {
-//   args: {
-//     startAdornment: (
-//       <XZKUIRichIcon shape="squircle" size={200} bg={({ theme }) => theme.overlay.neutral}>
-//         <XZKUISvgIcon icon={SvgDataTable} />
-//       </XZKUIRichIcon>
-//     ),
-//   },
-// };
+export const WithStartAdornment: Story = {
+  args: {},
+  render: (args) => (
+    <Input {...args}>
+      <Input.StartAdornment>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={DataTable} />
+        </RichIcon>
+      </Input.StartAdornment>
+    </Input>
+  ),
+};
 
-// export const WithEndAdornment: Story = {
-//   args: {
-//     endAdornment: (
-//       <XZKUIRichIcon size={200} bg={({ theme }) => theme.overlay.neutral}>
-//         <XZKUISvgIcon icon={SvgBankCard} />
-//       </XZKUIRichIcon>
-//     ),
-//   },
-// };
+export const WithEndAdornment: Story = {
+  args: {},
+  render: (args) => (
+    <Input {...args}>
+      <Input.EndAdornment>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={BankCard} />
+        </RichIcon>
+      </Input.EndAdornment>
+    </Input>
+  ),
+};
 
-// export const WithAllAdornments: Story = {
-//   args: {
-//     startAdornment: (
-//       <XZKUIRichIcon shape="squircle" size={200} bg={({ theme }) => theme.background.warningHigh}>
-//         <XZKUISvgIcon icon={SvgDataTable} />
-//       </XZKUIRichIcon>
-//     ),
-//     endAdornment: (
-//       <XZKUIRichIcon shape="squircle" size={200} bg={({ theme }) => theme.background.negativeHigh}>
-//         <XZKUISvgIcon icon={SvgBag} />
-//       </XZKUIRichIcon>
-//     ),
-//   },
-// };
+export const WithAllAdornments: Story = {
+  args: {},
+  render: (args) => (
+    <Input {...args}>
+      <Input.StartAdornment>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={DataTable} />
+        </RichIcon>
+      </Input.StartAdornment>
+      <Input.EndAdornment>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={BankCard} />
+        </RichIcon>
+      </Input.EndAdornment>
+    </Input>
+  ),
+};
 
-// export const WithRichAdornment: Story = {
-//   args: {
-//     endAdornment: (
-//       <>
-//         <XZKUIRichIcon shape="squircle" size={200} bg={({ theme }) => theme.overlay.neutral}>
-//           <XZKUISvgIcon icon={SvgPlus} />
-//         </XZKUIRichIcon>
-//         <XZKUIRichIcon shape="squircle" size={200} bg={({ theme }) => theme.overlay.neutral}>
-//           <XZKUISvgIcon icon={SvgCross} />
-//         </XZKUIRichIcon>
-//       </>
-//     ),
-//   },
-// };
+export const WithRichAdornment: Story = {
+  args: {},
+  render: (args) => (
+    <Input {...args}>
+      <Input.EndAdornment>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={Plus} />
+        </RichIcon>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={Cross} />
+        </RichIcon>
+      </Input.EndAdornment>
+    </Input>
+  ),
+};
 
 // export const Textarea: Story = {
 //   args: {

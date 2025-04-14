@@ -107,7 +107,7 @@ export const Vertical: Story = {
   args: {},
   render: ({ ...args }) => (
     <Tabs defaultValue="1" orientation="vertical" {...args}>
-      <Tabs.List>
+      <Tabs.List width={120}>
         {tabs.map((tab) => (
           <Tabs.Tab key={tab.text} value={tab.value}>
             <Tabs.Tab.Icon icon={tab.icon} />

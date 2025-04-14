@@ -1,5 +1,5 @@
 import { styled, Text } from '@tamagui/core';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import { getComponentsConfig } from '../../utils/components-config';
 import type { SemanticTextVariants } from './semantic-text.types';
 
@@ -19,7 +19,7 @@ export const SemanticTextRoot = styled(
           return {};
         }
 
-        return getMappedProps(semanticTextProps);
+        return getMappedStyles(semanticTextProps);
       },
     } as const,
     defaultVariants: {

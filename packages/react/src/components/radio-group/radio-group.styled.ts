@@ -1,6 +1,6 @@
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
 import type {
   RadioGroupContextType,
@@ -77,7 +77,7 @@ export const RadioGroupOverlay = styled(Stack, {
 
       if (!componentProps) return {};
 
-      const { borderRadius, borderWidth } = getMappedProps(componentProps.frame);
+      const { borderRadius, borderWidth } = getMappedStyles(componentProps.frame);
       const offset = -getTokenValue(borderWidth as Token);
 
       return {
@@ -123,7 +123,7 @@ export const RadioGroupItemFrame = styled(Stack, {
 
       if (!componentProps) return {};
 
-      return getMappedProps(componentProps.frame);
+      return getMappedStyles(componentProps.frame);
     },
     disabled: {
       true: {

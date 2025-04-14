@@ -2,7 +2,7 @@ import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import {
   TABS_COMPONENT_NAME,
   TABS_LIST_COMPONENT_NAME,
@@ -16,11 +16,11 @@ import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 export const TabsContext = createStyledContext<TabsContextType>({
   size: '$500',
   baseId: '',
-  onChange: () => {},
-  registerTab: () => {},
-  unregisterTab: () => {},
+  onChange: () => ({}),
+  registerTab: () => ({}),
+  unregisterTab: () => ({}),
   tabsCount: 0,
-  setActiveTabLayout: () => {},
+  setActiveTabLayout: () => ({}),
   containerRef: null,
 });
 
@@ -56,7 +56,7 @@ export const TabsListFrame = styled(Stack, {
 
       if (!componentProps) return {};
 
-      return getMappedProps(componentProps.frame);
+      return getMappedStyles(componentProps.frame);
     },
     orientation: {
       horizontal: {
@@ -101,7 +101,7 @@ export const TabsTabFrame = styled(Stack, {
 
       if (!componentProps) return {};
 
-      return getMappedProps(componentProps.frame);
+      return getMappedStyles(componentProps.frame);
     },
 
     disabled: {
@@ -164,10 +164,10 @@ export const TabsContentFrame = styled(Stack, {
 
 const reverseProps = {
   height: 'width',
-  borderTopLeftRadius: 'borderTopRightRadius',
-  borderTopRightRadius: 'borderBottomRightRadius',
-  borderBottomLeftRadius: 'borderTopLeftRadius',
-  borderBottomRightRadius: 'borderBottomLeftRadius',
+  borderTopLeftRadius: 'borderBottomLeftRadius',
+  borderTopRightRadius: 'borderTopLeftRadius',
+  borderBottomRightRadius: 'borderTopRightRadius',
+  borderBottomLeftRadius: 'borderBottomRightRadius',
 } as const;
 
 export const TabsListIndicator = styled(Stack, {
@@ -189,10 +189,10 @@ export const TabsListIndicator = styled(Stack, {
       if (!componentProps) return {};
 
       return props.orientation === 'horizontal'
-        ? getMappedProps(componentProps.line)
+        ? getMappedStyles(componentProps.line)
         : Object.keys(reverseProps).reduce<Record<string, unknown>>((acc, curr) => {
             const key = reverseProps[curr as keyof typeof reverseProps];
-            const mappedProps = getMappedProps(componentProps.line);
+            const mappedProps = getMappedStyles(componentProps.line);
             if (key && typeof mappedProps === 'object' && curr in mappedProps) {
               acc[key] = mappedProps[curr as keyof typeof mappedProps];
             }
@@ -231,7 +231,7 @@ export const TabsTabText = styled(Text, {
 
       if (!componentProps) return {};
 
-      return getMappedProps(componentProps.label);
+      return getMappedStyles(componentProps.label);
     },
   } as const,
 });

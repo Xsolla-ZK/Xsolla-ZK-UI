@@ -8,25 +8,25 @@ import type { TypographyPresets } from '../types/typography';
 
 type Result = WithThemeShorthandsPseudosMedia<ValidBaseProps>;
 
-type GetMappedPropsResult = {
+type GetMappedStylesResult = {
   flat: Result;
   media: Result;
 };
 
 type TemplateMediaUnion = MediaPropKeys | 'base';
 
-type MappedMediaProps<T> = {
+type MappedMediaStyles<T> = {
   [K in TemplateMediaUnion]?: T;
 };
 
-type GetMappedProps<T extends ValidProps> = {
-  [K in keyof T]?: T[K] | MappedMediaProps<T[K]>;
+type GetMappedStyles<T extends ValidProps> = {
+  [K in keyof T]?: T[K] | MappedMediaStyles<T[K]>;
 };
 
 function processNested<T extends ValidProps[keyof ValidProps]>(
   originalProp: string,
-  nestedValue: MappedMediaProps<T>,
-  result: GetMappedPropsResult,
+  nestedValue: MappedMediaStyles<T>,
+  result: GetMappedStylesResult,
 ) {
   const media = getMedia();
 
@@ -70,15 +70,15 @@ function processScalar(key: string, value: ValidProps[keyof ValidProps], result:
   return result;
 }
 
-export function getMappedProps<T extends ValidProps>(obj: GetMappedProps<T>) {
+export function getMappedStyles<T extends ValidProps>(obj: GetMappedStyles<T>) {
   const result = {
     flat: {},
     media: {},
-  } as GetMappedPropsResult;
+  } as GetMappedStylesResult;
 
   for (const [key, value] of Object.entries(obj)) {
     if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-      processNested(key, value as MappedMediaProps<ValidProps[keyof ValidProps]>, result);
+      processNested(key, value as MappedMediaStyles<ValidProps[keyof ValidProps]>, result);
     } else {
       processScalar(key, value as ValidProps[keyof ValidProps], result.flat);
     }

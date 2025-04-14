@@ -1,7 +1,7 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedProps } from '@xsolla-zk-ui/react/utils/get-mapped-props';
+import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import Board from '../board/board';
 import { BUTTON_COMPONENT_NAME } from './button.constants';
 import type {
@@ -75,7 +75,7 @@ export const ButtonFrame = styled(Board, {
 
       if (!button) return {};
 
-      return getMappedProps(button.frame);
+      return getMappedStyles(button.frame);
     },
     disabled: {
       true: {
@@ -139,7 +139,7 @@ export const ButtonText = styled(Text, {
 
       if (!button) return {};
 
-      const { paddingHorizontal, ...styles } = getMappedProps(button.label);
+      const { paddingHorizontal, ...styles } = getMappedStyles(button.label);
 
       return {
         ...styles,
