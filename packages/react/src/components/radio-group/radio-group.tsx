@@ -195,10 +195,4 @@ const RadioGroup = withStaticProperties(RadioGroupComponent, {
   Indicator: RadioIndicator,
 });
 
-// function RadioGroup() {
-//   return (
-//     <div>hello</div>
-//   )
-// }
-
 export default RadioGroup;

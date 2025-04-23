@@ -13,7 +13,7 @@ import type { FlexButtonContextType, FlexButtonProps } from './flex-button.types
 import type { LoaderProps } from '../loader/loader.types';
 import type { TamaguiElement, ThemeName, Token } from '@tamagui/core';
 
-export const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
+const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
   ({ children, isLoading, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => (
     <FlexButtonFrame
       group={!props.disabled}

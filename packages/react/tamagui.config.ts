@@ -1,16 +1,7 @@
 import { createTamagui } from '@tamagui/core';
 import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk-ui/config';
 import { webConfig } from '@xsolla-zk-ui/config/web';
-import { badgeTheme } from './src/components/badge/badge.theme';
-import { buttonTheme } from './src/components/button/button.theme';
-import { checkboxTheme } from './src/components/checkbox/checkbox.theme';
-import { flexButtonTheme } from './src/components/flex-button/flex-button.theme';
-import { inputTheme } from './src/components/input/input.theme';
-import { loaderTheme } from './src/components/loader/loader.theme';
-import { pimpleTheme } from './src/components/pimple/pimple.theme';
-import { radioGroupTheme } from './src/components/radio-group/radio-group.theme';
-import { richIconTheme } from './src/components/rich-icon/rich-icon.theme';
-import { tabsListIndicatorTheme, tabsTabTheme } from './src/components/tabs/tabs.theme';
+import { componentsTheme } from '.';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
@@ -23,20 +14,7 @@ const sheetTheme = createComponentTheme('SheetOverlay', (tokens) => ({
 
 const themesCompose = createThemes(webConfig.themes, {
   base: baseTheme,
-  components: {
-    button: buttonTheme,
-    loader: loaderTheme,
-    badge: badgeTheme,
-    pimple: pimpleTheme,
-    input: inputTheme,
-    flexButton: flexButtonTheme,
-    sheet: sheetTheme,
-    checkbox: checkboxTheme,
-    radioGroup: radioGroupTheme,
-    richIcon: richIconTheme,
-    tabsTab: tabsTabTheme,
-    tabsListIndicator: tabsListIndicatorTheme,
-  },
+  components: componentsTheme,
 });
 
 export const config = createTamagui({

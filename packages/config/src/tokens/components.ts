@@ -418,17 +418,17 @@ export const field = {
     frame: {
       gap: '$space.100',
     },
-    label: {
+    row: {
       gap: '$space.200',
       paddingHorizontal: '$space.350',
-      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
+    label: {
+      typography: 'compact.250.default',
+    },
     hint: {
-      gap: '$space.200',
-      paddingHorizontal: '$space.350',
       typography: 'compact.250.default',
     },
   },
@@ -436,17 +436,17 @@ export const field = {
     frame: {
       gap: '$space.200',
     },
-    label: {
+    row: {
       gap: '$space.200',
       paddingHorizontal: '$space.350',
-      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
+    label: {
+      typography: 'compact.250.default',
+    },
     hint: {
-      gap: '$space.200',
-      paddingHorizontal: '$space.350',
       typography: 'compact.250.default',
     },
   },
@@ -454,17 +454,17 @@ export const field = {
     frame: {
       gap: '$space.200',
     },
-    label: {
+    row: {
       gap: '$space.200',
       paddingHorizontal: '$space.350',
-      typography: 'compact.250.default',
     },
     inputs: {
       gap: '$space.100',
     },
+    label: {
+      typography: 'compact.250.default',
+    },
     hint: {
-      gap: '$space.200',
-      paddingHorizontal: '$space.350',
       typography: 'compact.250.default',
     },
   },
@@ -641,6 +641,36 @@ export const list = {
 export const loader = {
   $500: {
     borderWidth: '$stroke.400',
+  },
+};
+export const markdown = {
+  h1: {
+    paddingTop: '$space.650',
+    paddingBottom: '$space.200',
+  },
+  h2: {
+    paddingTop: '$space.550',
+    paddingBottom: '$space.200',
+  },
+  h3: {
+    paddingTop: '$space.350',
+    paddingBottom: '$space.200',
+  },
+  h4: {
+    paddingTop: '$space.200',
+    paddingBottom: '$space.200',
+  },
+  h5: {
+    paddingTop: '$space.0',
+    paddingBottom: '$space.200',
+  },
+  p: {
+    paddingTop: '$space.0',
+    paddingBottom: '$space.350',
+  },
+  image: {
+    paddingTop: '$space.0',
+    paddingBottom: '$space.450',
   },
 };
 export const modal = {
@@ -1436,6 +1466,7 @@ export const components = {
   input,
   list,
   loader,
+  markdown,
   modal,
   navBar,
   pimple,

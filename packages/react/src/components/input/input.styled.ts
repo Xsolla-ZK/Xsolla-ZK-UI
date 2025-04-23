@@ -54,9 +54,9 @@ const adornmentStyles = {
   gap: 'inherit',
 } as const;
 
-export const StartAdornment = styled(Stack, adornmentStyles);
+export const InputStartSlot = styled(Stack, adornmentStyles);
 
-export const EndAdornment = styled(Stack, adornmentStyles);
+export const InputEndSlot = styled(Stack, adornmentStyles);
 
 export const InputElement = styled(InputBase, {
   name: INPUT_COMPONENT_NAME,

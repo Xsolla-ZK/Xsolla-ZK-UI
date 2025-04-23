@@ -1,12 +1,12 @@
 import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
 import useChildrenArray from '@xsolla-zk-ui/react/hooks/use-children-array';
-import { isValidElement, useId, useMemo, useRef, useState } from 'react';
+import { isValidElement, useMemo, useState } from 'react';
 import {
-  EndAdornment,
+  InputEndSlot,
   InputContext,
   InputElement,
   InputFrame,
-  StartAdornment,
+  InputStartSlot,
 } from './input.styled';
 import type { InputProps } from './input.types';
 import type { ForwardedRef, ReactElement } from 'react';
@@ -22,9 +22,9 @@ const InputComponent = InputFrame.styleable<InputProps>(
 
       childrenArray.forEach((child) => {
         if (isValidElement(child)) {
-          if (child.type === StartAdornment && !start) {
+          if (child.type === InputStartSlot && !start) {
             start = child;
-          } else if (child.type === EndAdornment && !end) {
+          } else if (child.type === InputEndSlot && !end) {
             end = child;
           }
         }
@@ -59,8 +59,8 @@ const InputComponent = InputFrame.styleable<InputProps>(
 
 const Input = withStaticProperties(InputComponent, {
   Props: InputContext.Provider,
-  StartAdornment,
-  EndAdornment,
+  StartAdornment: InputStartSlot,
+  EndAdornment: InputEndSlot,
 });
 
 export default Input;
