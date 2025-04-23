@@ -418,17 +418,17 @@ export declare const field: {
         frame: {
             gap: string;
         };
-        label: {
+        row: {
             gap: string;
             paddingHorizontal: string;
-            typography: string;
         };
         inputs: {
             gap: string;
         };
+        label: {
+            typography: string;
+        };
         hint: {
-            gap: string;
-            paddingHorizontal: string;
             typography: string;
         };
     };
@@ -436,17 +436,17 @@ export declare const field: {
         frame: {
             gap: string;
         };
-        label: {
+        row: {
             gap: string;
             paddingHorizontal: string;
-            typography: string;
         };
         inputs: {
             gap: string;
         };
+        label: {
+            typography: string;
+        };
         hint: {
-            gap: string;
-            paddingHorizontal: string;
             typography: string;
         };
     };
@@ -454,17 +454,17 @@ export declare const field: {
         frame: {
             gap: string;
         };
-        label: {
+        row: {
             gap: string;
             paddingHorizontal: string;
-            typography: string;
         };
         inputs: {
             gap: string;
         };
+        label: {
+            typography: string;
+        };
         hint: {
-            gap: string;
-            paddingHorizontal: string;
             typography: string;
         };
     };
@@ -641,6 +641,36 @@ export declare const list: {
 export declare const loader: {
     $500: {
         borderWidth: string;
+    };
+};
+export declare const markdown: {
+    h1: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    h2: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    h3: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    h4: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    h5: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    p: {
+        paddingTop: string;
+        paddingBottom: string;
+    };
+    image: {
+        paddingTop: string;
+        paddingBottom: string;
     };
 };
 export declare const modal: {
@@ -1836,17 +1866,17 @@ export declare const components: {
             frame: {
                 gap: string;
             };
-            label: {
+            row: {
                 gap: string;
                 paddingHorizontal: string;
-                typography: string;
             };
             inputs: {
                 gap: string;
             };
+            label: {
+                typography: string;
+            };
             hint: {
-                gap: string;
-                paddingHorizontal: string;
                 typography: string;
             };
         };
@@ -1854,17 +1884,17 @@ export declare const components: {
             frame: {
                 gap: string;
             };
-            label: {
+            row: {
                 gap: string;
                 paddingHorizontal: string;
-                typography: string;
             };
             inputs: {
                 gap: string;
             };
+            label: {
+                typography: string;
+            };
             hint: {
-                gap: string;
-                paddingHorizontal: string;
                 typography: string;
             };
         };
@@ -1872,17 +1902,17 @@ export declare const components: {
             frame: {
                 gap: string;
             };
-            label: {
+            row: {
                 gap: string;
                 paddingHorizontal: string;
-                typography: string;
             };
             inputs: {
                 gap: string;
             };
+            label: {
+                typography: string;
+            };
             hint: {
-                gap: string;
-                paddingHorizontal: string;
                 typography: string;
             };
         };
@@ -2059,6 +2089,36 @@ export declare const components: {
     loader: {
         $500: {
             borderWidth: string;
+        };
+    };
+    markdown: {
+        h1: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        h2: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        h3: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        h4: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        h5: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        p: {
+            paddingTop: string;
+            paddingBottom: string;
+        };
+        image: {
+            paddingTop: string;
+            paddingBottom: string;
         };
     };
     modal: {

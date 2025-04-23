@@ -3,6 +3,7 @@ import { fn } from '@storybook/test';
 import { TamaguiProvider, Theme, useTheme, useThemeName } from '@tamagui/core';
 import React, { useEffect } from 'react';
 import { config } from '../tamagui.config';
+import '@tamagui/core/reset.css'
 
 const value = {
   light: 't_light',

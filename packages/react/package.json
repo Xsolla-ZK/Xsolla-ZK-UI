@@ -30,7 +30,9 @@
   },
   "peerDependencies": {
     "@tamagui/config": "catalog:tamagui",
-    "@tamagui/core": "catalog:tamagui"
+    "@tamagui/core": "catalog:tamagui",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
   },
   "dependencies": {
     "@tamagui/animate-presence": "catalog:tamagui",
@@ -57,6 +59,8 @@
   },
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
     "@storybook/addon-essentials": "catalog:storybook",
     "@storybook/blocks": "catalog:storybook",
     "@storybook/experimental-addon-test": "catalog:storybook",

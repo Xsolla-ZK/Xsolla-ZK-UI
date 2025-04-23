@@ -13,6 +13,10 @@ export interface ComponentsConfig
 
 let currentComponentConfig = defaultComponentsConfig;
 
+type ExtendableDeepRecord = {
+  [key: string]: ExtendableDeepRecord | string | number | boolean | null | undefined;
+};
+
 type InitialConfig<T> = {
   [K in keyof T]?: T[K] extends object
     ? InitialConfig<T[K]>
@@ -21,25 +25,17 @@ type InitialConfig<T> = {
       : never;
 };
 
-type ReturnTypeConfig<T> = {
-  [K in keyof T]: T[K] extends object
-    ? ReturnTypeConfig<T[K]>
-    : K extends keyof ValidProps
-      ? ValidProps[K]
-      : never;
-};
-
-type MergeConfig<T extends InitialConfig<DefaultComponentsConfig>> = {
+type MergeConfig<T extends Partial<Record<keyof DefaultComponentsConfig, unknown>>> = {
   [K in keyof DefaultComponentsConfig]: DefaultComponentsConfig[K] & T[K];
 };
 
-export function initializeComponentsConfig<T extends InitialConfig<DefaultComponentsConfig>>(
-  userConfig: T,
-) {
+export function initializeComponentsConfig<
+  T extends Partial<Record<keyof DefaultComponentsConfig, unknown>>,
+>(userConfig: T) {
   const mergedConfig = deepMerge(defaultComponentsConfig, userConfig) as MergeConfig<T>;
   currentComponentConfig = mergedConfig;
 
-  return currentComponentConfig as MergeConfig<T>;
+  return mergedConfig;
 
   // const mergedConfig = (
   //   Object.entries(defaultComponentsConfig) as Array<
@@ -52,6 +48,14 @@ export function initializeComponentsConfig<T extends InitialConfig<DefaultCompon
   //   return acc;
   // }, {} as MergeConfig<T>);
 }
+
+type ReturnTypeConfig<T> = {
+  [K in keyof T]: T[K] extends object
+    ? ReturnTypeConfig<T[K]>
+    : K extends keyof ValidProps
+      ? ValidProps[K]
+      : never;
+};
 
 export function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>() {
   return currentComponentConfig as T;

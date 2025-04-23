@@ -6,13 +6,13 @@ export const radioGroupTheme = createComponentTheme(
   (tokens) => ({
     background: tokens['overlay.neutral'],
     borderColor: tokens['border.neutral-secondary'],
-    color: tokens['content.static-dark-primary'],
+    color: tokens['content.on-brand'],
   }),
   {
     active: (tokens) => ({
       background: tokens['background.brand-high'],
       borderColor: tokens['border.brand-primary'],
-      color: tokens['content.static-dark-primary'],
+      color: tokens['content.on-brand'],
     }),
   },
 );

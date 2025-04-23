@@ -8,7 +8,7 @@ import type { ButtonContextType, ButtonProps } from './button.types';
 import type { LoaderProps } from '../loader/loader.types';
 import type { TamaguiElement, ThemeName, Token } from '@tamagui/core';
 
-export const ButtonComponent = ButtonFrame.styleable<ButtonProps>(
+const ButtonComponent = ButtonFrame.styleable<ButtonProps>(
   ({ children, isLoading, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => {
     const iconsPosition = useIconsPosition(children, ButtonIcon);
 
