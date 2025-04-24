@@ -12,11 +12,9 @@ const Icon: FC = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props as Props;
   return (
     <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
-      <Path
-        fill={color}
-        d="m6 8 1.4 1.4L12 4.825 16.6 9.4 18 8l-6-6zM6 20l1.4 1.4 4.6-4.575 4.6 4.575L18 20l-6-6z"
-      />
-      <Path fill={color} d="m6 14 1.4 1.4 4.6-4.575 4.6 4.575L18 14l-6-6z" />
+      <Path fill={color} d="m18 8-6-6-6 6 1 1 5-3 5 3z" />
+      <Path fill={color} d="m12 8 6 6-1 1-5-3-5 3-1-1z" />
+      <Path fill={color} d="m12 14 6 6-1 1-5-3-5 3-1-1z" />
     </Svg>
   );
 };
