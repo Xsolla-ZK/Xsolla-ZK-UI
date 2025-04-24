@@ -12,12 +12,9 @@ const Icon: FC = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props as Props;
   return (
     <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
-      <Path
-        fill={color}
-        d="M8 22a.97.97 0 0 1-.713-.288A.97.97 0 0 1 7 21V5q0-.424.287-.713A.97.97 0 0 1 8 4h2V2h4v2h2q.424 0 .712.287Q17 4.576 17 5v16q0 .424-.288.712A.97.97 0 0 1 16 22zm1-10h6V6H9z"
-      />
+      <Path fill={color} d="M12 20a8 8 0 1 1 0-16 8 8 0 0 1 0 16" />
     </Svg>
   );
 };
 
-export const BatteryMid = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const Circle = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

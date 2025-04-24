@@ -14,10 +14,10 @@ const Icon: FC = (props) => {
     <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
       <Path
         fill={color}
-        d="M16.5 22v-3H14l3.5-5v3H20zM8 22a.97.97 0 0 1-.713-.288A.97.97 0 0 1 7 21V5q0-.424.287-.713A.97.97 0 0 1 8 4h2V2h4v2h2q.424 0 .712.287Q17 4.576 17 5v7q-.525 0-1.025.088a5.6 5.6 0 0 0-.975.262V6H9v14h2.35q.2.575.488 1.075.287.5.687.925z"
+        d="M8 21v-1l2-2H4q-.824 0-1.412-.587A1.93 1.93 0 0 1 2 16V5q0-.824.587-1.412A1.93 1.93 0 0 1 4 3h16q.824 0 1.413.587Q22 4.176 22 5v11q0 .824-.587 1.413A1.93 1.93 0 0 1 20 18h-6l2 2v1z"
       />
     </Svg>
   );
 };
 
-export const BatteryCharge = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const Desktop = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));

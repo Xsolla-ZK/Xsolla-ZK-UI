@@ -14,7 +14,9 @@ const Icon: FC = (props) => {
     <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
       <Path
         fill={color}
-        d="M7 23q-.824 0-1.412-.587A1.93 1.93 0 0 1 5 21V3q0-.824.588-1.412A1.93 1.93 0 0 1 7 1h10q.824 0 1.413.587Q19 2.176 19 3v18q0 .824-.587 1.413A1.93 1.93 0 0 1 17 23zm0-5h10V6H7z"
+        fillRule="evenodd"
+        d="M18 2H6v20h12zm-6 16 1.414 1.414L12 20.828l-1.414-1.414zm4-14H8v13h8z"
+        clipRule="evenodd"
       />
     </Svg>
   );
