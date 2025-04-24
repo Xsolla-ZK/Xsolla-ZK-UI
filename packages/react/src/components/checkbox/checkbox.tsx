@@ -102,9 +102,7 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxProps>(
   },
 );
 
-const Checkbox = withStaticProperties(CheckboxComponent, {
+export const Checkbox = withStaticProperties(CheckboxComponent, {
   Props: CheckboxContext.Provider,
   Indicator: CheckboxIndicator,
 });
-
-export default Checkbox;

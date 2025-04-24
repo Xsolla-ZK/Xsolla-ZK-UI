@@ -39,6 +39,7 @@ export const config = createTamagui({
       shadowColorPress: 'transparent',
       shadowColorFocus: 'transparent',
       placeholderColor: 'transparent',
+      spinColor: 'transparent',
     },
   },
   themes: themesCompose,

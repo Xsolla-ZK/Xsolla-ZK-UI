@@ -3,9 +3,9 @@ import { Text } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { useId, useState } from 'react';
-import Button from '../button/button';
+import { Button } from '../button/button';
 import { Chips } from './chips';
-import type { ChipProps, ChipsContextType, ChipsMultiValue, ChipsProps } from './chips.types';
+import type { ChipProps, ChipsMultiValue, ChipsProps } from './chips.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const sizes = Object.keys(getComponentsConfig().chips) as Array<ChipProps['size']>;
@@ -186,6 +186,25 @@ export const FlexWrap: Story = {
         </Chips.Item>
       ))}
     </Chips>
+  ),
+};
+
+export const ChipEvenly: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
+  args: {},
+  render: (args) => (
+    <Stack padding="$500">
+      <Chips {...args}>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Chips.Item key={'wrap' + index} value={'wrap' + index} fullWidth flex={1}>
+            <Chips.Item.Icon icon={Plus} />
+            <Chips.Item.Text>Chip {index}</Chips.Item.Text>
+          </Chips.Item>
+        ))}
+      </Chips>
+    </Stack>
   ),
 };
 

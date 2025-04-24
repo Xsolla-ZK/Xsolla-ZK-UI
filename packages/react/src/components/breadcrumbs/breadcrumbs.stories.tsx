@@ -1,8 +1,8 @@
 import { ChevronRight } from '@xsolla-zk-ui/icons';
 import { Bookmark } from '@xsolla-zk-ui/icons';
-import Badge from '../badge/badge';
-import RichIcon from '../rich-icon/rich-icon';
-import Breadcrumbs from './breadcrumbs';
+import { Badge } from '../badge/badge';
+import { RichIcon } from '../rich-icon/rich-icon';
+import { Breadcrumbs } from './breadcrumbs';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {

@@ -95,7 +95,7 @@ const preview: Preview = {
         iframeHeight: 'auto', // Автоматическая высота iframe
       },
       canvas: {
-        sourceState: 'shown', // Всегда показывать исходный код
+        // sourceState: 'shown', // Всегда показывать исходный код
       },
       source: {
         state: 'open', // Исходный код открыт по умолчанию

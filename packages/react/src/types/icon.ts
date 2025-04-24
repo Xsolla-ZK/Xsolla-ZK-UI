@@ -1,4 +1,4 @@
-import type useIconsPosition from '../hooks/use-icons-position';
+import type { useIconsPosition } from '../hooks/use-icons-position';
 import type { IconProps } from '@tamagui/helpers-icon';
 import type { ReactNode } from 'react';
 import type { NamedExoticComponent } from 'react';

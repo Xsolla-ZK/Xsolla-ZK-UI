@@ -1,7 +1,7 @@
-import Loader from './loader';
+import { Loader } from './loader';
 import type { Meta, StoryObj } from '@storybook/react';
 
-// const theme = loaderTheme('dark');
+const tones = ['brand', 'on-light', 'on-dark', 'on-brand'] as const;
 
 const meta = {
   component: Loader,
@@ -10,20 +10,20 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
-    children: { control: 'text' },
     mainColor: { control: 'color', type: 'string' },
     spinColor: { control: 'color', type: 'string' },
     size: { control: 'number', type: 'number' },
-    // variant: {
-    //   control: 'select',
-    //   options: Object.keys(theme.variants),
-    //   table: {
-    //     type: { summary: Object.keys(theme.variants).join('|') },
-    //   },
-    // },
     vertical: {
       control: 'boolean',
       type: 'boolean',
+    },
+    tone: {
+      control: 'select',
+      options: tones,
+      table: {
+        defaultValue: { summary: 'brand' },
+        type: { summary: tones.join('|') },
+      },
     },
   },
   args: {},
@@ -37,30 +37,12 @@ export const Default: Story = {
   args: {},
 };
 
-export const OnLight: Story = {
-  args: {
-    variant: 'onLight',
-  },
-};
-
-export const OnDark: Story = {
-  args: {
-    variant: 'onDark',
-  },
-};
-
-export const Brand: Story = {
-  args: {
-    variant: 'brand',
-  },
-};
-
-export const AllVariants: Story = {
+export const AllTones: Story = {
   args: {},
   render: (args) => (
     <div style={{ display: 'flex', gap: '12px' }}>
-      {(Object.keys(theme.variants) as Array<keyof typeof theme.variants>).map((variant) => (
-        <Loader key={variant} {...args} variant={variant} />
+      {tones.map((tone) => (
+        <Loader key={tone} tone={tone} {...args} />
       ))}
     </div>
   ),
@@ -68,13 +50,13 @@ export const AllVariants: Story = {
 
 export const WithChildren: Story = {
   args: {
-    children: 'Loading',
+    children: <Loader.Text>Loading</Loader.Text>,
   },
 };
 
 export const WithChildrenVertical: Story = {
   args: {
-    children: 'Loading',
+    children: <Loader.Text>Loading</Loader.Text>,
     vertical: true,
   },
 };

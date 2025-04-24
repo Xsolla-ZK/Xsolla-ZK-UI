@@ -1,8 +1,8 @@
 import { isValidElement } from 'react';
-import useChildrenArray from './use-children-array';
+import { useChildrenArray } from './use-children-array';
 import type { ReactNode } from 'react';
 
-function useIconsPosition<T extends ReactNode, C>(children: T, componentTypeCondition: C) {
+export function useIconsPosition<T extends ReactNode, C>(children: T, componentTypeCondition: C) {
   const childrenArray = useChildrenArray(children);
 
   const firstElement = childrenArray[0];
@@ -20,5 +20,3 @@ function useIconsPosition<T extends ReactNode, C>(children: T, componentTypeCond
     hasIconRight,
   };
 }
-
-export default useIconsPosition;

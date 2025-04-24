@@ -25,7 +25,7 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(
   },
 );
 
-const Label = LabelFrame.styleable<LabelProps>(
+export const Label = LabelFrame.styleable<LabelProps>(
   (props, forwardedRef: ForwardedRef<TamaguiElement>) => {
     const { htmlFor, id: idProp, ...labelProps } = props;
     const controlRef = useRef<HTMLElement | null>(null);
@@ -118,5 +118,3 @@ export const useLabelContext = (element?: HTMLElement | null) => {
 
   return context.id;
 };
-
-export default Label;

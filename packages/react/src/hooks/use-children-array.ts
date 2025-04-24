@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Children } from 'react';
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 
-function useChildrenArray<T extends ReactNode>(children: T) {
+export function useChildrenArray<T extends ReactNode>(children: T) {
   return useMemo(
     () =>
       Children.toArray(children).flatMap((child) =>
@@ -14,5 +14,3 @@ function useChildrenArray<T extends ReactNode>(children: T) {
     [children],
   );
 }
-
-export default useChildrenArray;

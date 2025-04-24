@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { getConfig, View } from '@tamagui/core';
-import Typography from './typography';
+import { Typography } from './typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { TypographyPresets } from '@xsolla-zk-ui/react/types/typography';
 

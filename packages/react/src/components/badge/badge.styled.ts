@@ -2,8 +2,8 @@ import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
-import Board from '../board/board';
-import type { BadgeContextType, BadgeSizes } from './badge.types';
+import { Board } from '../board/board';
+import type { BadgeContextType, BadgeSizes, BadgeVariantSpreadExtras } from './badge.types';
 import type { GetProps, Stack } from '@tamagui/core';
 
 export const BADGE_COMPONENT_NAME = 'Badge';
@@ -12,6 +12,8 @@ export const BadgeContext = createStyledContext<BadgeContextType>({
   size: '$500',
   disabled: false,
   tone: 'brand',
+  hasIconLeft: undefined,
+  hasIconRight: undefined,
 });
 
 export const BadgeFrame = styled(Board, {
@@ -22,7 +24,6 @@ export const BadgeFrame = styled(Board, {
   alignItems: 'center',
   flexDirection: 'row',
   justifyContent: 'center',
-  maxWidth: 'max-content',
   borderWidth: 0,
   overflow: 'hidden',
   backgroundColor: '$background',
@@ -30,6 +31,14 @@ export const BadgeFrame = styled(Board, {
 
   variants: {
     tone: {} as Record<BadgeContextType['tone'], GetProps<typeof Stack>>,
+    hasIconLeft: {
+      true: {},
+      false: {},
+    },
+    hasIconRight: {
+      true: {},
+      false: {},
+    },
     size: (val: BadgeSizes, _extras) => {
       const config = getComponentsConfig();
       const badge = config.badge[val];
@@ -42,6 +51,14 @@ export const BadgeFrame = styled(Board, {
       true: {
         pointerEvents: 'none',
         backgroundColor: '$overlay.neutral',
+      },
+    },
+    fullWidth: {
+      true: {
+        maxWidth: '100%',
+      },
+      false: {
+        maxWidth: 'max-content',
       },
     },
   } as const,
@@ -64,13 +81,20 @@ export const BadgeText = styled(Text, {
   whiteSpace: 'nowrap',
 
   variants: {
-    size: (val: BadgeSizes, _extras) => {
+    size: (val: BadgeSizes, extras) => {
+      const { props } = extras as BadgeVariantSpreadExtras<typeof Text>;
       const config = getComponentsConfig();
       const badge = config.badge[val];
 
       if (!badge) return {};
 
-      return getMappedStyles(badge.label);
+      const { paddingHorizontal, ...styles } = getMappedStyles(badge.label);
+
+      return {
+        ...styles,
+        paddingLeft: props.hasIconRight ? paddingHorizontal : undefined,
+        paddingRight: props.hasIconLeft ? paddingHorizontal : undefined,
+      };
     },
   } as const,
 });

@@ -1,5 +1,4 @@
 import { withStaticProperties } from '@tamagui/core';
-import { type ForwardedRef } from 'react';
 import { ClipPath, Defs, G, Image, Rect } from 'react-native-svg';
 import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import {
@@ -14,6 +13,7 @@ import {
 } from './rich-icon.styled';
 import type { RichIconProps } from './rich-icon.types';
 import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
 const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   (
@@ -63,11 +63,9 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   ),
 );
 
-const RichIcon = withStaticProperties(RichIconComponent, {
+export const RichIcon = withStaticProperties(RichIconComponent, {
   Props: RichIconContext.Provider,
   Text: RichIconText,
   Icon: RichIconIcon,
   // Pimple: RichIconPimple,
 });
-
-export default RichIcon;

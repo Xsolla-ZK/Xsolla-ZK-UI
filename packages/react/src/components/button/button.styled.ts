@@ -2,7 +2,7 @@ import { createStyledContext, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
-import Board from '../board/board';
+import { Board } from '../board/board';
 import { BUTTON_COMPONENT_NAME } from './button.constants';
 import type {
   ButtonContextType,
@@ -52,7 +52,6 @@ export const ButtonFrame = styled(Board, {
   alignItems: 'center',
   flexDirection: 'row',
   justifyContent: 'center',
-  maxWidth: 'max-content',
   borderWidth: 0,
   overflow: 'hidden',
   cursor: 'pointer',
@@ -86,6 +85,14 @@ export const ButtonFrame = styled(Board, {
     isLoading: {
       true: {
         pointerEvents: 'none',
+      },
+    },
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+      false: {
+        maxWidth: 'max-content',
       },
     },
   } as const,

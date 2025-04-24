@@ -2,7 +2,7 @@ import { styled, Text } from '@tamagui/core';
 import { getTypographyPreset } from '@xsolla-zk-ui/react/utils/get-typography-preset';
 import type { TypographyPresets } from '@xsolla-zk-ui/react/types/typography';
 
-const Typography = styled(Text, {
+export const Typography = styled(Text, {
   color: '$color',
   tag: 'span',
 
@@ -13,5 +13,3 @@ const Typography = styled(Text, {
     preset: 'text.250.default',
   },
 });
-
-export default Typography;

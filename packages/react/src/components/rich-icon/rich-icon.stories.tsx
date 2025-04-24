@@ -1,8 +1,8 @@
 import { Stack } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import Pimple from '../pimple/pimple';
-import RichIcon from './rich-icon';
+import { Pimple } from '../pimple/pimple';
+import { RichIcon } from './rich-icon';
 import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import type { RichIconProps } from './rich-icon.types';
 import type { Meta, StoryObj } from '@storybook/react';

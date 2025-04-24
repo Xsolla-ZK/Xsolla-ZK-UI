@@ -2,7 +2,7 @@ import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
-import Board from '../board/board';
+import { Board } from '../board/board';
 import { CHIP_COMPONENT_NAME, CHIPS_COMPONENT_NAME } from './chips.constants';
 import type {
   ChipContextType,
@@ -79,7 +79,6 @@ export const ChipFrame = styled(Board, {
   alignItems: 'center',
   flexDirection: 'row',
   justifyContent: 'center',
-  maxWidth: 'max-content',
   borderWidth: 0,
   overflow: 'hidden',
   cursor: 'pointer',
@@ -108,6 +107,14 @@ export const ChipFrame = styled(Board, {
       true: {
         pointerEvents: 'none',
         backgroundColor: '$overlay.neutral',
+      },
+    },
+    fullWidth: {
+      true: {
+        maxWidth: '100%',
+      },
+      false: {
+        maxWidth: 'max-content',
       },
     },
   } as const,

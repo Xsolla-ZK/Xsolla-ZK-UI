@@ -1,8 +1,8 @@
 import { Stack } from '@tamagui/core';
 import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import RichIcon from '../rich-icon/rich-icon';
-import Input from './input';
+import { RichIcon } from '../rich-icon/rich-icon';
+import { Input } from './input';
 import type { InputSizes } from './input.types';
 import type { Meta, StoryObj } from '@storybook/react';
 

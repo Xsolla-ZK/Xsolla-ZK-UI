@@ -1,8 +1,8 @@
 import { Stack, View } from '@tamagui/core';
 import { Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import Pimple from '../pimple/pimple';
-import FlexButton from './flex-button';
+import { Pimple } from '../pimple/pimple';
+import { FlexButton } from './flex-button';
 import type { FlexButtonProps } from './flex-button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -190,9 +190,7 @@ const RadioIndicator = (props: RadioGroupIndicatorProps) => {
 //   },
 // );
 
-const RadioGroup = withStaticProperties(RadioGroupComponent, {
+export const RadioGroup = withStaticProperties(RadioGroupComponent, {
   Item: RadioGroupItemComponent,
   Indicator: RadioIndicator,
 });
-
-export default RadioGroup;

@@ -1,7 +1,7 @@
 import { getTokenValue, withStaticProperties } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { useContext, type ForwardedRef } from 'react';
-import Loader from '../loader/loader';
+import { Loader } from '../loader/loader';
 import {
   FlexButtonContext,
   FlexButtonFrame,
@@ -54,10 +54,8 @@ function FlexButtonLoader() {
   );
 }
 
-const FlexButton = withStaticProperties(FlexButtonComponent, {
+export const FlexButton = withStaticProperties(FlexButtonComponent, {
   Props: FlexButtonContext.Provider,
   Text: FlexButtonText,
   Icon: FlexButtonIcon,
 });
-
-export default FlexButton;

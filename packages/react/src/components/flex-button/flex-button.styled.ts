@@ -25,7 +25,6 @@ export const FlexButtonFrame = styled(Stack, {
   flexDirection: 'row',
   justifyContent: 'center',
   alignSelf: 'stretch',
-  maxWidth: 'max-content',
   borderWidth: 0,
   paddingHorizontal: 0,
   cursor: 'pointer',
@@ -52,6 +51,14 @@ export const FlexButtonFrame = styled(Stack, {
       true: {
         pointerEvents: 'none',
         backgroundColor: 'transparent',
+      },
+    },
+    fullWidth: {
+      true: {
+        maxWidth: '100%',
+      },
+      false: {
+        maxWidth: 'max-content',
       },
     },
   } as const,

@@ -1,5 +1,5 @@
 import { View } from '@tamagui/core';
-import Separator from './separator';
+import { Separator } from './separator';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ColorTokens } from '@tamagui/core';
 

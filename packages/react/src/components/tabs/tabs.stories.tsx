@@ -1,10 +1,10 @@
 import { Stack } from '@tamagui/core';
 import { Minus, Plus } from '@xsolla-zk-ui/icons';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import Pimple from '../pimple/pimple';
+import { Pimple } from '../pimple/pimple';
 import { Separator } from '../separator/separator.styled';
-import Typography from '../typography/typography';
-import Tabs from './tabs';
+import { Typography } from '../typography/typography';
+import { Tabs } from './tabs';
 import type { TabsSizes } from './tabs.types';
 import type { Meta, StoryObj } from '@storybook/react';
 

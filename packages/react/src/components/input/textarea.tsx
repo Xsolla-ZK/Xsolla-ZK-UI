@@ -1,7 +1,7 @@
 import { styled } from '@tamagui/web';
-import Input from './input';
+import { Input } from './input';
 
-const TextArea = styled(Input, {
+export const TextArea = styled(Input, {
   name: 'TextArea',
   tag: 'textarea',
 
@@ -10,5 +10,3 @@ const TextArea = styled(Input, {
   // @ts-ignore
   whiteSpace: 'pre-wrap',
 });
-
-export default TextArea;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { isWeb, Stack, styled } from '@tamagui/core';
 import type { ColorTokens, GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/core';
 

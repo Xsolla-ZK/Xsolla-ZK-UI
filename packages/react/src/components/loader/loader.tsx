@@ -2,25 +2,46 @@ import { useTheme, withStaticProperties } from '@tamagui/core';
 import { useContext } from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import { LoaderContext, LoaderFrame, LoaderSpin, LoaderText } from './loader.styled';
+import type { LoaderProps } from './loader.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
+import type { ColorValue } from 'react-native';
 
-const LoaderComponent = LoaderFrame.styleable(
-  ({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
-    <LoaderFrame {...props} ref={ref}>
-      <LoaderSpinner />
-      {children}
-    </LoaderFrame>
+const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
+  (
+    {
+      children,
+      size = 24,
+      tone = 'brand',
+      mainColor = '$color',
+      spinColor = '$spinColor',
+      ...props
+    },
+    ref: ForwardedRef<TamaguiElement>,
+  ) => (
+    <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
+      <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
+        <LoaderSpinner />
+        {children}
+      </LoaderFrame>
+    </LoaderContext.Provider>
   ),
+  { disableTheme: true },
 );
 
-export function LoaderSpinner() {
+function LoaderSpinner() {
   const ctx = useContext(LoaderContext);
   const theme = useTheme();
 
   return (
     <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
-      <Circle cx={14} cy={14} r={12} strokeWidth={4} stroke={theme[ctx.mainColor]?.get()} />
+      <Circle
+        cx={14}
+        cy={14}
+        r={12}
+        strokeWidth={4}
+        stroke={(theme[ctx.mainColor as keyof typeof theme]?.get() ?? ctx.mainColor) as ColorValue}
+      />
       <LoaderSpin
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -30,7 +51,7 @@ export function LoaderSpinner() {
         cx={14}
         cy={14}
         r={12}
-        stroke={theme[ctx.spinColor]?.get()}
+        stroke={(theme[ctx.spinColor as keyof typeof theme]?.get() ?? ctx.spinColor) as ColorValue}
       >
         <animate
           attributeName="stroke-dasharray"
@@ -49,9 +70,7 @@ export function LoaderSpinner() {
   );
 }
 
-const Loader = withStaticProperties(LoaderComponent, {
+export const Loader = withStaticProperties(LoaderComponent, {
   Props: LoaderContext.Provider,
   Text: LoaderText,
 });
-
-export default Loader;

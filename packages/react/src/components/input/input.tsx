@@ -1,5 +1,5 @@
 import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
-import useChildrenArray from '@xsolla-zk-ui/react/hooks/use-children-array';
+import { useChildrenArray } from '@xsolla-zk-ui/react/hooks/use-children-array';
 import { isValidElement, useMemo, useState } from 'react';
 import {
   InputEndSlot,
@@ -57,10 +57,8 @@ const InputComponent = InputFrame.styleable<InputProps>(
   },
 );
 
-const Input = withStaticProperties(InputComponent, {
+export const Input = withStaticProperties(InputComponent, {
   Props: InputContext.Provider,
   StartAdornment: InputStartSlot,
   EndAdornment: InputEndSlot,
 });
-
-export default Input;

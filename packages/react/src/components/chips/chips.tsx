@@ -7,18 +7,20 @@ import {
 } from '@tamagui/core';
 import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
-import useIconsPosition from '@xsolla-zk-ui/react/hooks/use-icons-position';
-import { useEffect, useMemo, useState, type ForwardedRef } from 'react';
+import { useIconsPosition } from '@xsolla-zk-ui/react/hooks/use-icons-position';
+import { useEffect, useMemo, useState } from 'react';
 import { ChipsFrame, ChipFrame, ChipIcon, ChipText, ChipContext } from './chips.styled';
-import { type ChipProps, type ChipsProps } from './chips.types';
 import type {
+  ChipProps,
   ChipsContextType,
   ChipsMultiSelectProps,
   ChipsMultiValue,
+  ChipsProps,
   ChipsSingleSelectProps,
   ChipsValue,
 } from './chips.types';
 import type { TamaguiElement, ThemeName } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
 const { Provider: ChipsContextProvider, useStyledContext: useChipsContextProvider } =
   createStyledContext<ChipsContextType>({
