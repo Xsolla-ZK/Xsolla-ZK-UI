@@ -15,10 +15,8 @@ const PimpleComponent = PimpleFrame.styleable<PimpleProps>(
   },
 );
 
-const Pimple = withStaticProperties(PimpleComponent, {
+export const Pimple = withStaticProperties(PimpleComponent, {
   Props: PimpleContext.Provider,
   Text: PimpleText,
   Icon: PimpleIcon,
 });
-
-export default Pimple;

@@ -70,12 +70,10 @@ const TabBarComponent = TabBarFrame.styleable<TabBarProps>(
   ),
 );
 
-const TabBar = withStaticProperties(TabBarComponent, {
+export const TabBar = withStaticProperties(TabBarComponent, {
   Title: TabBarItemTitle,
   Icon: TabBarItemIcon,
 });
-
-export default TabBar;
 
 // export function Tabbar() {
 //   const currentRouteIndex = 0;

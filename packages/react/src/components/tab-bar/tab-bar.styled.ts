@@ -3,7 +3,7 @@ import { styled } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
-import Board from '../board/board';
+import { Board } from '../board/board';
 import {
   TAB_BAR_COMPONENT_NAME,
   TAB_BAR_ITEM_COMPONENT_NAME,

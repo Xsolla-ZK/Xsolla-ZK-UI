@@ -11,6 +11,7 @@ catalog:
 
 catalogs:
   tamagui:
+    "@tamagui/adapt": 1.125.33
     "@tamagui/animations-css": 1.125.33
     "@tamagui/animations-moti": 1.125.33
     "@tamagui/animations-react-native": 1.125.33
@@ -28,6 +29,7 @@ catalogs:
     "@tamagui/vite-plugin": 1.125.33
     "@tamagui/helpers-icon": 1.125.33
     "@tamagui/popover": 1.125.33
+    "@tamagui/portal": 1.125.33
     "@tamagui/scroll-view": 1.125.33
     "@tamagui/image": 1.125.33
     "@tamagui/sheet": 1.125.33

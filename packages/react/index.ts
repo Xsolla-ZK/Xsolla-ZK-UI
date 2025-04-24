@@ -28,14 +28,14 @@ const componentsTheme = {
 };
 
 export { componentsTheme };
-export { default as Button } from './src/components/button/button';
-export { default as RadioGroup } from './src/components/radio-group/radio-group';
-export { default as Label } from './src/components/label/label';
-export { default as RichIcon } from './src/components/rich-icon/rich-icon';
-export { default as SemanticText } from './src/components/semantic-text/semantic-text';
-export { default as Typography } from './src/components/typography/typography';
+export { Button } from './src/components/button/button';
+export { RadioGroup } from './src/components/radio-group/radio-group';
+export { Label } from './src/components/label/label';
+export { RichIcon } from './src/components/rich-icon/rich-icon';
+export { SemanticText } from './src/components/semantic-text/semantic-text';
+export { Typography } from './src/components/typography/typography';
 export * from './src/utils/components-config';
 export { getTypographyPreset } from './src/utils/get-typography-preset';
-export { default as useChildrenArray } from './src/hooks/use-children-array';
-export { default as useIconsPosition } from './src/hooks/use-icons-position';
+export { useChildrenArray } from './src/hooks/use-children-array';
+export { useIconsPosition } from './src/hooks/use-icons-position';
 export { createConfig } from './src/utils/create-config';

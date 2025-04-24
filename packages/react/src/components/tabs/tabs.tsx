@@ -364,10 +364,8 @@ const Tab = withStaticProperties(TabsTab, {
   Icon: TabsTabIcon,
 });
 
-const Tabs = withStaticProperties(TabsComponent, {
+export const Tabs = withStaticProperties(TabsComponent, {
   Tab,
   List: TabsList,
   Content: TabsContent,
 });
-
-export default Tabs;

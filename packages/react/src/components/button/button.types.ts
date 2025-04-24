@@ -23,4 +23,5 @@ type ButtonSharedProps = GetProps<typeof ButtonFrame>;
 
 export interface ButtonProps extends ButtonSharedProps {
   tone?: ButtonTone;
+  type?: HTMLButtonElement['type'];
 }

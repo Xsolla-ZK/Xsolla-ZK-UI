@@ -3,10 +3,8 @@ import type { SemanticTextProps } from './semantic-text.types';
 import type { TamaguiTextElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
-const SemanticText = SemanticTextRoot.styleable(
+export const SemanticText = SemanticTextRoot.styleable(
   (props: SemanticTextProps, ref: ForwardedRef<TamaguiTextElement>) => (
     <SemanticTextRoot {...props} ref={ref} />
   ),
 );
-
-export default SemanticText;

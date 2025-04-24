@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { styled, Text, useComposedRefs, useEvent } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
-import useChildrenArray from '@xsolla-zk-ui/react/hooks/use-children-array';
+import { useChildrenArray } from '@xsolla-zk-ui/react/hooks/use-children-array';
 import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
 import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
 import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';

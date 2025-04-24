@@ -8,7 +8,7 @@ import {
 } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
 import { ScrollView } from '@tamagui/scroll-view';
-import useChildrenArray from '@xsolla-zk-ui/react/hooks/use-children-array';
+import { useChildrenArray } from '@xsolla-zk-ui/react/hooks/use-children-array';
 import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
 import {
   InputEndSlot,
@@ -20,7 +20,6 @@ import {
 import type { InputNewProps } from './input-new.types';
 import type { ScrollViewProps } from '@tamagui/scroll-view';
 import type { ForwardedRef, ReactElement, ReactNode } from 'react';
-import type { LayoutRectangle } from 'react-native';
 
 type CSSVariables = Record<string, string>;
 

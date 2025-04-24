@@ -18,6 +18,7 @@ const config: StorybookConfig = {
     '../src/components/checkbox/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/radio-group/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/tabs/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/loader/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',

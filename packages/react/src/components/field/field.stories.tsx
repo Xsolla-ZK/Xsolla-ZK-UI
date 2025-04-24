@@ -1,5 +1,5 @@
-import Input from '../input/input';
-import Field from './field';
+import { Input } from '../input/input';
+import { Field } from './field';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {

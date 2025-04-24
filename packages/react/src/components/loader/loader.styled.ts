@@ -33,20 +33,17 @@ import type { ThemeTokens } from '@tamagui/core';
 
 export const LoaderContext = createStyledContext<LoaderContextType>({
   size: 24,
-  mainColor: '$border.neutral-secondary',
-  spinColor: '$border.brand-primary',
+  mainColor: '$color',
+  spinColor: '$spinColor',
 });
 
 export const LoaderFrame = styled(Stack, {
   name: LOADER_COMPONENT_NAME,
-  context: LoaderContext,
   display: 'inline-flex',
   flexDirection: 'row',
   alignItems: 'center',
 
   variants: {
-    mainColor: (_val: LoaderContextType['mainColor']) => ({}),
-    spinColor: (_val: LoaderContextType['spinColor']) => ({}),
     size: {
       ':number': (val) => ({
         gap: val * 0.25,
@@ -60,7 +57,6 @@ export const LoaderFrame = styled(Stack, {
   } as const,
   defaultVariants: {
     vertical: false,
-    size: 24,
   },
 });
 
@@ -70,7 +66,7 @@ export const LoaderText = styled(Text, {
   color: '$content.neutral-primary',
 
   variants: {
-    spinColor: (val: ThemeTokens) => ({
+    mainColor: (val: ThemeTokens) => ({
       color: val,
     }),
     size: {
@@ -78,7 +74,7 @@ export const LoaderText = styled(Text, {
         fontSize: val * 0.75,
       }),
     },
-  },
+  } as const,
 });
 
 export const LoaderSpin = styled(Circle, {
