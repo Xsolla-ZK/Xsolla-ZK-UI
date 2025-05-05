@@ -1,12 +1,19 @@
-import { styled } from '@tamagui/web';
+import { withStaticProperties } from '@tamagui/core';
 import { Input } from './input';
+import { InputContext, InputEndSlot, InputStartSlot } from './input.styled';
+import type { InputProps } from './input.types';
+import type { ForwardedRef } from 'react';
 
-export const TextArea = styled(Input, {
-  name: 'TextArea',
-  tag: 'textarea',
+const TextAreaBase = Input.styleable<InputProps>(
+  ({ rows, ...props }, ref: ForwardedRef<HTMLInputElement>) => (
+    <Input {...props} rows={rows} tag="textarea" whiteSpace="pre-wrap" ref={ref} />
+  ),
+);
 
-  height: 'auto',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  whiteSpace: 'pre-wrap',
+const TextArea = withStaticProperties(TextAreaBase, {
+  Props: InputContext.Provider,
+  StartSlot: InputStartSlot,
+  EndSlot: InputEndSlot,
 });
+
+export { TextArea };

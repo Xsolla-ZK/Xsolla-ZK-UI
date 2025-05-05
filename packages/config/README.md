@@ -1,4 +1,4 @@
-# @xsolla-zk-ui/config
+# @xsolla-zk/config
 
 Пакет содержит конфигурацию Tamagui для приложений Xsolla ZK UI, включая темы, токены, анимации и другие настройки стилей. Поддерживает различные платформы (web, iOS, Android) и предоставляет типизированный доступ к дизайн-системе.
 
@@ -14,7 +14,7 @@
 
 2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
 ```
-@xsolla-zk-ui:registry=https://npm.pkg.github.com
+@xsolla-zk:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
@@ -22,13 +22,13 @@
 
 ```bash
 # Используя npm
-npm install @xsolla-zk-ui/config
+npm install @xsolla-zk/config
 
 # Используя pnpm
-pnpm install @xsolla-zk-ui/config
+pnpm install @xsolla-zk/config
 
 # Используя yarn
-yarn add @xsolla-zk-ui/config
+yarn add @xsolla-zk/config
 ```
 
 ## Использование
@@ -37,10 +37,10 @@ yarn add @xsolla-zk-ui/config
 
 ```tsx
 import { createTamagui } from '@tamagui/core';
-import { webConfig } from '@xsolla-zk-ui/config/web';
+import { webConfig } from '@xsolla-zk/config/web';
 // или для мобильных платформ:
-// import { iosConfig } from '@xsolla-zk-ui/config/ios';
-// import { androidConfig } from '@xsolla-zk-ui/config/android';
+// import { iosConfig } from '@xsolla-zk/config/ios';
+// import { androidConfig } from '@xsolla-zk/config/android';
 
 export const config = createTamagui(webConfig);
 
@@ -91,7 +91,7 @@ declare module '@tamagui/core' {
 
 ```tsx
 import { styled, Text } from '@tamagui/core';
-import { getTypographyPreset } from '@xsolla-zk-ui/config';
+import { getTypographyPreset } from '@xsolla-zk/config';
 
 const TextComponent = styled(
   Text,
@@ -119,7 +119,7 @@ const TextComponent = styled(
 
 ## Генерация токенов
 
-Токены генерируются автоматически из дизайн-системы с помощью пакета `@xsolla-zk-ui/tokens`:
+Токены генерируются автоматически из дизайн-системы с помощью пакета `@xsolla-zk/tokens`:
 
 ```bash
 # Генерация новых токенов

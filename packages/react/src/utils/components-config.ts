@@ -1,4 +1,4 @@
-import { components, deepMerge } from '@xsolla-zk-ui/config';
+import { components, deepMerge } from '@xsolla-zk/config';
 import type { ValidProps } from './valid-props';
 
 export const defaultComponentsConfig = components;

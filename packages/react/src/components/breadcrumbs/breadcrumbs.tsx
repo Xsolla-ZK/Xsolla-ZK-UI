@@ -1,5 +1,5 @@
 import { withStaticProperties } from '@tamagui/core';
-import { useChildrenArray } from '@xsolla-zk-ui/react/hooks/use-children-array';
+import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { Fragment, cloneElement, isValidElement } from 'react';
 import { BreadcrumbsFrame, BreadcrumbsItem } from './breadcrumbs.styled';
 import type { BreadcrumbsItemProps, BreadcrumbsProps } from './breadcrumbs.types';

@@ -1,13 +1,13 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { Path as _Path, Svg as _Svg } from 'react-native-svg';
 import { RICH_ICON_COMPONENT_NAME } from './rich-icon.constants';
 import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
 import type { GetProps } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
-import type { XORIconProps } from '@xsolla-zk-ui/react/types/icon';
+import type { XORIconProps } from '@xsolla-zk/react/types/icon';
 
 export const RichIconContext = createStyledContext<RichIconContextType>({
   size: '$500',

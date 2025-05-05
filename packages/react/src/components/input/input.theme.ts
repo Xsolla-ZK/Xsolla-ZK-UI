@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { INPUT_COMPONENT_NAME } from './input.constants';
 
 export const inputTheme = createComponentTheme(
@@ -19,6 +19,12 @@ export const inputTheme = createComponentTheme(
       borderColorFocus: tokens['border.negative-primary'],
       placeholderColor: tokens['content.neutral-tertiary'],
       color: tokens['content.neutral-primary'],
+    }),
+    readonly: (tokens) => ({
+      background: tokens['overlay.neutral'],
+      borderColor: tokens['border.neutral-tertiary'],
+      placeholderColor: tokens['content.neutral-tertiary'],
+      color: tokens['content.neutral-tertiary'],
     }),
   },
 );

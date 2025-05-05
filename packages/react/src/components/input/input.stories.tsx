@@ -1,9 +1,11 @@
 import { Stack } from '@tamagui/core';
-import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { BankCard, Cross, DataTable } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { useCallback, useRef, useState } from 'react';
+import { Loader } from '../loader/loader';
 import { RichIcon } from '../rich-icon/rich-icon';
-import { Input } from './input';
-import type { InputSizes } from './input.types';
+import { Input } from './';
+import type { InputProps, InputSizes } from './input.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const sizes = Object.keys(getComponentsConfig().input) as InputSizes[];
@@ -56,11 +58,17 @@ export const AllSizes: Story = {
   ),
 };
 
-// export const Readonly: Story = {
-//   args: {
-//     readOnly: true,
-//   },
-// };
+export const Readonly: Story = {
+  args: {
+    readOnly: true,
+    value: 'Some text',
+  },
+};
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
 
 export const WithError: Story = {
   args: {
@@ -68,103 +76,115 @@ export const WithError: Story = {
   },
 };
 
-export const WithStartAdornment: Story = {
+export const WithStartSlot: Story = {
   args: {},
   render: (args) => (
     <Input {...args}>
-      <Input.StartAdornment>
+      <Input.StartSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={DataTable} />
         </RichIcon>
-      </Input.StartAdornment>
+      </Input.StartSlot>
     </Input>
   ),
 };
 
-export const WithEndAdornment: Story = {
+export const WithEndSlot: Story = {
   args: {},
   render: (args) => (
     <Input {...args}>
-      <Input.EndAdornment>
+      <Input.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={BankCard} />
         </RichIcon>
-      </Input.EndAdornment>
+      </Input.EndSlot>
     </Input>
   ),
 };
 
-export const WithAllAdornments: Story = {
+export const WithAllSlots: Story = {
   args: {},
   render: (args) => (
     <Input {...args}>
-      <Input.StartAdornment>
+      <Input.StartSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={DataTable} />
         </RichIcon>
-      </Input.StartAdornment>
-      <Input.EndAdornment>
+      </Input.StartSlot>
+      <Input.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={BankCard} />
         </RichIcon>
-      </Input.EndAdornment>
+      </Input.EndSlot>
     </Input>
   ),
 };
 
-export const WithRichAdornment: Story = {
+function useDebounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  return useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    },
+    [fn, delay],
+  );
+}
+
+function WithRichSlotComponent(props: InputProps) {
+  const [value, setValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(false);
+
+  const debouncedRequest = useDebounce(() => {
+    if (!isLoadingRef.current) {
+      isLoadingRef.current = true;
+      setIsLoading(true);
+      setTimeout(() => {
+        isLoadingRef.current = false;
+        setIsLoading(false);
+      }, 2000);
+    }
+  }, 300);
+
+  return (
+    <Input
+      {...props}
+      value={value}
+      onChange={(e) => {
+        setValue((e.target as HTMLInputElement).value);
+        debouncedRequest();
+      }}
+    >
+      <Input.EndSlot>
+        {({ focused }) => (
+          <>
+            {focused && isLoading && <Loader />}
+            {value && (
+              <RichIcon shape="squircle" size="$200" pressable onPress={() => setValue('')}>
+                <RichIcon.Icon icon={Cross} />
+              </RichIcon>
+            )}
+          </>
+        )}
+      </Input.EndSlot>
+    </Input>
+  );
+}
+
+export const WithRichSlot: Story = {
   args: {},
-  render: (args) => (
-    <Input {...args}>
-      <Input.EndAdornment>
-        <RichIcon shape="squircle" size="$200">
-          <RichIcon.Icon icon={Plus} />
-        </RichIcon>
-        <RichIcon shape="squircle" size="$200">
-          <RichIcon.Icon icon={Cross} />
-        </RichIcon>
-      </Input.EndAdornment>
-    </Input>
-  ),
+  render: (args) => <WithRichSlotComponent {...args} />,
 };
 
-// export const Textarea: Story = {
-//   args: {
-//     multiline: true,
-//   },
-// };
-
-// export const TextareaMaxRows: Story = {
-//   args: {
-//     placeholder: 'Max Rows 5',
-//     multiline: true,
-//     maxRows: 5,
-//   },
-// };
-// export const TextareaMinRows: Story = {
-//   args: {
-//     placeholder: 'Min Rows 3',
-//     multiline: true,
-//     minRows: 3,
-//   },
-// };
-
-// export const TextareaRowsFixedWithEndAdornment: Story = {
-//   args: {
-//     placeholder: 'Min Rows 3',
-//     endAdornment: (
-//       <XZKUIRichIcon size={200} bg={({ theme }) => theme.overlay.neutral}>
-//         <XZKUISvgIcon icon={SvgBankCard} />
-//       </XZKUIRichIcon>
-//     ),
-//     multiline: true,
-//     rows: 3,
-//   },
-// };
-
-/*
-export const ExperimentalFeatureStory: Story = {
-  //👇 For this particular story, remove the inherited `stable` tag and apply the `experimental` tag
-  tags: ['!stable', 'experimental'],
+export const Textarea: Story = {
+  args: {
+    tag: 'textarea',
+  },
 };
-*/

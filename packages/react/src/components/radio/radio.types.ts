@@ -1,5 +1,5 @@
 import type { radioThemeSizes } from './radio.theme';
-import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUICustomColor } from '@xsolla-zk/react/types/theme';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
 type Sizes = (typeof radioThemeSizes)[number];

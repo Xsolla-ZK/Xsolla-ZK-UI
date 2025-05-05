@@ -1,8 +1,8 @@
 import type { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
 import type { FlexButtonFrame } from './flex-button.styled';
 import type { GetProps } from '@tamagui/core';
-import type { GetComponentTone } from '@xsolla-zk-ui/react/types/theme';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { GetComponentTone } from '@xsolla-zk/react/types/theme';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
 export type FlexButtonTone = GetComponentTone<typeof FLEX_BUTTON_COMPONENT_NAME>;
 

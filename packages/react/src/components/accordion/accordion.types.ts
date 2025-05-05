@@ -1,4 +1,4 @@
-import type { XZKUICustomColor } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUICustomColor } from '@xsolla-zk/react/types/theme';
 import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 
 type XZKUIAccordionState = {

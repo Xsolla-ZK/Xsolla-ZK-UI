@@ -1,5 +1,5 @@
-import { ChevronRight } from '@xsolla-zk-ui/icons';
-import { Bookmark } from '@xsolla-zk-ui/icons';
+import { ChevronRight } from '@xsolla-zk/icons';
+import { Bookmark } from '@xsolla-zk/icons';
 import { Badge } from '../badge/badge';
 import { RichIcon } from '../rich-icon/rich-icon';
 import { Breadcrumbs } from './breadcrumbs';

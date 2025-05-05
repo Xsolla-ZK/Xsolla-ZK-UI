@@ -1,7 +1,7 @@
 import { Stack } from '@tamagui/core';
 import { Text } from '@tamagui/core';
-import { Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { useId, useState } from 'react';
 import { Button } from '../button/button';
 import { Chips } from './chips';

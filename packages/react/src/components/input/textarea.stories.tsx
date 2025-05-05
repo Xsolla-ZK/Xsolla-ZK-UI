@@ -1,16 +1,15 @@
 import { Stack } from '@tamagui/core';
-import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import RichIcon from '../rich-icon/rich-icon';
-import { InputNew } from './input-new';
-import { TextArea } from './textarea';
-import type { InputNewSizes } from './input-new.types';
+import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { RichIcon } from '../rich-icon/rich-icon';
+import { TextArea } from './';
+import type { InputSizes } from './input.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const sizes = Object.keys(getComponentsConfig().input) as InputNewSizes[];
+const sizes = Object.keys(getComponentsConfig().input) as InputSizes[];
 
 const meta = {
-  component: InputNew,
+  component: TextArea,
   parameters: {
     layout: 'centered',
   },
@@ -29,14 +28,14 @@ const meta = {
     placeholder: 'Placeholder',
   },
   play: async ({ canvasElement }) => {},
-} as Meta<typeof InputNew>;
+} as Meta<typeof TextArea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  render: (args) => <InputNew {...args} />,
+  render: (args) => <TextArea {...args} />,
 };
 
 export const AllSizes: Story = {
@@ -51,7 +50,7 @@ export const AllSizes: Story = {
   render: (args) => (
     <Stack gap={12}>
       {sizes.map((size) => (
-        <InputNew key={size} {...args} size={size} />
+        <TextArea key={size} {...args} size={size} />
       ))}
     </Stack>
   ),
@@ -60,6 +59,13 @@ export const AllSizes: Story = {
 export const Readonly: Story = {
   args: {
     readOnly: true,
+    value: 'Some text',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
   },
 };
 
@@ -69,101 +75,91 @@ export const WithError: Story = {
   },
 };
 
-export const WithStartAdornment: Story = {
+export const WithStartSlot: Story = {
   args: {},
   render: (args) => (
-    <InputNew {...args}>
-      <InputNew.StartAdornment>
+    <TextArea {...args}>
+      <TextArea.StartSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={DataTable} />
         </RichIcon>
-      </InputNew.StartAdornment>
-    </InputNew>
+      </TextArea.StartSlot>
+    </TextArea>
   ),
 };
 
-export const WithEndAdornment: Story = {
+export const WithEndSlot: Story = {
   args: {},
   render: (args) => (
-    <InputNew {...args}>
-      <InputNew.EndAdornment>
+    <TextArea {...args}>
+      <TextArea.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={BankCard} />
         </RichIcon>
-      </InputNew.EndAdornment>
-    </InputNew>
+      </TextArea.EndSlot>
+    </TextArea>
   ),
 };
 
-export const WithAllAdornments: Story = {
+export const WithAllSlots: Story = {
   args: {},
   render: (args) => (
-    <InputNew {...args}>
-      <InputNew.StartAdornment>
+    <TextArea {...args}>
+      <TextArea.StartSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={DataTable} />
         </RichIcon>
-      </InputNew.StartAdornment>
-      <InputNew.EndAdornment>
+      </TextArea.StartSlot>
+      <TextArea.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={BankCard} />
         </RichIcon>
-      </InputNew.EndAdornment>
-    </InputNew>
+      </TextArea.EndSlot>
+    </TextArea>
   ),
 };
 
-export const WithRichAdornment: Story = {
+export const WithRichSlot: Story = {
   args: {},
   render: (args) => (
-    <InputNew {...args}>
-      <InputNew.EndAdornment>
+    <TextArea {...args}>
+      <TextArea.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={Plus} />
         </RichIcon>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={Cross} />
         </RichIcon>
-      </InputNew.EndAdornment>
-    </InputNew>
+      </TextArea.EndSlot>
+    </TextArea>
   ),
-};
-
-export const Textarea: Story = {
-  args: {
-    rows: 3,
-  },
-  render: (args) => <TextArea {...args} />,
 };
 
 export const TextareaMaxRows: Story = {
   args: {
-    tag: 'textarea',
     placeholder: 'Max Rows 5',
     maxRows: 5,
   },
 };
 export const TextareaMinRows: Story = {
   args: {
-    tag: 'textarea',
     placeholder: 'Min Rows 3',
     minRows: 3,
   },
 };
 
-export const TextareaRowsFixedWithEndAdornment: Story = {
+export const TextareaRowsFixedWithEndSlot: Story = {
   args: {
-    placeholder: 'Min Rows 3',
-    tag: 'textarea',
+    placeholder: 'Rows 3',
     rows: 3,
   },
   render: (args) => (
-    <InputNew {...args}>
-      <InputNew.EndAdornment>
+    <TextArea {...args}>
+      <TextArea.EndSlot>
         <RichIcon shape="squircle" size="$200">
           <RichIcon.Icon icon={BankCard} />
         </RichIcon>
-      </InputNew.EndAdornment>
-    </InputNew>
+      </TextArea.EndSlot>
+    </TextArea>
   ),
 };

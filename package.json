@@ -1,5 +1,5 @@
 {
-  "name": "@xsolla-zk-ui/monorepo",
+  "name": "@xsolla-zk/monorepo",
   "version": "0.0.1",
   "private": true,
   "author": {
@@ -9,22 +9,22 @@
   },
   "scripts": {
     "publish:all": "pnpm workspaces foreach --topological-dev run publish --no-git-checks",
-    "publish:tokens": "pnpm --filter @xsolla-zk-ui/tokens publish --no-git-checks",
-    "publish:react": "pnpm --filter @xsolla-zk-ui/react publish --no-git-checks",
+    "publish:tokens": "pnpm --filter @xsolla-zk/tokens publish --no-git-checks",
+    "publish:react": "pnpm --filter @xsolla-zk/react publish --no-git-checks",
     "build": "pnpm workspaces foreach --topological-dev run build",
-    "build:storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook:build -o ../../storybook-build/react",
-    "build:react": "pnpm --filter @xsolla-zk-ui/react build",
-    "generate:config": "pnpm --filter @xsolla-zk-ui/config generate",
-    "generate:icons": "pnpm --filter @xsolla-zk-ui/icons generate",
+    "build:storybook:react": "pnpm --filter @xsolla-zk/react storybook:build -o ../../storybook-build/react",
+    "build:react": "pnpm --filter @xsolla-zk/react build",
+    "generate:config": "pnpm --filter @xsolla-zk/config generate",
+    "generate:icons": "pnpm --filter @xsolla-zk/icons generate",
     "generate:tokens": "node ./scripts/root-exec.mjs tokens generate",
     "hygen": "cross-env HYGEN_TMPLS=tools/hygen npx hygen",
     "hygen:react": "pnpm hygen react new --name",
-    "lint:react": "pnpm --filter @xsolla-zk-ui/react lint",
+    "lint:react": "pnpm --filter @xsolla-zk/react lint",
     "preinstall": "npx only-allow pnpm",
     "prepare": "git config --local core.hooksPath .githooks",
     "publish": "pnpm workspaces foreach --topological-dev run publish",
     "release": "pnpm build && pnpm publish",
-    "storybook:react": "pnpm --filter @xsolla-zk-ui/react storybook"
+    "storybook:react": "pnpm --filter @xsolla-zk/react storybook"
   },
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",

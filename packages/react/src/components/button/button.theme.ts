@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { BUTTON_COMPONENT_NAME } from './button.constants';
 
 export const buttonTheme = createComponentTheme(

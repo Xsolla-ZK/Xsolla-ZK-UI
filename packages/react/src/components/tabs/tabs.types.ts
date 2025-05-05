@@ -6,7 +6,7 @@ import type {
   VariantSpreadExtras,
 } from '@tamagui/core';
 import type { RovingFocusGroup } from '@tamagui/roving-focus';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ComponentPropsWithoutRef, RefObject } from 'react';
 import type { LayoutRectangle } from 'react-native';
 

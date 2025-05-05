@@ -1,6 +1,6 @@
 import { expect, within } from '@storybook/test';
 import { Stack } from '@tamagui/core';
-import * as Svg from '@xsolla-zk-ui/icons';
+import * as Svg from '@xsolla-zk/icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentType } from 'react';
 

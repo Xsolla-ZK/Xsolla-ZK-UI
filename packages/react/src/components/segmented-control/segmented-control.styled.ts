@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { buttonClasses, Button as MuiButton } from '@mui/base';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
+import shouldForwardProp from '@xsolla-zk/react/utils/should-forward-prop';
 import type { XZKUISegmentedControlBaseProps } from './segmented-control.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUIStyledProps } from '@xsolla-zk/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUISegmentedControlBaseProps>;
 

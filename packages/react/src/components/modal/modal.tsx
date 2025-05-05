@@ -15,7 +15,7 @@
 //   XZKUIModalHeaderProps,
 //   XZKUIModalProps,
 // } from './modal.types';
-// import type { XZKUISlotComponent } from '@xsolla-zk-ui/react/types/components';
+// import type { XZKUISlotComponent } from '@xsolla-zk/react/types/components';
 // import type { ElementType, MouseEventHandler, PropsWithChildren, ReactElement } from 'react';
 
 import { withStaticProperties } from '@tamagui/core';

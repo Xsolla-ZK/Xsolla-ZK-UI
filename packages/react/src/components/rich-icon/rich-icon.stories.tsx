@@ -1,6 +1,6 @@
 import { Stack } from '@tamagui/core';
-import { Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Pimple } from '../pimple/pimple';
 import { RichIcon } from './rich-icon';
 import { RICH_ICON_SHAPES } from './rich-icon.constants';
@@ -17,7 +17,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  // tags: ['!autodocs'],
+  tags: ['stable'],
   argTypes: {
     shape: {
       table: {

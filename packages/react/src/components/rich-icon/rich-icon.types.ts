@@ -1,7 +1,7 @@
 import type { RICH_ICON_SHAPES } from './rich-icon.constants';
 import type { RichIconFrame, RichIconShapePath } from './rich-icon.styled';
 import type { ColorTokens, GetProps, GetThemeValueForKey, UnionableString } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { OpaqueColorValue } from 'react-native';
 
 export type RichIconShape = keyof typeof RICH_ICON_SHAPES;

@@ -1,5 +1,5 @@
 {
-  "name": "@xsolla-zk-ui/config",
+  "name": "@xsolla-zk/config",
   "version": "0.0.1",
   "private": true,
   "sideEffects": false,
@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "catalog:tamagui",
-    "@xsolla-zk-ui/tokens": "workspace:*",
+    "@xsolla-zk/tokens": "workspace:*",
     "typescript": "catalog:"
   }
 }

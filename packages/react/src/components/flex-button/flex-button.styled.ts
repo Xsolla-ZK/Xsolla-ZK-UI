@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
 import type { FlexButtonContextType, FlexButtonSizes, FlexButtonTone } from './flex-button.types';
 import type { GetProps } from '@tamagui/core';

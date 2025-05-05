@@ -1,7 +1,7 @@
 import type { LOADER_COMPONENT_NAME } from './loader.constants';
 import type { LoaderFrame } from './loader.styled';
 import type { GetProps, GetThemeValueForKey } from '@tamagui/core';
-import type { GetComponentTone } from '@xsolla-zk-ui/react/types/theme';
+import type { GetComponentTone } from '@xsolla-zk/react/types/theme';
 import type { OpaqueColorValue } from 'react-native';
 
 export type LoaderTone = GetComponentTone<typeof LOADER_COMPONENT_NAME>;

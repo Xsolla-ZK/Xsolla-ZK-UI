@@ -19,6 +19,7 @@ const config: StorybookConfig = {
     '../src/components/radio-group/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/tabs/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/loader/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/nav-bar/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
@@ -53,8 +54,8 @@ const config: StorybookConfig = {
         ...config.resolve,
         alias: {
           ...config.resolve?.alias,
-          '@xsolla-zk-ui/config/web': path.resolve(__dirname, '../../config/src/web.ts'),
-          '@xsolla-zk-ui/icons': path.resolve(__dirname, '../../icons/src'),
+          '@xsolla-zk/config/web': path.resolve(__dirname, '../../config/src/web.ts'),
+          '@xsolla-zk/icons': path.resolve(__dirname, '../../icons/src'),
           '@tamagui/stacks': path.resolve(__dirname, '../src/components/stacks')
         },
       },

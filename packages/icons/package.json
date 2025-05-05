@@ -1,5 +1,5 @@
 {
-  "name": "@xsolla-zk-ui/icons",
+  "name": "@xsolla-zk/icons",
   "version": "0.0.1",
   "private": true,
   "sideEffects": false,
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "catalog:tamagui",
-    "@xsolla-zk-ui/icons-generator": "workspace:*",
+    "@xsolla-zk/icons-generator": "workspace:*",
     "react-native-svg": "catalog:",
     "typescript": "catalog:"
   }

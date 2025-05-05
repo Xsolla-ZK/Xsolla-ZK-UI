@@ -82,7 +82,7 @@ export default tseslint.config(
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
-      'max-lines': ['error', 300],
+      'max-lines': ['error', 350],
       'no-console': ['warn', { allow: ['error', 'warn', 'info', 'table'] }],
       'no-extra-boolean-cast': ['error', { enforceForLogicalOperands: true }],
       'no-param-reassign': [

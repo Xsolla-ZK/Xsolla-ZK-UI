@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { FlexButton } from '../flex-button/flex-button';
 import type { BreadcrumbsContextType } from './breadcrumbs.types';
 import type { BreadcrumbsSizes } from './breadcrumbs.types';

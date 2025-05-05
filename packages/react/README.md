@@ -1,1 +1,1 @@
-# @xsolla-zk-ui/react
+# @xsolla-zk/react

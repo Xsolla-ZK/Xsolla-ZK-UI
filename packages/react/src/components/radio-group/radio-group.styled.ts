@@ -1,6 +1,6 @@
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
 import type {
   RadioGroupContextType,

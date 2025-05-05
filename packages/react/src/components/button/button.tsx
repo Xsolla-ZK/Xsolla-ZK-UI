@@ -1,6 +1,6 @@
 import { getTokenValue, withStaticProperties } from '@tamagui/core';
-import { useIconsPosition } from '@xsolla-zk-ui/react/hooks/use-icons-position';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { useIconsPosition } from '@xsolla-zk/react/hooks/use-icons-position';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { useContext, type ForwardedRef } from 'react';
 import { Loader } from '../loader/loader';
 import { ButtonContext, ButtonFrame, ButtonIcon, ButtonText } from './button.styled';

@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
 
 export const radioGroupTheme = createComponentTheme(

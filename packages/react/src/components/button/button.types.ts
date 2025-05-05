@@ -1,9 +1,9 @@
 import type { BUTTON_COMPONENT_NAME } from './button.constants';
 import type { ButtonFrame } from './button.styled';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
-import type { IconsPosition } from '@xsolla-zk-ui/react/types/icon';
-import type { GetComponentTone } from '@xsolla-zk-ui/react/types/theme';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { IconsPosition } from '@xsolla-zk/react/types/icon';
+import type { GetComponentTone } from '@xsolla-zk/react/types/theme';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
 export type ButtonVariants = 'primary' | 'secondary' | 'tertiary';
 export type ButtonSizes = keyof ComponentsConfig['button'];

@@ -1,5 +1,5 @@
 import { styled, Text } from '@tamagui/core';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { getComponentsConfig } from '../../utils/components-config';
 import type { SemanticTextVariants } from './semantic-text.types';
 

@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
 
 export const checkboxTheme = createComponentTheme(

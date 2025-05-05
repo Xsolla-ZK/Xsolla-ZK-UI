@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
 
 export const flexButtonTheme = createComponentTheme(

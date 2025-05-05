@@ -9,7 +9,7 @@ function camelize(str) {
 //   const exportEntries = filePaths
 //     .map(({ path: filePath, _originalPath }) => {
 //       const basename = path.basename(filePath, path.extname(filePath));
-//       return `${JSON.stringify(basename)}: () => import('@xsolla-zk-ui/react/components/svg-icons/${basename}'),`;
+//       return `${JSON.stringify(basename)}: () => import('@xsolla-zk/react/components/svg-icons/${basename}'),`;
 //     })
 //     .join('\n');
 //   return `export const svgIconsNames = {${exportEntries}}`;

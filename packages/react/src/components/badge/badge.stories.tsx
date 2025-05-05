@@ -1,7 +1,7 @@
 import { expect, within } from '@storybook/test';
 import { View } from '@tamagui/core';
-import { ChevronRight, Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { ChevronRight, Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Badge } from './badge';
 import type { BadgeProps } from './badge.types';
 import type { Meta, StoryObj } from '@storybook/react';

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { TabBarFrame } from './tab-bar.styled';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ReactNode } from 'react';
 
 export type TabBarSize = keyof ComponentsConfig['tabBar'];

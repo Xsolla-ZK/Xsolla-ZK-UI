@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { BADGE_COMPONENT_NAME } from './badge.styled';
 
 export const badgeTheme = createComponentTheme(

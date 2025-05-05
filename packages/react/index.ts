@@ -4,7 +4,6 @@ import { checkboxTheme } from './src/components/checkbox/checkbox.theme';
 import { chipsTheme } from './src/components/chips/chips.theme';
 import { flexButtonTheme } from './src/components/flex-button/flex-button.theme';
 import { inputTheme } from './src/components/input/input.theme';
-import { inputNewTheme } from './src/components/input-new/input-new.theme';
 import { loaderTheme } from './src/components/loader/loader.theme';
 import { pimpleTheme } from './src/components/pimple/pimple.theme';
 import { radioGroupTheme } from './src/components/radio-group/radio-group.theme';
@@ -17,7 +16,6 @@ const componentsTheme = {
   badge: badgeTheme,
   pimple: pimpleTheme,
   input: inputTheme,
-  inputNew: inputNewTheme,
   chips: chipsTheme,
   flexButton: flexButtonTheme,
   checkbox: checkboxTheme,
