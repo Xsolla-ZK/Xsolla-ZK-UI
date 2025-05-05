@@ -9,7 +9,7 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { createContext, memo, useContext } from 'react';
 
 import Svg, { Circle } from 'react-native-svg';

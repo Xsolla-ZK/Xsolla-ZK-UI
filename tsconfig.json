@@ -16,12 +16,12 @@
     "isolatedModules": true,
     "incremental": true,
     "paths": {
-      "@xsolla-zk-ui/react": ["./packages/react/src"],
-      "@xsolla-zk-ui/react/*": ["./packages/react/src/*"],
-      "@xsolla-zk-ui/vue": ["./packages/vue/src"],
-      "@xsolla-zk-ui/vue/*": ["./packages/vue/src/*"],
-      "@xsolla-zk-ui/icons": ["./packages/icons/src"],
-      "@xsolla-zk-ui/icons/*": ["./packages/icons/src/*"],
+      "@xsolla-zk/react": ["./packages/react/src"],
+      "@xsolla-zk/react/*": ["./packages/react/src/*"],
+      "@xsolla-zk/vue": ["./packages/vue/src"],
+      "@xsolla-zk/vue/*": ["./packages/vue/src/*"],
+      "@xsolla-zk/icons": ["./packages/icons/src"],
+      "@xsolla-zk/icons/*": ["./packages/icons/src/*"],
     }
   },
   "exclude": ["**/.*", "**/build", "**/dist", "**/node_modules"]

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
-import shouldForwardProp from '@xsolla-zk-ui/react/utils/should-forward-prop';
+import pickCustomColor from '@xsolla-zk/react/utils/color/pick-custom-color';
+import shouldForwardProp from '@xsolla-zk/react/utils/should-forward-prop';
 import xzkuiRadioClasses from './radio.classes';
 import type { XZKUIRadioBaseProps } from './radio.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUIStyledProps } from '@xsolla-zk/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUIRadioBaseProps>;
 

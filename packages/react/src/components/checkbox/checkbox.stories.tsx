@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Stack } from '@tamagui/core';
 import { Text } from '@tamagui/core';
-import { Checkmark, Star } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Checkmark, Star } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { useId, useState } from 'react';
 import { Button } from '../button/button';
 import { Label } from '../label/label';

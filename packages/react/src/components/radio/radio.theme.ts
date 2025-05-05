@@ -1,9 +1,9 @@
-import size from '@xsolla-zk-ui/react/tokens/common/size';
-import spacing from '@xsolla-zk-ui/react/tokens/common/spacing';
-import stroke from '@xsolla-zk-ui/react/tokens/common/stroke';
-import typography from '@xsolla-zk-ui/react/tokens/common/typography';
-import callbackObjectByKeys from '@xsolla-zk-ui/react/utils/objects/callback-object-by-keys';
-import type { XZKUIThemeModeUnion } from '@xsolla-zk-ui/react/types/theme';
+import size from '@xsolla-zk/react/tokens/common/size';
+import spacing from '@xsolla-zk/react/tokens/common/spacing';
+import stroke from '@xsolla-zk/react/tokens/common/stroke';
+import typography from '@xsolla-zk/react/tokens/common/typography';
+import callbackObjectByKeys from '@xsolla-zk/react/utils/objects/callback-object-by-keys';
+import type { XZKUIThemeModeUnion } from '@xsolla-zk/react/types/theme';
 
 export const radioThemeSizes = [400, 500, 600] as const;
 

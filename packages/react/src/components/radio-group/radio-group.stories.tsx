@@ -1,5 +1,5 @@
 import { Stack } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Label } from '../label/label';
 import { RadioGroup } from './radio-group';
 import type { RadioGroupItemProps, RadioGroupSizes } from './radio-group.types';

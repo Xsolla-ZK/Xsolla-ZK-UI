@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { styled, Text, useComposedRefs, useEvent } from '@tamagui/core';
+import { styled, Text, useComposedRefs } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
-import { useChildrenArray } from '@xsolla-zk-ui/react/hooks/use-children-array';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  TextInput,
-  type NativeSyntheticEvent,
-  type TextInputChangeEventData,
-  type TextInputContentSizeChangeEventData,
-} from 'react-native';
-import { INPUT_NEW_COMPONENT_NAME } from './input-new.constants';
-import { InputEndSlot, InputNewContext, InputNewFrame, InputStartSlot } from './input-new.styled';
-import type { InputNewProps, InputNewSizes } from './input-new.types';
+import { TextInput } from 'react-native';
+import { INPUT_COMPONENT_NAME } from './input.constants';
+import { InputEndSlot, InputContext, InputFrame, InputStartSlot } from './input.styled';
+import type { InputProps, InputSizes } from './input.types';
 import type { ForwardedRef, KeyboardEvent, ReactElement } from 'react';
+import type {
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  TextInputContentSizeChangeEventData,
+} from 'react-native';
 
-const StyledInputNew = styled(
+const StyledInput = styled(
   TextInput,
   {
-    name: INPUT_NEW_COMPONENT_NAME,
-    context: InputNewContext,
+    name: INPUT_COMPONENT_NAME,
+    context: InputContext,
 
     alignSelf: 'stretch',
     borderWidth: 0,
@@ -31,7 +31,7 @@ const StyledInputNew = styled(
     flex: 1,
 
     variants: {
-      size: (val: InputNewSizes, _extras) => {
+      size: (val: InputSizes, _extras) => {
         const config = getComponentsConfig();
         const componentProps = config.input[val];
 
@@ -57,10 +57,10 @@ const StyledInputNew = styled(
   },
 );
 
-export const InputNew = StyledInputNew.styleable<InputNewProps>(
-  (props: InputNewProps, forwardedRef: ForwardedRef<TextInput>) => {
+export const Input = StyledInput.styleable<InputProps>(
+  (props: InputProps, forwardedRef: ForwardedRef<TextInput>) => {
     const {
-      // свойства, которые мы обрабатываем отдельно
+      // properties we handle separately
       size,
       disabled,
       id,
@@ -91,12 +91,10 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
     const childrenArray = useChildrenArray(children);
     const [focused, setFocused] = useState(false);
     const [textInputHeight, setTextInputHeight] = useState<number | undefined>(undefined);
-    const [lineHeight, setLineHeight] = useState(0);
+    const lineHeight = useRef(0);
+    const isInteractingWithFrame = useRef(false);
 
-    const handleFocus = useEvent(() => setFocused(true));
-    const handleBlur = useEvent(() => setFocused(false));
-
-    const { startAdornment, endAdornment } = useMemo(() => {
+    const { startSlot, endSlot } = useMemo(() => {
       let start: ReactElement | null = null;
       let end: ReactElement | null = null;
 
@@ -111,8 +109,8 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
       });
 
       return {
-        startAdornment: start,
-        endAdornment: end,
+        startSlot: start,
+        endSlot: end,
       };
     }, [childrenArray]);
 
@@ -127,7 +125,7 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
       });
     }, [id, disabled]);
 
-    // Конфигурируем нативные свойства
+    // Configure native properties
     let _returnKeyType = returnKeyType;
     let _enterKeyHint = enterKeyHint;
     if (enterKeyHint === 'go') {
@@ -137,7 +135,7 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
 
     let _inputMode = inputMode;
 
-    // Настройка inputMode на основе типа
+    // Configure inputMode based on type
     if (type === 'email') {
       _inputMode = 'email';
     } else if (type === 'tel') {
@@ -154,15 +152,15 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
       _inputMode = 'text';
     }
 
-    // Отключение клавиатуры если указан определенный inputMode
+    // Disable keyboard if specified inputMode
     let showSoftInputOnFocus = true;
     if (inputMode === 'none') {
       showSoftInputOnFocus = false;
     }
 
-    const multiline = tag === 'textarea' || Boolean(rows || minRows || maxRows);
+    const multiline = Boolean(rows || minRows || maxRows);
 
-    // Обработчик изменения размера содержимого
+    // Content size change handler
     const handleContentSizeChange = (
       e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
     ) => {
@@ -170,32 +168,31 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
 
       const { contentSize } = e.nativeEvent;
 
-      // Если это первое измерение, получаем высоту строки
-      if (lineHeight === 0) {
-        // Используем более точную оценку высоты одной строки
-        const estimatedLineHeight = contentSize.height;
-        setLineHeight(estimatedLineHeight);
+      // If this is the first measurement, get the line height
+      if (lineHeight.current === 0) {
+        // Use a more accurate estimate of the line height
+        lineHeight.current = contentSize.height;
       }
 
-      // Определяем минимальную и максимальную высоту с дополнительным отступом для переноса строк
-      const paddingForLineBreaks = 4; // Небольшой отступ для улучшения видимости новых строк
-      const minHeight = minRows * (lineHeight || contentSize.height);
-      const maxHeight = maxRows * (lineHeight || contentSize.height);
+      // Determine min and max height with additional padding for line breaks
+      const paddingForLineBreaks = 4; // Small padding for better visibility of new lines
+      const minHeight = minRows * (lineHeight.current || contentSize.height);
+      const maxHeight = maxRows * (lineHeight.current || contentSize.height);
 
-      // Применяем ограничения к новой высоте и добавляем отступ для переноса строк
+      // Apply constraints to new height and add padding for line breaks
       const heightWithPadding = contentSize.height + paddingForLineBreaks;
       const newHeight = Math.max(minHeight, Math.min(heightWithPadding, maxHeight));
 
       setTextInputHeight(newHeight);
 
-      // Вызываем оригинальный обработчик если он существует
+      // Call original handler if it exists
       onContentSizeChange?.(e);
     };
 
-    // Определяем должен ли автоматически изменяться размер
+    // Determine if should auto resize
     const isAutoResizeEnabled = multiline && !props.height;
 
-    // Формируем финальные пропсы для нативного компонента
+    // Form final props for native component
     const finalProps = {
       ...rest,
       id,
@@ -211,10 +208,10 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
       placeholderTextColor,
       selectionColor,
       onChange: (_e: NativeSyntheticEvent<TextInputChangeEventData>) => {},
-      // Применяем обработчик только если автоматическое изменение размера включено
+      // Apply handler only if auto resize is enabled
       onContentSizeChange: isAutoResizeEnabled ? handleContentSizeChange : onContentSizeChange,
       height: isAutoResizeEnabled ? textInputHeight : props.height,
-      // Добавляем стили для лучшей поддержки многострочного ввода
+      // Add styles for better multiline support
       style: multiline
         ? {
             ...(rest.style as object),
@@ -270,30 +267,43 @@ export const InputNew = StyledInputNew.styleable<InputNewProps>(
     }
 
     return (
-      <InputNewFrame
+      <InputFrame
         size={size}
-        focused={focused}
+        focused={!finalProps.readOnly ? focused : false}
         disabled={disabled}
         theme={error ? 'error' : undefined}
+        onPressIn={() => {
+          isInteractingWithFrame.current = true;
+        }}
+        onPressOut={() => {
+          isInteractingWithFrame.current = false;
+        }}
         onPress={() => {
+          if (finalProps.readOnly) return;
           ref.current?.focus();
         }}
       >
-        {startAdornment}
-        <StyledInputNew
-          onFocus={(e) => {
-            handleFocus();
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            handleBlur();
-            onBlur?.(e);
-          }}
+        {startSlot}
+        <StyledInput
+          {...(!finalProps.readOnly
+            ? {
+                onFocus: (e) => {
+                  setFocused(true);
+                  onFocus?.(e);
+                },
+                onBlur: (e) => {
+                  if (!isInteractingWithFrame.current) {
+                    setFocused(false);
+                    onBlur?.(e);
+                  }
+                },
+              }
+            : {})}
           {...finalProps}
           ref={composedRefs}
         />
-        {endAdornment}
-      </InputNewFrame>
+        {endSlot}
+      </InputFrame>
     );
   },
   { disableTheme: true },

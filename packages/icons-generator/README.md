@@ -1,4 +1,4 @@
-# @xsolla-zk-ui/icons-generator
+# @xsolla-zk/icons-generator
 
 CLI пакет для генерации React Native компонентов иконок из SVG файлов. Пакет преобразует SVG файлы в React Native компоненты, оптимизированные для использования в приложениях Xsolla ZK UI.
 
@@ -14,7 +14,7 @@ CLI пакет для генерации React Native компонентов и�
 
 2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
 ```
-@xsolla-zk-ui:registry=https://npm.pkg.github.com
+@xsolla-zk:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
@@ -22,13 +22,13 @@ CLI пакет для генерации React Native компонентов и�
 
 ```bash
 # Используя npm
-npm install @xsolla-zk-ui/icons-generator
+npm install @xsolla-zk/icons-generator
 
 # Используя pnpm
-pnpm install @xsolla-zk-ui/icons-generator
+pnpm install @xsolla-zk/icons-generator
 
 # Используя yarn
-yarn add @xsolla-zk-ui/icons-generator
+yarn add @xsolla-zk/icons-generator
 ```
 
 ## Использование

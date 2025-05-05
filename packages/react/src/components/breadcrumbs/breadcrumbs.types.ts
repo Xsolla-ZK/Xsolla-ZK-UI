@@ -1,6 +1,6 @@
 import type { BreadcrumbsFrame } from './breadcrumbs.styled';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ReactNode } from 'react';
 
 export type BreadcrumbsSizes = keyof ComponentsConfig['breadcrumbs'];

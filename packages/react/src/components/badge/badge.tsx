@@ -1,5 +1,5 @@
 import { withStaticProperties } from '@tamagui/core';
-import { useIconsPosition } from '@xsolla-zk-ui/react/hooks/use-icons-position';
+import { useIconsPosition } from '@xsolla-zk/react/hooks/use-icons-position';
 import { BadgeContext, BadgeFrame, BadgeIcon, BadgeText } from './badge.styled';
 import type { BadgeProps } from './badge.types';
 import type { TamaguiElement, ThemeName } from '@tamagui/core';

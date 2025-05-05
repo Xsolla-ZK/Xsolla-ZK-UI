@@ -1,6 +1,6 @@
 import { expect, within } from '@storybook/test';
 import { View } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { SemanticText } from './semantic-text';
 import type { SemanticTextProps } from './semantic-text.types';
 import type { Meta, StoryObj } from '@storybook/react';

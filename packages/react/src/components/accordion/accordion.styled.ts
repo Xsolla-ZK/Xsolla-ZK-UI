@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { animated } from '@react-spring/web';
-import pickCustomColor from '@xsolla-zk-ui/react/utils/color/pick-custom-color';
+import pickCustomColor from '@xsolla-zk/react/utils/color/pick-custom-color';
 import type { XZKUIBoardBaseProps } from '../board/board.types';
-import type { XZKUIStyledProps } from '@xsolla-zk-ui/react/types/theme';
+import type { XZKUIStyledProps } from '@xsolla-zk/react/types/theme';
 
 type StyledProps = XZKUIStyledProps<XZKUIBoardBaseProps>;
 

@@ -1,4 +1,4 @@
-// import type { Optional } from '@xsolla-zk-ui/react/types/helpers';
+// import type { Optional } from '@xsolla-zk/react/types/helpers';
 // import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 
 // type Variants = 'curtain' | 'popup';

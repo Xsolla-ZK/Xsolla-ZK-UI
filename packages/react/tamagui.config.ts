@@ -1,6 +1,6 @@
 import { createTamagui } from '@tamagui/core';
-import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk-ui/config';
-import { webConfig } from '@xsolla-zk-ui/config/web';
+import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk/config';
+import { webConfig } from '@xsolla-zk/config/web';
 import { componentsTheme } from '.';
 
 const baseTheme = createTheme((tokens) => ({

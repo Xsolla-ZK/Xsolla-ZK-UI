@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { LOADER_COMPONENT_NAME } from './loader.constants';
 
 export const loaderTheme = createComponentTheme(

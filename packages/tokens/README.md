@@ -1,4 +1,4 @@
-# @xsolla-zk-ui/tokens
+# @xsolla-zk/tokens
 
 Пакет для генерации дизайн-токенов из Figma Tokens Studio в различные форматы.
 
@@ -14,7 +14,7 @@
 
 2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
 ```
-@xsolla-zk-ui:registry=https://npm.pkg.github.com
+@xsolla-zk:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
@@ -22,13 +22,13 @@
 
 ```bash
 # Используя npm
-npm install @xsolla-zk-ui/tokens
+npm install @xsolla-zk/tokens
 
 # Используя pnpm
-pnpm install @xsolla-zk-ui/tokens
+pnpm install @xsolla-zk/tokens
 
 # Используя yarn
-yarn add @xsolla-zk-ui/tokens
+yarn add @xsolla-zk/tokens
 ```
 
 ## Использование

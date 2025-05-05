@@ -2,7 +2,7 @@
 import { getConfig, View } from '@tamagui/core';
 import { Typography } from './typography';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { TypographyPresets } from '@xsolla-zk-ui/react/types/typography';
+import type { TypographyPresets } from '@xsolla-zk/react/types/typography';
 
 const allPresets = Object.entries(getConfig().fonts).reduce((acc, [fontKey, fontValue]) => {
   const sizes = Object.keys(fontValue.size);

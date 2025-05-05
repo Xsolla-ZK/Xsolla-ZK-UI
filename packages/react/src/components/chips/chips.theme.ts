@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { CHIP_COMPONENT_NAME } from './chips.constants';
 
 export const chipsTheme = createComponentTheme(

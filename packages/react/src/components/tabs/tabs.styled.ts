@@ -1,8 +1,8 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk-ui/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk-ui/react/utils/get-mapped-styles';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import {
   TABS_COMPONENT_NAME,
   TABS_LIST_COMPONENT_NAME,

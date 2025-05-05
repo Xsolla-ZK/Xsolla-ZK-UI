@@ -1,1 +1,1 @@
-# @xsolla-zk-ui/vue
+# @xsolla-zk/vue

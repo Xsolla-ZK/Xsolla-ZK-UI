@@ -15,7 +15,7 @@ const rootDir = process.cwd();
 
 dotenv.config({ path: resolve(rootDir, '.env.local') });
 
-const child = spawn('pnpm', ['--filter', `@xsolla-zk-ui/${packageName}`, scriptName, ...args], {
+const child = spawn('pnpm', ['--filter', `@xsolla-zk/${packageName}`, scriptName, ...args], {
   env: {
     ...process.env,
     XSOLLA_ZK_UI_TOKENS_ROOT_DIR: rootDir,

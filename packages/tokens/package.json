@@ -1,5 +1,5 @@
 {
-  "name": "@xsolla-zk-ui/tokens",
+  "name": "@xsolla-zk/tokens",
   "version": "0.0.1",
   "private": true,
   "type": "module",

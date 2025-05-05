@@ -1,6 +1,6 @@
 import { View } from '@tamagui/core';
-import { Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Pimple } from './pimple';
 import type { PimpleProps } from './pimple.types';
 import type { Meta, StoryObj } from '@storybook/react';

@@ -1,5 +1,5 @@
 {
-  "name": "@xsolla-zk-ui/react",
+  "name": "@xsolla-zk/react",
   "private": true,
   "version": "0.0.1",
   "sideEffects": false,
@@ -52,8 +52,8 @@
     "@tamagui/sheet": "catalog:tamagui",
     "@tamagui/use-controllable-state": "catalog:tamagui",
     "@tamagui/use-direction": "catalog:tamagui",
-    "@xsolla-zk-ui/config": "workspace:*",
-    "@xsolla-zk-ui/icons": "workspace:*",
+    "@xsolla-zk/config": "workspace:*",
+    "@xsolla-zk/icons": "workspace:*",
     "react-native-reanimated": "^3.16.7",
     "react-native-svg": "catalog:"
   },

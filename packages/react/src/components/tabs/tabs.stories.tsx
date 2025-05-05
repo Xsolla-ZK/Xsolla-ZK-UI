@@ -1,6 +1,6 @@
 import { Stack } from '@tamagui/core';
-import { Minus, Plus } from '@xsolla-zk-ui/icons';
-import { getComponentsConfig } from '@xsolla-zk-ui/react/utils/components-config';
+import { Minus, Plus } from '@xsolla-zk/icons';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Pimple } from '../pimple/pimple';
 import { Separator } from '../separator/separator.styled';
 import { Typography } from '../typography/typography';

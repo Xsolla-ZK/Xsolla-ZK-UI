@@ -1,4 +1,4 @@
-# @xsolla-zk-ui/icons
+# @xsolla-zk/icons
 
 Пакет содержит набор оптимизированных SVG иконок, преобразованных в React Native компоненты для использования в приложениях Xsolla ZK UI. Иконки поддерживают изменение размера и цвета, а также интеграцию с темами Tamagui.
 
@@ -14,7 +14,7 @@
 
 2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
 ```
-@xsolla-zk-ui:registry=https://npm.pkg.github.com
+@xsolla-zk:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
@@ -22,13 +22,13 @@
 
 ```bash
 # Используя npm
-npm install @xsolla-zk-ui/icons
+npm install @xsolla-zk/icons
 
 # Используя pnpm
-pnpm install @xsolla-zk-ui/icons
+pnpm install @xsolla-zk/icons
 
 # Используя yarn
-yarn add @xsolla-zk-ui/icons
+yarn add @xsolla-zk/icons
 ```
 
 ## Использование
@@ -36,7 +36,7 @@ yarn add @xsolla-zk-ui/icons
 ### Базовое использование
 
 ```tsx
-import { ChevronUp, Search, Home } from '@xsolla-zk-ui/icons';
+import { ChevronUp, Search, Home } from '@xsolla-zk/icons';
 
 function MyComponent() {
   return (
@@ -62,8 +62,8 @@ function MyComponent() {
 Иконки полностью совместимы с компонентами Tamagui и могут использоваться в любых компонентах UI библиотеки:
 
 ```tsx
-import { Button } from '@xsolla-zk-ui/react';
-import { Search } from '@xsolla-zk-ui/icons';
+import { Button } from '@xsolla-zk/react';
+import { Search } from '@xsolla-zk/icons';
 
 function SearchButton() {
   return (
@@ -102,7 +102,7 @@ function SearchButton() {
 
 ## Генерация иконок
 
-Иконки генерируются из SVG файлов с помощью CLI пакета `@xsolla-zk-ui/icons-generator`. Исходные SVG файлы находятся в директории `raw-icons`.
+Иконки генерируются из SVG файлов с помощью CLI пакета `@xsolla-zk/icons-generator`. Исходные SVG файлы находятся в директории `raw-icons`.
 
 Для обновления или добавления новых иконок:
 

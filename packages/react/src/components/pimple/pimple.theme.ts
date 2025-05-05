@@ -1,4 +1,4 @@
-import { createComponentTheme } from '@xsolla-zk-ui/config';
+import { createComponentTheme } from '@xsolla-zk/config';
 import { PIMPLE_COMPONENT_NAME } from './pimple.styled';
 
 export const pimpleTheme = createComponentTheme(PIMPLE_COMPONENT_NAME, (tokens) => ({
