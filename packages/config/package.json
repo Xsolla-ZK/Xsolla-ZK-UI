@@ -65,7 +65,7 @@
     "@tamagui/animations-moti": "catalog:tamagui",
     "@tamagui/animations-react-native": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
-    "react-native-reanimated": "^3.16.7"
+    "react-native-reanimated": "^3.17.5"
   },
   "devDependencies": {
     "@tamagui/build": "catalog:tamagui",

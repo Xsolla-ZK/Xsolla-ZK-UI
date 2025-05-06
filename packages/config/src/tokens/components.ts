@@ -220,7 +220,7 @@ export const cell = {
         borderRadius: '$radius.550',
       },
       content: {
-        minHeight: '$size.600',
+        minHeight: '$size.500',
       },
     },
   },

@@ -130,7 +130,7 @@ export const TabsTabContent = styled(Stack, {
   name: TABS_TAB_COMPONENT_NAME,
   padding: 4,
   borderRadius: '$300',
-  animation: 'state',
+  animation: 'colorChange',
   animateOnly: ['background'],
 
   display: 'flex',
@@ -175,7 +175,7 @@ export const TabsListIndicator = styled(Stack, {
   context: TabsContext,
   position: 'absolute',
   backgroundColor: '$background',
-  animation: 'state',
+  animation: 'tabSwitch',
   animateOnly: ['width', 'transform'],
 
   variants: {

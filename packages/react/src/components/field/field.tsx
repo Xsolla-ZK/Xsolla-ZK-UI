@@ -1,88 +1,163 @@
-import { createElement, forwardRef, useId } from 'react';
-import XZKUIInput from '../input/input';
-import { useXZKUIFieldContext, XZKUIFieldContext } from './field.context';
-import Styled from './field.styled';
-import type {
-  XZKUIFieldContextCallback,
-  XZKUIFieldControlProps,
-  XZKUIFieldControlPropsDefault,
-  XZKUIFieldControlPropsWithCallback,
-  XZKUIFieldControlPropsWithElement,
-  FieldProps,
-} from './field.types';
-import type { ComponentProps, ElementType, ForwardedRef, ReactNode } from 'react';
+import { AnimatePresence } from '@tamagui/animate-presence';
+import { View, withStaticProperties } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
+import { useMemo, useId } from 'react';
+import { Input } from '../input';
+import {
+  FieldFrame,
+  FieldHint,
+  FieldHintValue,
+  FieldLabel,
+  FieldLabelValue,
+  FieldRow,
+  FieldContext,
+} from './field.styled';
+import type { InputProps } from '../input';
+import type { FieldProps } from './field.types';
+import type { TamaguiElement } from '@tamagui/core';
+import type { ForwardedRef } from 'react';
 
-const Field = forwardRef(function Field(
-  { children, label, labelValue, error, errorValue, hint, hintValue, ...rest }: FieldProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  const uniqId = useId();
-  const id = label ? `field${uniqId}` : undefined;
+const ErrorComponentTypes = new Set();
+
+const FieldControlComponent = Input.styleable<InputProps>(
+  (props, ref: ForwardedRef<TamaguiElement>) => {
+    const { id, error } = FieldContext.useStyledContext();
+    const { asChild, ...otherProps } = props;
+
+    return (
+      <Stack asChild id={id} error={error} {...otherProps} ref={ref}>
+        {props.children ? props.children : <Input />}
+      </Stack>
+    );
+  },
+);
+
+const FieldErrorComponent = FieldHint.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
+  const { error } = FieldContext.useStyledContext();
+  const uniqueKey = useId();
 
   return (
-    <XZKUIFieldContext.Provider value={{ error: Boolean(error), id }}>
-      <Styled.Root {...rest} ref={ref}>
-        <FieldRow titleAlias="label" htmlFor={id} title={label} value={labelValue} />
-        {children}
-        <FieldRow title={error} value={errorValue} />
-        <FieldRow title={hint} value={hintValue} />
-      </Styled.Root>
-    </XZKUIFieldContext.Provider>
+    <AnimatePresence>
+      {error && (
+        <FieldHint
+          key={`${uniqueKey}:field-error`}
+          enterStyle={{ opacity: 0, y: 5 }}
+          exitStyle={{ opacity: 0, y: -5 }}
+          opacity={1}
+          y={0}
+          animation="bounceIn"
+          role="alert"
+          aria-live="polite"
+          error={error}
+          {...props}
+          ref={ref}
+        />
+      )}
+    </AnimatePresence>
   );
 });
 
-function Control(props: XZKUIFieldControlPropsWithCallback): ReactNode;
-function Control(props: XZKUIFieldControlPropsDefault): ReactNode;
-function Control<T extends ElementType>(props: XZKUIFieldControlPropsWithElement<T>): ReactNode;
-function Control<T extends ElementType>({ render, ...props }: XZKUIFieldControlProps<T>) {
-  const context = useXZKUIFieldContext();
+ErrorComponentTypes.add(FieldErrorComponent);
 
-  if (typeof render === 'function') {
-    return (render as XZKUIFieldContextCallback)(context);
-  }
+const FieldErrorValueComponent = FieldHintValue.styleable(
+  (props, ref: ForwardedRef<TamaguiElement>) => {
+    const { error } = FieldContext.useStyledContext();
 
-  return createElement(render ?? XZKUIInput, { ...context, ...props });
-}
+    return (
+      <AnimatePresence>
+        {error && (
+          <FieldHintValue
+            ref={ref}
+            role="alert"
+            aria-live="polite"
+            animation="state"
+            enterStyle={{ opacity: 0, y: -5 }}
+            exitStyle={{ opacity: 0, y: -5 }}
+            error={error}
+            {...props}
+          >
+            {props.children}
+          </FieldHintValue>
+        )}
+      </AnimatePresence>
+    );
+  },
+);
 
-type FieldRowPropsBase = {
-  title?: ReactNode;
-  value?: ReactNode;
-  className?: string;
-};
+ErrorComponentTypes.add(FieldErrorValueComponent);
 
-type FieldRowProps<T extends ElementType = 'div'> = Omit<
-  ComponentProps<T>,
-  keyof FieldRowPropsBase
-> &
-  FieldRowPropsBase & {
-    titleAlias?: T;
-  };
+const FieldComponent = FieldFrame.styleable<FieldProps>(
+  (props, ref: ForwardedRef<TamaguiElement>) => {
+    const { id: propId, error, size, ...restProps } = props;
 
-function FieldRow<T extends ElementType = 'div'>({
-  title,
-  value,
-  titleAlias,
-  className,
-  ...rest
-}: FieldRowProps<T>) {
-  if (!title && !value) return null;
+    const generatedId = useId();
+    const id = propId || generatedId;
 
-  return (
-    <Styled.Row className={className}>
-      {title && (
-        <Styled.RowTitle as={titleAlias} {...rest}>
-          {title}
-        </Styled.RowTitle>
-      )}
-      {value && <Styled.RowValue>{value}</Styled.RowValue>}
-    </Styled.Row>
-  );
-}
+    const value = useMemo(
+      () => ({
+        id,
+        error,
+        size,
+      }),
+      [id, error, size],
+    );
 
-type XZKUIFieldType = typeof Field & {
-  Control: typeof Control;
-};
+    return (
+      <FieldContext.Provider {...value}>
+        <FieldFrame
+          {...restProps}
+          role="group"
+          aria-invalid={Boolean(error)}
+          ref={ref}
+          error={Boolean(error)}
+        />
+      </FieldContext.Provider>
+    );
+  },
+);
 
-Object.assign(Field, { Control });
+const FieldLabelComponent = FieldLabel.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
+  const { id, size } = FieldContext.useStyledContext();
+  const { id: propId, ...restProps } = props;
 
-export default Field as XZKUIFieldType;
+  return <FieldLabel htmlFor={id} size={size} {...restProps} ref={ref} />;
+});
+
+const FieldHintComponent = FieldHint.styleable((props, ref: ForwardedRef<TamaguiElement>) => (
+  <AnimatePresence>
+    <FieldHint
+      {...props}
+      error={false}
+      ref={ref}
+      animation="state"
+      enterStyle={{ opacity: 0, y: -5 }}
+      exitStyle={{ opacity: 0, y: -5 }}
+    />
+  </AnimatePresence>
+));
+
+const FieldHintValueComponent = FieldHintValue.styleable(
+  (props, ref: ForwardedRef<TamaguiElement>) => (
+    <AnimatePresence>
+      <FieldHintValue
+        {...props}
+        error={false}
+        ref={ref}
+        animation="state"
+        enterStyle={{ opacity: 0, y: -5 }}
+        exitStyle={{ opacity: 0, y: -5 }}
+      />
+    </AnimatePresence>
+  ),
+);
+
+export const Field = withStaticProperties(FieldComponent, {
+  Row: FieldRow,
+  Label: FieldLabelComponent,
+  LabelValue: FieldLabelValue,
+  Hint: FieldHintComponent,
+  HintValue: FieldHintValueComponent,
+  Error: FieldErrorComponent,
+  ErrorValue: FieldErrorValueComponent,
+  Control: FieldControlComponent,
+});

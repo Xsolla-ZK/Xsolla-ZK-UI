@@ -12,22 +12,6 @@ export const LabelFrame = styled(
     userSelect: 'none',
     backgroundColor: 'transparent',
     cursor: 'default',
-
-    variants: {
-      size: {
-        // '...size': (val, extras) => {
-        //   const buttonStyle = getButtonSized(val, extras);
-        //   const buttonHeight = buttonStyle?.height;
-        //   const fontStyle = getFontSized(val as FontSizeTokens, extras);
-        //   return {
-        //     ...fontStyle,
-        //     lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
-        //   };
-        // },
-      },
-    } as const,
-
-    defaultVariants: {},
   },
   {
     neverFlatten: true,

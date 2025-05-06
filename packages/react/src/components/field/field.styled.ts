@@ -43,6 +43,7 @@ export const FieldRow = styled(Stack, {
   context: FieldContext,
 
   display: 'flex',
+  flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
 
@@ -53,40 +54,14 @@ export const FieldRow = styled(Stack, {
       if (!componentProps) {
         return {};
       }
-      const { typography, ...rest } = componentProps.label;
 
-      return getMappedStyles(rest);
+      return getMappedStyles(componentProps.row);
     },
   } as const,
 });
 
-// const Row = styled('div')(
-//   ({ theme }) => `
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     gap: ${theme.common.spacing[200]};
-//     padding: 0 ${theme.common.spacing[350]};
-//     color: ${theme.theme.content.neutralSecondary};
-
-//     &.${xzkuiFieldClasses.error} {
-//       color: ${theme.theme.border.negativePrimary};
-//     }
-//   `,
-// );
-
 export const FieldLabel = styled(Label, {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-
   variants: {
-    htmlFor: (_, extras) => {
-      const { props } = extras;
-      return {
-        htmlFor: props.id,
-      };
-    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val];
@@ -99,6 +74,7 @@ export const FieldLabel = styled(Label, {
 });
 
 export const FieldLabelValue = styled(Typography, {
+  context: FieldContext,
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
@@ -106,13 +82,25 @@ export const FieldLabelValue = styled(Typography, {
       if (!componentProps) {
         return {};
       }
-      return getMappedStyles(componentProps.label);
+      return {
+        ...getMappedStyles(componentProps.label),
+        fontWeight: 'numeric',
+      };
     },
   } as const,
 });
 
 export const FieldHint = styled(Typography, {
+  context: FieldContext,
   variants: {
+    error: {
+      true: {
+        color: '$content.negative-primary',
+      },
+      false: {
+        color: '$content.neutral-secondary',
+      },
+    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val];
@@ -127,20 +115,27 @@ export const FieldHint = styled(Typography, {
 export const FieldHintValue = styled(Typography, {
   context: FieldContext,
 
+  userSelect: 'none',
+
   variants: {
+    error: {
+      true: {
+        color: '$content.negative-primary',
+      },
+      false: {
+        color: '$content.neutral-secondary',
+      },
+    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val];
       if (!componentProps) {
         return {};
       }
-      return getMappedStyles(componentProps.hint);
+      return {
+        ...getMappedStyles(componentProps.hint),
+        fontWeight: 'numeric',
+      };
     },
   } as const,
 });
-
-export const FieldError = styled(FieldHint, {
-  backgroundColor: 'red',
-});
-
-export const FieldErrorValue = FieldHintValue;
