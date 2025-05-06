@@ -11,32 +11,31 @@ catalog:
 
 catalogs:
   tamagui:
-    "@tamagui/adapt": 1.125.33
-    "@tamagui/animations-css": 1.125.33
-    "@tamagui/animations-moti": 1.125.33
-    "@tamagui/animations-react-native": 1.125.33
-    "@tamagui/build": 1.125.33
-    "@tamagui/config": 1.125.33
-    "@tamagui/core": 1.125.33
-    "@tamagui/checkbox-headless": 1.125.33
-    "@tamagui/compose-refs": 1.125.33
-    "@tamagui/create-context": 1.125.33
-    "@tamagui/focusable": 1.125.33
-    "@tamagui/radio-headless": 1.125.33
-    "@tamagui/roving-focus": 1.125.33
-    "@tamagui/input": 1.125.33
-    "@tamagui/web": 1.125.33
-    "@tamagui/vite-plugin": 1.125.33
-    "@tamagui/helpers-icon": 1.125.33
-    "@tamagui/popover": 1.125.33
-    "@tamagui/portal": 1.125.33
-    "@tamagui/scroll-view": 1.125.33
-    "@tamagui/image": 1.125.33
-    "@tamagui/sheet": 1.125.33
-    "@tamagui/dialog": 1.125.33
-    "@tamagui/use-controllable-state": 1.125.33
-    "@tamagui/use-direction": 1.125.33
-    "@tamagui/animate-presence": 1.125.33
+    "@tamagui/adapt": 1.126.7
+    "@tamagui/animations-css": 1.126.7
+    "@tamagui/animations-moti": 1.126.7
+    "@tamagui/animations-react-native": 1.126.7
+    "@tamagui/build": 1.126.7
+    "@tamagui/config": 1.126.7
+    "@tamagui/core": 1.126.7
+    "@tamagui/checkbox-headless": 1.126.7
+    "@tamagui/compose-refs": 1.126.7
+    "@tamagui/create-context": 1.126.7
+    "@tamagui/focusable": 1.126.7
+    "@tamagui/radio-headless": 1.126.7
+    "@tamagui/roving-focus": 1.126.7
+    "@tamagui/web": 1.126.7
+    "@tamagui/vite-plugin": 1.126.7
+    "@tamagui/helpers-icon": 1.126.7
+    "@tamagui/popover": 1.126.7
+    "@tamagui/portal": 1.126.7
+    "@tamagui/scroll-view": 1.126.7
+    "@tamagui/image": 1.126.7
+    "@tamagui/sheet": 1.126.7
+    "@tamagui/dialog": 1.126.7
+    "@tamagui/use-controllable-state": 1.126.7
+    "@tamagui/use-direction": 1.126.7
+    "@tamagui/animate-presence": 1.126.7
   eslint9:
     eslint: 9.16.0
     "@eslint/js": 9.16.0
@@ -45,7 +44,7 @@ catalogs:
     "@vitest/browser": ^3.0.4
     "@vitest/coverage-v8": ^3.0.4
   reactNative:
-    "react-native": 0.78.0
+    "react-native": 0.79.2
     "@types/react-native": ^0.73.0
   react18:
     react: ^18.3.1

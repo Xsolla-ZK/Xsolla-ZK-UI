@@ -45,7 +45,6 @@
     "@tamagui/focusable": "catalog:tamagui",
     "@tamagui/helpers-icon": "catalog:tamagui",
     "@tamagui/image": "catalog:tamagui",
-    "@tamagui/input": "catalog:tamagui",
     "@tamagui/radio-headless": "catalog:tamagui",
     "@tamagui/roving-focus": "catalog:tamagui",
     "@tamagui/scroll-view": "catalog:tamagui",
@@ -54,7 +53,7 @@
     "@tamagui/use-direction": "catalog:tamagui",
     "@xsolla-zk/config": "workspace:*",
     "@xsolla-zk/icons": "workspace:*",
-    "react-native-reanimated": "^3.16.7",
+    "react-native-reanimated": "^3.17.5",
     "react-native-svg": "catalog:"
   },
   "devDependencies": {
