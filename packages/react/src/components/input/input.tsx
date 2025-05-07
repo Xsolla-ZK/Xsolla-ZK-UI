@@ -1,4 +1,4 @@
-import { useComposedRefs, useTheme, withStaticProperties } from '@tamagui/core';
+import { useComposedRefs, useTheme, withStaticProperties, validStyles } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
 import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,6 +14,23 @@ import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef, ReactElement } from 'react';
 
 type CSSVariables = Record<string, string>;
+
+const useSplitStyles = (props: Record<string, unknown>) => {
+  const stackValidStyles = validStyles || {};
+
+  const styleProps: Record<string, unknown> = {};
+  const otherProps: Record<string, unknown> = {};
+
+  Object.keys(props).forEach((key) => {
+    if (stackValidStyles[key as keyof typeof validStyles]) {
+      styleProps[key] = props[key];
+    } else {
+      otherProps[key] = props[key];
+    }
+  });
+
+  return { styleProps, otherProps };
+};
 
 const InputComponent = InputElement.styleable<InputProps>(
   (
@@ -68,6 +85,7 @@ const InputComponent = InputElement.styleable<InputProps>(
       onFocus,
       onBlur,
       error,
+      frameStyles,
       ...props
     },
     forwardedRef: ForwardedRef<TamaguiElement>,
@@ -244,6 +262,7 @@ const InputComponent = InputElement.styleable<InputProps>(
             if (inputProps.readOnly) return;
             ref.current?.focus();
           }}
+          {...frameStyles}
         >
           {startSlot}
           <InputElement

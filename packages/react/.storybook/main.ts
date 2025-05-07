@@ -21,6 +21,7 @@ const config: StorybookConfig = {
     '../src/components/loader/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/nav-bar/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/field/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/otp-field/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
     // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',

@@ -1,31 +1,29 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { View, withStaticProperties } from '@tamagui/core';
-import { Stack } from '@tamagui/core';
-import { useMemo, useId } from 'react';
+import { Stack, withStaticProperties } from '@tamagui/core';
+import { useId, useMemo } from 'react';
 import { Input } from '../input';
 import {
+  FieldContext,
   FieldFrame,
   FieldHint,
   FieldHintValue,
   FieldLabel,
   FieldLabelValue,
   FieldRow,
-  FieldContext,
 } from './field.styled';
 import type { InputProps } from '../input';
 import type { FieldProps } from './field.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
-
 const ErrorComponentTypes = new Set();
 
 const FieldControlComponent = Input.styleable<InputProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
-    const { id, error } = FieldContext.useStyledContext();
+    const { id, error, size } = FieldContext.useStyledContext();
     const { asChild, ...otherProps } = props;
 
     return (
-      <Stack asChild id={id} error={error} {...otherProps} ref={ref}>
+      <Stack asChild id={id} error={error} size={size} {...otherProps} ref={ref}>
         {props.children ? props.children : <Input />}
       </Stack>
     );
@@ -34,13 +32,11 @@ const FieldControlComponent = Input.styleable<InputProps>(
 
 const FieldErrorComponent = FieldHint.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
   const { error } = FieldContext.useStyledContext();
-  const uniqueKey = useId();
 
   return (
     <AnimatePresence>
       {error && (
         <FieldHint
-          key={`${uniqueKey}:field-error`}
           enterStyle={{ opacity: 0, y: 5 }}
           exitStyle={{ opacity: 0, y: -5 }}
           opacity={1}
@@ -70,7 +66,7 @@ const FieldErrorValueComponent = FieldHintValue.styleable(
             ref={ref}
             role="alert"
             aria-live="polite"
-            animation="state"
+            animation="bounceIn"
             enterStyle={{ opacity: 0, y: -5 }}
             exitStyle={{ opacity: 0, y: -5 }}
             error={error}
@@ -88,7 +84,7 @@ ErrorComponentTypes.add(FieldErrorValueComponent);
 
 const FieldComponent = FieldFrame.styleable<FieldProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
-    const { id: propId, error, size, ...restProps } = props;
+    const { id: propId, error, size = '$500', ...restProps } = props;
 
     const generatedId = useId();
     const id = propId || generatedId;
@@ -106,6 +102,7 @@ const FieldComponent = FieldFrame.styleable<FieldProps>(
       <FieldContext.Provider {...value}>
         <FieldFrame
           {...restProps}
+          size={size}
           role="group"
           aria-invalid={Boolean(error)}
           ref={ref}
@@ -124,12 +121,12 @@ const FieldLabelComponent = FieldLabel.styleable((props, ref: ForwardedRef<Tamag
 });
 
 const FieldHintComponent = FieldHint.styleable((props, ref: ForwardedRef<TamaguiElement>) => (
-  <AnimatePresence>
+  <AnimatePresence initial={false}>
     <FieldHint
       {...props}
       error={false}
       ref={ref}
-      animation="state"
+      animation="bounceIn"
       enterStyle={{ opacity: 0, y: -5 }}
       exitStyle={{ opacity: 0, y: -5 }}
     />
@@ -138,12 +135,12 @@ const FieldHintComponent = FieldHint.styleable((props, ref: ForwardedRef<Tamagui
 
 const FieldHintValueComponent = FieldHintValue.styleable(
   (props, ref: ForwardedRef<TamaguiElement>) => (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       <FieldHintValue
         {...props}
         error={false}
         ref={ref}
-        animation="state"
+        animation="bounceIn"
         enterStyle={{ opacity: 0, y: -5 }}
         exitStyle={{ opacity: 0, y: -5 }}
       />

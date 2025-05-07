@@ -1,5 +1,5 @@
 import type { InputElement } from './input.styled';
-import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
+import type { GetProps, StackStyle, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ComponentProps, HTMLInputTypeAttribute, ReactNode } from 'react';
 import type { TextInputProps } from 'react-native';
@@ -50,6 +50,7 @@ export type InputElementProps = DetailedInputProps &
   };
 
 export interface InputProps extends InputElementProps {
+  frameStyles?: StackStyle;
   size?: InputSizes;
   children?: ReactNode;
   error?: boolean;
