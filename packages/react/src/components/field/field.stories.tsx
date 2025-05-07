@@ -1,20 +1,32 @@
-import { AnimatePresence } from '@tamagui/animate-presence';
-import { isWeb, Stack, Text } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { Search } from '@xsolla-zk/icons';
-import { RefObject, useEffect, useRef, useState } from 'react';
-import { Button } from '../button/button';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { useRef, useState } from 'react';
 import { Input, TextArea } from '../input';
 import { RichIcon } from '../rich-icon/rich-icon';
 import { Field } from './field';
+import type { FieldSizes } from './field.types';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { GetProps } from '@tamagui/core';
+
+const sizes = Object.keys(getComponentsConfig().field) as FieldSizes[];
+
 const meta = {
   component: Field,
   parameters: {
     layout: 'centered',
   },
   tags: ['stable'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'select',
+      options: sizes,
+      table: {
+        defaultValue: { summary: '$500' },
+        type: { summary: sizes.join('|') },
+      },
+    },
+  },
   args: {},
   play: async ({ canvasElement }) => {},
 } satisfies Meta<typeof Field>;
@@ -52,6 +64,29 @@ export const FullAnatomy: Story = {
         <Field.ErrorValue>100</Field.ErrorValue>
       </Field.Row>
     </Field>
+  ),
+};
+
+export const AllSizes: Story = {
+  argTypes: {
+    size: {
+      table: {
+        disable: true,
+      },
+    },
+  },
+  args: {},
+  render: (args) => (
+    <Stack gap={12}>
+      {sizes.map((size) => (
+        <Field key={size} {...args} size={size}>
+          <Field.Row>
+            <Field.Label>Label {size}</Field.Label>
+          </Field.Row>
+          <Field.Control placeholder="Simple Input" />
+        </Field>
+      ))}
+    </Stack>
   ),
 };
 

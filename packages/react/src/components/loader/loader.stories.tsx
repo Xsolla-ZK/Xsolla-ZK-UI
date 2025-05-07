@@ -1,3 +1,4 @@
+import { Stack } from '@tamagui/core';
 import { Loader } from './loader';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -40,25 +41,34 @@ export const Default: Story = {
 export const AllTones: Story = {
   args: {},
   render: (args) => (
-    <div style={{ display: 'flex', gap: '12px' }}>
+    <Stack gap={12}>
       {tones.map((tone) => (
-        <Loader key={tone} tone={tone} {...args} />
+        <Loader key={tone} tone={tone} {...args}>
+          <Loader.Text>Loading</Loader.Text>
+        </Loader>
       ))}
-    </div>
+    </Stack>
   ),
 };
 
 export const WithChildren: Story = {
-  args: {
-    children: <Loader.Text>Loading</Loader.Text>,
-  },
+  args: {},
+  render: (args) => (
+    <Loader {...args}>
+      <Loader.Text>Loading</Loader.Text>
+    </Loader>
+  ),
 };
 
 export const WithChildrenVertical: Story = {
   args: {
-    children: <Loader.Text>Loading</Loader.Text>,
     vertical: true,
   },
+  render: (args) => (
+    <Loader {...args}>
+      <Loader.Text>Loading</Loader.Text>
+    </Loader>
+  ),
 };
 
 export const CustomColorsProps: Story = {

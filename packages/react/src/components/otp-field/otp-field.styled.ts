@@ -1,27 +1,22 @@
-import styled from '@emotion/styled';
+import { Stack, styled } from '@tamagui/core';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import type { FieldSizes } from '../field/field.types';
 
-const Main = styled('div')(
-  () => `
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  `,
-);
+export const OTPFieldFrame = styled(Stack, {
+  name: 'OTPField',
 
-const Root = styled('div')(
-  ({ theme }) => `
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 22px;
-  `,
-);
+  display: 'flex',
+  flexDirection: 'row',
 
-const XZKUIOtpFieldStyled = {
-  Main,
-  Root,
-};
-
-export default XZKUIOtpFieldStyled;
+  variants: {
+    size: (val: FieldSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.field[val];
+      if (!componentProps) {
+        return {};
+      }
+      return getMappedStyles(componentProps.inputs);
+    },
+  } as const,
+});

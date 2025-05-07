@@ -1,12 +1,11 @@
-import type { FieldProps } from '../field/field.types';
-import type { XZKUIInputProps } from '../input/input.types';
+import type { FieldSizes } from '../field/field.types';
+import type { InputProps } from '../input';
 
-type PasteErrorCodesUnion = 10 | 20 | 30;
+export type OTPFieldPasteErrorCodesUnion = 10 | 20 | 30;
 
-export type XZKUIOtpFieldProps = XZKUIInputProps &
-  Omit<FieldProps, 'children'> & {
-    length?: number;
-    values: string;
-    onChange?: (val: string) => void;
-    onPasteError?: (errorCode: PasteErrorCodesUnion) => void;
-  };
+export type OTPFieldProps = Omit<InputProps, 'onChange'> & {
+  size?: FieldSizes;
+  length?: number;
+  onChange?: (val: string) => void;
+  onPasteError?: (errorCode: OTPFieldPasteErrorCodesUnion) => void;
+};
