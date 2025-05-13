@@ -1,8 +1,7 @@
-import Styled from './switch.styled';
-import type { XZKUISwitchProps } from './switch.types';
+import { withStaticProperties } from '@tamagui/core';
+import { SwitchKnob } from './switch.styled';
+import { SwitchFrame } from './switch.styled';
 
-function XZKUISwitch() {
-  return <Styled.Root></Styled.Root>;
-}
-
-export default XZKUISwitch;
+export const Switch = withStaticProperties(SwitchFrame, {
+  Knob: SwitchKnob,
+});

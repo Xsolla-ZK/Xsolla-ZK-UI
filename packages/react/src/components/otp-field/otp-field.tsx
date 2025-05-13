@@ -1,5 +1,5 @@
 import { type TamaguiElement } from '@tamagui/core';
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import { Input } from '../input';
 import { OTPFieldFrame } from './otp-field.styled';
 import type { OTPFieldProps } from './otp-field.types';
@@ -12,7 +12,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
     const {
       length = 4,
-      id,
+      id: propId,
       onChange,
       onPasteError,
       name,
@@ -21,6 +21,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       defaultValue,
       ...rest
     } = props;
+    const id = propId ?? useId();
     const inputRefs = useRef<Array<HTMLInputElement | null>>(
       Array(length).fill(null) as Array<HTMLInputElement | null>,
     );
@@ -115,13 +116,13 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
     };
 
     return (
-      <OTPFieldFrame ref={ref} size={size}>
+      <OTPFieldFrame size={size} ref={ref}>
         {Array.from({ length }, () => '').map((val, idx) => (
           <Input
             key={`input-code-${id}:${idx}`}
+            id={idx === 0 ? id : `${id}-${idx}`}
             inputMode="numeric"
             autoComplete="one-time-code"
-            // keyboardType="number-pad"
             textContentType="oneTimeCode"
             size={size}
             onPaste={handleOnPaste}
@@ -129,7 +130,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
               const input = e.currentTarget as HTMLInputElement;
               input.select();
             }}
-            name={`${name}.${idx}`}
+            name={name ? `${name}.${idx}` : undefined}
             onChange={(e) => handleChange(e as ChangeEvent<HTMLInputElement>, idx)}
             ref={(elem: HTMLInputElement) => (inputRefs.current[idx] = elem)}
             defaultValue={value === undefined ? defaultValue?.[idx] : undefined}
@@ -137,51 +138,15 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
             onKeyDown={(e) => handleKeyDown(e, idx)}
             maxLength={length}
             selectTextOnFocus
-            {...rest}
-            // onChangeText={(text) => {
-            //   if (text.length === codeSize) {
-            //     text.split('').forEach((char, index) => {
-            //       setValue(`code${index}`, char);
-            //     });
-            //     onSubmit();
-            //   } else {
-            //     onChange(text.charAt(0));
-            //     switchInputPlace(id, text);
-            //     if (id === codeSize - 1) onSubmit();
-            //   }
-            // }}
-            // onKeyPress={({ nativeEvent }) => {
-            //   if (nativeEvent.key === 'Backspace') {
-            //     if (value !== '') {
-            //       onChange('');
-            //     } else {
-            //       switchInputPlace(id, value);
-            //     }
-            //   }
-            //   if (nativeEvent.key === 'Enter') {
-            //     onSubmit();
-            //   }
-            // }}
-            // enterKeyHint={id === length - 1 ? 'done' : 'next'}
-            frameStyles={{ flex: 1 }}
+            enterKeyHint={idx === length - 1 ? 'done' : 'next'}
             width="100%"
             textAlign="center"
+            frameStyles={{ flex: 1 }}
+            onBlur={(e) => {
+              console.log('blur')
+            }}
+            {...rest}
           />
-          // <Input
-          //   inputMode="numeric"
-          //   autoComplete="one-time-code"
-          //   onPaste={handleOnPaste}
-          //   onFocus={(e) => {
-          //     const input = e.currentTarge as HTMLInputElement;
-          //     input.select();
-          //   }}
-          //   name={`${name}.${idx}`}
-          //   onChange={(e) => handleChange(e, idx)}
-          //   ref={(elem) => (inputRefs.current[idx] = elem)}
-          //   defaultValue={values[idx] ?? val}
-          //   onKeyDown={(e) => handleKeyDown(e, idx)}
-          //   {...rest}
-          // />
         ))}
       </OTPFieldFrame>
     );

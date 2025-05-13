@@ -19,6 +19,11 @@ const meta = {
   },
   tags: ['stable'],
   argTypes: {
+    children: {
+      table: {
+        disable: true,
+      },
+    },
     shape: {
       table: {
         type: { summary: shapes.join('|') },

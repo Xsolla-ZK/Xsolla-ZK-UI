@@ -5,7 +5,12 @@ import type { ForwardedRef } from 'react';
 
 export const Board = BoardFrame.styleable<BoardProps>(
   ({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
-    <BoardFrame group={props.pressable} {...props} ref={ref}>
+    <BoardFrame
+      group={props.pressable}
+      tag={props.pressable ? 'button' : undefined}
+      {...props}
+      ref={ref}
+    >
       {props.pressable && <BoardOverlay />}
       {children}
     </BoardFrame>

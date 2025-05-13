@@ -8,6 +8,13 @@ import { loaderTheme } from './src/components/loader/loader.theme';
 import { pimpleTheme } from './src/components/pimple/pimple.theme';
 import { radioGroupTheme } from './src/components/radio-group/radio-group.theme';
 import { richIconTheme } from './src/components/rich-icon/rich-icon.theme';
+import {
+  sliderKnobTheme,
+  sliderTheme,
+  sliderTrackActiveTheme,
+  sliderTrackTheme,
+} from './src/components/slider/slider.theme';
+import { switchKnobTheme, switchTheme } from './src/components/switch/switch.theme';
 import { tabsListIndicatorTheme, tabsTabTheme } from './src/components/tabs/tabs.theme';
 
 const componentsTheme = {
@@ -23,6 +30,12 @@ const componentsTheme = {
   richIcon: richIconTheme,
   tabsTab: tabsTabTheme,
   tabsListIndicator: tabsListIndicatorTheme,
+  switch: switchTheme,
+  switchKnob: switchKnobTheme,
+  slider: sliderTheme,
+  sliderTrack: sliderTrackTheme,
+  sliderTrackActive: sliderTrackActiveTheme,
+  sliderKnob: sliderKnobTheme,
 };
 
 export { componentsTheme };

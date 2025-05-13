@@ -34,6 +34,7 @@ export const RichIconFrame = styled(Stack, {
       true: {
         tag: 'button',
         role: 'button',
+        tabIndex: 0,
         border: 'none',
         backgroundColor: 'transparent',
         padding: 0,
@@ -42,6 +43,12 @@ export const RichIconFrame = styled(Stack, {
         pressStyle: {
           scale: 0.96,
         },
+        // focusVisibleStyle: {
+        //   outlineColor: 'red',
+        //   outlineStyle: 'auto',
+        //   outlineWidth: 2,
+        //   outlineOffset: 1,
+        // },
       },
     },
     size: (val: RichIconSizes) => {

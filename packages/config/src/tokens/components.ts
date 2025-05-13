@@ -1280,7 +1280,7 @@ export const switchComponent = {
     frame: {
       borderRadius: '$radius.999',
       borderWidth: '$stroke.200',
-      padding: '$space.100',
+      padding: '$space.50',
     },
     knob: {
       size: '$size.200',

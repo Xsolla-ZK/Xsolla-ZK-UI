@@ -39,13 +39,14 @@ export const config = createTamagui({
       shadowColorPress: 'transparent',
       shadowColorFocus: 'transparent',
       placeholderColor: 'transparent',
+      outlineColor: 'transparent',
       spinColor: 'transparent',
     },
   },
   themes: themesCompose,
   selectionStyles: (theme) => ({
-    backgroundColor: theme['overlay.brand'],
-    color: theme['content.neutral-primary'],
+    backgroundColor: theme['background.brand-high'],
+    color: theme['content.on-brand'],
   }),
 });
 

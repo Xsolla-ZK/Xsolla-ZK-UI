@@ -1,10 +1,9 @@
-import { within, expect } from '@storybook/test';
-import XZKUISwitch from './switch';
+import { useState } from 'react';
+import { Switch } from './switch';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  component: XZKUISwitch,
-  // subcomponents: { Thumb: XZKUISwitch.Thumb },
+  component: Switch,
   parameters: {
     layout: 'centered',
   },
@@ -16,13 +15,21 @@ const meta = {
     // onClick: fn(),
   },
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUISwitch>;
+} satisfies Meta<typeof Switch>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {}
+  args: {},
+  render: (args) => {
+    const [isActive, setIsActive] = useState(false);
+    return (
+      <Switch {...args} onPress={() => setIsActive(!isActive)}>
+        <Switch.Knob animation="state" x={isActive ? '100%' : 0} />
+      </Switch>
+    );
+  },
 };
 
 /*
