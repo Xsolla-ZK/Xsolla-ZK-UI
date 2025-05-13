@@ -1,4 +1,4 @@
-import { useComposedRefs, useTheme, withStaticProperties, validStyles } from '@tamagui/core';
+import { useComposedRefs, useTheme, withStaticProperties } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
 import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -15,22 +15,22 @@ import type { ForwardedRef, ReactElement } from 'react';
 
 type CSSVariables = Record<string, string>;
 
-const useSplitStyles = (props: Record<string, unknown>) => {
-  const stackValidStyles = validStyles || {};
+// const useSplitStyles = (props: Record<string, unknown>) => {
+//   const stackValidStyles = validStyles || {};
 
-  const styleProps: Record<string, unknown> = {};
-  const otherProps: Record<string, unknown> = {};
+//   const styleProps: Record<string, unknown> = {};
+//   const otherProps: Record<string, unknown> = {};
 
-  Object.keys(props).forEach((key) => {
-    if (stackValidStyles[key as keyof typeof validStyles]) {
-      styleProps[key] = props[key];
-    } else {
-      otherProps[key] = props[key];
-    }
-  });
+//   Object.keys(props).forEach((key) => {
+//     if (stackValidStyles[key as keyof typeof validStyles]) {
+//       styleProps[key] = props[key];
+//     } else {
+//       otherProps[key] = props[key];
+//     }
+//   });
 
-  return { styleProps, otherProps };
-};
+//   return { styleProps, otherProps };
+// };
 
 const InputComponent = InputElement.styleable<InputProps>(
   (

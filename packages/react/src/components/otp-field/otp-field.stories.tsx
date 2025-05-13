@@ -6,7 +6,6 @@ import { OTPField } from './otp-field';
 import type { OTPFieldProps } from './otp-field.types';
 import type { FieldSizes } from '../field/field.types';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ChangeEvent } from 'react';
 
 const sizes = Object.keys(getComponentsConfig().field) as FieldSizes[];
 
@@ -74,7 +73,14 @@ export const AllSizes: Story = {
   render: (args) => (
     <Stack gap={12}>
       {sizes.map((size) => (
-        <OTPLayout key={size} {...args} size={size} />
+        <Field key={size} size={size}>
+          <Field.Row>
+            <Field.Label>OTP Label {size}</Field.Label>
+          </Field.Row>
+          <Field.Control>
+            <OTPField {...args} />
+          </Field.Control>
+        </Field>
       ))}
     </Stack>
   ),

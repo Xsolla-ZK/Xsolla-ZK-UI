@@ -4,7 +4,7 @@ export const BoardFrame = styled(Stack, {
   variants: {
     pressable: {
       true: {
-        position: 'relative',
+        role: 'button',
         cursor: 'pointer',
       },
       false: {},

@@ -1,5 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { Stack, withStaticProperties } from '@tamagui/core';
+import { View, withStaticProperties } from '@tamagui/core';
+import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { useId, useMemo } from 'react';
 import { Input } from '../input';
 import {
@@ -15,7 +16,6 @@ import type { InputProps } from '../input';
 import type { FieldProps } from './field.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
-const ErrorComponentTypes = new Set();
 
 const FieldControlComponent = Input.styleable<InputProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
@@ -23,9 +23,9 @@ const FieldControlComponent = Input.styleable<InputProps>(
     const { asChild, ...otherProps } = props;
 
     return (
-      <Stack asChild id={id} error={error} size={size} {...otherProps} ref={ref}>
+      <View asChild id={id} error={error} size={size} {...otherProps} ref={ref}>
         {props.children ? props.children : <Input />}
-      </Stack>
+      </View>
     );
   },
 );
@@ -53,8 +53,6 @@ const FieldErrorComponent = FieldHint.styleable((props, ref: ForwardedRef<Tamagu
   );
 });
 
-ErrorComponentTypes.add(FieldErrorComponent);
-
 const FieldErrorValueComponent = FieldHintValue.styleable(
   (props, ref: ForwardedRef<TamaguiElement>) => {
     const { error } = FieldContext.useStyledContext();
@@ -67,7 +65,7 @@ const FieldErrorValueComponent = FieldHintValue.styleable(
             role="alert"
             aria-live="polite"
             animation="bounceIn"
-            enterStyle={{ opacity: 0, y: -5 }}
+            enterStyle={{ opacity: 0, y: 5 }}
             exitStyle={{ opacity: 0, y: -5 }}
             error={error}
             {...props}
@@ -79,8 +77,6 @@ const FieldErrorValueComponent = FieldHintValue.styleable(
     );
   },
 );
-
-ErrorComponentTypes.add(FieldErrorValueComponent);
 
 const FieldComponent = FieldFrame.styleable<FieldProps>(
   (props, ref: ForwardedRef<TamaguiElement>) => {
@@ -127,7 +123,7 @@ const FieldHintComponent = FieldHint.styleable((props, ref: ForwardedRef<Tamagui
       error={false}
       ref={ref}
       animation="bounceIn"
-      enterStyle={{ opacity: 0, y: -5 }}
+      enterStyle={{ opacity: 0, y: 5 }}
       exitStyle={{ opacity: 0, y: -5 }}
     />
   </AnimatePresence>
@@ -141,15 +137,20 @@ const FieldHintValueComponent = FieldHintValue.styleable(
         error={false}
         ref={ref}
         animation="bounceIn"
-        enterStyle={{ opacity: 0, y: -5 }}
+        enterStyle={{ opacity: 0, y: 5 }}
         exitStyle={{ opacity: 0, y: -5 }}
       />
     </AnimatePresence>
   ),
 );
 
+const FieldRowComponent = FieldRow.styleable((props, ref: ForwardedRef<TamaguiElement>) => {
+  const children = useChildrenArray(props.children);
+  return children.length ? <FieldRow {...props} ref={ref} /> : null;
+});
+
 export const Field = withStaticProperties(FieldComponent, {
-  Row: FieldRow,
+  Row: FieldRowComponent,
   Label: FieldLabelComponent,
   LabelValue: FieldLabelValue,
   Hint: FieldHintComponent,
