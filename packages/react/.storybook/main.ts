@@ -26,9 +26,9 @@ const config: StorybookConfig = {
     '../src/components/password-field/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/switch/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/slider/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
-    // '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
-    // '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 

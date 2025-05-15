@@ -1,16 +1,18 @@
 import { isWeb, Stack, styled } from '@tamagui/core';
-import type { ColorTokens, GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/core';
+import { SEPARATOR_COMPONENT_NAME } from './separator.constants';
+import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/core';
+import type { ColorType } from '@xsolla-zk/react/types/color';
 
 export const Separator = styled(
   Stack,
   {
-    name: 'Separator',
+    name: SEPARATOR_COMPONENT_NAME,
     flexShrink: 0,
     flex: 1,
     y: -0.5,
 
     variants: {
-      color: (val: ColorTokens) => ({
+      color: (val: ColorType) => ({
         backgroundColor: val,
       }),
       vertical: {

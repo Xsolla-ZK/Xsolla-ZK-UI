@@ -2,6 +2,7 @@ import generateSimpleFile from '../templates/simple.mjs';
 import { writeToBuildDir } from '../utils/files.mjs';
 import { setBreakpointsStorage } from '../utils/storage.mjs';
 import { getValueRecursively } from '../utils/values.mjs';
+import { capitalizeFirstLetter } from '../utils/helpers.mjs';
 
 /**
  * @param {object} breakpoints
@@ -20,6 +21,7 @@ function transformBreakpoints(breakpoints) {
   return Object.entries(breakpoints).reduce((acc, [key, value]) => {
     if (value > 0) {
       acc[key] = { minWidth: value };
+      acc[`max${capitalizeFirstLetter(key)}`] = { maxWidth: value - 1 };
     }
 
     setBreakpointsStorage(key, value > 0 ? `$${key}` : 'base');

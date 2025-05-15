@@ -1,7 +1,7 @@
 import { createTamagui } from '@tamagui/core';
 import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk/config';
 import { webConfig } from '@xsolla-zk/config/web';
-import { componentsTheme } from '.';
+import { componentsTheme } from './src';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],

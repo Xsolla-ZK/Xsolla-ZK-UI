@@ -83,7 +83,7 @@ export interface SliderProps
   onValueChange?: (value: number[]) => void;
 }
 
-export interface SliderKnobExtraProps {
+interface SliderKnobExtraProps {
   index: number;
 }
 

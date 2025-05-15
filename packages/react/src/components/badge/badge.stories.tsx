@@ -3,9 +3,10 @@ import { View } from '@tamagui/core';
 import { ChevronRight, Plus } from '@xsolla-zk/icons';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Badge } from './badge';
-import type { BadgeProps } from './badge.types';
+import type { BadgeProps, BadgeSizes } from './badge.types';
 import type { Meta, StoryObj } from '@storybook/react';
-const sizes = Object.keys(getComponentsConfig().badge) as Array<BadgeProps['size']>;
+
+const sizes = Object.keys(getComponentsConfig().badge) as BadgeSizes[];
 const tones = [
   'brand',
   'neutral',

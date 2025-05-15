@@ -128,6 +128,7 @@ export const SliderKnobFrame = styled(Stack, {
   backgroundColor: '$background',
   borderColor: '$borderColor',
   borderRadius: '$999',
+  cursor: 'pointer',
 
   variants: {
     size: (val: SliderSizes) => {

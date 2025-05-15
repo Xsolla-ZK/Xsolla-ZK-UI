@@ -142,9 +142,6 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
             width="100%"
             textAlign="center"
             frameStyles={{ flex: 1 }}
-            onBlur={(e) => {
-              console.log('blur')
-            }}
             {...rest}
           />
         ))}

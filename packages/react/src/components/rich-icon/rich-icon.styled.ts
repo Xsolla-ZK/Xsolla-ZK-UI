@@ -24,9 +24,12 @@ export const RichIconFrame = styled(Stack, {
   alignItems: 'center',
   justifyContent: 'center',
   userSelect: 'none',
+  borderWidth: 0,
 
   variants: {
-    backgroundColor: () => ({}),
+    backgroundColor: () => ({
+      backgroundColor: 'transparent',
+    }),
     noShape: {
       false: {},
     },
@@ -35,7 +38,7 @@ export const RichIconFrame = styled(Stack, {
         tag: 'button',
         role: 'button',
         tabIndex: 0,
-        border: 'none',
+        borderWidth: 0,
         backgroundColor: 'transparent',
         padding: 0,
         cursor: 'pointer',

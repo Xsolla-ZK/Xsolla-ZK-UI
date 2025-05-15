@@ -56,6 +56,7 @@ export const TabBarItem = styled(Board, {
 export const TabBarItemTitle = styled(Text, {
   name: TAB_BAR_ITEM_TITLE_COMPONENT_NAME,
   context: TabBarContext,
+  color: '$color',
 
   variants: {
     size: (val: TabBarSize) => {
@@ -75,4 +76,10 @@ export const TabBarItemIcon = createIconComponent(
   TAB_BAR_ITEM_ICON_COMPONENT_NAME,
   TabBarContext,
   'tabBar',
+  // {
+  //   getColorFn: (ctx) => {
+  //     const { selected } = ctx;
+  //     return selected ? '$content.brand-primary' : '$content.neutral-tertiary';
+  //   },
+  // },
 );

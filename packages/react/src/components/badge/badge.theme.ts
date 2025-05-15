@@ -1,5 +1,5 @@
 import { createComponentTheme } from '@xsolla-zk/config';
-import { BADGE_COMPONENT_NAME } from './badge.styled';
+import { BADGE_COMPONENT_NAME } from './badge.constants';
 
 export const badgeTheme = createComponentTheme(
   BADGE_COMPONENT_NAME,

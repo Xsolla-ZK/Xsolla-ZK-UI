@@ -27,6 +27,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
       <RichIconFrame
         noShape={!shape}
         tag={rest.pressable ? 'button' : undefined}
+        pressable={Boolean(rest.pressable)}
         {...rest}
         ref={ref}
       >
