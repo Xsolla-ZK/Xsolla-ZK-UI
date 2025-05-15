@@ -1,69 +1,210 @@
-import { ClickAwayListener } from '@mui/base';
-import { isValidElement, useId, useState } from 'react';
-import Styled from './dropdown.styled';
-import type { XZKUIDropdownProps, XZKUIDropdownSharedProps } from './dropdown.types';
-import type { JSXElementConstructor, KeyboardEventHandler, MouseEvent, ElementType } from 'react';
+import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt';
+import {
+  createShallowSetState,
+  isWeb,
+  useEvent,
+  useGet,
+  withStaticProperties,
+} from '@tamagui/core';
+import { FloatingOverrideContext } from '@tamagui/floating';
+import {
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverClose,
+  PopoverContent,
+  PopoverContext,
+  PopoverTrigger,
+  useFloatingContext,
+  usePopoverContext,
+} from '@tamagui/popover';
+import { Popper } from '@tamagui/popper';
+import { ScrollView } from '@tamagui/scroll-view';
+import { SheetController } from '@tamagui/sheet';
+import { useControllableState } from '@tamagui/use-controllable-state';
+import { forwardRef, useCallback, useId, useImperativeHandle, useRef, useState } from 'react';
+import { Sheet } from '../sheet';
+import type { DropdownSizes } from './dropdown.types';
+import type { ScopedProps, TamaguiElement } from '@tamagui/core';
+import type { UseFloatingFn } from '@tamagui/floating';
+import type { Popover, PopoverProps } from '@tamagui/popover';
+import type { Dispatch, ReactNode, RefObject, SetStateAction } from 'react';
 
-function XZKUIDropdown<T extends ElementType>(props: XZKUIDropdownProps<T>) {
-  const uniqId = useId();
-  const {
-    control,
-    children,
-    id,
-    popperProps,
-    body,
-    component,
-    className,
-    size = 500,
-    ...rest
-  } = props;
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const Control = props.control as JSXElementConstructor<XZKUIDropdownSharedProps>;
-  const Body = body ?? Styled.Body;
+type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>;
 
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl((prev) => (prev ? null : event.currentTarget));
-  };
+type Rect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
 
-  const handleClose = () => setAnchorEl(null);
+const POPOVER_SCOPE = 'PopoverScope';
 
-  const handleOpen = (element: HTMLElement | null) => setAnchorEl(element);
+type PopoverContextValue = {
+  id: string;
+  triggerRef: RefObject<unknown>;
+  contentId?: string;
+  open: boolean;
+  onOpenChange(open: boolean, via: 'hover' | 'press'): void;
+  onOpenToggle(): void;
+  hasCustomAnchor: boolean;
+  onCustomAnchorAdd(): void;
+  onCustomAnchorRemove(): void;
+  size?: DropdownSizes;
+  breakpointActive?: boolean;
+  keepChildrenMounted?: boolean;
+  anchorTo?: Rect;
+};
 
-  const open = Boolean(anchorEl);
-  const passId = open ? `xzkui-dropdown-${uniqId}` : undefined;
+const useShowPopoverSheet = (context: PopoverContextValue) => {
+  const isAdapted = useAdaptIsActive();
+  return context.open === false ? false : isAdapted;
+};
 
-  const sharedProps = {
-    open,
-    close: handleClose,
-    openHandler: handleOpen,
-    toggleHandler: handleClick,
-  };
-
-  const onKeyDownHandler: KeyboardEventHandler<HTMLElement> = (e) => {
-    if (e.key === 'Escape') handleClose();
-  };
-
-  const ownProps = {
-    'aria-controls': passId,
-    'aria-expanded': open || undefined,
-  };
+const PopoverSheetController = ({
+  __scopePopover,
+  ...props
+}: ScopedPopoverProps<{
+  children: ReactNode;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
+}>) => {
+  const context = usePopoverContext(__scopePopover);
+  const showSheet = useShowPopoverSheet(context as unknown as PopoverContextValue);
+  const breakpointActive = context.breakpointActive;
+  const getShowSheet = useGet(showSheet);
 
   return (
-    <ClickAwayListener onClickAway={handleClose}>
-      <Styled.Root className={className} as={component} onKeyDown={onKeyDownHandler} {...rest}>
-        {typeof control === 'function' && isValidElement(control) ? (
-          control({ ...sharedProps, ownProps })
-        ) : (
-          <Control {...sharedProps} ownProps={ownProps} />
-        )}
-        <Styled.Popper id={passId} open={open} anchorEl={anchorEl} {...popperProps}>
-          <Body xzkuiSize={size}>
-            {typeof children === 'function' ? children(sharedProps) : children}
-          </Body>
-        </Styled.Popper>
-      </Styled.Root>
-    </ClickAwayListener>
+    <SheetController
+      onOpenChange={(val: boolean) => {
+        if (getShowSheet()) {
+          props.onOpenChange?.(val);
+        }
+      }}
+      open={context.open}
+      hidden={breakpointActive === false}
+    >
+      {/* @ts-ignore: react versions types diff */}
+      {props.children}
+    </SheetController>
   );
-}
+};
 
-export default XZKUIDropdown;
+const PopoverInner = forwardRef<Popover, ScopedPopoverProps<PopoverProps> & { id: string }>(
+  function PopoverInner(props, forwardedRef) {
+    const {
+      children,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      __scopePopover,
+      keepChildrenMounted,
+      hoverable,
+      disableFocus,
+      id,
+      ...restProps
+    } = props;
+
+    const triggerRef = useRef<TamaguiElement>(null);
+    const [hasCustomAnchor, setHasCustomAnchor] = useState(false);
+    const viaRef = useRef<'hover' | 'press' | undefined>(undefined);
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen || false,
+      onChange: (val: boolean) => {
+        onOpenChange?.(val, viaRef.current);
+      },
+    });
+
+    const handleOpenChange = useEvent<NonNullable<PopoverProps['onOpenChange']>>((val, via) => {
+      viaRef.current = via;
+      setOpen(val);
+    });
+
+    const isAdapted = useAdaptIsActive();
+
+    const floatingContext = useFloatingContext({
+      open,
+      setOpen: handleOpenChange,
+      disable: isAdapted,
+      hoverable,
+      disableFocus: disableFocus,
+    });
+
+    const [anchorTo, setAnchorToRaw] = useState<Rect>();
+
+    const setAnchorTo = createShallowSetState(
+      setAnchorToRaw as Dispatch<SetStateAction<Rect>>,
+    ) as typeof setAnchorToRaw;
+
+    useImperativeHandle(forwardedRef, () => ({
+      anchorTo: setAnchorTo,
+      toggle: () => setOpen((prev) => !prev),
+      open: () => setOpen(true),
+      close: () => setOpen(false),
+      setOpen,
+    }));
+
+    // needs to be entirely memoized!
+    const popoverContext = {
+      id,
+      contentId: useId(),
+      triggerRef,
+      open,
+      breakpointActive: isAdapted,
+      onOpenChange: handleOpenChange,
+      onOpenToggle: useEvent(() => {
+        if (open && isAdapted) {
+          return;
+        }
+        setOpen(!open);
+      }),
+      hasCustomAnchor,
+      anchorTo,
+      onCustomAnchorAdd: useCallback(() => setHasCustomAnchor(true), []),
+      onCustomAnchorRemove: useCallback(() => setHasCustomAnchor(false), []),
+      keepChildrenMounted,
+    };
+
+    const contents = (
+      <Popper __scopePopper={__scopePopover || POPOVER_SCOPE} stayInFrame {...restProps}>
+        <PopoverContext.Provider scope={__scopePopover} {...popoverContext}>
+          <PopoverSheetController onOpenChange={setOpen}>{children}</PopoverSheetController>
+        </PopoverContext.Provider>
+      </Popper>
+    );
+
+    return (
+      <>
+        {isWeb ? (
+          <FloatingOverrideContext.Provider value={floatingContext as UseFloatingFn}>
+            {contents}
+          </FloatingOverrideContext.Provider>
+        ) : (
+          contents
+        )}
+      </>
+    );
+  },
+);
+
+export const Dropdown = withStaticProperties(
+  forwardRef<Popover, ScopedPopoverProps<PopoverProps>>(function Dropdown(props, ref) {
+    const id = useId();
+
+    return (
+      <AdaptParent scope={`${id}PopoverContents`} portal>
+        <PopoverInner ref={ref} id={id} {...props} />
+      </AdaptParent>
+    );
+  }),
+  {
+    Anchor: PopoverAnchor,
+    Arrow: PopoverArrow,
+    Trigger: PopoverTrigger,
+    Content: PopoverContent,
+    Close: PopoverClose,
+    Adapt,
+    ScrollView: ScrollView,
+    Sheet: Sheet.Controlled,
+  },
+);

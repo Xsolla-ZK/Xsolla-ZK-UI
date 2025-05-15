@@ -1,35 +1,31 @@
-import clsx from 'clsx';
-import XZKUIButton from '../button/button';
-import xzkuiButtonClasses from '../button/button.classes';
-import XZKUIDropdown from './dropdown';
-import { dropdownThemeSizes } from './dropdown.theme';
+import { Popover } from '@tamagui/popover';
+import { getComponentsConfig } from '@xsolla-zk/react/utils';
+import { Button } from '../button/button';
+import { Dropdown } from './dropdown';
+import type { DropdownSizes } from './dropdown.types';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '@tamagui/core';
+
+const sizes = Object.keys(getComponentsConfig().dropdown) as DropdownSizes[];
 
 const meta = {
-  component: XZKUIDropdown,
+  component: Dropdown,
   parameters: {
     layout: 'centered',
   },
-  tags: ['!stable'],
+  tags: ['stable'],
   argTypes: {
+    children: { table: { disable: true } },
     size: {
       control: 'select',
-      options: dropdownThemeSizes,
-      table: { defaultValue: { summary: '500' }, type: { summary: dropdownThemeSizes.join('|') } },
+      options: sizes,
+      table: { defaultValue: { summary: '500' }, type: { summary: sizes.join('|') } },
     },
     onClick: { table: { disable: true } },
   },
-  args: {
-    control: ({ toggleHandler, ownProps }) => (
-      <XZKUIButton aria-label="List" onClick={toggleHandler} {...ownProps}>
-        Click me
-      </XZKUIButton>
-    ),
-    children: 'Body',
-    // onClick: fn(),
-  },
+  args: {},
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof XZKUIDropdown>;
+} satisfies Meta<typeof Dropdown>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -37,26 +33,29 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {},
   render: () => (
-    <XZKUIDropdown
-      control={({ toggleHandler, open, ownProps }) => (
-        <XZKUIButton
-          aria-label="List"
-          onClick={toggleHandler}
-          className={clsx(open && xzkuiButtonClasses.active)}
-          {...ownProps}
-        >
-          Click me
-        </XZKUIButton>
-      )}
-    >
-      {({ close }) => (
-        <ul>
+    <Dropdown allowFlip stayInFrame offset={15} resize>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Click me</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+      <Dropdown.Content>
+        <Stack gap={6}>
           {[...Array(10).keys()].map((item) => (
-            <li key={item}>Some Text {item}</li>
+            <Stack key={item}>Some Text {item}</Stack>
           ))}
-        </ul>
-      )}
-    </XZKUIDropdown>
+        </Stack>
+        <Popover.Close asChild>
+          <Button
+            onPress={() => {
+              console.log('close');
+            }}
+          >
+            <Button.Text>Close</Button.Text>
+          </Button>
+        </Popover.Close>
+      </Dropdown.Content>
+    </Dropdown>
   ),
 };
 

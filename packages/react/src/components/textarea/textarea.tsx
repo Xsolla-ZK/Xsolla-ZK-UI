@@ -1,7 +1,7 @@
 import { withStaticProperties } from '@tamagui/core';
-import { Input } from './input';
-import { InputContext, InputEndSlot, InputStartSlot } from './input.styled';
-import type { InputProps } from './input.types';
+import { Input } from '../input/input';
+import { InputContext, InputEndSlot, InputStartSlot } from '../input/input.styled';
+import type { InputProps } from '../input/input.types';
 import type { ForwardedRef } from 'react';
 
 const TextAreaBase = Input.styleable<InputProps>(
@@ -10,10 +10,8 @@ const TextAreaBase = Input.styleable<InputProps>(
   ),
 );
 
-const TextArea = withStaticProperties(TextAreaBase, {
+export const TextArea = withStaticProperties(TextAreaBase, {
   Props: InputContext.Provider,
   StartSlot: InputStartSlot,
   EndSlot: InputEndSlot,
 });
-
-export { TextArea };

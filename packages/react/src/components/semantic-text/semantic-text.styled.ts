@@ -1,12 +1,13 @@
 import { styled, Text } from '@tamagui/core';
 import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { getComponentsConfig } from '../../utils/components-config';
+import { SEMANTIC_TEXT_COMPONENT_NAME } from './semantic-text.constants';
 import type { SemanticTextVariants } from './semantic-text.types';
 
 export const SemanticTextRoot = styled(
   Text,
   {
-    name: 'SemanticText',
+    name: SEMANTIC_TEXT_COMPONENT_NAME,
     tag: 'span',
     display: 'block',
     color: '$color',

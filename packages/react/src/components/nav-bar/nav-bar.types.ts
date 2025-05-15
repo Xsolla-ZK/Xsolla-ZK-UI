@@ -1,32 +1,22 @@
 import type { NavBarFrame } from './nav-bar.styled';
 import type { GetProps } from '@tamagui/core';
-import type { IconProp } from '@xsolla-zk/react/types/icon';
 import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import type { ReactNode } from 'react';
 
 export type NavBarSizes = keyof ComponentsConfig['navBar']['size'];
+export type NavBarPresets = keyof ComponentsConfig['navBar']['center'];
 
 export type NavBarContextType = {
   size: NavBarSizes;
+  preset: NavBarPresets;
+};
+
+export type NavBarStateContextType = {
+  slotMaxWidth: number;
+  onChangeSlotMaxWidth: (width: number) => void;
 };
 
 export type NavBarSharedProps = GetProps<typeof NavBarFrame>;
 
 export interface NavBarProps extends NavBarSharedProps {
-  title?: string | ReactNode;
-  showBackButton?: boolean;
-  onBackPress?: () => void;
-  backButtonLabel?: string;
-  backButtonIcon?: IconProp;
-  headerRight?: ReactNode;
-  headerLeft?: ReactNode;
-  navigation?: {
-    goBack?: () => void;
-    canGoBack?: () => boolean;
-  };
-  route?: {
-    name?: string;
-    key?: string;
-    params?: Record<string, unknown>;
-  };
+  preset?: NavBarPresets;
 }

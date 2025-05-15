@@ -16,6 +16,14 @@ export const switchTheme = createComponentTheme(
   },
 );
 
-export const switchKnobTheme = createComponentTheme(SWITCH_KNOB_COMPONENT_NAME, (tokens) => ({
-  background: tokens['content.on-brand'],
-}));
+export const switchKnobTheme = createComponentTheme(
+  SWITCH_KNOB_COMPONENT_NAME,
+  (tokens) => ({
+    background: tokens['content.neutral-primary'],
+  }),
+  {
+    active: (tokens) => ({
+      background: tokens['content.on-brand'],
+    }),
+  },
+);

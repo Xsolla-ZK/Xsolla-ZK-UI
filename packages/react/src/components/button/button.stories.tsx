@@ -6,10 +6,10 @@ import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { Fragment, useState } from 'react';
 import { Separator } from '../separator/separator';
 import { Button } from './button';
-import type { ButtonProps } from './button.types';
+import type { ButtonProps, ButtonSizes } from './button.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const sizes = Object.keys(getComponentsConfig().button) as Array<ButtonProps['size']>;
+const sizes = Object.keys(getComponentsConfig().button) as ButtonSizes[];
 const variants = ['primary', 'secondary', 'tertiary'] as const;
 const tones = [
   'brand',

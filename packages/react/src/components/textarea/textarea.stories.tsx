@@ -2,8 +2,8 @@ import { Stack } from '@tamagui/core';
 import { BankCard, Cross, DataTable, Plus } from '@xsolla-zk/icons';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { RichIcon } from '../rich-icon/rich-icon';
-import { TextArea } from './';
-import type { InputSizes } from './input.types';
+import { TextArea } from './textarea';
+import type { InputSizes } from '../input/input.types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const sizes = Object.keys(getComponentsConfig().input) as InputSizes[];

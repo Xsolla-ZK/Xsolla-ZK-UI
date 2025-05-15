@@ -1,68 +1,75 @@
-import { isWeb, withStaticProperties } from '@tamagui/core';
-import { useCallback } from 'react';
+import { useEvent, withStaticProperties } from '@tamagui/core';
+import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
+import { isValidElement, useMemo, useState } from 'react';
+import { NavBarContext, NavBarStateContext } from './nav-bar.context';
 import {
-  NavBarAction,
-  NavBarBackButton,
+  NavBarCenter,
+  NavBarContent,
   NavBarEndSlot,
   NavBarFrame,
-  NavBarIcon,
   NavBarStartSlot,
+  NavBarSubtitle,
   NavBarTitle,
-  NavBarTitleContainer,
 } from './nav-bar.styled';
 import type { NavBarProps } from './nav-bar.types';
 import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
 
 const NavBarComponent = NavBarFrame.styleable<NavBarProps>(
-  (
-    {
-      title,
-      showBackButton = true,
-      onBackPress,
-      backButtonLabel = 'Back',
-      headerRight,
-      headerLeft,
-      navigation,
-      route,
-      children,
-      backButtonIcon,
-      ...rest
-    },
-    ref: ForwardedRef<TamaguiElement>,
-  ) => {
-    const handleBackPress = useCallback(() => {
-      if (onBackPress) {
-        onBackPress();
-        return;
-      }
+  ({ children, preset = 'default', size = '$500', ...rest }, ref: ForwardedRef<TamaguiElement>) => {
+    const childrenArray = useChildrenArray(children);
+    const { startSlot, centerSlot, endSlot } = useMemo(() => {
+      let start: ReactElement | null = null;
+      let end: ReactElement | null = null;
+      const center: ReactElement[] = [];
 
-      if (navigation?.goBack) {
-        navigation.goBack();
-      }
-    }, [onBackPress, navigation]);
+      childrenArray.forEach((child) => {
+        if (isValidElement(child)) {
+          if (child.type === NavBarStartSlot && !start) {
+            start = child;
+          } else if (child.type === NavBarEndSlot && !end) {
+            end = child;
+          } else {
+            center?.push(child);
+          }
+        }
+      });
 
-    const canGoBack = navigation?.canGoBack?.() ?? showBackButton;
+      return {
+        startSlot: start,
+        centerSlot: center,
+        endSlot: end,
+      };
+    }, [childrenArray]);
+
+    const [slotMaxWidth, setSlotMaxWidth] = useState<number>(0);
+    const onChangeSlotMaxWidth = useEvent((width: number) =>
+      setSlotMaxWidth((prev) => Math.max(prev, width)),
+    );
+
+    const ctxValues = useMemo(
+      () => ({
+        preset,
+        size,
+      }),
+      [preset, size],
+    );
 
     return (
-      <NavBarFrame {...rest} ref={ref}>
-        <NavBarStartSlot>
-          {headerLeft ||
-            (canGoBack ? (
-              <NavBarBackButton onPress={handleBackPress}>
-                {backButtonIcon ? <NavBarIcon icon={backButtonIcon} /> : `&rbrace;`}
-                {!isWeb && <NavBarTitle>{backButtonLabel}</NavBarTitle>}
-              </NavBarBackButton>
-            ) : null)}
-        </NavBarStartSlot>
-
-        <NavBarTitleContainer>
-          {typeof title === 'string' ? <NavBarTitle>{title}</NavBarTitle> : title}
-          {children}
-        </NavBarTitleContainer>
-
-        <NavBarEndSlot>{headerRight}</NavBarEndSlot>
-      </NavBarFrame>
+      <NavBarStateContext.Provider
+        slotMaxWidth={slotMaxWidth}
+        onChangeSlotMaxWidth={onChangeSlotMaxWidth}
+      >
+        <NavBarContext.Provider {...ctxValues}>
+          <NavBarFrame size={ctxValues.size} {...rest} ref={ref}>
+            <NavBarContent size={ctxValues.size}>
+              {startSlot}
+              {centerSlot}
+              {endSlot}
+            </NavBarContent>
+          </NavBarFrame>
+        </NavBarContext.Provider>
+      </NavBarStateContext.Provider>
     );
   },
 );
@@ -70,7 +77,7 @@ const NavBarComponent = NavBarFrame.styleable<NavBarProps>(
 export const NavBar = withStaticProperties(NavBarComponent, {
   StartSlot: NavBarStartSlot,
   EndSlot: NavBarEndSlot,
-  Action: NavBarAction,
+  Center: NavBarCenter,
   Title: NavBarTitle,
-  Icon: NavBarIcon,
+  Subtitle: NavBarSubtitle,
 });

@@ -21,7 +21,7 @@ export type ButtonContextType = Partial<IconsPosition> & {
 
 type ButtonSharedProps = GetProps<typeof ButtonFrame>;
 
-export interface ButtonProps extends ButtonSharedProps {
+export type ButtonProps = ButtonSharedProps & {
   tone?: ButtonTone;
-  type?: HTMLButtonElement['type'];
-}
+  // type?: HTMLButtonElement['type'];
+};

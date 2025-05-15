@@ -1,7 +1,6 @@
 import { View } from '@tamagui/core';
 import { Separator } from './separator';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ColorTokens } from '@tamagui/core';
 
 const meta = {
   component: Separator,
@@ -14,12 +13,6 @@ const meta = {
       control: 'color',
     },
     weight: { control: 'number' },
-    mt: { control: 'number' },
-    mb: { control: 'number' },
-    ml: { control: 'number' },
-    mr: { control: 'number' },
-    mx: { control: 'number' },
-    my: { control: 'number' },
   },
   args: {},
   decorators: [
@@ -41,13 +34,19 @@ export const Default: Story = {
 
 export const CustomColor: Story = {
   args: {
-    color: '#ff0000' as ColorTokens,
+    color: '#ff0000',
   },
 };
 
 export const Vertical: Story = {
   args: {
     vertical: true,
+  },
+};
+
+export const CustomWeight: Story = {
+  args: {
+    weight: 4,
   },
 };
 

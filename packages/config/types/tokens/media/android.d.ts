@@ -6,11 +6,20 @@ export declare const media: {
     md: {
         minWidth: number;
     };
+    maxMd: {
+        maxWidth: number;
+    };
     lg: {
         minWidth: number;
     };
+    maxLg: {
+        maxWidth: number;
+    };
     xl: {
         minWidth: number;
+    };
+    maxXl: {
+        maxWidth: number;
     };
 };
 //# sourceMappingURL=android.d.ts.map

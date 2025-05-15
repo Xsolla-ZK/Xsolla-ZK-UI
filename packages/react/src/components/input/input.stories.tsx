@@ -4,7 +4,7 @@ import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { useCallback, useRef, useState } from 'react';
 import { Loader } from '../loader/loader';
 import { RichIcon } from '../rich-icon/rich-icon';
-import { Input } from './';
+import { Input } from './input';
 import type { InputProps, InputSizes } from './input.types';
 import type { Meta, StoryObj } from '@storybook/react';
 

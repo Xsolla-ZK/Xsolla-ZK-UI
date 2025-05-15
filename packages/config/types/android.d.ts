@@ -558,11 +558,20 @@ export declare const androidConfig: {
         md: {
             minWidth: number;
         };
+        maxMd: {
+            maxWidth: number;
+        };
         lg: {
             minWidth: number;
         };
+        maxLg: {
+            maxWidth: number;
+        };
         xl: {
             minWidth: number;
+        };
+        maxXl: {
+            maxWidth: number;
         };
     };
     settings: {

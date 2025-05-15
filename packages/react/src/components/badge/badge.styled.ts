@@ -3,10 +3,9 @@ import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { Board } from '../board/board';
+import { BADGE_COMPONENT_NAME } from './badge.constants';
 import type { BadgeContextType, BadgeSizes, BadgeVariantSpreadExtras } from './badge.types';
 import type { GetProps, Stack } from '@tamagui/core';
-
-export const BADGE_COMPONENT_NAME = 'Badge';
 
 export const BadgeContext = createStyledContext<BadgeContextType>({
   size: '$500',

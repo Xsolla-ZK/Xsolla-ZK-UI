@@ -2,13 +2,12 @@ import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
 import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { PIMPLE_COMPONENT_NAME } from './pimple.constants';
 import type { PimpleContextType, PimpleSizes } from './pimple.types';
 
 export const PimpleContext = createStyledContext<PimpleContextType>({
   size: '$500',
 });
-
-export const PIMPLE_COMPONENT_NAME = 'Pimple';
 
 export const PimpleFrame = styled(Stack, {
   name: PIMPLE_COMPONENT_NAME,

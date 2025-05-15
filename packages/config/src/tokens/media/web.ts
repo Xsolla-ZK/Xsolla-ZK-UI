@@ -5,12 +5,21 @@
 
 export const media = {
   md: {
-    minWidth: 768,
+    minWidth: 600,
+  },
+  maxMd: {
+    maxWidth: 599,
   },
   lg: {
-    minWidth: 992,
+    minWidth: 800,
+  },
+  maxLg: {
+    maxWidth: 799,
   },
   xl: {
     minWidth: 1200,
+  },
+  maxXl: {
+    maxWidth: 1199,
   },
 };

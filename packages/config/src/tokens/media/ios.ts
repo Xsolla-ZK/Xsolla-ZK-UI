@@ -7,10 +7,19 @@ export const media = {
   md: {
     minWidth: 768,
   },
+  maxMd: {
+    maxWidth: 767,
+  },
   lg: {
     minWidth: 1024,
   },
+  maxLg: {
+    maxWidth: 1023,
+  },
   xl: {
     minWidth: 1366,
+  },
+  maxXl: {
+    maxWidth: 1365,
   },
 };
