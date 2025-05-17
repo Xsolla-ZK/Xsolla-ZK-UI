@@ -22,7 +22,7 @@ const ToastProvider = (props: ToastScopedProps<ToastProviderProps>) => {
     native,
     notificationOptions,
     label = 'Notification',
-    duration = 5000,
+    duration = 2000,
     swipeDirection = 'right',
     swipeThreshold = 50,
     children,
