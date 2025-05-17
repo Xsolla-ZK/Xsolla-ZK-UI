@@ -38,3 +38,9 @@ export type ExtractDotNotationKeys<T, Prefix extends string = ''> = {
     ? `${Prefix}${K}` | ExtractDotNotationKeys<T[K], `${Prefix}${K}.`>
     : `${Prefix}${K}`;
 }[keyof T & (string | number)];
+
+export type BoundMethod<T> = T extends (...args: infer P) => infer R ? (...args: P) => R : never;
+
+export type BoundProps<T, K extends keyof T> = Omit<T, K> & {
+  [Key in K]: BoundMethod<T[Key]>;
+};

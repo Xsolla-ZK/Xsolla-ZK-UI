@@ -8,7 +8,7 @@ import {
 import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useIconsPosition } from '@xsolla-zk/react/hooks/use-icons-position';
-import { useEffect, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { ChipsFrame, ChipFrame, ChipIcon, ChipText, ChipContext } from './chips.styled';
 import type {
   ChipProps,
@@ -34,105 +34,107 @@ const { Provider: ChipsContextProvider, useStyledContext: useChipsContextProvide
   });
 
 const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
-  (
-    {
-      children,
-      value: valueProp,
-      onValueChange,
-      defaultValue,
-      tone = 'brand',
-      variant = 'primary',
-      size = '$500',
-      multiselect = false,
-      scrollable = false,
-      ...props
-    },
-    ref: ForwardedRef<TamaguiElement>,
-  ) => {
-    const [chipsCount, setChipsCount] = useState(0);
-    const registerChip = useEvent(() => setChipsCount((v) => v + 1));
-    const unregisterChip = useEvent(() => setChipsCount((v) => v - 1));
-
-    const processedValue = useMemo(() => {
-      if (!valueProp) return undefined;
-
-      if (multiselect) {
-        if (Array.isArray(valueProp)) {
-          return new Set<ChipsValue>(valueProp);
-        }
-        return new Set<ChipsValue>();
-      }
-
-      return valueProp as ChipsValue;
-    }, [multiselect, valueProp]);
-
-    const [value, setValue] = useControllableState<ChipsContextType['value']>({
-      prop: processedValue,
-      onChange: (val: ChipsContextType['value']) => {
-        if (multiselect) {
-          (onValueChange as ChipsMultiSelectProps['onValueChange'])?.(
-            Array.from(val as Set<ChipsValue>),
-          );
-        } else {
-          (onValueChange as ChipsSingleSelectProps['onValueChange'])?.(val as ChipsValue);
-        }
+  forwardRef(
+    (
+      {
+        children,
+        value: valueProp,
+        onValueChange,
+        defaultValue,
+        tone = 'brand',
+        variant = 'primary',
+        size = '$500',
+        multiselect = false,
+        scrollable = false,
+        ...props
       },
-      defaultProp: multiselect
-        ? new Set(defaultValue as ChipsMultiValue)
-        : ((defaultValue ?? '') as ChipsValue),
-    });
+      ref: ForwardedRef<TamaguiElement>,
+    ) => {
+      const [chipsCount, setChipsCount] = useState(0);
+      const registerChip = useEvent(() => setChipsCount((v) => v + 1));
+      const unregisterChip = useEvent(() => setChipsCount((v) => v - 1));
 
-    const handleChange = useEvent<ChipsContextType['onChange']>((chipValue) => {
-      setValue((prev) => {
+      const processedValue = useMemo(() => {
+        if (!valueProp) return undefined;
+
         if (multiselect) {
-          const newSet = new Set(prev as Set<ChipsValue>);
-          if (newSet.has(chipValue)) {
-            newSet.delete(chipValue);
-          } else {
-            newSet.add(chipValue);
+          if (Array.isArray(valueProp)) {
+            return new Set<ChipsValue>(valueProp);
           }
-          return newSet;
+          return new Set<ChipsValue>();
         }
 
-        if (prev === chipValue) return '';
+        return valueProp as ChipsValue;
+      }, [multiselect, valueProp]);
 
-        return chipValue;
+      const [value, setValue] = useControllableState<ChipsContextType['value']>({
+        prop: processedValue,
+        onChange: (val: ChipsContextType['value']) => {
+          if (multiselect) {
+            (onValueChange as ChipsMultiSelectProps['onValueChange'])?.(
+              Array.from(val as Set<ChipsValue>),
+            );
+          } else {
+            (onValueChange as ChipsSingleSelectProps['onValueChange'])?.(val as ChipsValue);
+          }
+        },
+        defaultProp: multiselect
+          ? new Set(defaultValue as ChipsMultiValue)
+          : ((defaultValue ?? '') as ChipsValue),
       });
-    });
 
-    return (
-      <ChipsContextProvider
-        value={value}
-        onChange={handleChange}
-        tone={tone}
-        variant={variant}
-        size={size}
-        chipsCount={chipsCount}
-        registerChip={registerChip}
-        unregisterChip={unregisterChip}
-        multiselect={multiselect}
-      >
-        {scrollable ? (
-          <ScrollView horizontal>
+      const handleChange = useEvent<ChipsContextType['onChange']>((chipValue) => {
+        setValue((prev) => {
+          if (multiselect) {
+            const newSet = new Set(prev as Set<ChipsValue>);
+            if (newSet.has(chipValue)) {
+              newSet.delete(chipValue);
+            } else {
+              newSet.add(chipValue);
+            }
+            return newSet;
+          }
+
+          if (prev === chipValue) return '';
+
+          return chipValue;
+        });
+      });
+
+      return (
+        <ChipsContextProvider
+          value={value}
+          onChange={handleChange}
+          tone={tone}
+          variant={variant}
+          size={size}
+          chipsCount={chipsCount}
+          registerChip={registerChip}
+          unregisterChip={unregisterChip}
+          multiselect={multiselect}
+        >
+          {scrollable ? (
+            <ScrollView horizontal>
+              <ChipsFrame size={size} {...props} ref={ref}>
+                {children}
+              </ChipsFrame>
+            </ScrollView>
+          ) : (
             <ChipsFrame size={size} {...props} ref={ref}>
               {children}
             </ChipsFrame>
-          </ScrollView>
-        ) : (
-          <ChipsFrame size={size} {...props} ref={ref}>
-            {children}
-          </ChipsFrame>
-        )}
-      </ChipsContextProvider>
-    );
-  },
+          )}
+        </ChipsContextProvider>
+      );
+    },
+  ),
   {
     disableTheme: true,
   },
 );
 
 const ChipComponent = ChipFrame.styleable<ChipProps>(
-  ({ children, tone, value, variant, ...props }, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef(({ children, tone, value, variant, ...props }, ref: ForwardedRef<TamaguiElement>) => {
     const iconsPosition = useIconsPosition(children, ChipIcon);
     const ctx = useChipsContextProvider();
 
@@ -145,7 +147,7 @@ const ChipComponent = ChipFrame.styleable<ChipProps>(
     useEffect(() => {
       ctx.registerChip();
       return () => ctx.unregisterChip();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
       <ChipFrame
@@ -171,7 +173,7 @@ const ChipComponent = ChipFrame.styleable<ChipProps>(
         {children}
       </ChipFrame>
     );
-  },
+  }),
   {
     disableTheme: true,
   },

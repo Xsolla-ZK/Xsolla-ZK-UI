@@ -41,6 +41,7 @@
     "@tamagui/animations-moti": "catalog:tamagui",
     "@tamagui/checkbox-headless": "catalog:tamagui",
     "@tamagui/compose-refs": "catalog:tamagui",
+    "@tamagui/collapsible": "catalog:tamagui",
     "@tamagui/config": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
     "@tamagui/dialog": "catalog:tamagui",
@@ -60,6 +61,7 @@
     "@tamagui/use-direction": "catalog:tamagui",
     "@xsolla-zk/config": "workspace:*",
     "@xsolla-zk/icons": "workspace:*",
+    "burnt": "0.13.0",
     "libphonenumber-js": "^1.12.8",
     "react-native-reanimated": "^3.17.5",
     "react-native-svg": "catalog:"
@@ -85,7 +87,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-storybook": "^0.12.0",
-    "globals": "^15.12.0",
+    "globals": "catalog:",
     "jsdom": "^25.0.1",
     "playwright": "^1.49.0",
     "react": "*",
@@ -94,7 +96,7 @@
     "react-native": "*",
     "storybook": "catalog:storybook",
     "typescript": "catalog:",
-    "typescript-eslint": "8.32.1",
+    "typescript-eslint": "catalog:typescript-eslint",
     "vite": "catalog:",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:vitest"

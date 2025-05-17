@@ -10,7 +10,7 @@ import {
 } from '@tamagui/radio-headless';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createContext, memo, useContext } from 'react';
+import { createContext, forwardRef, memo } from 'react';
 
 import Svg, { Circle } from 'react-native-svg';
 import {
@@ -27,10 +27,9 @@ import type {
 } from './radio-group.types';
 import type { ColorTokens, TamaguiElement } from '@tamagui/core';
 import type { IconProps } from '@tamagui/helpers-icon';
-import type { RadioGroupItemContextValue } from '@tamagui/radio-headless';
-import type { ForwardedRef } from 'react';
+import type { RadioGroupContextValue, RadioGroupItemContextValue } from '@tamagui/radio-headless';
+import type { Context, ForwardedRef } from 'react';
 import type { ColorValue } from 'react-native';
-// const RadioGroupContext = createContext<RadioGroupContextValue>({});
 
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
@@ -38,7 +37,7 @@ const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
 });
 
 const RadioGroupComponent = RadioGroupFrame.styleable<RadioGroupProps>(
-  (props, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
     const {
       value,
       defaultValue,
@@ -71,16 +70,16 @@ const RadioGroupComponent = RadioGroupFrame.styleable<RadioGroupProps>(
         </RovingFocusGroup>
       </RadioGroupContext.Provider>
     );
-  },
+  }),
 );
 
 const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProps>(
-  (props, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
     const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props;
 
     const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl, native } =
       useRadioGroupItem({
-        radioGroupContext: RadioGroupContext,
+        radioGroupContext: RadioGroupContext as unknown as Context<RadioGroupContextValue>,
         value,
         id,
         labelledBy,
@@ -112,7 +111,7 @@ const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProp
         )}
       </RadioGroupItemContext.Provider>
     );
-  },
+  }),
   {
     disableTheme: true,
   },
@@ -150,7 +149,7 @@ const getIndicatorColor = (ctx: RadioGroupContextType): ColorTokens => {
 
 const RadioIndicator = (props: RadioGroupIndicatorProps) => {
   const { forceMount, ...indicatorProps } = props;
-  const ctx = useContext(RadioGroupContext);
+  const ctx = RadioGroupContext.useStyledContext();
   const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
     radioGroupItemContext: RadioGroupItemContext,
     disabled: ctx.disabled,

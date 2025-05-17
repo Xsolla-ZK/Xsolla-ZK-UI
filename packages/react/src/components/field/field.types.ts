@@ -1,4 +1,4 @@
-import type { FieldFrame } from './field.styled';
+import type { FieldFrame, FieldHintValue, FieldHint, FieldRow, FieldLabel } from './field.styled';
 import type { GetProps } from '@tamagui/core';
 import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ReactNode } from 'react';
@@ -16,3 +16,11 @@ export type FieldSharedProps = GetProps<typeof FieldFrame>;
 export type FieldProps = FieldSharedProps & {
   children?: ReactNode;
 };
+
+export type FieldLabelProps = GetProps<typeof FieldLabel>;
+
+export type FieldRowProps = GetProps<typeof FieldRow>;
+
+export type FieldHintProps = GetProps<typeof FieldHint>;
+
+export type FieldHintValueProps = GetProps<typeof FieldHintValue>;

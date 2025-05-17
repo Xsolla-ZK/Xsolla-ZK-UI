@@ -2,72 +2,76 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { isWeb, withStaticProperties } from '@tamagui/core';
-import { isValidElement, useId } from 'react';
+import { isValidElement, useId, forwardRef } from 'react';
 import { TabBarFrame, TabBarItem, TabBarItemIcon, TabBarItemTitle } from './tab-bar.styled';
 import type { TabBarProps } from './tab-bar.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
 const TabBarComponent = TabBarFrame.styleable<TabBarProps>(
-  ({ state, descriptors, navigation, ...rest }, ref: ForwardedRef<TamaguiElement>) => (
-    <TabBarFrame {...rest} ref={ref}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
+  forwardRef(({ state, descriptors, navigation, ...rest }, ref: ForwardedRef<TamaguiElement>) => {
+    const uniqueId = useId();
 
-        const isFocused = state.index === index;
+    return (
+      <TabBarFrame {...rest} ref={ref}>
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+                ? options.title
+                : route.name;
 
-        const onPress = () => {
-          if (!isWeb) {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+          const isFocused = state.index === index;
 
-            if (!isFocused && !event.defaultPrevented) {
+          const onPress = () => {
+            if (!isWeb) {
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
+
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate(route.name);
+              }
+            } else {
               navigation.navigate(route.name);
             }
-          } else {
-            navigation.navigate(route.name);
-          }
-        };
+          };
 
-        const labelComponent = isValidElement(label)
-          ? label
-          : typeof label === 'function'
-            ? label({
-                focused: isFocused,
-                color: 'black',
-                position: options.tabBarLabelPosition ?? 'below-icon',
-                children: options.title ?? route.name,
-              })
-            : label;
+          const labelComponent = isValidElement(label)
+            ? label
+            : typeof label === 'function'
+              ? label({
+                  focused: isFocused,
+                  color: 'black',
+                  position: options.tabBarLabelPosition ?? 'below-icon',
+                  children: options.title ?? route.name,
+                })
+              : label;
 
-        const icon = isValidElement(options.tabBarIcon)
-          ? options.tabBarIcon
-          : typeof options.tabBarIcon === 'function'
-            ? options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })
-            : null;
+          const icon = isValidElement(options.tabBarIcon)
+            ? options.tabBarIcon
+            : typeof options.tabBarIcon === 'function'
+              ? options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })
+              : null;
 
-        return (
-          <TabBarItem
-            key={useId() + index}
-            vertical={options.tabBarLabelPosition === 'below-icon'}
-            onPress={onPress}
-          >
-            {icon}
-            {options.tabBarShowLabel ? labelComponent : null}
-          </TabBarItem>
-        );
-      })}
-    </TabBarFrame>
-  ),
+          return (
+            <TabBarItem
+              key={uniqueId + index}
+              vertical={options.tabBarLabelPosition === 'below-icon'}
+              onPress={onPress}
+            >
+              {icon}
+              {options.tabBarShowLabel ? labelComponent : null}
+            </TabBarItem>
+          );
+        })}
+      </TabBarFrame>
+    );
+  }),
 );
 
 export const TabBar = withStaticProperties(TabBarComponent, {

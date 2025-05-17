@@ -1,162 +1,432 @@
-import { useSpring } from '@react-spring/web';
-import { Fragment, useEffect, useId, useRef, useState } from 'react';
-import { useResizeObserver } from 'usehooks-ts';
-import XZKUIRichIcon from '../rich-icon/rich-icon';
-import XZKUISvgIcon from '../svg-icon/svg-icon';
-import SvgChevronDown from '../svg-icons/chevron-down';
-import SvgChevronUp from '../svg-icons/chevron-up';
-import Styled from './accordion.styled';
-import type { XZKUIAccordionContentProps, XZKUIAccordionProps } from './accordion.types';
+/* eslint-disable max-lines */
+/* forked from @tamagui/accordion */
+/* https://github.com/tamagui/tamagui/blob/main/code/ui/accordion/src/Accordion.tsx */
 
-function XZKUIAccordion({
-  list,
-  header,
-  headerClick,
-  className,
-  bg,
-  renders,
-  children,
-}: XZKUIAccordionProps) {
-  const uniqId = useId();
-  const [isOpen, setOpen] = useState<number | boolean | null>(null);
+import { Collapsible } from '@tamagui/collapsible';
+import { createCollection } from '@tamagui/collection';
+import { useComposedRefs } from '@tamagui/compose-refs';
+import { isWeb } from '@tamagui/constants';
+import { Stack, useEvent, View } from '@tamagui/core';
+import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers';
+import { useControllableState } from '@tamagui/use-controllable-state';
+import { useDirection } from '@tamagui/use-direction';
+import { forwardRef, useCallback, useId, useRef, useState } from 'react';
+import {
+  ACCORDION_CONTEXT,
+  ACCORDION_HEADER_NAME,
+  ACCORDION_KEYS,
+  ACCORDION_NAME,
+} from './accordion.constants';
+import {
+  AccordionCollapsibleContext,
+  AccordionImplContext,
+  AccordionItemContext,
+  AccordionValueContext,
+} from './accordion.context';
+import {
+  AccordionContentFrame,
+  AccordionHeaderFrame,
+  AccordionItemFrame,
+  AccordionTriggerFrame,
+} from './accordion.styled';
+import type {
+  AccordionContentProps,
+  AccordionHeaderElement,
+  AccordionHeaderProps,
+  AccordionImplMultipleProps,
+  AccordionImplProps,
+  AccordionImplSingleProps,
+  AccordionItemElement,
+  AccordionItemProps,
+  AccordionProps,
+  AccordionScopedProps,
+  AccordionTrigger,
+  AccordionTriggerProps,
+} from './accordion.types';
+import type { TamaguiElement, ViewProps } from '@tamagui/core';
+import type { ForwardedRef, PropsWithChildren } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 
-  return (
-    <Styled.Root className={className} xzkuiBg={bg}>
-      {list ? (
-        list.map((item, idx) => {
-          const content = `${uniqId}accordion-content-${idx}`;
-          const header = `${uniqId}accordion-header-${idx}`;
-          const active = isOpen === idx;
-          const disabled = !item.content;
-          const toggle = () => setOpen((prev) => (prev === idx ? null : idx));
-          const hasCustomHandler = Boolean(item.headerClick || headerClick);
+const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION_NAME);
 
-          return (
-            <Fragment key={`accordion-list-item-${idx}`}>
-              <Styled.Header
-                aria-expanded={active}
-                aria-controls={`${content}-${idx}`}
-                aria-disabled={disabled}
-                role="button"
-                tabIndex={disabled ? -1 : 0}
-                id={header}
-                onClick={(event) => {
-                  if (item.headerClick) {
-                    return item.headerClick(event, { active });
-                  }
-                  if (headerClick) {
-                    return headerClick(event, { active });
-                  }
-                  toggle();
-                }}
-              >
-                <Styled.HeaderTitle>{item.header}</Styled.HeaderTitle>
-                {renders?.headerButton ? (
-                  typeof renders?.headerButton === 'function' ? (
-                    renders?.headerButton?.({ active })
-                  ) : (
-                    renders?.headerButton
-                  )
-                ) : (
-                  <XZKUIRichIcon
-                    component={hasCustomHandler ? 'button' : undefined}
-                    shape="squircle"
-                    size={200}
-                    bg={({ theme }) => theme.overlay.neutral}
-                    onClickCapture={hasCustomHandler ? () => toggle() : undefined}
-                  >
-                    <XZKUISvgIcon icon={active ? SvgChevronUp : SvgChevronDown} />
-                  </XZKUIRichIcon>
-                )}
-              </Styled.Header>
-              <XZKUIAccordionContent id={content} label={header} active={active}>
-                {item.content}
-              </XZKUIAccordionContent>
-            </Fragment>
-          );
-        })
-      ) : (
-        <>
-          <Styled.Header
-            aria-expanded={Boolean(isOpen)}
-            aria-controls={`${uniqId}-accordion-content`}
-            aria-disabled={!children}
-            role="button"
-            tabIndex={!children ? -1 : 0}
-            id={`${uniqId}-accordion-header`}
-            onClick={(event) => {
-              if (headerClick) {
-                return headerClick(event, { active: Boolean(isOpen) });
-              }
-              setOpen((prev) => !prev);
-            }}
-          >
-            <Styled.HeaderTitle>{header}</Styled.HeaderTitle>
-            {renders?.headerButton ? (
-              typeof renders?.headerButton === 'function' ? (
-                renders?.headerButton?.({ active: Boolean(isOpen) })
-              ) : (
-                renders?.headerButton
-              )
-            ) : (
-              <XZKUIRichIcon
-                component={headerClick ? 'button' : undefined}
-                shape="squircle"
-                size={200}
-                bg={({ theme }) => theme.overlay.neutral}
-                onClickCapture={headerClick ? () => setOpen((prev) => !prev) : undefined}
-              >
-                <XZKUISvgIcon icon={isOpen ? SvgChevronUp : SvgChevronDown} />
-              </XZKUIRichIcon>
-            )}
-          </Styled.Header>
-          <XZKUIAccordionContent
-            id={`${uniqId}-accordion-content`}
-            label={`${uniqId}-accordion-header`}
-            active={Boolean(isOpen)}
-          >
-            {children}
-          </XZKUIAccordionContent>
-        </>
-      )}
-    </Styled.Root>
-  );
-}
+const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext } =
+  AccordionImplContext;
 
-function XZKUIAccordionContent({ active, id, label, children }: XZKUIAccordionContentProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { height = 0 } = useResizeObserver({
-    ref,
-    box: 'border-box',
-  });
+const { Provider: AccordionValueProvider, useStyledContext: useAccordionValueContext } =
+  AccordionValueContext;
 
-  const style = useSpring({
-    from: { height: 0, opacity: 0 },
-    to: {
-      height: active ? height : 0,
-      opacity: active ? 1 : 0,
-    },
-  });
+const { Provider: AccordionCollapsibleProvider, useStyledContext: useAccordionCollapsibleContext } =
+  AccordionCollapsibleContext;
 
-  const ready = useRef(false);
+const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
+  AccordionItemContext;
 
-  useEffect(() => {
-    ready.current = true;
-  }, []);
+/* -----------------------------------------------------------------------------------------------*/
 
-  return (
-    <Styled.ContentWrapper style={ready.current ? style : undefined}>
-      <Styled.Content
-        ref={ref}
-        aria-labelledby={label}
-        id={id}
-        role="region"
-        suppressHydrationWarning
+const AccordionImpl = forwardRef<TamaguiElement, AccordionImplProps>(
+  (props: AccordionScopedProps<AccordionImplProps>, forwardedRef) => {
+    const {
+      __scopeAccordion,
+      disabled,
+      dir,
+      orientation = 'vertical',
+      size,
+      ...accordionProps
+    } = props;
+
+    const accordionRef = useRef<TamaguiElement>(null);
+    const composedRef = useComposedRefs(accordionRef, forwardedRef);
+    const getItems = useCollection(__scopeAccordion || ACCORDION_CONTEXT);
+    const direction = useDirection(dir);
+    const isDirectionLTR = direction === 'ltr';
+    const handleKeyDown = composeEventHandlers(props.onKeyDown, (event) => {
+      if (!ACCORDION_KEYS.includes(event.key)) return;
+      const target = event.target as HTMLElement;
+      const triggerCollection = getItems().filter((item) => {
+        const el = item.ref.current as { disabled?: boolean } | null;
+        return !el?.disabled;
+      });
+      const triggerIndex = triggerCollection.findIndex((item) => item.ref.current === target);
+      const triggerCount = triggerCollection.length;
+
+      if (triggerIndex === -1) return;
+
+      // Prevents page scroll while user is navigating
+      event.preventDefault();
+
+      let nextIndex = triggerIndex;
+      const homeIndex = 0;
+      const endIndex = triggerCount - 1;
+
+      const moveNext = () => {
+        nextIndex = triggerIndex + 1;
+        if (nextIndex > endIndex) {
+          nextIndex = homeIndex;
+        }
+      };
+
+      const movePrev = () => {
+        nextIndex = triggerIndex - 1;
+        if (nextIndex < homeIndex) {
+          nextIndex = endIndex;
+        }
+      };
+
+      switch (event.key) {
+        case 'Home':
+          nextIndex = homeIndex;
+          break;
+        case 'End':
+          nextIndex = endIndex;
+          break;
+        case 'ArrowRight':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
+              moveNext();
+            } else {
+              movePrev();
+            }
+          }
+          break;
+        case 'ArrowDown':
+          if (orientation === 'vertical') {
+            moveNext();
+          }
+          break;
+        case 'ArrowLeft':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
+              movePrev();
+            } else {
+              moveNext();
+            }
+          }
+          break;
+        case 'ArrowUp':
+          if (orientation === 'vertical') {
+            movePrev();
+          }
+          break;
+      }
+
+      const clampedIndex = nextIndex % triggerCount;
+      triggerCollection[clampedIndex].ref.current?.focus();
+    });
+
+    return (
+      <AccordionImplProvider
+        scope={__scopeAccordion}
+        disabled={disabled}
+        direction={dir}
+        orientation={orientation}
+        size={size}
       >
-        {children}
-      </Styled.Content>
-    </Styled.ContentWrapper>
+        <Collection.Slot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
+          <Stack
+            data-orientation={orientation}
+            ref={composedRef}
+            {...accordionProps}
+            {...(isWeb && {
+              onKeyDown: handleKeyDown,
+            })}
+          />
+        </Collection.Slot>
+      </AccordionImplProvider>
+    );
+  },
+);
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionImplSingle = forwardRef<
+  TamaguiElement,
+  AccordionScopedProps<AccordionImplSingleProps>
+>((props: AccordionScopedProps<AccordionImplSingleProps>, forwardedRef) => {
+  const {
+    value: valueProp,
+    defaultValue,
+    control,
+    onValueChange = () => {},
+    collapsible = false,
+    ...accordionSingleProps
+  } = props;
+
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue || '',
+    onChange: onValueChange,
+  });
+
+  return (
+    <AccordionValueProvider
+      scope={props.__scopeAccordion}
+      value={value ? [value] : []}
+      onItemOpen={setValue}
+      onItemClose={useCallback(() => collapsible && setValue(''), [setValue, collapsible])}
+    >
+      <AccordionCollapsibleProvider scope={props.__scopeAccordion} collapsible={collapsible}>
+        <AccordionImpl {...accordionSingleProps} ref={forwardedRef} />
+      </AccordionCollapsibleProvider>
+    </AccordionValueProvider>
   );
+});
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionImplMultiple = forwardRef<
+  TamaguiElement,
+  AccordionScopedProps<AccordionImplMultipleProps>
+>((props: AccordionScopedProps<AccordionImplMultipleProps>, forwardedRef) => {
+  const {
+    value: valueProp,
+    defaultValue,
+    onValueChange = () => {},
+    ...accordionMultipleProps
+  } = props;
+
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue || [],
+    onChange: onValueChange,
+  });
+
+  const handleItemOpen = useCallback(
+    (itemValue: string) => setValue((prevValue = []) => [...prevValue, itemValue]),
+    [setValue],
+  );
+
+  const handleItemClose = useCallback(
+    (itemValue: string) =>
+      setValue((prevValue = []) => prevValue.filter((value) => value !== itemValue)),
+    [setValue],
+  );
+
+  return (
+    <AccordionValueProvider
+      scope={props.__scopeAccordion}
+      value={value || []}
+      onItemOpen={handleItemOpen}
+      onItemClose={handleItemClose}
+    >
+      <AccordionCollapsibleProvider scope={props.__scopeAccordion} collapsible={true}>
+        <AccordionImpl {...accordionMultipleProps} ref={forwardedRef} />
+      </AccordionCollapsibleProvider>
+    </AccordionValueProvider>
+  );
+});
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionItem = AccordionItemFrame.styleable<AccordionScopedProps<AccordionItemProps>>(
+  forwardRef((props, forwardedRef: ForwardedRef<AccordionItemElement>) => {
+    const { __scopeAccordion, value, ...accordionItemProps } = props;
+    const accordionContext = useAccordionContext(__scopeAccordion);
+    const valueContext = useAccordionValueContext(__scopeAccordion);
+    const triggerId = useId();
+    const open = (value && valueContext.value.includes(value)) || false;
+    const disabled = accordionContext.disabled || props.disabled;
+
+    return (
+      <AccordionItemProvider
+        scope={__scopeAccordion}
+        open={open}
+        disabled={disabled}
+        triggerId={triggerId}
+      >
+        <AccordionItemFrame
+          size={accordionContext.size}
+          data-orientation={accordionContext.orientation}
+          data-state={open ? 'open' : 'closed'}
+          __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+          {...accordionItemProps}
+          ref={forwardedRef}
+          disabled={disabled}
+          open={open}
+          onOpenChange={(open) => {
+            if (open) {
+              valueContext.onItemOpen(value);
+            } else {
+              valueContext.onItemClose(value);
+            }
+          }}
+        />
+      </AccordionItemProvider>
+    );
+  }),
+);
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionHeader = AccordionHeaderFrame.styleable(
+  forwardRef<AccordionHeaderElement, AccordionHeaderProps>(
+    (props: AccordionScopedProps<AccordionHeaderProps>, forwardedRef) => {
+      const { __scopeAccordion, ...headerProps } = props;
+      const accordionContext = useAccordionContext(__scopeAccordion);
+      const itemContext = useAccordionItemContext(__scopeAccordion);
+
+      return (
+        <AccordionHeaderFrame
+          data-orientation={accordionContext.orientation}
+          data-state={getState(itemContext.open)}
+          data-disabled={itemContext.disabled ? '' : undefined}
+          size={accordionContext.size}
+          {...headerProps}
+          ref={forwardedRef}
+        />
+      );
+    },
+  ),
+);
+
+AccordionHeader.displayName = ACCORDION_HEADER_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionTrigger = AccordionTriggerFrame.styleable<
+  AccordionScopedProps<AccordionTriggerProps>
+>(
+  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+    const { __scopeAccordion, ...triggerProps } = props;
+    const accordionContext = useAccordionContext(__scopeAccordion);
+    const itemContext = useAccordionItemContext(__scopeAccordion);
+    const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion);
+
+    return (
+      <Collection.ItemSlot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
+        <AccordionTriggerFrame
+          // @ts-ignore: collapsible scope
+          __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+          aria-disabled={(itemContext.open && !collapsibleContext.collapsible) || undefined}
+          data-orientation={accordionContext.orientation}
+          id={itemContext.triggerId}
+          {...triggerProps}
+          ref={forwardedRef}
+        />
+      </Collection.ItemSlot>
+    );
+  }),
+);
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionContent = AccordionContentFrame.styleable<
+  AccordionScopedProps<AccordionContentProps>
+>(
+  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+    const { __scopeAccordion, ...contentProps } = props;
+    const accordionContext = useAccordionContext(__scopeAccordion);
+    const itemContext = useAccordionItemContext(__scopeAccordion);
+    return (
+      <AccordionContentFrame
+        role="region"
+        aria-labelledby={itemContext.triggerId}
+        data-orientation={accordionContext.orientation}
+        size={accordionContext.size}
+        // @ts-ignore: collapsible scope
+        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+        {...contentProps}
+        ref={forwardedRef}
+      />
+    );
+  }),
+);
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const HeightAnimator = View.styleable<ViewProps>(
+  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
+    const itemContext = useAccordionItemContext();
+    const { children, ...rest } = props as PropsWithChildren<Omit<ViewProps, 'children'>>;
+    const [height, setHeight] = useState(0);
+
+    const onLayout = useEvent(({ nativeEvent }: LayoutChangeEvent) => {
+      if (nativeEvent.layout.height) {
+        setHeight(nativeEvent.layout.height);
+      }
+    });
+
+    return (
+      <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
+        <View position="absolute" width="100%" onLayout={onLayout}>
+          {children}
+        </View>
+      </View>
+    );
+  }),
+);
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const AccordionComponent = forwardRef<TamaguiElement, AccordionScopedProps<AccordionProps>>(
+  (props, forwardedRef) => {
+    const { type, size = 'medium', ...accordionProps } = props;
+    const singleProps = accordionProps as AccordionImplSingleProps;
+    const multipleProps = accordionProps as AccordionImplMultipleProps;
+
+    return (
+      <Collection.Provider __scopeCollection={props.__scopeAccordion || ACCORDION_CONTEXT}>
+        {type === 'multiple' ? (
+          <AccordionImplMultiple size={size} {...multipleProps} ref={forwardedRef} />
+        ) : (
+          <AccordionImplSingle size={size} {...singleProps} ref={forwardedRef} />
+        )}
+      </Collection.Provider>
+    );
+  },
+);
+
+AccordionComponent.displayName = ACCORDION_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+function getState(open?: boolean) {
+  return open ? 'open' : 'closed';
 }
 
-export default XZKUIAccordion;
+export const Accordion = withStaticProperties(AccordionComponent, {
+  Trigger: AccordionTrigger,
+  Header: AccordionHeader,
+  Content: AccordionContent,
+  Item: AccordionItem,
+  HeightAnimator: HeightAnimator,
+});

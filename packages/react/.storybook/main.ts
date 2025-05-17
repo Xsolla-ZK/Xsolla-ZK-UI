@@ -3,6 +3,8 @@ import path from 'path';
 
 const config: StorybookConfig = {
   stories: [
+    '../src/components/accordion/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/toast/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/semantic-text/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/separator/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/button/*.stories.@(js|jsx|mjs|ts|tsx)',

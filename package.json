@@ -29,9 +29,9 @@
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",
     "@types/node": "catalog:",
-    "@types/react": "catalog:react18",
-    "@typescript-eslint/eslint-plugin": "8.32.1",
-    "@typescript-eslint/parser": "8.32.1",
+    "@types/react": "catalog:react19",
+    "@typescript-eslint/eslint-plugin": "catalog:typescript-eslint",
+    "@typescript-eslint/parser": "catalog:typescript-eslint",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "eslint": "catalog:eslint9",
@@ -40,13 +40,21 @@
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "^5.4.0",
     "fs-extra": "^11.2.0",
-    "globals": "^15.12.0",
+    "globals": "catalog:",
     "prettier": "catalog:",
     "storybook": "catalog:storybook",
     "typescript": "catalog:",
-    "typescript-eslint": "8.32.1",
+    "typescript-eslint": "catalog:typescript-eslint",
     "vite": "catalog:",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "catalog:react19",
+      "react-dom": "catalog:react19",
+      "@types/react": "catalog:react19",
+      "@types/react-dom": "catalog:react19"
+    }
   },
   "packageManager": "pnpm@10.3.0",
   "engines": {

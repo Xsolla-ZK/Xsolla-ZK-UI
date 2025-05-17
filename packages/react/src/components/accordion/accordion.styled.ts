@@ -1,69 +1,72 @@
-import styled from '@emotion/styled';
-import { animated } from '@react-spring/web';
-import pickCustomColor from '@xsolla-zk/react/utils/color/pick-custom-color';
-import type { XZKUIBoardBaseProps } from '../board/board.types';
-import type { XZKUIStyledProps } from '@xsolla-zk/react/types/theme';
+import { Collapsible } from '@tamagui/collapsible';
+import { Stack, styled } from '@tamagui/core';
+import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import {
+  ACCORDION_ITEM_COMPONENT_NAME,
+  ACCORDION_TRIGGER_COMPONENT_NAME,
+} from './accordion.constants';
+import type { AccordionSizes } from './accordion.types';
 
-type StyledProps = XZKUIStyledProps<XZKUIBoardBaseProps>;
+export const AccordionItemFrame = styled(Collapsible, {
+  name: ACCORDION_ITEM_COMPONENT_NAME,
 
-const Root = styled('div')<StyledProps>(
-  ({ theme, xzkuiBg }) => `
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-radius: ${theme.common.radius[500]};
-    background-color: ${xzkuiBg ? pickCustomColor(theme, xzkuiBg) : theme.theme.overlay.neutral};
-    color: ${theme.theme.content.neutralPrimary};
-  `,
-);
+  variants: {
+    size: (val: AccordionSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.accordion.board[val];
 
-const Header = styled('div')(
-  ({ theme }) => `
-    display: flex;
-    align-items: center;
-    gap: ${theme.common.spacing[200]};
-    padding: ${theme.common.spacing[200]};
-    padding-left: ${theme.common.spacing[350]};
-    width: 100%;
-    user-select: none;
-    cursor: pointer;
+      if (!componentProps) {
+        return {};
+      }
+      const { borderRadius } = getMappedStyles(componentProps.frame);
+      return {
+        borderRadius,
+      };
+    },
+  } as const,
+});
 
-    &:not(:first-of-type) {
-    }
-  `,
-);
+export const AccordionTriggerFrame = styled(Collapsible.Trigger, {
+  name: ACCORDION_TRIGGER_COMPONENT_NAME,
+  flexDirection: 'row',
+  cursor: 'pointer',
 
-const HeaderTitle = styled('div')(
-  ({ theme }) => `
-    flex: 1;
-    margin: 0;
-    font: ${theme.common.typography.compact[300].default};
-  `,
-);
+  defaultVariants: {},
+});
 
-const ContentWrapper = styled(animated.div)(
-  () => `
-    margin: 0;
-    overflow: hidden;
-    height: 0;
-    opacity: 0;
-  `,
-);
+export const AccordionHeaderFrame = styled(Stack, {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
 
-const Content = styled('div')(
-  ({ theme }) => `
-    padding: ${theme.common.spacing[200]} ${theme.common.spacing[350]};
-    margin: 0;
-    word-wrap: break-word;
-  `,
-);
+  variants: {
+    size: (val: AccordionSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.accordion.size[val];
+      const boardProps = config.accordion.board[val];
+      if (!componentProps || !boardProps) {
+        return {};
+      }
+      return {
+        ...getMappedStyles(componentProps.header),
+        ...getMappedStyles(boardProps.frame),
+      };
+    },
+  } as const,
+});
 
-const XZKUIAccordionStyled = {
-  Root,
-  Header,
-  HeaderTitle,
-  ContentWrapper,
-  Content,
-};
+export const AccordionContentFrame = styled(Collapsible.Content, {
+  variants: {
+    size: (val: AccordionSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.accordion.board[val];
 
-export default XZKUIAccordionStyled;
+      if (!componentProps) {
+        return {};
+      }
+      return getMappedStyles(componentProps.frame);
+    },
+  } as const,
+
+  defaultVariants: {},
+});

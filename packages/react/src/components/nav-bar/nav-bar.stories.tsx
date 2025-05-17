@@ -1,5 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { Stack, View } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { ArrowLeft, Cross } from '@xsolla-zk/icons';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { useState } from 'react';

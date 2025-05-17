@@ -19,6 +19,6 @@ export type BadgeContextType = Partial<IconsPosition> & {
 
 type BadgeSharedProps = GetProps<typeof BadgeFrame>;
 
-export interface BadgeProps extends BadgeSharedProps {
+export type BadgeProps = BadgeSharedProps & {
   tone?: BadgeTone;
-}
+};

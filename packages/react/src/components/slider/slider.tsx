@@ -18,7 +18,7 @@ import { useDirection } from '@tamagui/use-direction';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { getSafeTokenValue } from '@xsolla-zk/react/utils/get-safe-token-value';
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { ARROW_KEYS, BACK_KEYS, PAGE_KEYS } from './slider.constants';
 import {
   SliderContext,
@@ -51,7 +51,7 @@ import type {
   SliderVerticalProps,
 } from './slider.types';
 import type { GestureReponderEvent, GetProps, ScopedProps, TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, KeyboardEvent } from 'react';
 import type { View } from 'react-native';
 
 export const { Provider: SliderProvider, useStyledContext: useSliderContext } = SliderContext;
@@ -59,81 +59,83 @@ export const { Provider: SliderProvider, useStyledContext: useSliderContext } = 
 type SliderScopedProps<T> = ScopedProps<T, 'Slider'>;
 
 const SliderImpl = SliderFrame.styleable<SliderImplProps>(
-  (props: SliderScopedProps<SliderImplProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const {
-      __scopeSlider,
-      onSlideStart,
-      onSlideMove,
-      onSlideEnd,
-      onHomeKeyDown,
-      onEndKeyDown,
-      onStepKeyDown,
-      ...sliderProps
-    } = props;
-    const context = useSliderContext(__scopeSlider);
-    return (
-      <SliderFrame
-        {...sliderProps}
-        data-orientation={sliderProps.orientation}
-        ref={forwardedRef}
-        {...(isWeb && {
-          onKeyDown: (event: React.KeyboardEvent) => {
-            if (event.key === 'Home') {
-              onHomeKeyDown(event);
-              // Prevent scrolling to page start
-              event.preventDefault();
-            } else if (event.key === 'End') {
-              onEndKeyDown(event);
-              // Prevent scrolling to page end
-              event.preventDefault();
-            } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
-              onStepKeyDown(event);
-              // Prevent scrolling for directional key presses
-              event.preventDefault();
+  forwardRef(
+    (props: SliderScopedProps<SliderImplProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
+      const {
+        __scopeSlider,
+        onSlideStart,
+        onSlideMove,
+        onSlideEnd,
+        onHomeKeyDown,
+        onEndKeyDown,
+        onStepKeyDown,
+        ...sliderProps
+      } = props;
+      const context = useSliderContext(__scopeSlider);
+      return (
+        <SliderFrame
+          {...sliderProps}
+          data-orientation={sliderProps.orientation}
+          ref={forwardedRef}
+          {...(isWeb && {
+            onKeyDown: (event: KeyboardEvent) => {
+              if (event.key === 'Home') {
+                onHomeKeyDown(event);
+                // Prevent scrolling to page start
+                event.preventDefault();
+              } else if (event.key === 'End') {
+                onEndKeyDown(event);
+                // Prevent scrolling to page end
+                event.preventDefault();
+              } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
+                onStepKeyDown(event);
+                // Prevent scrolling for directional key presses
+                event.preventDefault();
+              }
+            },
+          })}
+          onMoveShouldSetResponderCapture={() => true}
+          onScrollShouldSetResponder={() => true}
+          onScrollShouldSetResponderCapture={() => true}
+          onMoveShouldSetResponder={() => true}
+          onStartShouldSetResponder={() => true}
+          // onStartShouldSetResponderCapture={() => true}
+          onResponderTerminationRequest={() => false}
+          onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
+            const target = event.target as unknown as TamaguiElement | number;
+            const thumbIndex = context.thumbs.get(target as TamaguiElement);
+            const isStartingOnThumb = thumbIndex !== undefined;
+
+            // Prevent browser focus behaviour because we focus a thumb manually when values change.
+            // Touch devices have a delay before focusing so won't focus if touch immediately moves
+            // away from target (sliding). We want thumb to focus regardless.
+            if (isWeb && target instanceof HTMLElement) {
+              if (context.thumbs.has(target)) {
+                target.focus();
+              }
             }
-          },
-        })}
-        onMoveShouldSetResponderCapture={() => true}
-        onScrollShouldSetResponder={() => true}
-        onScrollShouldSetResponderCapture={() => true}
-        onMoveShouldSetResponder={() => true}
-        onStartShouldSetResponder={() => true}
-        // onStartShouldSetResponderCapture={() => true}
-        onResponderTerminationRequest={() => false}
-        onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
-          const target = event.target as unknown as TamaguiElement | number;
-          const thumbIndex = context.thumbs.get(target as TamaguiElement);
-          const isStartingOnThumb = thumbIndex !== undefined;
 
-          // Prevent browser focus behaviour because we focus a thumb manually when values change.
-          // Touch devices have a delay before focusing so won't focus if touch immediately moves
-          // away from target (sliding). We want thumb to focus regardless.
-          if (isWeb && target instanceof HTMLElement) {
-            if (context.thumbs.has(target)) {
-              target.focus();
+            // Thumbs won't receive focus events on native, so we have to manually
+            // set the value index to change when sliding starts on a thumb.
+            if (!isWeb && isStartingOnThumb) {
+              context.valueIndexToChangeRef.current = thumbIndex;
             }
-          }
 
-          // Thumbs won't receive focus events on native, so we have to manually
-          // set the value index to change when sliding starts on a thumb.
-          if (!isWeb && isStartingOnThumb) {
-            context.valueIndexToChangeRef.current = thumbIndex;
-          }
-
-          onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track');
-        })}
-        onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
-          event.stopPropagation();
-          // const target = event.target as HTMLElement
-          onSlideMove(event);
-        })}
-        onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
-          // const target = event.target as HTMLElement
-          onSlideEnd(event);
-        })}
-      />
-    );
-  },
+            onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track');
+          })}
+          onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
+            event.stopPropagation();
+            // const target = event.target as HTMLElement
+            onSlideMove(event);
+          })}
+          onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
+            // const target = event.target as HTMLElement
+            onSlideEnd(event);
+          })}
+        />
+      );
+    },
+  ),
 );
 
 const activeSliderMeasureListeners = new Set<(...args: unknown[]) => unknown>();
@@ -217,7 +219,7 @@ const SliderHorizontal = forwardRef<TamaguiElement, SliderHorizontalProps>(
           activeSliderMeasureListeners.delete(debouncedMeasure);
           io.disconnect();
         };
-      }, []);
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
     }
 
     return (
@@ -278,7 +280,7 @@ function useOnDebouncedWindowResize<T extends (...args: unknown[]) => unknown>(
       clearTimeout(last);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 const SliderVertical = forwardRef<View, SliderVerticalProps>(
@@ -433,94 +435,96 @@ const getThumbSize = (val: SliderSizes) => {
 };
 
 const SliderKnob = SliderKnobFrame.styleable<SliderKnobProps>(
-  (props: SliderScopedProps<SliderKnobProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props;
-    const context = useSliderContext(__scopeSlider);
-    const orientation = useSliderOrientationContext(__scopeSlider);
-    const [thumb, setThumb] = useState<TamaguiElement | null>(null);
-    const composedRefs = useComposedRefs(forwardedRef, setThumb);
+  forwardRef(
+    (props: SliderScopedProps<SliderKnobProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
+      const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props;
+      const context = useSliderContext(__scopeSlider);
+      const orientation = useSliderOrientationContext(__scopeSlider);
+      const [thumb, setThumb] = useState<TamaguiElement | null>(null);
+      const composedRefs = useComposedRefs(forwardedRef, setThumb);
 
-    // We cast because index could be `-1` which would return undefined
-    const value = context.values[index] as number | undefined;
-    const percent =
-      value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max);
-    const label = getLabel(index, context.values.length);
-    const sizeIn = sizeProp ?? context.size;
-    const [size, setSize] = useState(() => {
-      // for SSR
-      const estimatedSize = getSafeTokenValue(getThumbSize(sizeIn ?? '$500').width);
-      return estimatedSize as number;
-    });
+      // We cast because index could be `-1` which would return undefined
+      const value = context.values[index] as number | undefined;
+      const percent =
+        value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max);
+      const label = getLabel(index, context.values.length);
+      const sizeIn = sizeProp ?? context.size;
+      const [size, setSize] = useState(() => {
+        // for SSR
+        const estimatedSize = getSafeTokenValue(getThumbSize(sizeIn ?? '$500').width);
+        return estimatedSize as number;
+      });
 
-    const thumbInBoundsOffset = size
-      ? getThumbInBoundsOffset(size, percent, orientation.direction)
-      : 0;
+      const thumbInBoundsOffset = size
+        ? getThumbInBoundsOffset(size, percent, orientation.direction)
+        : 0;
 
-    useEffect(() => {
-      if (thumb) {
-        context.thumbs.set(thumb, index);
-        return () => {
-          context.thumbs.delete(thumb);
-        };
-      }
-    }, [thumb, context.thumbs, index]);
-
-    const positionalStyles =
-      context.orientation === 'horizontal'
-        ? {
-            x: thumbInBoundsOffset - size / 2,
-            y: -size / 2,
-            top: '50%',
-            ...(size === 0 && {
-              top: 'auto',
-              bottom: 'auto',
-            }),
-          }
-        : {
-            x: -size / 2,
-            y: size / 2,
-            left: '50%',
-            ...(size === 0 && {
-              left: 'auto',
-              right: 'auto',
-            }),
+      useEffect(() => {
+        if (thumb) {
+          context.thumbs.set(thumb, index);
+          return () => {
+            context.thumbs.delete(thumb);
           };
+        }
+      }, [thumb, context.thumbs, index]);
 
-    return (
-      <SliderKnobFrame
-        ref={composedRefs}
-        role="slider"
-        aria-label={props['aria-label'] || label}
-        aria-valuemin={context.min}
-        aria-valuenow={value}
-        aria-valuemax={context.max}
-        aria-orientation={context.orientation}
-        data-orientation={context.orientation}
-        data-disabled={context.disabled ? '' : undefined}
-        tabIndex={context.disabled ? undefined : 0}
-        animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
-        {...(positionalStyles as Pick<SliderKnobProps, 'x' | 'y' | 'top' | 'left'>)}
-        {...{
-          [orientation.startEdge]: `${percent}%`,
-        }}
-        size={sizeIn}
-        {...thumbProps}
-        onLayout={(e) => {
-          setSize(e.nativeEvent.layout[orientation.sizeProp]);
-        }}
-        /**
-         * There will be no value on initial render while we work out the index so we hide thumbs
-         * without a value, otherwise SSR will render them in the wrong position before they
-         * snap into the correct position during hydration which would be visually jarring for
-         * slower connections.
-         */
-        // style={value === undefined ? { display: 'none' } : props.style}
-        onFocus={composeEventHandlers(props.onFocus, () => {
-          context.valueIndexToChangeRef.current = index;
-        })}
-      />
-    );
-  },
+      const positionalStyles =
+        context.orientation === 'horizontal'
+          ? {
+              x: thumbInBoundsOffset - size / 2,
+              y: -size / 2,
+              top: '50%',
+              ...(size === 0 && {
+                top: 'auto',
+                bottom: 'auto',
+              }),
+            }
+          : {
+              x: -size / 2,
+              y: size / 2,
+              left: '50%',
+              ...(size === 0 && {
+                left: 'auto',
+                right: 'auto',
+              }),
+            };
+
+      return (
+        <SliderKnobFrame
+          ref={composedRefs}
+          role="slider"
+          aria-label={props['aria-label'] || label}
+          aria-valuemin={context.min}
+          aria-valuenow={value}
+          aria-valuemax={context.max}
+          aria-orientation={context.orientation}
+          data-orientation={context.orientation}
+          data-disabled={context.disabled ? '' : undefined}
+          tabIndex={context.disabled ? undefined : 0}
+          animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
+          {...(positionalStyles as Pick<SliderKnobProps, 'x' | 'y' | 'top' | 'left'>)}
+          {...{
+            [orientation.startEdge]: `${percent}%`,
+          }}
+          size={sizeIn}
+          {...thumbProps}
+          onLayout={(e) => {
+            setSize(e.nativeEvent.layout[orientation.sizeProp]);
+          }}
+          /**
+           * There will be no value on initial render while we work out the index so we hide thumbs
+           * without a value, otherwise SSR will render them in the wrong position before they
+           * snap into the correct position during hydration which would be visually jarring for
+           * slower connections.
+           */
+          // style={value === undefined ? { display: 'none' } : props.style}
+          onFocus={composeEventHandlers(props.onFocus, () => {
+            context.valueIndexToChangeRef.current = index;
+          })}
+        />
+      );
+    },
+  ),
   {
     staticConfig: {
       memo: true,
@@ -539,7 +543,7 @@ const SliderComponent = forwardRef((props: SliderScopedProps<SliderProps>, forwa
     minStepsBetweenThumbs = 0,
     defaultValue = [min],
     value,
-    onValueChange = () => {},
+    onValueChange = () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     size: sizeProp = '$500',
     onSlideEnd,
     onSlideMove,
