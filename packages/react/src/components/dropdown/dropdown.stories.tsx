@@ -1,10 +1,10 @@
+import { Stack } from '@tamagui/core';
 import { Popover } from '@tamagui/popover';
 import { getComponentsConfig } from '@xsolla-zk/react/utils';
 import { Button } from '../button/button';
 import { Dropdown } from './dropdown';
 import type { DropdownSizes } from './dropdown.types';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Stack } from '@tamagui/core';
 
 const sizes = Object.keys(getComponentsConfig().dropdown) as DropdownSizes[];
 
@@ -21,11 +21,10 @@ const meta = {
       options: sizes,
       table: { defaultValue: { summary: '500' }, type: { summary: sizes.join('|') } },
     },
-    onClick: { table: { disable: true } },
   },
   args: {},
   play: async ({ canvasElement }) => {},
-} satisfies Meta<typeof Dropdown>;
+} as Meta<typeof Dropdown>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

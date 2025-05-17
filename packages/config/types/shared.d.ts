@@ -8,6 +8,7 @@ export declare const sharedConfig: {
         fade: string;
         colorChange: string;
         tabSwitch: string;
+        medium: string;
     }>;
     shorthands: {
         bg: "backgroundColor";

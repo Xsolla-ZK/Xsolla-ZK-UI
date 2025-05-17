@@ -591,6 +591,7 @@ export declare const iosConfig: {
         fade: string;
         colorChange: string;
         tabSwitch: string;
+        medium: string;
     }>;
     shorthands: {
         bg: "backgroundColor";

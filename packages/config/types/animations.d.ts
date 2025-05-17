@@ -7,5 +7,6 @@ export declare const animations: import("@tamagui/core").AnimationDriver<{
     fade: string;
     colorChange: string;
     tabSwitch: string;
+    medium: string;
 }>;
 //# sourceMappingURL=animations.d.ts.map

@@ -19,4 +19,5 @@ export const animations = createAnimations({
   fade: `${easings.fade} 120ms`,
   colorChange: `${easings.fade} 120ms`,
   tabSwitch: `${easings.tabSwitch} 450ms`,
+  medium: 'ease-in 300ms',
 });

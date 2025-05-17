@@ -4,6 +4,7 @@ import type {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
 } from '@tamagui/switch-headless';
+import type { BoundProps } from '@xsolla-zk/react/types/helpers';
 import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { SwitchProps as NativeSwitchProps } from 'react-native';
 
@@ -17,10 +18,9 @@ export type SwitchContextType = {
 
 export type SwitchSharedProps = GetProps<typeof SwitchFrame>;
 
-export type SwitchExtraProps = Omit<HeadlessSwitchExtraProps, 'onCheckedChange'> & {
+export type SwitchExtraProps = BoundProps<HeadlessSwitchExtraProps, 'onCheckedChange'> & {
   native?: NativeValue<'mobile' | 'ios' | 'android'>;
   nativeProps?: NativeSwitchProps;
-  onCheckedChange?: (checked: boolean) => void;
 };
 
 export type SwitchProps = SwitchSharedProps & SwitchExtraProps;

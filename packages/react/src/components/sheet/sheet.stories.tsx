@@ -12,7 +12,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   component: Sheet,
-  // subcomponents: { Thumb: XZKUISwitch.Thumb },
   parameters: {
     layout: 'centered',
   },

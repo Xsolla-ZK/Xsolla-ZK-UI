@@ -1,10 +1,11 @@
+import { forwardRef } from 'react';
 import { BoardFrame, BoardOverlay } from './board.styled';
 import type { BoardProps } from './board.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
 export const Board = BoardFrame.styleable<BoardProps>(
-  ({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
+  forwardRef(({ children, ...props }, ref: ForwardedRef<TamaguiElement>) => (
     <BoardFrame
       group={props.pressable}
       tag={props.pressable ? 'button' : undefined}
@@ -14,5 +15,5 @@ export const Board = BoardFrame.styleable<BoardProps>(
       {props.pressable && <BoardOverlay />}
       {children}
     </BoardFrame>
-  ),
+  )),
 );

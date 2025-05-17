@@ -1,7 +1,7 @@
 import { useComposedRefs, useTheme, withStaticProperties } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
 import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
-import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, isValidElement, useEffect, useMemo, useRef, useState } from 'react';
 import {
   InputContext,
   InputElement,
@@ -15,26 +15,9 @@ import type { ForwardedRef, ReactElement } from 'react';
 
 type CSSVariables = Record<string, string>;
 
-// const useSplitStyles = (props: Record<string, unknown>) => {
-//   const stackValidStyles = validStyles || {};
-
-//   const styleProps: Record<string, unknown> = {};
-//   const otherProps: Record<string, unknown> = {};
-
-//   Object.keys(props).forEach((key) => {
-//     if (stackValidStyles[key as keyof typeof validStyles]) {
-//       styleProps[key] = props[key];
-//     } else {
-//       otherProps[key] = props[key];
-//     }
-//   });
-
-//   return { styleProps, otherProps };
-// };
-
 const InputComponent = InputElement.styleable<InputProps>(
-  (
-    {
+  forwardRef((_props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+    const {
       size = '$500',
       children,
       allowFontScaling,
@@ -87,9 +70,7 @@ const InputComponent = InputElement.styleable<InputProps>(
       error,
       frameStyles,
       ...props
-    },
-    forwardedRef: ForwardedRef<TamaguiElement>,
-  ) => {
+    } = _props;
     const childrenArray = useChildrenArray(children);
     const [focused, setFocused] = useState(false);
     const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -300,7 +281,7 @@ const InputComponent = InputElement.styleable<InputProps>(
         </InputFrame>
       </>
     );
-  },
+  }),
   {
     disableTheme: true,
   },

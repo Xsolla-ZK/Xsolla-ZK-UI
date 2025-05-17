@@ -28,7 +28,7 @@ export type TabsContextType = {
   tabsCount: number;
   activeTabLayout?: TabLayout;
   setActiveTabLayout: (layout: TabLayout) => void;
-  containerRef: RefObject<TamaguiElement> | null;
+  containerRef: RefObject<TamaguiElement | null> | null;
 };
 
 type RovingFocusGroupProps = ComponentPropsWithoutRef<typeof RovingFocusGroup>;

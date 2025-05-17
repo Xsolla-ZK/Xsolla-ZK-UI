@@ -1,11 +1,12 @@
-// rework tamagui implementation of Label component
+// rework tamagui implementation of Label component @tamagui/label
 // https://github.com/tamagui/tamagui/blob/main/code/ui/label/src/Label.tsx
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { useComposedRefs } from '@tamagui/compose-refs';
 import { isWeb } from '@tamagui/core';
 import { createContext } from '@tamagui/create-context';
 import { focusFocusable } from '@tamagui/focusable';
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef, forwardRef } from 'react';
 import { LABEL_COMPONENT_NAME } from './label.constants';
 import { LabelFrame } from './label.styled';
 import type { LabelProps } from './label.types';
@@ -26,7 +27,7 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(
 );
 
 export const Label = LabelFrame.styleable<LabelProps>(
-  (props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
     const { htmlFor, id: idProp, ...labelProps } = props;
     const controlRef = useRef<HTMLElement | null>(null);
     const ref = useRef(null);
@@ -105,7 +106,7 @@ export const Label = LabelFrame.styleable<LabelProps>(
         />
       </LabelProvider>
     );
-  },
+  }),
 );
 
 export const useLabelContext = (element?: HTMLElement | null) => {

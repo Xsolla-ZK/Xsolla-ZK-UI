@@ -1,15 +1,15 @@
-import { type TamaguiElement } from '@tamagui/core';
-import { useId, useRef } from 'react';
+import { forwardRef, useId, useRef } from 'react';
 import { Input } from '../input';
 import { OTPFieldFrame } from './otp-field.styled';
 import type { OTPFieldProps } from './otp-field.types';
+import type { TamaguiElement } from '@tamagui/core';
 import type { ChangeEvent, ClipboardEvent, ForwardedRef, KeyboardEvent } from 'react';
 
 const replaceAt = (string: string, index: number, replace: string) =>
   string.substring(0, index) + replace + string.substring(index + 1);
 
 const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
-  (props, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
     const {
       length = 4,
       id: propId,
@@ -21,7 +21,8 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       defaultValue,
       ...rest
     } = props;
-    const id = propId ?? useId();
+    const uniqueId = useId();
+    const id = propId ?? uniqueId;
     const inputRefs = useRef<Array<HTMLInputElement | null>>(
       Array(length).fill(null) as Array<HTMLInputElement | null>,
     );
@@ -132,7 +133,9 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
             }}
             name={name ? `${name}.${idx}` : undefined}
             onChange={(e) => handleChange(e as ChangeEvent<HTMLInputElement>, idx)}
-            ref={(elem: HTMLInputElement) => (inputRefs.current[idx] = elem)}
+            ref={(elem: HTMLInputElement) => {
+              inputRefs.current[idx] = elem;
+            }}
             defaultValue={value === undefined ? defaultValue?.[idx] : undefined}
             value={value !== undefined ? (value?.[idx] ?? val) : undefined}
             onKeyDown={(e) => handleKeyDown(e, idx)}
@@ -147,7 +150,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
         ))}
       </OTPFieldFrame>
     );
-  },
+  }),
 );
 
 export const OTPField = OTPFieldComponent;

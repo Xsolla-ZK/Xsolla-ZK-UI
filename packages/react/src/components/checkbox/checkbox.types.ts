@@ -1,6 +1,7 @@
 import type { CheckboxFrame } from './checkbox.styled';
 import type { CheckboxExtraProps, CheckedState } from '@tamagui/checkbox-headless';
 import type { GetProps, NativeValue, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
+import type { BoundProps } from '@xsolla-zk/react/types/helpers';
 import type { XORIconProps } from '@xsolla-zk/react/types/icon';
 import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
@@ -18,7 +19,7 @@ export type CheckboxContextType = {
 type CheckboxSharedProps = GetProps<typeof CheckboxFrame>;
 
 export type CheckboxProps = CheckboxSharedProps &
-  CheckboxExtraProps & {
+  BoundProps<CheckboxExtraProps, 'onCheckedChange'> & {
     native?: NativeValue<'web'>;
   };
 
