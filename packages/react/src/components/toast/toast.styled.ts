@@ -8,6 +8,9 @@ import {
 
 export const ToastTitle = styled(Typography, {
   name: TOAST_TITLE_COMPONENT_NAME,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 
   variants: {} as const,
 
@@ -16,6 +19,9 @@ export const ToastTitle = styled(Typography, {
 
 export const ToastDescription = styled(Typography, {
   name: TOAST_DESCRIPTION_COMPONENT_NAME,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 
   variants: {} as const,
 

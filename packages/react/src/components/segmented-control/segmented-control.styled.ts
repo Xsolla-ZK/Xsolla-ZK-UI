@@ -1,54 +1,162 @@
-import styled from '@emotion/styled';
-import { buttonClasses, Button as MuiButton } from '@mui/base';
-import shouldForwardProp from '@xsolla-zk/react/utils/should-forward-prop';
-import type { XZKUISegmentedControlBaseProps } from './segmented-control.types';
-import type { XZKUIStyledProps } from '@xsolla-zk/react/types/theme';
+import { createStyledContext, Stack } from '@tamagui/core';
+import { styled } from '@tamagui/core';
+import { createIconComponent } from '@xsolla-zk/react/utils';
+import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
+import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { Typography } from '../typography';
+import {
+  SEGMENTED_CONTROL_COMPONENT_NAME,
+  SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
+} from './segmented-control.constants';
+import type {
+  SegmentedControlContextValue,
+  SegmentedControlSegmentPlacement,
+  SegmentedControlSizes,
+} from './segmented-control.types';
+import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 
-type StyledProps = XZKUIStyledProps<XZKUISegmentedControlBaseProps>;
+export const SegmentedControlContext = createStyledContext<SegmentedControlContextValue>({
+  baseId: '',
+  value: '',
+  onChange: () => {},
+  orientation: 'horizontal',
+  dir: 'ltr',
+  activationMode: 'manual',
+  size: '$500',
+  registerSegment: () => {},
+  unregisterSegment: () => {},
+  segments: {},
+  containerRef: null,
+});
 
-const Control = styled(MuiButton)(
-  ({ theme }) => `
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    border: ${theme.common.stroke[100]} solid transparent;
-    color: ${theme.theme.content.neutralSecondary};
+export const SegmentedControlFrame = styled(Stack, {
+  name: SEGMENTED_CONTROL_COMPONENT_NAME,
+  display: 'flex',
+  flexDirection: 'row',
 
-    &.${buttonClasses.active} {
-      border-color: ${theme.theme.border.neutralTertiary};
-      background-color: ${theme.theme.overlay.neutral};
-      color: ${theme.theme.content.neutralPrimary};
-    }
-  `,
+  borderColor: '$borderColor',
+
+  variants: {
+    backgrounded: {
+      true: {
+        backgroundColor: '$background',
+      },
+    },
+    orientation: {
+      horizontal: {
+        flexDirection: 'row',
+      },
+      vertical: {
+        flexDirection: 'column',
+      },
+    },
+    size: (val: SegmentedControlSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.segmentedControl[val];
+      if (!componentProps) {
+        return {};
+      }
+      return getMappedStyles(componentProps.frame);
+    },
+  } as const,
+  defaultVariants: {
+    size: '$500',
+    backgrounded: false,
+  },
+});
+
+export const SegmentedControlSegmentFrame = styled(Stack, {
+  name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
+  tag: 'button',
+
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexGrow: 1,
+  cursor: 'pointer',
+  backgroundColor: '$background',
+  borderColor: '$borderColor',
+  animation: 'colorChange',
+
+  pressStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+  // focusStyle: {
+  //   outlineWidth: 2,
+  //   outlineColor: '$background',
+  //   outlineStyle: 'solid',
+  // },
+  variants: {
+    placement: {
+      left: {},
+      right: {},
+    },
+    active: {
+      true: {},
+      false: {},
+    },
+    size: (val: SegmentedControlSizes, extras) => {
+      const { props } = extras as VariantSpreadExtras<
+        GetProps<typeof Stack> & { placement?: SegmentedControlSegmentPlacement; active?: boolean }
+      >;
+      const config = getComponentsConfig();
+      const componentProps = config.segment[val];
+      if (!componentProps) {
+        return {};
+      }
+
+      const { borderRadius, ...restStyles } = getMappedStyles(componentProps.frame);
+
+      if (props.placement === 'left') {
+        return {
+          ...restStyles,
+          borderTopLeftRadius: borderRadius,
+          borderBottomLeftRadius: borderRadius,
+        };
+      }
+      if (props.placement === 'right') {
+        return {
+          ...restStyles,
+          borderTopRightRadius: borderRadius,
+          borderBottomRightRadius: borderRadius,
+        };
+      }
+      return restStyles;
+    },
+    disabled: {
+      true: {
+        opacity: 0.5,
+        pointerEvents: 'none',
+      },
+    },
+  } as const,
+});
+
+export const SegmentedControlSegmentText = styled(Typography, {
+  name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
+  color: '$color',
+  fontSize: '$500',
+  userSelect: 'none',
+  animation: 'colorChange',
+
+  variants: {
+    size: (val: SegmentedControlSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.segment[val];
+      if (!componentProps) {
+        return {};
+      }
+      return getMappedStyles(componentProps.label);
+    },
+  } as const,
+});
+
+export const SegmentedControlSegmentIcon = createIconComponent(
+  SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
+  SegmentedControlContext,
+  'segment',
 );
-
-const Root = styled('div', {
-  shouldForwardProp,
-})<StyledProps>(
-  ({ theme }) => `
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border: ${theme.common.stroke[100]} solid ${theme.theme.border.neutralSecondary};
-    padding: ${theme.common.spacing[100]};
-    box-sizing: border-box;
-    ${Control} {
-      flex: 1;
-    }
-  `,
-  ({ theme, xzkuiSize }) => theme.components.segmentedControl.sizes[xzkuiSize],
-  ({ theme, xzkuiSize }) => ({
-    [`${Control}`]: theme.components.segmentedControl.control.sizes[xzkuiSize],
-  }),
-);
-
-const XZKUISegmentedControlStyled = {
-  Root,
-  Control,
-};
-
-export default XZKUISegmentedControlStyled;

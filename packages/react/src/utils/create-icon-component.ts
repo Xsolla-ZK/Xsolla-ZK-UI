@@ -22,12 +22,11 @@ export function createIconComponent<ContextType extends { size: string }, Config
   context: ReturnType<typeof createStyledContext<ContextType>>,
   configKey: ConfigKey,
   extra: {
-    getColorFn: (ctx: ContextType) => ColorTokens;
-  } = {
-    getColorFn: () => '$color',
-  },
+    getColorFn?: (ctx: ContextType) => ColorTokens;
+    props?: Omit<XORIconProps, 'icon' | 'children'>;
+  } = {},
 ) {
-  const { getColorFn } = extra;
+  const { getColorFn = () => '$color' } = extra;
 
   return function IconComponent({ children, icon, ...rest }: XORIconProps) {
     const ctx = useContext(context.context);
@@ -67,6 +66,7 @@ export function createIconComponent<ContextType extends { size: string }, Config
         flexGrow: 0,
         flexShrink: 0,
         flexBasis: 'auto',
+        ...extra.props,
         ...rest,
       } as IconProps);
     }
@@ -79,6 +79,7 @@ export function createIconComponent<ContextType extends { size: string }, Config
           flexGrow: 0,
           flexShrink: 0,
           flexBasis: 'auto',
+          ...extra.props,
           ...rest,
         } as {})
       : null;

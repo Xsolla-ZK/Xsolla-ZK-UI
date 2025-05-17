@@ -14,6 +14,8 @@ import {
   sliderThemes,
   tabBarThemes,
   sheetThemes,
+  progressBarThemes,
+  segmentedControlThemes,
 } from './components';
 export * from './components';
 export * from './utils';
@@ -36,6 +38,8 @@ const componentsTheme = {
   ...sliderThemes,
   ...tabBarThemes,
   ...sheetThemes,
+  ...progressBarThemes,
+  ...segmentedControlThemes,
 };
 
 export { componentsTheme };

@@ -1,5 +1,8 @@
 import { Stack } from '@tamagui/core';
+import { Cross } from '@xsolla-zk/icons';
 import { Button } from '../button';
+import { RichIcon } from '../rich-icon';
+import { Typography } from '../typography';
 import { ToastProvider } from './provider/toast-provider';
 import { Toast } from './toast';
 import { ToastViewport, useToastController, useToastState } from '.';
@@ -39,8 +42,14 @@ function ToastBase(props: ToastProps) {
     >
       <Toast.Title>Toast Title</Toast.Title>
       <Toast.Description>Toast Description</Toast.Description>
-      <Toast.Action altText="Toast Action 1">Toast Action</Toast.Action>
-      <Toast.Close>Toast Close</Toast.Close>
+      <Toast.Action altText="Toast Action 1">
+        <Typography>Action</Typography>
+      </Toast.Action>
+      <Toast.Close>
+        <RichIcon>
+          <RichIcon.Icon icon={Cross} />
+        </RichIcon>
+      </Toast.Close>
     </Toast>
   );
 }
@@ -49,7 +58,7 @@ function ToastShowHide() {
   const toast = useToastController();
 
   return (
-    <Stack flexDirection="row" justifyContent="center">
+    <Stack flexDirection="row" justifyContent="center" gap={12}>
       <Button
         onPress={() => {
           toast.show('Success!', {
@@ -57,14 +66,14 @@ function ToastShowHide() {
           });
         }}
       >
-        Show
+        <Button.Text>Show</Button.Text>
       </Button>
       <Button
         onPress={() => {
           toast.hide();
         }}
       >
-        Hide
+        <Button.Text>Hide</Button.Text>
       </Button>
     </Stack>
   );

@@ -3,8 +3,8 @@ import path from 'path';
 
 const config: StorybookConfig = {
   stories: [
+    // '../src/components/toast/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/accordion/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../src/components/toast/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/semantic-text/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/separator/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/button/*.stories.@(js|jsx|mjs|ts|tsx)',
@@ -30,6 +30,7 @@ const config: StorybookConfig = {
     '../src/components/slider/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/dropdown/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/components/sheet/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/components/progress-bar/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../src/docs/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   // stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],

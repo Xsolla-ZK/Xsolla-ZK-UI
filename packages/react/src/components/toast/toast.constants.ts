@@ -7,6 +7,7 @@ export const TOAST_DESCRIPTION_COMPONENT_NAME = 'ToastDescription';
 export const TOAST_ACTION_COMPONENT_NAME = 'ToastAction';
 export const TOAST_CLOSE_COMPONENT_NAME = 'ToastClose';
 export const TOAST_ANNOUNCE_EXCLUDE_COMPONENT_NAME = 'ToastAnnounceExclude';
+export const TOAST_IMPL_COMPONENT_NAME = 'ToastImpl';
 
 // Viewport
 export const TOAST_VIEWPORT_NAME = 'ToastViewport';

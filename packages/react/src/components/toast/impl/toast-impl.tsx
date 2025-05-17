@@ -21,7 +21,7 @@ import { Collection, useToastProviderContext } from '../provider/toast-provider'
 import { TOAST_CONTEXT, TOAST_VIEWPORT_PAUSE, TOAST_VIEWPORT_RESUME } from '../toast.constants';
 import { ToastImplFrame } from './toast-impl.styled';
 import type { SwipeDirection } from '../provider/toast-provider.types';
-import type { ToastScopedProps } from '../toast.types';
+import type { ToastScopedProps, ToastSizes } from '../toast.types';
 import type { ToastImplProps } from './toast-impl.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { Animated, PanResponderGestureState } from 'react-native';
@@ -29,6 +29,7 @@ import type { Animated, PanResponderGestureState } from 'react-native';
 const { Provider: ToastInteractiveProvider, useStyledContext: useToastInteractiveContext } =
   createStyledContext({
     onClose: () => {},
+    size: '$500' as ToastSizes,
   });
 
 const ToastImpl = forwardRef<TamaguiElement, ToastImplProps>(
@@ -218,6 +219,7 @@ const ToastImpl = forwardRef<TamaguiElement, ToastImplProps>(
           <ToastInteractiveProvider
             key={props.id}
             scope={__scopeToast}
+            size={toastProps.size}
             onClose={() => {
               handleClose();
             }}
@@ -234,7 +236,7 @@ const ToastImpl = forwardRef<TamaguiElement, ToastImplProps>(
               <Theme forceClassName name={themeName}>
                 <AnimatedView
                   {...panResponder?.panHandlers}
-                  style={[{ margin: 'auto' }, animatedStyles]}
+                  style={[{ margin: 'auto', maxWidth: '100%' }, animatedStyles]}
                 >
                   <Collection.ItemSlot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
                     <ToastImplFrame

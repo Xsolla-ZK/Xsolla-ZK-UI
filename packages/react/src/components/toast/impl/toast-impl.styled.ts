@@ -1,21 +1,17 @@
 import { styled, Stack } from '@tamagui/core';
 import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { TOAST_IMPL_COMPONENT_NAME } from '../toast.constants';
 import type { ToastSizes } from '../toast.types';
 
 export const ToastImplFrame = styled(Stack, {
-  name: 'ToastImpl',
+  name: TOAST_IMPL_COMPONENT_NAME,
 
-  // backgroundColor: '$color6',
-  // borderRadius: '$10',
-  // paddingHorizontal: '$5',
-  // paddingVertical: '$2',
-  // marginHorizontal: 'auto',
-  // marginVertical: '$1',
-  focusStyle: {
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineColor: '$outlineColor',
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  overflow: 'hidden',
+
+  backgroundColor: '$overlay.neutral',
+  backdropFilter: 'blur(200px)',
 
   variants: {
     size: (val: ToastSizes) => {
