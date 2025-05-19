@@ -4,8 +4,8 @@ import { Input } from '../input/input';
 import { InputContext, InputEndSlot, InputStartSlot } from '../input/input.styled';
 import type { InputProps } from '../input/input.types';
 
-const TextAreaBase = Input.styleable<InputProps>(
-  forwardRef(({ rows, ...props }, ref: ForwardedRef<HTMLInputElement>) => (
+const TextAreaBase = Input.styleable(
+  forwardRef(({ rows, ...props }: InputProps, ref: ForwardedRef<HTMLInputElement>) => (
     <Input {...props} rows={rows} tag="textarea" whiteSpace="pre-wrap" ref={ref} />
   )),
 );

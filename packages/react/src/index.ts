@@ -16,6 +16,7 @@ import {
   sheetThemes,
   progressBarThemes,
   segmentedControlThemes,
+  inlineInputThemes,
 } from './components';
 export * from './components';
 export * from './utils';
@@ -40,6 +41,7 @@ const componentsTheme = {
   ...sheetThemes,
   ...progressBarThemes,
   ...segmentedControlThemes,
+  ...inlineInputThemes,
 };
 
 export { componentsTheme };

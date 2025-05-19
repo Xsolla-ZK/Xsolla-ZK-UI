@@ -17,6 +17,7 @@ export type AccordionImplContextValue = {
   direction: AccordionImplProps['dir'];
   orientation: AccordionImplProps['orientation'];
   size: AccordionSizes;
+  withBoard: boolean;
 };
 
 export type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string };
@@ -64,7 +65,7 @@ export interface AccordionImplSingleProps extends AccordionImplProps {
    * Whether an accordion item can be collapsed after it has been opened.
    * @default false
    */
-  collapsible?: boolean;
+  toggleable?: boolean;
 }
 
 export interface AccordionImplMultipleProps extends AccordionImplProps {
@@ -113,6 +114,8 @@ export interface AccordionImplProps extends PrimitiveDivProps {
   onKeyDown?: (event: KeyboardEvent) => void;
 
   size?: AccordionSizes;
+
+  withBoard?: boolean;
 }
 
 export interface AccordionItemProps

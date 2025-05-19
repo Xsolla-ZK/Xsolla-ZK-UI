@@ -2,11 +2,13 @@ import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { createElement } from 'react';
+import { TextInput } from 'react-native';
 import {
   INPUT_COMPONENT_NAME,
   INPUT_END_SLOT_COMPONENT_NAME,
   INPUT_START_SLOT_COMPONENT_NAME,
 } from './input.constants';
+import { inputSharedStyledOptions } from './input.shared';
 import type { InputContextType, InputSizes } from './input.types';
 import type { GetProps, StyledContext } from '@tamagui/core';
 import type { ReactNode } from 'react';
@@ -81,11 +83,11 @@ export const InputStartSlot = createInputSlot(INPUT_START_SLOT_COMPONENT_NAME, I
 export const InputEndSlot = createInputSlot(INPUT_END_SLOT_COMPONENT_NAME, InputContext);
 
 export const InputElement = styled(
-  Text,
+  TextInput,
   {
     name: INPUT_COMPONENT_NAME,
     context: InputContext,
-    tag: 'input',
+    // tag: 'input',
 
     alignSelf: 'stretch',
     borderRadius: 0,
@@ -121,15 +123,7 @@ export const InputElement = styled(
       },
     } as const,
   },
-  {
-    isInput: true,
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-    } as const,
-
-    validStyles: Text.staticConfig.validStyles,
-  },
+  inputSharedStyledOptions,
 );
 
 export function createInputSlot(name: string, context: StyledContext<InputContextType>) {

@@ -2,7 +2,6 @@
 /* forked from @tamagui/accordion */
 /* https://github.com/tamagui/tamagui/blob/main/code/ui/accordion/src/Accordion.tsx */
 
-import { Collapsible } from '@tamagui/collapsible';
 import { createCollection } from '@tamagui/collection';
 import { useComposedRefs } from '@tamagui/compose-refs';
 import { isWeb } from '@tamagui/constants';
@@ -71,6 +70,7 @@ const AccordionImpl = forwardRef<TamaguiElement, AccordionImplProps>(
       dir,
       orientation = 'vertical',
       size,
+      withBoard = false,
       ...accordionProps
     } = props;
 
@@ -160,6 +160,7 @@ const AccordionImpl = forwardRef<TamaguiElement, AccordionImplProps>(
         direction={dir}
         orientation={orientation}
         size={size}
+        withBoard={withBoard}
       >
         <Collection.Slot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
           <Stack
@@ -187,7 +188,7 @@ const AccordionImplSingle = forwardRef<
     defaultValue,
     control,
     onValueChange = () => {},
-    collapsible = false,
+    toggleable = false,
     ...accordionSingleProps
   } = props;
 
@@ -197,14 +198,16 @@ const AccordionImplSingle = forwardRef<
     onChange: onValueChange,
   });
 
+  const handleItemClose = useCallback(() => setValue(''), [setValue]);
+
   return (
     <AccordionValueProvider
       scope={props.__scopeAccordion}
       value={value ? [value] : []}
       onItemOpen={setValue}
-      onItemClose={useCallback(() => collapsible && setValue(''), [setValue, collapsible])}
+      onItemClose={handleItemClose}
     >
-      <AccordionCollapsibleProvider scope={props.__scopeAccordion} collapsible={collapsible}>
+      <AccordionCollapsibleProvider scope={props.__scopeAccordion} toggleable={toggleable}>
         <AccordionImpl {...accordionSingleProps} ref={forwardedRef} />
       </AccordionCollapsibleProvider>
     </AccordionValueProvider>
@@ -248,7 +251,7 @@ const AccordionImplMultiple = forwardRef<
       onItemOpen={handleItemOpen}
       onItemClose={handleItemClose}
     >
-      <AccordionCollapsibleProvider scope={props.__scopeAccordion} collapsible={true}>
+      <AccordionCollapsibleProvider scope={props.__scopeAccordion} toggleable={true}>
         <AccordionImpl {...accordionMultipleProps} ref={forwardedRef} />
       </AccordionCollapsibleProvider>
     </AccordionValueProvider>
@@ -275,6 +278,7 @@ const AccordionItem = AccordionItemFrame.styleable<AccordionScopedProps<Accordio
       >
         <AccordionItemFrame
           size={accordionContext.size}
+          withBoard={accordionContext.withBoard}
           data-orientation={accordionContext.orientation}
           data-state={open ? 'open' : 'closed'}
           __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
@@ -310,6 +314,7 @@ const AccordionHeader = AccordionHeaderFrame.styleable(
           data-state={getState(itemContext.open)}
           data-disabled={itemContext.disabled ? '' : undefined}
           size={accordionContext.size}
+          withBoard={accordionContext.withBoard}
           {...headerProps}
           ref={forwardedRef}
         />
@@ -336,7 +341,7 @@ const AccordionTrigger = AccordionTriggerFrame.styleable<
         <AccordionTriggerFrame
           // @ts-ignore: collapsible scope
           __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
-          aria-disabled={(itemContext.open && !collapsibleContext.collapsible) || undefined}
+          aria-disabled={(itemContext.open && !collapsibleContext.toggleable) || undefined}
           data-orientation={accordionContext.orientation}
           id={itemContext.triggerId}
           {...triggerProps}
@@ -362,6 +367,7 @@ const AccordionContent = AccordionContentFrame.styleable<
         aria-labelledby={itemContext.triggerId}
         data-orientation={accordionContext.orientation}
         size={accordionContext.size}
+        withBoard={accordionContext.withBoard}
         // @ts-ignore: collapsible scope
         __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
         {...contentProps}

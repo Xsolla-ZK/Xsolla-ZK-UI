@@ -752,7 +752,9 @@ export declare const navBar: {
     };
     center: {
         default: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             title: {
                 typography: {
                     base: string;
@@ -768,7 +770,9 @@ export declare const navBar: {
             };
         };
         prominent: {
-            gap: string;
+            frame: {
+                gap: string;
+            };
             title: {
                 typography: {
                     base: string;
@@ -1435,7 +1439,7 @@ export declare const toast: {
                 $lg: string;
                 $xl: string;
             };
-            marginTop: {
+            marginVertical: {
                 base: string;
                 $md: string;
                 $xl: string;
@@ -2200,7 +2204,9 @@ export declare const components: {
         };
         center: {
             default: {
-                gap: string;
+                frame: {
+                    gap: string;
+                };
                 title: {
                     typography: {
                         base: string;
@@ -2216,7 +2222,9 @@ export declare const components: {
                 };
             };
             prominent: {
-                gap: string;
+                frame: {
+                    gap: string;
+                };
                 title: {
                     typography: {
                         base: string;
@@ -2883,7 +2891,7 @@ export declare const components: {
                     $lg: string;
                     $xl: string;
                 };
-                marginTop: {
+                marginVertical: {
                     base: string;
                     $md: string;
                     $xl: string;

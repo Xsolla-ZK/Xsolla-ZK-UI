@@ -87,7 +87,7 @@ export const Multiple: Story = {
 export const CollapsibleAll: Story = {
   args: {
     type: 'single',
-    collapsible: true,
+    toggleable: true,
   },
   render: (args) => <AccordionComponent {...args} />,
 };
@@ -103,7 +103,7 @@ export const ExpandedByDefault: Story = {
 export const StandaloneCustomBg: Story = {
   args: {
     type: 'single',
-    collapsible: true,
+    toggleable: true,
   },
   render: (args) => <AccordionComponent {...args} gap="unset" backgroundColor="$absinthe.700" />,
 };
@@ -125,7 +125,7 @@ export const StandaloneCustomBg: Story = {
 export const StandaloneHeaderTriggerIconOnly: Story = {
   args: {
     type: 'single',
-    collapsible: true,
+    toggleable: true,
   },
   render: (args) => (
     <Stack padding={40}>
