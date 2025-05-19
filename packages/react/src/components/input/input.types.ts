@@ -6,6 +6,8 @@ import type { TextInputProps } from 'react-native';
 
 export type InputSizes = keyof ComponentsConfig['input'];
 
+export type InputCSSVariables = Record<string, string>;
+
 export type InputContextType = {
   size: InputSizes;
   error: boolean;
@@ -39,22 +41,24 @@ type DetailedInputProps = Omit<
   'className' | 'children' | 'value' | 'size' | ExcludePropsUnion
 >;
 
+export type InputElementBaseProps = GetProps<typeof InputElement>;
+
 export type InputElementProps = DetailedInputProps &
-  GetProps<typeof InputElement> &
+  InputElementBaseProps &
   Omit<TextInputProps, ExcludePropsUnion> & {
     type?: HTMLInputTypeAttribute;
     rows?: number;
     minRows?: number;
     maxRows?: number;
     tag?: 'input' | 'textarea';
+    size?: InputSizes;
+    error?: boolean;
+    placeholderTextColor?: string;
+    selectionColor?: string;
+    caretColor?: string;
   };
 
 export interface InputProps extends InputElementProps {
   frameStyles?: StackStyle;
-  size?: InputSizes;
   children?: ReactNode;
-  error?: boolean;
-  placeholderTextColor?: string;
-  selectionColor?: string;
-  caretColor?: string;
 }

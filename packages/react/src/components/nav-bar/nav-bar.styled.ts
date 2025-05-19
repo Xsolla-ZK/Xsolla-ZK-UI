@@ -99,10 +99,8 @@ export const NavBarCenter = styled(Stack, {
         return {};
       }
 
-      const { title, subtitle, ...styleProps } = componentProps;
-
       return {
-        ...getMappedStyles(styleProps), // TODO: move gap to center.{preset}.frame
+        ...getMappedStyles(componentProps.frame),
         alignItems: val === 'default' ? 'center' : 'flex-start',
       };
     },

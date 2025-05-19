@@ -752,7 +752,9 @@ export const navBar = {
   },
   center: {
     default: {
-      gap: '$space.50',
+      frame: {
+        gap: '$space.50',
+      },
       title: {
         typography: {
           base: 'compact.300.accent',
@@ -768,7 +770,9 @@ export const navBar = {
       },
     },
     prominent: {
-      gap: '$space.50',
+      frame: {
+        gap: '$space.50',
+      },
       title: {
         typography: {
           base: 'compact.300.accent',
@@ -1435,7 +1439,7 @@ export const toast = {
         $lg: '$platform.layout.margin-horizontal.lg',
         $xl: '$platform.layout.margin-horizontal.xl',
       },
-      marginTop: {
+      marginVertical: {
         base: '$space.450',
         $md: '$space.650',
         $xl: '$space.900',

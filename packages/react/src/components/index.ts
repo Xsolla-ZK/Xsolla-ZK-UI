@@ -14,6 +14,7 @@ export * from './loader';
 export * from './label';
 export * from './textarea';
 export * from './input';
+export * from './inline-input';
 export * from './flex-button';
 export * from './field';
 export * from './chips';

@@ -5,13 +5,22 @@ import {
   ACCORDION_ITEM_COMPONENT_NAME,
   ACCORDION_TRIGGER_COMPONENT_NAME,
 } from './accordion.constants';
-import type { AccordionSizes } from './accordion.types';
+import type { AccordionImplContextValue, AccordionSizes } from './accordion.types';
+import type { VariantSpreadExtras } from '@tamagui/core';
 
 export const AccordionItemFrame = styled(Collapsible, {
   name: ACCORDION_ITEM_COMPONENT_NAME,
 
   variants: {
-    size: (val: AccordionSizes) => {
+    withBoard: {
+      true: {},
+      false: {},
+    },
+    size: (val: AccordionSizes, extras) => {
+      const { props } = extras as VariantSpreadExtras<Pick<AccordionImplContextValue, 'withBoard'>>;
+      if (!props.withBoard) {
+        return {};
+      }
       const config = getComponentsConfig();
       const componentProps = config.accordion.board[val];
 
@@ -38,18 +47,24 @@ export const AccordionHeaderFrame = styled(Stack, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+  userSelect: 'none',
 
   variants: {
-    size: (val: AccordionSizes) => {
+    withBoard: {
+      true: {},
+      false: {},
+    },
+    size: (val: AccordionSizes, extras) => {
+      const { props } = extras as VariantSpreadExtras<Pick<AccordionImplContextValue, 'withBoard'>>;
       const config = getComponentsConfig();
       const componentProps = config.accordion.size[val];
       const boardProps = config.accordion.board[val];
-      if (!componentProps || !boardProps) {
+      if (!componentProps || (props.withBoard && !boardProps)) {
         return {};
       }
       return {
         ...getMappedStyles(componentProps.header),
-        ...getMappedStyles(boardProps.frame),
+        ...(props.withBoard ? getMappedStyles(boardProps.frame) : {}),
       };
     },
   } as const,
@@ -57,7 +72,15 @@ export const AccordionHeaderFrame = styled(Stack, {
 
 export const AccordionContentFrame = styled(Collapsible.Content, {
   variants: {
-    size: (val: AccordionSizes) => {
+    withBoard: {
+      true: {},
+      false: {},
+    },
+    size: (val: AccordionSizes, extras) => {
+      const { props } = extras as VariantSpreadExtras<Pick<AccordionImplContextValue, 'withBoard'>>;
+      if (!props.withBoard) {
+        return {};
+      }
       const config = getComponentsConfig();
       const componentProps = config.accordion.board[val];
 
