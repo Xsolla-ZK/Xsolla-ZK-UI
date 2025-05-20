@@ -7,29 +7,27 @@ import {
   withStaticProperties,
 } from '@tamagui/core';
 import { FloatingOverrideContext } from '@tamagui/floating';
-import {
-  PopoverAnchor,
-  PopoverArrow,
-  PopoverClose,
-  PopoverContent,
-  PopoverContext,
-  PopoverTrigger,
-  useFloatingContext,
-  usePopoverContext,
-} from '@tamagui/popover';
+// import {
+//   PopoverAnchor,
+//   PopoverArrow,
+//   PopoverClose,
+//   PopoverContent,
+//   PopoverContext,
+//   PopoverTrigger,
+//   useFloatingContext,
+//   usePopoverContext,
+// } from '@tamagui/popover';
 import { Popper } from '@tamagui/popper';
 import { ScrollView } from '@tamagui/scroll-view';
-import { SheetController } from '@tamagui/sheet';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { forwardRef, useCallback, useId, useImperativeHandle, useRef, useState } from 'react';
 import { Sheet } from '../sheet';
-import type { DropdownSizes } from './dropdown.types';
-import type { ScopedProps, TamaguiElement } from '@tamagui/core';
+import { SheetController } from '../sheet/sheet-controller';
+import type { DropdownScopedProps, DropdownSizes } from './dropdown.types';
+import type { TamaguiElement } from '@tamagui/core';
 import type { UseFloatingFn } from '@tamagui/floating';
-import type { Popover, PopoverProps } from '@tamagui/popover';
+// import type { Popover, PopoverProps } from '@tamagui/popover';
 import type { Dispatch, ReactNode, RefObject, SetStateAction } from 'react';
-
-type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>;
 
 type Rect = {
   x: number;
@@ -64,7 +62,7 @@ const useShowPopoverSheet = (context: PopoverContextValue) => {
 const PopoverSheetController = ({
   __scopePopover,
   ...props
-}: ScopedPopoverProps<{
+}: DropdownScopedProps<{
   children: ReactNode;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
 }>) => {
@@ -89,7 +87,7 @@ const PopoverSheetController = ({
   );
 };
 
-const PopoverInner = forwardRef<Popover, ScopedPopoverProps<PopoverProps> & { id: string }>(
+const PopoverInner = forwardRef<Popover, DropdownScopedProps<PopoverProps> & { id: string }>(
   function PopoverInner(props, forwardedRef) {
     const {
       children,
@@ -188,7 +186,7 @@ const PopoverInner = forwardRef<Popover, ScopedPopoverProps<PopoverProps> & { id
 );
 
 export const Dropdown = withStaticProperties(
-  forwardRef<Popover, ScopedPopoverProps<PopoverProps>>(function Dropdown(props, ref) {
+  forwardRef<Popover, DropdownScopedProps<PopoverProps>>(function Dropdown(props, ref) {
     const id = useId();
 
     return (

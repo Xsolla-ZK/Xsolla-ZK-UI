@@ -1,16 +1,25 @@
-import { ScrollView } from '@tamagui/scroll-view';
-import { createSheet } from '@tamagui/sheet';
-import { SheetFrame, SheetHandle, SheetHeader, SheetOverlay } from './sheet.styled';
+/* forked from @tamagui/sheet */
+/* https://github.com/tamagui/tamagui/tree/main/code/ui/sheet */
 
-const Sheet = createSheet({
-  Frame: SheetFrame,
-  Handle: SheetHandle,
-  Overlay: SheetOverlay,
-});
+import { createSheet } from './create-sheet';
+import {
+  SheetBody,
+  SheetFooter,
+  SheetFrame,
+  SheetHandle,
+  SheetHeader,
+  SheetOverlay,
+} from './sheet.styled';
 
-Object.assign(Sheet, {
-  Header: SheetHeader,
-  ScrollView: ScrollView,
-});
-
-export { Sheet };
+export const Sheet = createSheet(
+  {
+    Content: SheetFrame,
+    Handle: SheetHandle,
+    Overlay: SheetOverlay,
+  },
+  {
+    Header: SheetHeader,
+    Body: SheetBody,
+    Footer: SheetFooter,
+  },
+);

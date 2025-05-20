@@ -1,0 +1,154 @@
+import { composeRefs } from '@tamagui/compose-refs';
+import { ScrollView } from '@tamagui/scroll-view';
+import { forwardRef, useEffect, useRef } from 'react';
+import { SHEET_SCROLL_VIEW_COMPONENT_NAME } from './sheet.constants';
+import { useSheetContext } from './sheet.context';
+import type { SheetScopedProps } from './sheet.types';
+import type { GetRef } from '@tamagui/core';
+import type { ScrollViewProps } from '@tamagui/scroll-view';
+import type { ScrollView as RNScrollView } from 'react-native';
+
+export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
+  (
+    {
+      __scopeSheet,
+      children,
+      onScroll,
+      scrollEnabled,
+      ...props
+    }: SheetScopedProps<ScrollViewProps>,
+    ref,
+  ) => {
+    const context = useSheetContext(SHEET_SCROLL_VIEW_COMPONENT_NAME, __scopeSheet);
+    const { scrollBridge, scrollEnabled: scrollEnabled_, setHasScrollView } = context;
+    const scrollRef = useRef<RNScrollView | null>(null);
+
+    // could make it so it has negative bottom margin and then pads the bottom content
+    // to avoid clipping effect when resizing smaller
+    // or more ideally could use context to register if it has a scrollview and change behavior
+    // const offscreenSize = useSheetOffscreenSize(context)
+
+    // const setScrollEnabled = (next: boolean) => {
+    //   scrollRef.current?.setNativeProps?.({
+    //     scrollEnabled: next,
+    //   })
+    //   setScrollEnabled_(next)
+    // }
+
+    const state = useRef({
+      lastPageY: 0,
+      dragAt: 0,
+      dys: [] as number[], // store a few recent dys to get velocity on release
+      isScrolling: false,
+      isDragging: false,
+    });
+
+    useEffect(() => {
+      setHasScrollView(true);
+      return () => {
+        setHasScrollView(false);
+      };
+    }, []);
+
+    const release = () => {
+      if (!state.current.isDragging) {
+        return;
+      }
+      state.current.isDragging = false;
+      scrollBridge.scrollStartY = -1;
+      state.current.isScrolling = false;
+      // setScrollEnabled(true)
+      let vy = 0;
+      if (state.current.dys.length) {
+        const recentDys = state.current.dys.slice(-10);
+        const dist = recentDys.length ? recentDys.reduce((a, b) => a + b, 0) : 0;
+        const avgDy = dist / recentDys.length;
+        vy = avgDy * 0.04;
+      }
+      state.current.dys = [];
+      scrollBridge.release({
+        dragAt: state.current.dragAt,
+        vy,
+      });
+    };
+
+    // Override scrollEnabled if provided
+    const scrollable = scrollEnabled ?? scrollEnabled_;
+
+    return (
+      <ScrollView
+        ref={composeRefs(scrollRef, ref)}
+        flex={1}
+        scrollEventThrottle={8}
+        onResponderRelease={release}
+        className="_ovs-contain"
+        scrollEnabled={scrollable}
+        // {...(Platform.OS === 'android' && {
+        //   pointerEvents: scrollable ? undefined : 'none',
+        // })}
+        onScroll={(e) => {
+          const { y } = e.nativeEvent.contentOffset;
+          scrollBridge.y = y;
+          if (y > 0) {
+            scrollBridge.scrollStartY = -1;
+          }
+
+          // Process the "onScroll" prop here if any
+          onScroll?.(e);
+
+          // This assures that we do not skip the "scrollBridge" values processing
+          // when passing this prop into a <Sheet.ScrollView /> overriding it here
+
+          // Useful when using this ScrollView with lists such as "FlashList", i.e.
+          // ```
+          // renderScrollComponent={Sheet.ScrollView}
+          // ```
+        }}
+        onStartShouldSetResponder={() => {
+          scrollBridge.scrollStartY = -1;
+          state.current.isDragging = true;
+          return scrollable;
+        }}
+        // setting to false while onResponderMove is disabled
+        onMoveShouldSetResponder={() => scrollable}
+        // somehow disabling works better, regression, no more nice drag continue scroll
+        // onResponderMove={(e) => {
+        //   const { pageY } = e.nativeEvent
+
+        //   if (state.current.isScrolling) {
+        //     return
+        //   }
+
+        //   if (scrollBridge.scrollStartY === -1) {
+        //     scrollBridge.scrollStartY = pageY
+        //     state.current.lastPageY = pageY
+        //   }
+
+        //   const dragAt = pageY - scrollBridge.scrollStartY
+        //   const dy = pageY - state.current.lastPageY
+        //   state.current.lastPageY = pageY // after dy
+        //   const isDraggingUp = dy < 0
+        //   const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+
+        //   if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
+        //     state.current.isScrolling = true
+        //     setScrollEnabled(true)
+        //     return
+        //   }
+
+        //   setScrollEnabled(false)
+        //   scrollBridge.drag(dragAt)
+        //   state.current.dragAt = dragAt
+        //   state.current.dys.push(dy)
+        //   // only do every so often, cut down to 10 again
+        //   if (state.current.dys.length > 100) {
+        //     state.current.dys = state.current.dys.slice(-10)
+        //   }
+        // }}
+        {...props}
+      >
+        {children}
+      </ScrollView>
+    );
+  },
+);
