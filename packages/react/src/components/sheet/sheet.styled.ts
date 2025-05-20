@@ -2,6 +2,9 @@ import { Stack, styled } from '@tamagui/core';
 import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
 import {
   SHEET_COMPONENT_NAME,
+  SHEET_BODY_COMPONENT_NAME,
+  SHEET_COVER_COMPONENT_NAME,
+  SHEET_FOOTER_COMPONENT_NAME,
   SHEET_HANDLE_COMPONENT_NAME,
   SHEET_HEADER_COMPONENT_NAME,
   SHEET_OVERLAY_COMPONENT_NAME,
@@ -17,7 +20,7 @@ export const SheetFrame = styled(Stack, {
 
   variants: {
     size: (val: SheetSizes, extras) => {
-      if (extras.props.componentName === 'SheetCover') {
+      if (extras.props.componentName === SHEET_COVER_COMPONENT_NAME) {
         return {
           backgroundColor: 'transparent',
         };
@@ -41,6 +44,18 @@ export const SheetFrame = styled(Stack, {
 export const SheetHandle = styled(Stack, {
   name: SHEET_HANDLE_COMPONENT_NAME,
 
+  // height: 10,
+  // borderRadius: 100,
+  // backgroundColor: '$background',
+  // zIndex: 10,
+  // marginHorizontal: '35%',
+  // marginBottom: 10,
+  // opacity: 0.5,
+
+  // hoverStyle: {
+  //   opacity: 0.7,
+  // },
+
   variants: {
     open: {
       true: {
@@ -61,6 +76,13 @@ export const SheetHeader = styled(Stack, {
   name: SHEET_HEADER_COMPONENT_NAME,
 
   variants: {
+    blured: {
+      true: {
+        backgroundColor: '$layer.floor-overlay',
+        backdropFilter: 'blur(200px)',
+      },
+      false: {},
+    },
     size: (val: SheetSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.modal[val];
@@ -78,6 +100,55 @@ export const SheetHeader = styled(Stack, {
   },
 });
 
+export const SheetBody = styled(Stack, {
+  name: SHEET_BODY_COMPONENT_NAME,
+
+  variants: {
+    size: (val: SheetSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.modal[val];
+
+      if (!componentProps) {
+        return {};
+      }
+
+      return getMappedStyles(componentProps.content);
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$500',
+  },
+});
+
+export const SheetFooter = styled(Stack, {
+  name: SHEET_FOOTER_COMPONENT_NAME,
+
+  variants: {
+    blured: {
+      true: {
+        backgroundColor: '$layer.floor-overlay',
+        backdropFilter: 'blur(200px)',
+      },
+      false: {},
+    },
+    size: (val: SheetSizes) => {
+      const config = getComponentsConfig();
+      const componentProps = config.modal[val];
+
+      if (!componentProps) {
+        return {};
+      }
+
+      return getMappedStyles(componentProps.footer);
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$500',
+  },
+});
+
 export const SheetOverlay = styled(Stack, {
   name: SHEET_OVERLAY_COMPONENT_NAME,
   position: 'absolute',
@@ -85,9 +156,9 @@ export const SheetOverlay = styled(Stack, {
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: '$background',
   zIndex: 100_000 - 1,
   pointerEvents: 'auto',
+  backgroundColor: '$background',
 
   variants: {
     open: {

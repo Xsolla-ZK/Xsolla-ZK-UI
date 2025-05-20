@@ -13,9 +13,11 @@ catalog:
 catalogs:
   tamagui:
     "@tamagui/adapt": 1.126.12
+    "@tamagui/animate-presence": 1.126.12
     "@tamagui/animations-css": 1.126.12
     "@tamagui/animations-moti": 1.126.12
     "@tamagui/animations-react-native": 1.126.12
+    "@tamagui/aria-hidden": 1.126.12
     "@tamagui/build": 1.126.12
     "@tamagui/collapsible": 1.126.12
     "@tamagui/config": 1.126.12
@@ -23,24 +25,24 @@ catalogs:
     "@tamagui/checkbox-headless": 1.126.12
     "@tamagui/compose-refs": 1.126.12
     "@tamagui/create-context": 1.126.12
+    "@tamagui/dismissable": 1.126.12
     "@tamagui/floating": 1.126.12
     "@tamagui/focusable": 1.126.12
+    "@tamagui/focus-scope": 1.126.12
     "@tamagui/radio-headless": 1.126.12
+    "@tamagui/remove-scroll": 1.126.12
     "@tamagui/roving-focus": 1.126.12
     "@tamagui/switch-headless": 1.126.12
     "@tamagui/web": 1.126.12
     "@tamagui/vite-plugin": 1.126.12
     "@tamagui/helpers-icon": 1.126.12
-    "@tamagui/popover": 1.126.12
     "@tamagui/popper": 1.126.12
     "@tamagui/portal": 1.126.12
     "@tamagui/scroll-view": 1.126.12
     "@tamagui/image": 1.126.12
-    "@tamagui/sheet": 1.126.12
-    "@tamagui/dialog": 1.126.12
     "@tamagui/use-controllable-state": 1.126.12
     "@tamagui/use-direction": 1.126.12
-    "@tamagui/animate-presence": 1.126.12
+    "@tamagui/z-index-stack": 1.126.12
   eslint9:
     eslint: 9.26.0
     "@eslint/js": 9.26.0

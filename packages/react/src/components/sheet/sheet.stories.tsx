@@ -82,22 +82,9 @@ const SheetStory = () => {
         snapPoints={['fit']}
       >
         <Sheet.Overlay animation="state" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-        {/* <Sheet.Handle /> */}
-        <Sheet.Frame>
-          {/* @ts-ignore */}
+        <Sheet.Content>
           <Sheet.Header>
             <NavBar>
-              {/*
-                  Кнопка "Назад" используется в многошаговых сценариях.
-                  Когда она появляется, блок заголовка слегка сдвигается вправо.
-
-                  Параметры spring анимации:
-                  - Stiffness: 400.1
-                  - Damping: 30
-                  - Mass: 1
-                  - Duration: 400ms
-                */}
-
               <NavBar.StartSlot>
                 <StepBackButton step={step} back={() => setStep((prev) => prev - 1)} />
               </NavBar.StartSlot>
@@ -112,7 +99,6 @@ const SheetStory = () => {
               </NavBar.EndSlot>
             </NavBar>
           </Sheet.Header>
-          {/* @ts-ignore */}
           <Sheet.ScrollView>
             <Stack>
               <SemanticText>Hello</SemanticText>
@@ -126,7 +112,7 @@ const SheetStory = () => {
               </Stack>
             </Stack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Content>
       </Sheet>
     </Stack>
   );

@@ -344,6 +344,7 @@ const AccordionTrigger = AccordionTriggerFrame.styleable<
           aria-disabled={(itemContext.open && !collapsibleContext.toggleable) || undefined}
           data-orientation={accordionContext.orientation}
           id={itemContext.triggerId}
+          asChild
           {...triggerProps}
           ref={forwardedRef}
         />

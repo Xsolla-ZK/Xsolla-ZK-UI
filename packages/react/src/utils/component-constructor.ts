@@ -1,6 +1,6 @@
 import { withStaticProperties } from '@tamagui/core';
+import { forwardRef, type ForwardedRef, type ReactNode } from 'react';
 import type { GetProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef, ReactNode } from 'react';
 
 type RenderFunction<T extends TamaguiComponent> = (
   Root: T,
@@ -26,12 +26,11 @@ function CreateComponent<T extends TamaguiComponent, S>(
     Component: C = Root as unknown as C,
     renderComponent: RenderFunction<C> = render as unknown as RenderFunction<C>,
   ) =>
-    Component.styleable<GetProps<C>>(function WrappedComponent(
-      props,
-      ref: ForwardedRef<TamaguiElement>,
-    ) {
-      return renderComponent(Component, props, ref);
-    });
+    Component.styleable<GetProps<C>>(
+      forwardRef((props: GetProps<C>, ref: ForwardedRef<TamaguiElement>) =>
+        renderComponent(Component, props, ref),
+      ),
+    );
 
   const fn = function () {
     return withStaticProperties(WrappedComponent(), staticProps);
