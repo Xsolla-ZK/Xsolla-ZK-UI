@@ -12,9 +12,9 @@ import {
 import { registerFocusable } from '@tamagui/focusable';
 import { useSwitch } from '@tamagui/switch-headless';
 import { useControllableState } from '@tamagui/use-controllable-state';
-import { getSafeTokenValue } from '@xsolla-zk/react/utils';
 import { useEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import { Switch as NativeSwitch } from 'react-native';
+import { getSafeTokenValue } from '../../utils';
 import { SwitchContext, SwitchFrame, SwitchKnob, SwitchOverlay } from './switch.styled';
 import type { SwitchKnobProps, SwitchProps } from './switch.types';
 import type { TamaguiElement } from '@tamagui/core';

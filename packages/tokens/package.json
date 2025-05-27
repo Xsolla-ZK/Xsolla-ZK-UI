@@ -1,9 +1,13 @@
 {
   "name": "@xsolla-zk/tokens",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "type": "module",
   "main": "./src/index.mjs",
+  "files": [
+    "src",
+    "prettier.config.mjs"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -23,7 +27,7 @@
     "color": "^5.0.0",
     "dotenv": "^16.4.7",
     "fs-extra": "^11.3.0",
-    "prettier": "catalog:",
+    "prettier": "^3.5.0",
     "yargs": "^17.7.2"
   }
 }

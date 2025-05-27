@@ -1,11 +1,18 @@
 {
   "name": "@xsolla-zk/config",
+  "private": false,
   "version": "0.0.1",
-  "private": true,
   "sideEffects": false,
   "main": "dist/cjs",
-  "module": "dist/esm",
+  "source": "./src/index.ts",
   "types": "./types/index.d.ts",
+  "type": "module",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },

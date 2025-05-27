@@ -1,9 +1,9 @@
 import type { SegmentedControlFrame } from './segmented-control.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, ScopedProps, TamaguiElement } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { RefObject } from 'react';
 
-export type SegmentedControlSizes = keyof ComponentsConfig['segmentedControl'];
+export type SegmentedControlSizes = keyof ComponentsConfig['segmentedControl'] | (string & {});
 
 export type SegmentedControlScopedProps<T> = ScopedProps<T, 'SegmentedControl'>;
 

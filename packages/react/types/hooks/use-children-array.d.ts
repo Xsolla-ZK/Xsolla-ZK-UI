@@ -1,0 +1,3 @@
+import type { ReactElement, ReactNode } from 'react';
+export declare function useChildrenArray<T extends ReactNode>(children: T): (string | number | bigint | boolean | ReactElement<unknown, string | import("react").JSXElementConstructor<any>> | Iterable<ReactNode> | import("react").ReactPortal | Promise<string | number | bigint | boolean | import("react").ReactPortal | ReactElement<unknown, string | import("react").JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined)[];
+//# sourceMappingURL=use-children-array.d.ts.map

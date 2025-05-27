@@ -1,8 +1,8 @@
 import type { NavBarFrame } from './nav-bar.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
-export type NavBarSizes = keyof ComponentsConfig['navBar']['size'];
+export type NavBarSizes = keyof ComponentsConfig['navBar']['size'] | (string & {});
 export type NavBarPresets = keyof ComponentsConfig['navBar']['center'];
 
 export type NavBarContextType = {

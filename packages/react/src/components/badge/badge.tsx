@@ -1,6 +1,6 @@
 import { withStaticProperties } from '@tamagui/core';
-import { useIconsPosition } from '@xsolla-zk/react/hooks/use-icons-position';
 import { forwardRef } from 'react';
+import { useIconsPosition } from '../../hooks';
 
 import { BadgeContext, BadgeFrame, BadgeIcon, BadgeText } from './badge.styled';
 import type { BadgeProps } from './badge.types';

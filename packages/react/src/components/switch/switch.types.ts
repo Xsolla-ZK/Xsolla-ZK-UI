@@ -1,14 +1,14 @@
 import type { SwitchFrame } from './switch.styled';
+import type { BoundProps } from '../../types';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, NativeValue, StackProps } from '@tamagui/core';
 import type {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
 } from '@tamagui/switch-headless';
-import type { BoundProps } from '@xsolla-zk/react/types/helpers';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { SwitchProps as NativeSwitchProps } from 'react-native';
 
-export type SwitchSizes = keyof ComponentsConfig['switchComponent'];
+export type SwitchSizes = keyof ComponentsConfig['switchComponent'] | (string & {});
 
 export type SwitchContextType = {
   size: SwitchSizes;

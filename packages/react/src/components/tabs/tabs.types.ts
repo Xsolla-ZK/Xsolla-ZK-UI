@@ -1,4 +1,5 @@
 import type { TabsContentFrame, TabsFrame, TabsListFrame, TabsTabFrame } from './tabs.styled';
+import type { ComponentsConfig } from '../../utils';
 import type {
   GetProps,
   StylableComponent,
@@ -6,11 +7,10 @@ import type {
   VariantSpreadExtras,
 } from '@tamagui/core';
 import type { RovingFocusGroup } from '@tamagui/roving-focus';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ComponentPropsWithoutRef, RefObject } from 'react';
 import type { LayoutRectangle } from 'react-native';
 
-export type TabsSizes = keyof ComponentsConfig['tabs'];
+export type TabsSizes = keyof ComponentsConfig['tabs'] | (string & {});
 export type TabsVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & TabsContextType
 >;

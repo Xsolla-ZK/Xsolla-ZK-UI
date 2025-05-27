@@ -1,7 +1,5 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
 import { BADGE_COMPONENT_NAME } from './badge.constants';
 import type { BadgeContextType, BadgeSizes, BadgeVariantSpreadExtras } from './badge.types';
@@ -40,7 +38,7 @@ export const BadgeFrame = styled(Board, {
     },
     size: (val: BadgeSizes, _extras) => {
       const config = getComponentsConfig();
-      const badge = config.badge[val];
+      const badge = config.badge[val as keyof typeof config.badge];
 
       if (!badge) return {};
 
@@ -83,7 +81,7 @@ export const BadgeText = styled(Text, {
     size: (val: BadgeSizes, extras) => {
       const { props } = extras as BadgeVariantSpreadExtras<typeof Text>;
       const config = getComponentsConfig();
-      const badge = config.badge[val];
+      const badge = config.badge[val as keyof typeof config.badge];
 
       if (!badge) return {};
 

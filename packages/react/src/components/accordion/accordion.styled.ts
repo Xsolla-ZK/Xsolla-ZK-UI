@@ -1,6 +1,6 @@
 import { Collapsible } from '@tamagui/collapsible';
 import { Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   ACCORDION_ITEM_COMPONENT_NAME,
   ACCORDION_TRIGGER_COMPONENT_NAME,
@@ -22,7 +22,7 @@ export const AccordionItemFrame = styled(Collapsible, {
         return {};
       }
       const config = getComponentsConfig();
-      const componentProps = config.accordion.board[val];
+      const componentProps = config.accordion.board[val as keyof typeof config.accordion.board];
 
       if (!componentProps) {
         return {};
@@ -57,8 +57,8 @@ export const AccordionHeaderFrame = styled(Stack, {
     size: (val: AccordionSizes, extras) => {
       const { props } = extras as VariantSpreadExtras<Pick<AccordionImplContextValue, 'withBoard'>>;
       const config = getComponentsConfig();
-      const componentProps = config.accordion.size[val];
-      const boardProps = config.accordion.board[val];
+      const componentProps = config.accordion.size[val as keyof typeof config.accordion.size];
+      const boardProps = config.accordion.board[val as keyof typeof config.accordion.board];
       if (!componentProps || (props.withBoard && !boardProps)) {
         return {};
       }
@@ -82,7 +82,7 @@ export const AccordionContentFrame = styled(Collapsible.Content, {
         return {};
       }
       const config = getComponentsConfig();
-      const componentProps = config.accordion.board[val];
+      const componentProps = config.accordion.board[val as keyof typeof config.accordion.board];
 
       if (!componentProps) {
         return {};

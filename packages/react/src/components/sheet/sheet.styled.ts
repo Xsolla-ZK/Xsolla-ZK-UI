@@ -1,5 +1,5 @@
 import { Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   SHEET_COMPONENT_NAME,
   SHEET_BODY_COMPONENT_NAME,
@@ -26,7 +26,7 @@ export const SheetFrame = styled(Stack, {
         };
       }
       const config = getComponentsConfig();
-      const componentProps = config.modal[val];
+      const componentProps = config.modal[val as keyof typeof config.modal];
 
       if (!componentProps) {
         return {};
@@ -85,7 +85,7 @@ export const SheetHeader = styled(Stack, {
     },
     size: (val: SheetSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.modal[val];
+      const componentProps = config.modal[val as keyof typeof config.modal];
 
       if (!componentProps) {
         return {};
@@ -106,7 +106,7 @@ export const SheetBody = styled(Stack, {
   variants: {
     size: (val: SheetSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.modal[val];
+      const componentProps = config.modal[val as keyof typeof config.modal];
 
       if (!componentProps) {
         return {};
@@ -134,7 +134,7 @@ export const SheetFooter = styled(Stack, {
     },
     size: (val: SheetSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.modal[val];
+      const componentProps = config.modal[val as keyof typeof config.modal];
 
       if (!componentProps) {
         return {};

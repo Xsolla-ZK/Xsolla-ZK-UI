@@ -11,4 +11,6 @@ type GetPresetKeysUnion<T> = T extends TypographyCategories
   ? `${T}.${TypographySizes<T>}.${TypographyVariants<T>}`
   : never;
 
-export type TypographyPresets = GetPresetKeysUnion<TypographyCategories>;
+type Presets = GetPresetKeysUnion<TypographyCategories>;
+
+export type TypographyPresets = 'display.500.accent' | Presets | (string & {});

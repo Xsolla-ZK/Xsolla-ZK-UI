@@ -44,3 +44,11 @@ export type BoundMethod<T> = T extends (...args: infer P) => infer R ? (...args:
 export type BoundProps<T, K extends keyof T> = Omit<T, K> & {
   [Key in K]: BoundMethod<T[Key]>;
 };
+
+export type IsLiteralString<T> = T extends string
+  ? T extends `${infer _P}_${infer Middle}_${infer _S}`
+    ? string extends Middle
+      ? false
+      : true
+    : true
+  : false;

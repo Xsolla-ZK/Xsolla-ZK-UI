@@ -1,6 +1,6 @@
 import { styled, Text } from '@tamagui/core';
-import { getTypographyPreset } from '@xsolla-zk/react/utils/get-typography-preset';
-import type { TypographyPresets } from '@xsolla-zk/react/types/typography';
+import { getTypographyPreset } from '../../utils';
+import type { TypographyPresets } from '../../types';
 
 export const Typography = styled(Text, {
   color: '$color',

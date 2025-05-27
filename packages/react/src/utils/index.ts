@@ -5,3 +5,4 @@ export * from './create-icon-component';
 export * from './get-mapped-styles';
 export * from './get-safe-token-value';
 export * from './get-typography-preset';
+export * from './valid-props';

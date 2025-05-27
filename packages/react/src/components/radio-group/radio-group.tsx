@@ -9,10 +9,9 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import { createContext, forwardRef, memo } from 'react';
-
 import Svg, { Circle } from 'react-native-svg';
+import { getComponentsConfig } from '../../utils';
 import {
   RadioGroupContext,
   RadioGroupFrame,
@@ -156,7 +155,7 @@ const RadioIndicator = (props: RadioGroupIndicatorProps) => {
   });
 
   const config = getComponentsConfig();
-  const componentProps = config.radio[ctx.size];
+  const componentProps = config.radio[ctx.size as keyof typeof config.radio];
 
   if (forceMount || checked) {
     return (

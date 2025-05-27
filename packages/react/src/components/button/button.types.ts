@@ -1,12 +1,11 @@
 import type { BUTTON_COMPONENT_NAME } from './button.constants';
 import type { ButtonFrame } from './button.styled';
+import type { IconsPosition, GetComponentTone } from '../../types';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
-import type { IconsPosition } from '@xsolla-zk/react/types/icon';
-import type { GetComponentTone } from '@xsolla-zk/react/types/theme';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
 export type ButtonVariants = 'primary' | 'secondary' | 'tertiary';
-export type ButtonSizes = keyof ComponentsConfig['button'];
+export type ButtonSizes = keyof ComponentsConfig['button'] | (string & {});
 export type ButtonTone = GetComponentTone<typeof BUTTON_COMPONENT_NAME>;
 export type ButtonVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & ButtonContextType
@@ -22,6 +21,5 @@ export type ButtonContextType = Partial<IconsPosition> & {
 type ButtonSharedProps = GetProps<typeof ButtonFrame>;
 
 export type ButtonProps = ButtonSharedProps & {
-  tone?: ButtonTone;
   // type?: HTMLButtonElement['type'];
 };

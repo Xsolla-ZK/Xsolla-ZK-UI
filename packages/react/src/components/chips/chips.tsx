@@ -7,8 +7,8 @@ import {
 } from '@tamagui/core';
 import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
-import { useIconsPosition } from '@xsolla-zk/react/hooks/use-icons-position';
 import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { useIconsPosition } from '../../hooks';
 import { ChipsFrame, ChipFrame, ChipIcon, ChipText, ChipContext } from './chips.styled';
 import type {
   ChipProps,

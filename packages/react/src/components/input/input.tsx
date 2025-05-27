@@ -1,6 +1,6 @@
 import { useComposedRefs, withStaticProperties } from '@tamagui/core';
-import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { forwardRef, isValidElement, useMemo, useRef, useState } from 'react';
+import { useChildrenArray } from '../../hooks';
 import { createInput } from './create-input';
 import {
   InputContext,

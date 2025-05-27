@@ -1,5 +1,5 @@
+import type { MaskType } from '../../types';
 import type { InputProps } from '../input/input.types';
-import type { MaskType } from '@xsolla-zk/react/types/mask';
 
 /**
  * MaskedInput - component for input with mask
@@ -39,7 +39,7 @@ import type { MaskType } from '@xsolla-zk/react/types/mask';
  * />
  * ```
  */
-export interface MaskedInputProps extends Omit<InputProps, 'mask'> {
+export interface MaskedInputProps extends Omit<InputProps, 'mask' | 'onChangeText'> {
   /**
    * Mask for input
    *

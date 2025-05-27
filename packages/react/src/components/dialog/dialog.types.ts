@@ -10,16 +10,16 @@ import type {
   DialogTitleFrame,
   DialogTriggerFrame,
 } from './dialog.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils';
 import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import type { ComponentProps } from 'react';
 
-export type DialogSizes = keyof ComponentsConfig['modal'];
+export type DialogSizes = keyof ComponentsConfig['modal'] | (string & {});
 
 export type DialogScopedProps<P> = P & { __scopeDialog?: Scope };
 

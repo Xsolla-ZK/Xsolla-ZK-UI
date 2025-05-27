@@ -1,13 +1,12 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { type IconProps } from '@tamagui/helpers-icon';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { Path as _Path, Svg as _Svg } from 'react-native-svg';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { RICH_ICON_COMPONENT_NAME } from './rich-icon.constants';
 import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
+import type { XORIconProps } from '../../types';
 import type { GetProps } from '@tamagui/core';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { XORIconProps } from '@xsolla-zk/react/types/icon';
 
 export const RichIconContext = createStyledContext<RichIconContextType>({
   size: '$500',
@@ -56,7 +55,7 @@ export const RichIconFrame = styled(Stack, {
     },
     size: (val: RichIconSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.richIcon[val];
+      const componentProps = config.richIcon[val as keyof typeof config.richIcon];
 
       if (!componentProps) {
         return {};
@@ -82,7 +81,7 @@ export const RichIconShapeSvg = (props: Omit<GetProps<typeof Svg>, 'width' | 'he
   const { size, backgroundColor } = useContext(RichIconContext.context);
 
   const config = getComponentsConfig();
-  const componentProps = config.richIcon[size];
+  const componentProps = config.richIcon[size as keyof typeof config.richIcon];
 
   if (!componentProps) {
     return null;
@@ -102,7 +101,7 @@ export const RichIconShapePath = styled(
   {
     accept: {
       stroke: 'color',
-    },
+    } as const,
   },
 );
 
@@ -116,7 +115,7 @@ export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
   }
 
   const config = getComponentsConfig();
-  const componentProps = config.richIcon[ctx.size];
+  const componentProps = config.richIcon[ctx.size as keyof typeof config.richIcon];
 
   if (!componentProps) {
     throw new Error(
@@ -173,7 +172,7 @@ export const RichIconText = styled(Text, {
     backgroundColor: () => ({}),
     size: (val: RichIconSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.richIcon[val];
+      const componentProps = config.richIcon[val as keyof typeof config.richIcon];
       if (!componentProps) {
         return {};
       }

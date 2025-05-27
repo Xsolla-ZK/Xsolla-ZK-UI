@@ -1,7 +1,5 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
-import { getSafeTokenValue } from '@xsolla-zk/react/utils/get-safe-token-value';
+import { getComponentsConfig, getMappedStyles, getSafeTokenValue } from '../../utils';
 import { BoardOverlay } from '../board/board.styled';
 import { SWITCH_COMPONENT_NAME, SWITCH_KNOB_COMPONENT_NAME } from './switch.constants';
 import type { SwitchContextType, SwitchSizes } from './switch.types';
@@ -46,7 +44,7 @@ export const SwitchFrame = styled(Stack, {
 
     size: (val: SwitchSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.switchComponent[val];
+      const componentProps = config.switchComponent[val as keyof typeof config.switchComponent];
       if (!componentProps) {
         return {};
       }
@@ -91,7 +89,7 @@ export const SwitchKnob = styled(Stack, {
 
     size: (val: SwitchSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.switchComponent[val];
+      const componentProps = config.switchComponent[val as keyof typeof config.switchComponent];
       if (!componentProps) {
         return {};
       }

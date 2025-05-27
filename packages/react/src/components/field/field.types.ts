@@ -1,9 +1,9 @@
 import type { FieldFrame, FieldHintValue, FieldHint, FieldRow, FieldLabel } from './field.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { ReactNode } from 'react';
 
-export type FieldSizes = keyof ComponentsConfig['field'];
+export type FieldSizes = keyof ComponentsConfig['field'] | (string & {});
 
 export type FieldContextType = {
   id?: string;

@@ -3,12 +3,12 @@ import type {
   AccordionHeaderFrame,
   AccordionTriggerFrame,
 } from './accordion.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { Collapsible } from '@tamagui/collapsible';
 import type { GetProps, GetRef, ScopedProps, Stack } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils';
 import type { AriaAttributes, ComponentPropsWithoutRef, ComponentRef, ReactNode } from 'react';
 
-export type AccordionSizes = keyof ComponentsConfig['accordion']['board'];
+export type AccordionSizes = keyof ComponentsConfig['accordion']['board'] | (string & {});
 
 export type AccordionScopedProps<P> = ScopedProps<P, 'Accordion'>;
 

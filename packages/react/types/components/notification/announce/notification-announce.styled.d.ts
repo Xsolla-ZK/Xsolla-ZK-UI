@@ -1,0 +1,2 @@
+export declare const NotificationAnnounceExcludeFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+//# sourceMappingURL=notification-announce.styled.d.ts.map

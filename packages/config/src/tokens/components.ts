@@ -775,9 +775,9 @@ export const navBar = {
       },
       title: {
         typography: {
-          base: 'compact.300.accent',
-          $lg: 'display.350.accent',
-          $xl: 'display.400.accent',
+          base: 'display.400.accent',
+          $lg: 'display.450.accent',
+          $xl: 'display.500.accent',
         },
       },
       subtitle: {
@@ -1240,17 +1240,6 @@ export const snackBar = {
   $500: {
     frame: {
       maxWidth: 400,
-      marginHorizontal: {
-        base: '$platform.layout.margin-horizontal.sm',
-        $md: '$platform.layout.margin-horizontal.md',
-        $lg: '$platform.layout.margin-horizontal.lg',
-        $xl: '$platform.layout.margin-horizontal.xl',
-      },
-      marginTop: {
-        base: '$space.450',
-        $md: '$space.650',
-        $xl: '$space.900',
-      },
       borderRadius: '$radius.550',
       paddingTop: '$space.200',
       paddingBottom: '$space.200',
@@ -1316,6 +1305,21 @@ export const tabs = {
   $700: {
     frame: {
       gap: '$space.450',
+    },
+  },
+};
+export const notificationProvider = {
+  $500: {
+    marginHorizontal: {
+      base: '$platform.layout.margin-horizontal.sm',
+      $md: '$platform.layout.margin-horizontal.md',
+      $lg: '$platform.layout.margin-horizontal.lg',
+      $xl: '$platform.layout.margin-horizontal.xl',
+    },
+    marginVertical: {
+      base: '$space.450',
+      $md: '$space.650',
+      $xl: '$space.900',
     },
   },
 };
@@ -1433,17 +1437,6 @@ export const tab = {
 export const toast = {
   $500: {
     frame: {
-      marginHorizontal: {
-        base: '$platform.layout.margin-horizontal.sm',
-        $md: '$platform.layout.margin-horizontal.md',
-        $lg: '$platform.layout.margin-horizontal.lg',
-        $xl: '$platform.layout.margin-horizontal.xl',
-      },
-      marginVertical: {
-        base: '$space.450',
-        $md: '$space.650',
-        $xl: '$space.900',
-      },
       borderRadius: '$radius.500',
       paddingTop: '$space.100',
       paddingBottom: '$space.100',
@@ -1485,6 +1478,7 @@ export const components = {
   snackBar,
   switchComponent,
   tabs,
+  notificationProvider,
   tabBar,
   tab,
   toast,

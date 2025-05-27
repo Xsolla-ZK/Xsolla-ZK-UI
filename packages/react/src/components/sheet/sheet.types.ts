@@ -1,12 +1,12 @@
 import type { useSheetProviderProps } from './sheet.hooks';
+import type { ComponentsConfig } from '../../utils';
 import type { AnimatedNumberStrategy, AnimationProp } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { PortalProps } from '@tamagui/portal';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils';
 import type { ComponentType, Dispatch, SetStateAction, ReactNode, ComponentProps } from 'react';
 
-export type SheetSizes = keyof ComponentsConfig['modal'];
+export type SheetSizes = keyof ComponentsConfig['modal'] | (string & {});
 
 export type SheetScopedProps<P> = P & { __scopeSheet?: Scope };
 

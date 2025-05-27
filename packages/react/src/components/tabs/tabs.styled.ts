@@ -1,8 +1,6 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   TABS_COMPONENT_NAME,
   TABS_LIST_COMPONENT_NAME,
@@ -52,7 +50,7 @@ export const TabsListFrame = styled(Stack, {
   variants: {
     size: (val: TabsSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.tabs[val];
+      const componentProps = config.tabs[val as keyof typeof config.tabs];
 
       if (!componentProps) return {};
 
@@ -97,7 +95,7 @@ export const TabsTabFrame = styled(Stack, {
   variants: {
     size: (val: TabsSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.tab[val];
+      const componentProps = config.tab[val as keyof typeof config.tab];
 
       if (!componentProps) return {};
 
@@ -179,21 +177,22 @@ export const TabsListIndicator = styled(Stack, {
   animateOnly: ['width', 'transform'],
 
   variants: {
-    size: (val: TabsSizes, extras) => {
+    size: (val: TabsSizes, extras): ReturnType<typeof getMappedStyles> => {
       const { props } = extras as VariantSpreadExtras<
         GetProps<typeof Stack> & Pick<TabsContextType, 'orientation'>
       >;
       const config = getComponentsConfig();
-      const componentProps = config.tab[val];
+      const componentProps = config.tab[val as keyof typeof config.tab];
 
       if (!componentProps) return {};
 
       return props.orientation === 'horizontal'
         ? getMappedStyles(componentProps.line)
-        : Object.keys(reverseProps).reduce<Record<string, unknown>>((acc, curr) => {
+        : Object.keys(reverseProps).reduce<ReturnType<typeof getMappedStyles>>((acc, curr) => {
             const key = reverseProps[curr as keyof typeof reverseProps];
             const mappedProps = getMappedStyles(componentProps.line);
             if (key && typeof mappedProps === 'object' && curr in mappedProps) {
+              // @ts-ignore okay
               acc[key] = mappedProps[curr as keyof typeof mappedProps];
             }
             return acc;
@@ -227,7 +226,7 @@ export const TabsTabText = styled(Text, {
   variants: {
     size: (val: TabsSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.tab[val];
+      const componentProps = config.tab[val as keyof typeof config.tab];
 
       if (!componentProps) return {};
 

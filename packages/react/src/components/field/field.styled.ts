@@ -1,6 +1,5 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { Label } from '../label/label';
 import { Typography } from '../typography/typography';
 import { FIELD_COMPONENT_NAME } from './field.constants';
@@ -25,7 +24,7 @@ export const FieldFrame = styled(Stack, {
     },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }
@@ -50,7 +49,7 @@ export const FieldRow = styled(Stack, {
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }
@@ -64,7 +63,7 @@ export const FieldLabel = styled(Label, {
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }
@@ -78,7 +77,7 @@ export const FieldLabelValue = styled(Typography, {
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }
@@ -103,7 +102,7 @@ export const FieldHint = styled(Typography, {
     },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }
@@ -128,7 +127,7 @@ export const FieldHintValue = styled(Typography, {
     },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.field[val];
+      const componentProps = config.field[val as keyof typeof config.field];
       if (!componentProps) {
         return {};
       }

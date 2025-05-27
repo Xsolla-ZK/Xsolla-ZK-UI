@@ -1,8 +1,8 @@
 import type { PimpleFrame } from './pimple.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
-export type PimpleSizes = keyof ComponentsConfig['pimple'];
+export type PimpleSizes = keyof ComponentsConfig['pimple'] | (string & {});
 
 export type PimpleContextType = {
   size: PimpleSizes;

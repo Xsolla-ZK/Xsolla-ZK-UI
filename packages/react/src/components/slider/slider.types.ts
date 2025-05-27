@@ -1,8 +1,8 @@
+import type { ComponentsConfig } from '../../utils';
 import type { GestureReponderEvent, StackProps, TamaguiElement, ViewProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { AriaAttributes, KeyboardEvent, MutableRefObject } from 'react';
 
-export type SliderSizes = keyof ComponentsConfig['slider'];
+export type SliderSizes = keyof ComponentsConfig['slider'] | (string & {});
 
 export type SliderContextType = {
   size?: SliderSizes;

@@ -1,6 +1,6 @@
 import type { SemanticTextRoot } from './semantic-text.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
 export type SemanticTextVariants = keyof ComponentsConfig['semanticText'];
 
