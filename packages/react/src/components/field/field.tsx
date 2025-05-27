@@ -1,7 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
 import { View, withStaticProperties } from '@tamagui/core';
-import { useChildrenArray } from '@xsolla-zk/react/hooks/use-children-array';
 import { useId, useMemo, forwardRef } from 'react';
+import { useChildrenArray } from '../../hooks';
 import { Input } from '../input';
 import {
   FieldContext,
@@ -29,6 +29,7 @@ const FieldControlComponent = Input.styleable<InputProps>(
     const { asChild, ...otherProps } = props;
 
     return (
+      // @ts-ignore okay
       <View asChild id={id} error={error} size={size} {...otherProps} ref={ref}>
         {props.children ? props.children : <Input />}
       </View>

@@ -1,8 +1,6 @@
 import { createStyledContext, Stack, Text } from '@tamagui/core';
 import { styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
 import { Board } from '../board/board';
 import {
   TAB_BAR_COMPONENT_NAME,

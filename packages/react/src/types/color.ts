@@ -1,4 +1,3 @@
-import type { GetThemeValueForKey } from '@tamagui/core';
-import type { OpaqueColorValue } from 'react-native';
+import type { ColorTokens } from '@tamagui/core';
 
-export type ColorType = GetThemeValueForKey<'color'> | OpaqueColorValue;
+export type ColorType = ColorTokens | (string & {});

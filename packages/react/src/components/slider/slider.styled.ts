@@ -1,6 +1,5 @@
 import { createStyledContext, Stack, styled, View } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   SLIDER_TRACK_ACTIVE_NAME,
   SLIDER_KNOB_NAME,
@@ -60,7 +59,7 @@ export const SliderFrame = styled(View, {
       } = extras as VariantSpreadExtras<GetProps<typeof View> & SliderContextType>;
 
       const config = getComponentsConfig();
-      const componentProps = config.slider[val];
+      const componentProps = config.slider[val as keyof typeof config.slider];
       if (!componentProps) {
         return {};
       }
@@ -96,7 +95,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
       } = extras as VariantSpreadExtras<GetProps<typeof View> & SliderContextType>;
 
       const config = getComponentsConfig();
-      const componentProps = config.slider[val];
+      const componentProps = config.slider[val as keyof typeof config.slider];
       if (!componentProps) {
         return {};
       }
@@ -133,7 +132,7 @@ export const SliderKnobFrame = styled(Stack, {
   variants: {
     size: (val: SliderSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.slider[val];
+      const componentProps = config.slider[val as keyof typeof config.slider];
       if (!componentProps) {
         return {};
       }

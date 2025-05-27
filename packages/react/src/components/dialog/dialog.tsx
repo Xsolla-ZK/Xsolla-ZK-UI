@@ -545,8 +545,8 @@ const DialogDescription = DialogDescriptionFrame.styleable(
 );
 
 const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
-  forwardRef<TamaguiElement, DialogCloseExtraProps>(
-    (props: DialogScopedProps<DialogCloseProps>, forwardedRef) => {
+  forwardRef(
+    (props: DialogScopedProps<DialogCloseProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
       const { __scopeDialog, displayWhenAdapted, ...closeProps } = props;
       const context = useDialogContext(DIALOG_CLOSE_COMPONENT_NAME, __scopeDialog, {
         warn: false,

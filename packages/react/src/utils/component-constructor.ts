@@ -27,6 +27,7 @@ function CreateComponent<T extends TamaguiComponent, S>(
     renderComponent: RenderFunction<C> = render as unknown as RenderFunction<C>,
   ) =>
     Component.styleable<GetProps<C>>(
+      // @ts-ignore ignore
       forwardRef((props: GetProps<C>, ref: ForwardedRef<TamaguiElement>) =>
         renderComponent(Component, props, ref),
       ),

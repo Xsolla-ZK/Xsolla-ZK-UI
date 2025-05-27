@@ -71,7 +71,6 @@
 //  *
 //  * ```
 //  * import { Stack } from 'expo-router';
-//  * import { NavBar } from '@xsolla-zk/react';
 //  *
 //  * export default function Layout() {
 //  *   return (

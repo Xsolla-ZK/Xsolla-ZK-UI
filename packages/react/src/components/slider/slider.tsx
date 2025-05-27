@@ -15,10 +15,8 @@ import {
 } from '@tamagui/core';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
-import { getSafeTokenValue } from '@xsolla-zk/react/utils/get-safe-token-value';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import { getComponentsConfig, getMappedStyles, getSafeTokenValue } from '../../utils';
 import { ARROW_KEYS, BACK_KEYS, PAGE_KEYS } from './slider.constants';
 import {
   SliderContext,
@@ -412,9 +410,9 @@ const SliderTrackActive = forwardRef<View, SliderTrackActiveProps>(
   },
 );
 
-const getThumbSize = (val: SliderSizes) => {
+const getKnobSize = (val: SliderSizes) => {
   const config = getComponentsConfig();
-  const componentProps = config.slider[val];
+  const componentProps = config.slider[val as keyof typeof config.slider];
   if (!componentProps) {
     return {
       width: 24,
@@ -451,7 +449,7 @@ const SliderKnob = SliderKnobFrame.styleable<SliderKnobProps>(
       const sizeIn = sizeProp ?? context.size;
       const [size, setSize] = useState(() => {
         // for SSR
-        const estimatedSize = getSafeTokenValue(getThumbSize(sizeIn ?? '$500').width);
+        const estimatedSize = getSafeTokenValue(getKnobSize(sizeIn ?? '$500').width);
         return estimatedSize as number;
       });
 

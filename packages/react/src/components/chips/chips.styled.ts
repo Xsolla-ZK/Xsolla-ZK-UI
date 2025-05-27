@@ -1,7 +1,5 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
 import { CHIP_COMPONENT_NAME, CHIPS_COMPONENT_NAME } from './chips.constants';
 import type {
@@ -31,7 +29,7 @@ export const ChipsFrame = styled(Stack, {
   variants: {
     size: (val: ChipsSizes, _extras) => {
       const config = getComponentsConfig();
-      const chips = config.chips[val];
+      const chips = config.chips[val as keyof typeof config.chips];
 
       if (!chips) return {};
 
@@ -97,7 +95,7 @@ export const ChipFrame = styled(Board, {
     variant: getVariant,
     size: (val: ChipSizes, _extras) => {
       const config = getComponentsConfig();
-      const chip = config.chip[val];
+      const chip = config.chip[val as keyof typeof config.chip];
 
       if (!chip) return {};
 
@@ -164,7 +162,7 @@ export const ChipText = styled(Text, {
     size: (val: ChipSizes, extras) => {
       const { props } = extras as ChipVariantSpreadExtras<typeof Text>;
       const config = getComponentsConfig();
-      const chip = config.chip[val];
+      const chip = config.chip[val as keyof typeof config.chip];
 
       if (!chip) return {};
 
@@ -185,7 +183,7 @@ const getIconColor = (ctx: ChipContextType): ColorTokens => {
   }
 
   if (ctx.variant !== 'primary') {
-    return `$content.${ctx.tone}-primary`;
+    return `$content.${ctx.tone}-primary` as ColorTokens;
   }
 
   return '$color';

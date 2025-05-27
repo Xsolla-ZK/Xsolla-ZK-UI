@@ -17,6 +17,8 @@ export default tseslint.config(
       '.swc',
       '**/.*',
       '**/*.(s[ac]ss|css)',
+      '**/*.d.ts',
+      '**/*.d.ts.map',
     ],
   },
 

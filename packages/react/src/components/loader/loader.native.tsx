@@ -1,5 +1,5 @@
 import { useTheme, withStaticProperties } from '@tamagui/core';
-import { useContext, useEffect } from 'react';
+import { forwardRef, useContext, useEffect } from 'react';
 import { Easing, useAnimatedProps, withRepeat, withTiming } from 'react-native-reanimated';
 import { useSharedValue } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
@@ -11,23 +11,25 @@ import type { ForwardedRef } from 'react';
 import type { ColorValue } from 'react-native';
 
 const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
-  (
-    {
-      children,
-      size = 24,
-      tone = 'brand',
-      mainColor = '$color',
-      spinColor = '$spinColor',
-      ...props
-    },
-    ref: ForwardedRef<TamaguiElement>,
-  ) => (
-    <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
-      <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
-        <LoaderSpinner />
-        {children}
-      </LoaderFrame>
-    </LoaderContext.Provider>
+  forwardRef(
+    (
+      {
+        children,
+        size = 24,
+        tone = 'brand',
+        mainColor = '$color',
+        spinColor = '$spinColor',
+        ...props
+      },
+      ref: ForwardedRef<TamaguiElement>,
+    ) => (
+      <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
+        <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
+          <LoaderSpinner />
+          {children}
+        </LoaderFrame>
+      </LoaderContext.Provider>
+    ),
   ),
   { disableTheme: true },
 );
@@ -35,7 +37,7 @@ const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 function AnimatedStrokeCircle() {
-  const ctx = useContext(LoaderContext);
+  const ctx = LoaderContext.useStyledContext();
   const progress = useSharedValue(0);
   const theme = useTheme();
 
@@ -88,7 +90,7 @@ function AnimatedStrokeCircle() {
 }
 
 function LoaderSpinner() {
-  const ctx = useContext(LoaderContext);
+  const ctx = LoaderContext.useStyledContext();
   const theme = useTheme();
 
   return (

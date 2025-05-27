@@ -1,8 +1,6 @@
 import { composeEventHandlers, Stack, styled } from '@tamagui/core';
-import { getTypographyPreset } from '@xsolla-zk/react/utils';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { createElement } from 'react';
+import { getComponentsConfig, getMappedStyles, getTypographyPreset } from '../../utils';
 import { Typography } from '../typography';
 import {
   NAV_BAR_COMPONENT_NAME,
@@ -28,7 +26,7 @@ export const NavBarFrame = styled(Stack, {
   variants: {
     size: (val: NavBarSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.navBar.size[val];
+      const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
 
       if (!componentProps) {
         return {};
@@ -73,7 +71,7 @@ export const NavBarContent = styled(Stack, {
   variants: {
     size: (val: NavBarSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.navBar.size[val];
+      const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
 
       if (!componentProps) {
         return {};
@@ -185,7 +183,7 @@ export function createNavBarSlot(
         variants: {
           size: (val: NavBarSizes) => {
             const config = getComponentsConfig();
-            const componentProps = config.navBar.size[val];
+            const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
 
             if (!componentProps) {
               return {};

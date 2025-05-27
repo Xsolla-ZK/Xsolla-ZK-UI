@@ -1,8 +1,7 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { createElement } from 'react';
 import { TextInput } from 'react-native';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   INPUT_COMPONENT_NAME,
   INPUT_END_SLOT_COMPONENT_NAME,
@@ -48,7 +47,7 @@ export const InputFrame = styled(Stack, {
     },
     size: (val: InputSizes, _extras) => {
       const config = getComponentsConfig();
-      const componentProps = config.input[val];
+      const componentProps = config.input[val as keyof typeof config.input];
 
       if (!componentProps) {
         return {};
@@ -110,7 +109,7 @@ export const InputElement = styled(
       },
       size: (val: InputSizes) => {
         const config = getComponentsConfig();
-        const componentProps = config.input[val];
+        const componentProps = config.input[val as keyof typeof config.input];
 
         if (!componentProps) {
           return {};

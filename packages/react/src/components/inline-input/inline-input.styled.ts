@@ -1,7 +1,6 @@
 import { styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { TextInput } from 'react-native';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { inputSharedStyledOptions } from '../input/input.shared';
 import { INLINE_INPUT_COMPONENT_NAME } from './inline-input.constants';
 import type { InlineInputSizes } from './inline-input.types';
@@ -32,7 +31,7 @@ export const InlineInputElement = styled(
       },
       size: (val: InlineInputSizes) => {
         const config = getComponentsConfig();
-        const componentProps = config.inlineInput[val];
+        const componentProps = config.inlineInput[val as keyof typeof config.inlineInput];
 
         if (!componentProps) {
           return {};

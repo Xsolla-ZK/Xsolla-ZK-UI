@@ -1,0 +1,17 @@
+export declare const DIALOG_COMPONENT_NAME = "Dialog";
+export declare const DIALOG_HEADER_COMPONENT_NAME = "DialogHeader";
+export declare const DIALOG_BODY_COMPONENT_NAME = "DialogBody";
+export declare const DIALOG_FOOTER_COMPONENT_NAME = "DialogFooter";
+export declare const DIALOG_TRIGGER_COMPONENT_NAME = "DialogTrigger";
+export declare const DIALOG_PORTAL_COMPONENT_NAME = "DialogPortal";
+export declare const DIALOG_OVERLAY_COMPONENT_NAME = "DialogOverlay";
+export declare const DIALOG_CONTENT_COMPONENT_NAME = "DialogContent";
+export declare const DIALOG_TITLE_COMPONENT_NAME = "DialogTitle";
+export declare const DIALOG_DESCRIPTION_COMPONENT_NAME = "DialogDescription";
+export declare const DIALOG_CLOSE_COMPONENT_NAME = "DialogClose";
+export declare const DIALOG_WARNING_COMPONENT_NAME = "DialogWarning";
+export declare const DIALOG_TITLE_WARNING_NAME = "DialogTitleWarning";
+export declare const DIALOG_DESCRIPTION_WARNING_NAME = "DialogDescriptionWarning";
+export declare const DIALOG_SHEET_CONTROLLER_COMPONENT_NAME = "DialogSheetController";
+export declare const DIALOG_CONTEXT = "Dialog";
+//# sourceMappingURL=dialog.constants.d.ts.map

@@ -1,10 +1,10 @@
 import type { RadioGroupFrame, RadioGroupItemFrame } from './radio-group.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { RadioGroupItemContextValue } from '@tamagui/radio-headless';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 import type { HTMLProps, ReactElement } from 'react';
 
-export type RadioGroupSizes = keyof ComponentsConfig['radio'];
+export type RadioGroupSizes = keyof ComponentsConfig['radio'] | (string & {});
 export type RadioGroupVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & RadioGroupContextType
 >;

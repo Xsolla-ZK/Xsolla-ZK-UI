@@ -1,15 +1,11 @@
 import { createTamagui } from '@tamagui/core';
-import { createComponentTheme, createTheme, createThemes } from '@xsolla-zk/config';
+import { createTheme, createThemes } from '@xsolla-zk/config';
 import { webConfig } from '@xsolla-zk/config/web';
 import { componentsTheme } from './src';
 
 const baseTheme = createTheme((tokens) => ({
   background: tokens['layer.floor-0'],
   color: tokens['content.neutral-primary'],
-}));
-
-const sheetTheme = createComponentTheme('SheetOverlay', (tokens) => ({
-  background: tokens['layer.floor-scrim'],
 }));
 
 const themesCompose = createThemes(webConfig.themes, {
@@ -54,8 +50,4 @@ export type AppConfig = typeof config;
 
 declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends AppConfig {}
-  // if you want types for group styling props, define them like so:
-  interface TypeOverride {
-    groupNames(): 'card' | 'tab';
-  }
 }

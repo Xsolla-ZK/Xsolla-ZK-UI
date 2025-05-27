@@ -1,8 +1,6 @@
 import { createStyledContext, Stack } from '@tamagui/core';
 import { styled } from '@tamagui/core';
-import { createIconComponent } from '@xsolla-zk/react/utils';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
 import { Typography } from '../typography';
 import {
   SEGMENTED_CONTROL_COMPONENT_NAME,
@@ -52,7 +50,7 @@ export const SegmentedControlFrame = styled(Stack, {
     },
     size: (val: SegmentedControlSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.segmentedControl[val];
+      const componentProps = config.segmentedControl[val as keyof typeof config.segmentedControl];
       if (!componentProps) {
         return {};
       }
@@ -104,7 +102,7 @@ export const SegmentedControlSegmentFrame = styled(Stack, {
         GetProps<typeof Stack> & { placement?: SegmentedControlSegmentPlacement; active?: boolean }
       >;
       const config = getComponentsConfig();
-      const componentProps = config.segment[val];
+      const componentProps = config.segment[val as keyof typeof config.segment];
       if (!componentProps) {
         return {};
       }
@@ -146,7 +144,7 @@ export const SegmentedControlSegmentText = styled(Typography, {
   variants: {
     size: (val: SegmentedControlSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.segment[val];
+      const componentProps = config.segment[val as keyof typeof config.segment];
       if (!componentProps) {
         return {};
       }

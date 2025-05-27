@@ -1,7 +1,5 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
 import type { FlexButtonContextType, FlexButtonSizes, FlexButtonTone } from './flex-button.types';
 import type { GetProps } from '@tamagui/core';
@@ -35,7 +33,7 @@ export const FlexButtonFrame = styled(Stack, {
     tone: {} as Record<FlexButtonTone, GetProps<typeof Stack>>,
     size: (val: FlexButtonSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.flexButton[val];
+      const componentProps = config.flexButton[val as keyof typeof config.flexButton];
       if (!componentProps) {
         return {};
       }
@@ -100,7 +98,7 @@ export const FlexButtonText = styled(Text, {
   variants: {
     size: (val: FlexButtonSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.flexButton[val];
+      const componentProps = config.flexButton[val as keyof typeof config.flexButton];
       if (!componentProps) {
         return {};
       }

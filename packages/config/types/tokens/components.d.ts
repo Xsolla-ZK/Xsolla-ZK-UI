@@ -1240,17 +1240,6 @@ export declare const snackBar: {
     $500: {
         frame: {
             maxWidth: number;
-            marginHorizontal: {
-                base: string;
-                $md: string;
-                $lg: string;
-                $xl: string;
-            };
-            marginTop: {
-                base: string;
-                $md: string;
-                $xl: string;
-            };
             borderRadius: string;
             paddingTop: string;
             paddingBottom: string;
@@ -1316,6 +1305,21 @@ export declare const tabs: {
     $700: {
         frame: {
             gap: string;
+        };
+    };
+};
+export declare const notificationProvider: {
+    $500: {
+        marginHorizontal: {
+            base: string;
+            $md: string;
+            $lg: string;
+            $xl: string;
+        };
+        marginVertical: {
+            base: string;
+            $md: string;
+            $xl: string;
         };
     };
 };
@@ -1433,17 +1437,6 @@ export declare const tab: {
 export declare const toast: {
     $500: {
         frame: {
-            marginHorizontal: {
-                base: string;
-                $md: string;
-                $lg: string;
-                $xl: string;
-            };
-            marginVertical: {
-                base: string;
-                $md: string;
-                $xl: string;
-            };
             borderRadius: string;
             paddingTop: string;
             paddingBottom: string;
@@ -2692,17 +2685,6 @@ export declare const components: {
         $500: {
             frame: {
                 maxWidth: number;
-                marginHorizontal: {
-                    base: string;
-                    $md: string;
-                    $lg: string;
-                    $xl: string;
-                };
-                marginTop: {
-                    base: string;
-                    $md: string;
-                    $xl: string;
-                };
                 borderRadius: string;
                 paddingTop: string;
                 paddingBottom: string;
@@ -2768,6 +2750,21 @@ export declare const components: {
         $700: {
             frame: {
                 gap: string;
+            };
+        };
+    };
+    notificationProvider: {
+        $500: {
+            marginHorizontal: {
+                base: string;
+                $md: string;
+                $lg: string;
+                $xl: string;
+            };
+            marginVertical: {
+                base: string;
+                $md: string;
+                $xl: string;
             };
         };
     };
@@ -2885,17 +2882,6 @@ export declare const components: {
     toast: {
         $500: {
             frame: {
-                marginHorizontal: {
-                    base: string;
-                    $md: string;
-                    $lg: string;
-                    $xl: string;
-                };
-                marginVertical: {
-                    base: string;
-                    $md: string;
-                    $xl: string;
-                };
                 borderRadius: string;
                 paddingTop: string;
                 paddingBottom: string;

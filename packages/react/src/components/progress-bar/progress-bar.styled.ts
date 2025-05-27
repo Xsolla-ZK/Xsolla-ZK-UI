@@ -1,6 +1,6 @@
 import { createStyledContext, Stack } from '@tamagui/core';
 import { styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   PROGRESS_BAR_ACTIVE_TRACK_NAME,
   PROGRESS_BAR_COMPONENT_NAME,
@@ -29,7 +29,7 @@ export const ProgressBarActiveTrack = styled(Stack, {
   variants: {
     size: (val: ProgressBarSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.progressBar[val];
+      const componentProps = config.progressBar[val as keyof typeof config.progressBar];
 
       if (!componentProps) return {};
 

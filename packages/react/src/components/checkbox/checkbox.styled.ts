@@ -1,8 +1,7 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
 import type {
   CheckboxContextType,
@@ -37,7 +36,7 @@ export const CheckboxFrame = styled(Stack, {
   variants: {
     size: (val: CheckboxSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.checkbox[val];
+      const componentProps = config.checkbox[val as keyof typeof config.checkbox];
 
       if (!componentProps) return {};
 
@@ -89,7 +88,7 @@ export const CheckboxOverlay = styled(Stack, {
     size: (val: CheckboxSizes, extras) => {
       const { props } = extras as CheckboxVariantSpreadExtras<typeof Stack>;
       const config = getComponentsConfig();
-      const componentProps = config.checkbox[val];
+      const componentProps = config.checkbox[val as keyof typeof config.checkbox];
 
       if (!componentProps) return {};
 
@@ -122,7 +121,7 @@ export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
   const ctx = useContext(CheckboxContext.context);
 
   const config = getComponentsConfig();
-  const componentProps = config.checkbox[ctx.size];
+  const componentProps = config.checkbox[ctx.size as keyof typeof config.checkbox];
 
   if (forceMount || isIndeterminate(ctx.checked) || ctx.checked === true) {
     if (icon) {

@@ -1,7 +1,7 @@
 {
   "name": "@xsolla-zk/icons",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

@@ -1,5 +1,5 @@
 import { styled, Stack } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { getComponentsConfig, getMappedStyles } from '../../../utils';
 import { NOTIFICATION_IMPL_COMPONENT_NAME } from '../notification.constants';
 import type { NotificationSizes } from '../notification.types';
 
@@ -16,7 +16,7 @@ export const NotificationImplFrame = styled(Stack, {
   variants: {
     size: (val: NotificationSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.toast[val];
+      const componentProps = config.toast[val as keyof typeof config.toast];
       if (!componentProps) {
         return {};
       }

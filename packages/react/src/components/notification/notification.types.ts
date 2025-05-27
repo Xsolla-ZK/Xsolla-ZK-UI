@@ -3,10 +3,10 @@ import type {
   NotificationDescription,
   NotificationTitle,
 } from './notification.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, ScopedProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils';
 
-export type NotificationSizes = keyof ComponentsConfig['toast'];
+export type NotificationSizes = keyof ComponentsConfig['toast'] | (string & {});
 
 export type NotificationScopedProps<T> = ScopedProps<T, 'Notification'>;
 

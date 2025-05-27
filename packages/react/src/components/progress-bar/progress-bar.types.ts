@@ -1,8 +1,8 @@
 import type { ProgressBarActiveTrack, ProgressBarFrame } from './progress-bar.styled';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils';
 
-export type ProgressBarSizes = keyof ComponentsConfig['progressBar'];
+export type ProgressBarSizes = keyof ComponentsConfig['progressBar'] | (string & {});
 
 export type ProgressBarContextType = {
   size: ProgressBarSizes;

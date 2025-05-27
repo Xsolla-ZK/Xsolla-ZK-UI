@@ -1,13 +1,12 @@
 import type { CHIP_COMPONENT_NAME } from './chips.constants';
 import type { ChipFrame, ChipsFrame } from './chips.styled';
+import type { IconsPosition, GetComponentTone } from '../../types';
+import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
-import type { IconsPosition } from '@xsolla-zk/react/types/icon';
-import type { GetComponentTone } from '@xsolla-zk/react/types/theme';
-import type { ComponentsConfig } from '@xsolla-zk/react/utils/components-config';
 
 export type ChipVariants = 'primary' | 'secondary' | 'tertiary';
-export type ChipsSizes = keyof ComponentsConfig['chips'];
-export type ChipSizes = keyof ComponentsConfig['chip'];
+export type ChipsSizes = keyof ComponentsConfig['chips'] | (string & {});
+export type ChipSizes = keyof ComponentsConfig['chip'] | (string & {});
 export type ChipTone = GetComponentTone<typeof CHIP_COMPONENT_NAME>;
 export type ChipVariantSpreadExtras<T extends StylableComponent> = VariantSpreadExtras<
   GetProps<T> & ChipContextType

@@ -22,7 +22,7 @@ export * from './checkbox';
 export * from './button';
 export * from './badge';
 export * from './slider';
-export * from './masked-input';
+// export * from './masked-input';
 export * from './sheet';
 export * from './progress-bar';
 export * from './dialog';

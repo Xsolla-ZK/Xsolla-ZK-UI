@@ -1,5 +1,5 @@
 import { isWeb, Stack, styled, View } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '@xsolla-zk/react/utils';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { SheetBody, SheetFooter, SheetHeader, SheetOverlay } from '../sheet/sheet.styled';
 import { Typography } from '../typography';
 import {
@@ -53,7 +53,7 @@ export const DialogContentFrame = styled(Stack, {
   variants: {
     size: (val: DialogSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.modal[val];
+      const componentProps = config.modal[val as keyof typeof config.modal];
 
       if (!componentProps) return {};
 

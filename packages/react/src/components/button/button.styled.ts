@@ -1,12 +1,11 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
-import { getComponentsConfig } from '@xsolla-zk/react/utils/components-config';
-import { createIconComponent } from '@xsolla-zk/react/utils/create-icon-component';
-import { getMappedStyles } from '@xsolla-zk/react/utils/get-mapped-styles';
+import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
 import { BUTTON_COMPONENT_NAME } from './button.constants';
 import type {
   ButtonContextType,
   ButtonSizes,
+  ButtonTone,
   ButtonVariants,
   ButtonVariantSpreadExtras,
 } from './button.types';
@@ -58,7 +57,7 @@ export const ButtonFrame = styled(Board, {
   userSelect: 'none',
 
   variants: {
-    tone: {} as Record<ButtonContextType['tone'], GetProps<typeof Stack>>,
+    tone: (_val: ButtonTone) => ({}),
     hasIconLeft: {
       true: {},
       false: {},
@@ -70,7 +69,7 @@ export const ButtonFrame = styled(Board, {
     variant: getVariant,
     size: (val: ButtonSizes, _extras) => {
       const config = getComponentsConfig();
-      const button = config.button[val];
+      const button = config.button[val as keyof typeof config.button];
 
       if (!button) return {};
 
@@ -142,7 +141,7 @@ export const ButtonText = styled(Text, {
     size: (val: ButtonSizes, extras) => {
       const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
       const config = getComponentsConfig();
-      const button = config.button[val];
+      const button = config.button[val as keyof typeof config.button];
 
       if (!button) return {};
 
@@ -163,7 +162,7 @@ const getIconColor = (ctx: ButtonContextType): ColorTokens => {
   }
 
   if (ctx.variant !== 'primary') {
-    return `$content.${ctx.tone}-primary`;
+    return `$content.${ctx.tone}-primary` as ColorTokens;
   }
 
   return '$color';

@@ -30,3 +30,4 @@ tsconfig.merged.json
 # testing
 /coverage
 .tamagui
+.temp
