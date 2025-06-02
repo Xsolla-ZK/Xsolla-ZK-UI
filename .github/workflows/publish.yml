@@ -18,13 +18,13 @@ on:
           - minor
           - major
       packages:
-        description: 'Comma-separated list of packages to publish (without `packages/` prefix). If left empty — all changed packages will be found.'
+        description: 'Comma-separated list of packages to publish (without `packages/` prefix). If left empty — will be found all changed packages.'
         required: false
         type: string
 
 env:
   REGISTRY_URL: 'https://registry.npmjs.org'
-  # Если нужно использовать GitHub Packages вместо npmjs.org, раскомментируйте строку ниже
+  # If need to use GitHub Packages instead of npmjs.org, uncomment the line below
   # REGISTRY_URL: 'https://npm.pkg.github.com'
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
       - name: 🔍 Define packages to publish
         id: set-matrix
         run: |
-          # If passed via workflow_dispatch, specific packages (comma-separated, without `packages/` prefix)
+          # If passed specific packages (comma-separated, without "packages/" prefix) through workflow_dispatch
           if [ -n "${{ github.event.inputs.packages }}" ]; then
             IFS=',' read -ra ARR <<< "${{ github.event.inputs.packages }}"
             # Substitute "packages/<name>"
@@ -73,6 +73,7 @@ jobs:
             fi
           fi
 
+          echo ">>> matrix-packages raw: $MATRIX_JSON"
           echo "matrix-packages=$MATRIX_JSON" >> $GITHUB_OUTPUT
 
   build:
@@ -148,11 +149,11 @@ jobs:
         id: check-changes
         working-directory: ${{ matrix.package-folder }}
         run: |
-          # Take name and version from the specified package
+          # Take name and version from specified package
           PACKAGE_NAME=$(node -p "require('${PWD}/package.json').name")
           CURRENT_VERSION=$(node -p "require('${PWD}/package.json').version")
 
-          # Check if there are changes in this folder since the previous commit
+          # Check if there are changes in this folder relative to the previous commit
           if git diff --quiet HEAD~1 HEAD -- ${PWD##*/}; then
             echo "skip=true" >> $GITHUB_OUTPUT
             echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
@@ -194,7 +195,7 @@ jobs:
           git add "${PKG_FOLDER}/CHANGELOG.md" || true
 
           git commit -m "chore(${PKG_SHORT}): bump version to ${{ steps.bump-version.outputs.new_version }}" || true
-          # Create tag in the format <package-name>@<new_version>
+          # Create tag in format <package-name>@<new_version>
           TAG_NAME="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
           git tag "$TAG_NAME" -m "Release $TAG_NAME"
           # Push commit and tag
@@ -206,7 +207,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "Publishing package ${{ steps.check-changes.outputs.package_name }}..."
+          echo "Publish package ${{ steps.check-changes.outputs.package_name }}..."
           pnpm publish --access public --no-git-checks
 
   create-release:
