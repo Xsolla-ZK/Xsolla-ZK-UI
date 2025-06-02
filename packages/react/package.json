@@ -1,7 +1,7 @@
 {
   "name": "@xsolla-zk/react",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "removeSideEffects": true,
   "main": "dist/cjs",
   "source": "./src/index.ts",
