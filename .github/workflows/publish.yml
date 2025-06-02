@@ -121,6 +121,8 @@ jobs:
       fail-fast: false
       matrix:
         package-folder: ${{ fromJson(needs.prepare.outputs['matrix-packages']) }}
+    outputs:
+      published-packages: ${{ steps.published-info.outputs.packages }}
 
     steps:
       - name: 📥 Checkout
@@ -155,15 +157,18 @@ jobs:
           # Take name and version from specified package
           PACKAGE_NAME=$(node -p "require('${PWD}/package.json').name")
           CURRENT_VERSION=$(node -p "require('${PWD}/package.json').version")
+          PACKAGE_SHORT_NAME=${PWD##*/}
 
           # Check if there are changes in this folder relative to the previous commit
-          if git diff --quiet HEAD~1 HEAD -- ${PWD##*/}; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
-            echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
-          else
+          if git diff --quiet HEAD~1 HEAD -- . 2>/dev/null || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
             echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
+            echo "package_short_name=${PACKAGE_SHORT_NAME}" >> $GITHUB_OUTPUT
+            echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+          else
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
+            echo "package_short_name=${PACKAGE_SHORT_NAME}" >> $GITHUB_OUTPUT
             echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           fi
 
@@ -172,35 +177,160 @@ jobs:
         id: bump-version
         working-directory: ${{ matrix['package-folder'] }}
         run: |
-          VERSION_TYPE="${{ github.event.inputs.version }}"
-          # Update version in package.json without creating git tag
-          NEW_VERSION=$(pnpm version "$VERSION_TYPE" --no-git-tag-version)
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          VERSION_TYPE="${{ github.event.inputs.version || 'patch' }}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          echo "Current version: $CURRENT_VERSION"
+          echo "Version bump type: $VERSION_TYPE"
+
+          # Parse current version
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+
+          # Calculate new version based on type
+          case "$VERSION_TYPE" in
+            "major")
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            "minor")
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            "patch")
+              PATCH=$((PATCH + 1))
+              ;;
+            *)
+              echo "Unknown version type: $VERSION_TYPE"
+              exit 1
+              ;;
+          esac
+
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+
+          # Update package.json with new version
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$NEW_VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          echo "New version: $NEW_VERSION"
+          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+          echo "tag_name=v${NEW_VERSION}" >> $GITHUB_OUTPUT
 
       - name: 📝 Generate CHANGELOG
         if: steps.check-changes.outputs.skip == 'false'
         working-directory: ${{ matrix['package-folder'] }}
         run: |
-          if ! command -v conventional-changelog &> /dev/null; then
-            npm install -g conventional-changelog-cli
+          PKG_NAME="${{ steps.check-changes.outputs.package_short_name }}"
+          NEW_VERSION="${{ steps.bump-version.outputs.new_version }}"
+          OLD_VERSION="${{ steps.check-changes.outputs.current_version }}"
+
+          # Get commits since last version tag
+          LAST_TAG=$(git describe --tags --abbrev=0 --match="v*" 2>/dev/null || echo "")
+
+          if [ -n "$LAST_TAG" ]; then
+            COMMITS=$(git log --oneline --no-merges ${LAST_TAG}..HEAD -- .)
+          else
+            COMMITS=$(git log --oneline --no-merges -- . | head -10)
           fi
-          conventional-changelog -p angular -i CHANGELOG.md -s -r 0 || echo "Changelog generation skipped"
+
+          # Create or update CHANGELOG.md
+          if [ ! -f "CHANGELOG.md" ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "All notable changes to this project will be documented in this file." >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+          fi
+
+          # Prepare new changelog entry
+          TEMP_CHANGELOG=$(mktemp)
+          echo "# Changelog" > $TEMP_CHANGELOG
+          echo "" >> $TEMP_CHANGELOG
+
+          # Add new version entry
+          echo "## [${NEW_VERSION}] - $(date +%Y-%m-%d)" >> $TEMP_CHANGELOG
+          echo "" >> $TEMP_CHANGELOG
+
+          # Categorize commits
+          FEATURES=""
+          FIXES=""
+          CHORES=""
+          BREAKING=""
+
+          while IFS= read -r commit; do
+            if [ -n "$commit" ]; then
+              if echo "$commit" | grep -q "^[a-f0-9]* feat[(!:]"; then
+                FEATURES="${FEATURES}- ${commit#* }\n"
+              elif echo "$commit" | grep -q "^[a-f0-9]* fix[(!:]"; then
+                FIXES="${FIXES}- ${commit#* }\n"
+              elif echo "$commit" | grep -q "^[a-f0-9]* BREAKING CHANGE"; then
+                BREAKING="${BREAKING}- ${commit#* }\n"
+              elif echo "$commit" | grep -qE "^[a-f0-9]* (chore|docs|style|refactor|test|build|ci)[(!:]"; then
+                CHORES="${CHORES}- ${commit#* }\n"
+              else
+                CHORES="${CHORES}- ${commit#* }\n"
+              fi
+            fi
+          done <<< "$COMMITS"
+
+          # Add categorized changes
+          if [ -n "$BREAKING" ]; then
+            echo "### 💥 Breaking Changes" >> $TEMP_CHANGELOG
+            echo -e "$BREAKING" >> $TEMP_CHANGELOG
+          fi
+
+          if [ -n "$FEATURES" ]; then
+            echo "### ✨ New Features" >> $TEMP_CHANGELOG
+            echo -e "$FEATURES" >> $TEMP_CHANGELOG
+          fi
+
+          if [ -n "$FIXES" ]; then
+            echo "### 🐛 Bug Fixes" >> $TEMP_CHANGELOG
+            echo -e "$FIXES" >> $TEMP_CHANGELOG
+          fi
+
+          if [ -n "$CHORES" ]; then
+            echo "### 🔧 Other Changes" >> $TEMP_CHANGELOG
+            echo -e "$CHORES" >> $TEMP_CHANGELOG
+          fi
+
+          echo "" >> $TEMP_CHANGELOG
+
+          # Append existing changelog content (skip first few lines)
+          if [ -f "CHANGELOG.md" ]; then
+            tail -n +4 CHANGELOG.md >> $TEMP_CHANGELOG
+          fi
+
+          # Replace changelog
+          mv $TEMP_CHANGELOG CHANGELOG.md
+
+          echo "Generated changelog for version $NEW_VERSION"
 
       - name: 🎯 Commit version & tag
         if: steps.check-changes.outputs.skip == 'false'
         run: |
           PKG_FOLDER="${{ matrix['package-folder'] }}"
-          PKG_SHORT="${PKG_FOLDER##*/}"
+          PKG_SHORT="${{ steps.check-changes.outputs.package_short_name }}"
+          NEW_VERSION="${{ steps.bump-version.outputs.new_version }}"
+          TAG_NAME="${{ steps.bump-version.outputs.tag_name }}"
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           git add "${PKG_FOLDER}/package.json"
           git add "${PKG_FOLDER}/CHANGELOG.md" || true
 
-          git commit -m "chore(${PKG_SHORT}): bump version to ${{ steps.bump-version.outputs.new_version }}" || true
-          # Create tag in format <package-name>@<new_version>
-          TAG_NAME="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
-          git tag "$TAG_NAME" -m "Release $TAG_NAME"
+          git commit -m "chore(${PKG_SHORT}): bump version to v${NEW_VERSION}" || true
+
+          # Create tag in format vX.X.X
+          git tag "$TAG_NAME" -m "Release ${PKG_SHORT} v${NEW_VERSION}"
+
           # Push commit and tag
           git push origin HEAD --follow-tags
 
@@ -210,64 +340,43 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "Publish package ${{ steps.check-changes.outputs.package_name }}..."
+          echo "Publishing package ${{ steps.check-changes.outputs.package_name }} v${{ steps.bump-version.outputs.new_version }}..."
           pnpm publish --access public --no-git-checks
 
-  create-release:
-    name: 🏷 Create GitHub Release
-    needs: publish
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate TAG_NAME and RELEASE_NAME
-        id: gen_release_vars
-        run: |
-          TAG="release-$(date +'%Y%m%d-%H%M%S')"
-          NAME="Release of packages $(date +'%Y-%m-%d %H:%M:%S')"
-          echo "TAG_NAME=$TAG" >> $GITHUB_ENV
-          echo "RELEASE_NAME=$NAME" >> $GITHUB_ENV
-
-      - name: Create and push git-tag
-        env:
-          TAG_NAME: ${{ env.TAG_NAME }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "$TAG_NAME"
-          git push origin "$TAG_NAME"
-
-      - name: 📑 Collect list of latest tags
-        id: get-tags
-        run: |
-          LATEST_TAGS=$(git tag --sort=-creatordate | head -5 | tr '\n' ' ')
-          echo "latest_tags=$LATEST_TAGS" >> $GITHUB_OUTPUT
-
-      - name: 🔖 Create Release
+      - name: 🔖 Create GitHub Release
+        if: steps.check-changes.outputs.skip == 'false'
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.TAG_NAME }}
-          name: ${{ env.RELEASE_NAME }}
+          tag: ${{ steps.bump-version.outputs.tag_name }}
+          name: "${{ steps.check-changes.outputs.package_short_name }} v${{ steps.bump-version.outputs.new_version }}"
           body: |
-            ## 🚀 New release of packages
+            ## 🚀 ${{ steps.check-changes.outputs.package_name }} v${{ steps.bump-version.outputs.new_version }}
 
-            **Published packages:**
-            ${{ steps.get-tags.outputs.latest_tags }}
-
-            ### Changes
-            - Automatic version bump: ${{ github.event.inputs.version }}
-            - Updated dependencies
-            - Fixed linter warnings
-
-            ### Installation
+            ### 📦 Installation
             ```bash
-            pnpm add @xsolla-zk/react @xsolla-zk/config @xsolla-zk/tokens
+            npm install ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
+            # or
+            pnpm add ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
+            # or
+            yarn add ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
             ```
+
+            ### 📝 Changes
+            Updated version: **${{ github.event.inputs.version || 'patch' }}**
+
+            See the [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/${{ matrix['package-folder'] }}/CHANGELOG.md) for details.
+
+            ### 🔗 Links
+            - [NPM Package](https://www.npmjs.com/package/${{ steps.check-changes.outputs.package_name }})
+            - [Documentation](https://github.com/${{ github.repository }}/tree/main/${{ matrix['package-folder'] }})
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📋 Collect published packages info
+        if: steps.check-changes.outputs.skip == 'false'
+        id: published-info
+        run: |
+          PKG_INFO="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
+          echo "packages=${PKG_INFO}" >> $GITHUB_OUTPUT
