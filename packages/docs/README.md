@@ -1,10 +1,10 @@
 # Xsolla ZK UI Documentation
 
-Документация для UI библиотеки Xsolla ZK, построенная на основе [Nextra](https://nextra.site/).
+Documentation for the Xsolla ZK UI library, built with [Nextra](https://nextra.site/).
 
-## Разработка
+## Development
 
-Для запуска документации в режиме разработки:
+To run the documentation in development mode:
 
 ```bash
 cd packages/docs
@@ -12,35 +12,35 @@ pnpm install
 pnpm dev
 ```
 
-Документация будет доступна по адресу `http://localhost:3000`.
+The documentation will be available at `http://localhost:3000`.
 
-## Сборка
+## Build
 
-Для сборки статической версии документации:
+To build the static version of the documentation:
 
 ```bash
 pnpm build
 ```
 
-Результат сборки будет находиться в папке `dist/`.
+The build output will be located in the `dist/` folder.
 
-## Структура
+## Structure
 
-- `app/` - страницы документации в формате MDX
-- `app/components/` - документация по компонентам
-- `app/_meta.js` - конфигурация навигации
-- `theme.config.tsx` - конфигурация темы Nextra
-- `next.config.mjs` - конфигурация Next.js
+- `app/` - documentation pages in MDX format
+- `app/components/` - component documentation
+- `app/_meta.js` - navigation configuration
+- `theme.config.tsx` - Nextra theme configuration
+- `next.config.mjs` - Next.js configuration
 
-## Добавление новых страниц
+## Adding New Pages
 
-1. Создайте новый `.mdx` файл в соответствующей папке
-2. Добавьте запись в `_meta.js` файл для навигации
-3. Используйте примеры из Storybook для создания документации
+1. Create a new `.mdx` file in the appropriate folder
+2. Add an entry to the `_meta.js` file for navigation
+3. Use examples from Storybook to create documentation
 
-## Компоненты
+## Components
 
-Документация включает описание всех компонентов из `@xsolla-zk/react`:
+The documentation includes descriptions of all components from `@xsolla-zk/react`:
 
 - Button
 - Input
@@ -53,10 +53,10 @@ pnpm build
 - Dialog
 - Rich Icon
 - Loader
-- И многие другие...
+- And many more...
 
-Каждая страница компонента содержит:
-- Описание и назначение
-- Примеры использования
-- API документацию
-- Информацию о доступности
+Each component page contains:
+- Description and purpose
+- Usage examples
+- API documentation
+- Accessibility information

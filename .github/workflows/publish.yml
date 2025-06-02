@@ -96,28 +96,17 @@ jobs:
         id: calculate-sync-version
         if: github.event.inputs.sync_versions == 'true'
         run: |
-          echo "🔄 Calculating synchronized version for all packages..."
+          echo "🔄 Calculating synchronized version based on root package.json..."
 
-          # Find the highest version among all packages
-          HIGHEST_VERSION="0.0.0"
-
-          for pkg_dir in packages/*/; do
-            if [ -f "${pkg_dir}package.json" ]; then
-              PKG_VERSION=$(node -p "require('${pkg_dir}package.json').version" 2>/dev/null || echo "0.0.0")
-              echo "Package $(basename $pkg_dir): $PKG_VERSION"
-
-              # Compare versions (simple lexicographic comparison for semver)
-              if [ "$(printf '%s\n' "$PKG_VERSION" "$HIGHEST_VERSION" | sort -V | tail -n1)" = "$PKG_VERSION" ]; then
-                HIGHEST_VERSION="$PKG_VERSION"
-              fi
-            fi
-          done
-
-          echo "Highest current version: $HIGHEST_VERSION"
+          # Get version from root package.json
+          ROOT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
+          echo "Root package.json version: $ROOT_VERSION"
 
           # Calculate new version based on bump type
           VERSION_TYPE="${{ github.event.inputs.version || 'patch' }}"
-          IFS='.' read -ra VERSION_PARTS <<< "$HIGHEST_VERSION"
+          echo "Version bump type: $VERSION_TYPE"
+
+          IFS='.' read -ra VERSION_PARTS <<< "$ROOT_VERSION"
           MAJOR=${VERSION_PARTS[0]}
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
@@ -130,7 +119,6 @@ jobs:
               ;;
             "minor")
               MINOR=$((MINOR + 1))
-              PATCH=0
               ;;
             "patch")
               PATCH=$((PATCH + 1))
@@ -139,6 +127,16 @@ jobs:
 
           SYNC_VERSION="${MAJOR}.${MINOR}.${PATCH}"
           echo "New synchronized version: $SYNC_VERSION"
+
+          # Update root package.json version
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$SYNC_VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          echo "Updated root package.json to version: $SYNC_VERSION"
           echo "sync-version=$SYNC_VERSION" >> $GITHUB_OUTPUT
 
   debug-matrix:
@@ -299,7 +297,6 @@ jobs:
                 ;;
               "minor")
                 MINOR=$((MINOR + 1))
-                PATCH=0
                 ;;
               "patch")
                 PATCH=$((PATCH + 1))
@@ -482,6 +479,12 @@ jobs:
           PACKAGES='${{ toJson(fromJson(needs.prepare.outputs.matrix-packages)) }}'
           echo "Processing packages: $PACKAGES"
 
+          # Add root package.json if sync_versions is enabled
+          if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
+            git add "package.json" || true
+            echo "Added root package.json"
+          fi
+
           # Add all package.json and CHANGELOG.md changes
           for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
             if [ -f "${pkg_folder}/package.json" ]; then
@@ -496,7 +499,11 @@ jobs:
             echo "No changes to commit"
           else
             if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-              git commit -m "chore: bump synchronized version to v${{ needs.prepare.outputs.sync-version }}"
+              git commit -m "chore: bump all packages to synchronized version v${{ needs.prepare.outputs.sync-version }}
+
+              Updated packages:
+              $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]' | sed 's/packages\//- @xsolla-zk\//')"
+
               # Create unified tag for synchronized release
               git tag "v${{ needs.prepare.outputs.sync-version }}" -m "Synchronized release v${{ needs.prepare.outputs.sync-version }}"
             else
