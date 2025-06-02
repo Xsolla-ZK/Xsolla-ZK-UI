@@ -51,62 +51,49 @@ jobs:
           # Packages to exclude from publishing
           EXCLUDED_PACKAGES=("docs" "vue" "app")
 
-          filter_packages() {
-            local input_packages="$1"
-            local filtered_packages=""
-
-            for pkg in $input_packages; do
-              pkg_name=$(basename "$pkg")
-              excluded=false
-
-              for excluded_pkg in "${EXCLUDED_PACKAGES[@]}"; do
-                if [ "$pkg_name" == "$excluded_pkg" ]; then
-                  echo "🚫 Excluding package: $pkg (not for publishing)"
-                  excluded=true
-                  break
-                fi
-              done
-
-              if [ "$excluded" == false ]; then
-                filtered_packages="$filtered_packages $pkg"
+          is_excluded() {
+            local pkg_name="$1"
+            for excluded_pkg in "${EXCLUDED_PACKAGES[@]}"; do
+              if [ "$pkg_name" == "$excluded_pkg" ]; then
+                return 0
               fi
             done
-
-            echo "$filtered_packages"
+            return 1
           }
 
           if [ -n "${{ github.event.inputs.packages }}" ]; then
             echo "📦 Manual packages specified: ${{ github.event.inputs.packages }}"
             IFS=',' read -ra ARR <<< "${{ github.event.inputs.packages }}"
-            ALL_SPECIFIED=""
+            MATRIX_JSON="["
             for pkg in "${ARR[@]}"; do
               trim="$(echo "$pkg" | xargs)"
-              ALL_SPECIFIED="$ALL_SPECIFIED packages/${trim}"
-            done
+              pkg_path="packages/${trim}"
 
-            # Filter out excluded packages
-            FILTERED_PACKAGES=$(filter_packages "$ALL_SPECIFIED")
-
-            MATRIX_JSON="["
-            for pkg in $FILTERED_PACKAGES; do
-              echo "  - $pkg"
-              MATRIX_JSON+="\"${pkg}\","
+              if is_excluded "$trim"; then
+                echo "🚫 Excluding package: $pkg_path (not for publishing)"
+              else
+                echo "✅ Including package: $pkg_path"
+                MATRIX_JSON+="\"${pkg_path}\","
+              fi
             done
             MATRIX_JSON="${MATRIX_JSON%,}]"
 
           elif [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
             echo "🔄 Sync versions enabled - including all publishable packages"
-            # Include all packages when sync_versions is enabled but no specific packages mentioned
-            ALL_PKGS=$(find packages -maxdepth 1 -type d | grep -v '^packages$' | sort)
-
-            # Filter out excluded packages
-            FILTERED_PACKAGES=$(filter_packages "$ALL_PKGS")
-
-            echo "Found publishable packages:"
             MATRIX_JSON="["
-            for pkg in $FILTERED_PACKAGES; do
-              echo "  - $pkg"
-              MATRIX_JSON+="\"${pkg}\","
+            for pkg_dir in packages/*/; do
+              if [ -d "$pkg_dir" ]; then
+                pkg_name=$(basename "$pkg_dir")
+
+                if is_excluded "$pkg_name"; then
+                  echo "🚫 Excluding package: $pkg_dir (not for publishing)"
+                else
+                  echo "✅ Including package: $pkg_dir"
+                  # Remove trailing slash
+                  pkg_clean="${pkg_dir%/}"
+                  MATRIX_JSON+="\"${pkg_clean}\","
+                fi
+              fi
             done
             MATRIX_JSON="${MATRIX_JSON%,}]"
 
@@ -118,26 +105,19 @@ jobs:
               echo "No changes in packages/, nothing to publish."
               MATRIX_JSON="[]"
             else
-              # Filter out excluded packages from changed packages
-              ALL_CHANGED=""
+              echo "Found changed packages, filtering for publishable ones:"
+              MATRIX_JSON="["
               for pkg in $CHANGED_PKGS; do
-                ALL_CHANGED="$ALL_CHANGED packages/${pkg}"
+                pkg_path="packages/${pkg}"
+
+                if is_excluded "$pkg"; then
+                  echo "🚫 Excluding package: $pkg_path (not for publishing)"
+                else
+                  echo "✅ Including package: $pkg_path"
+                  MATRIX_JSON+="\"${pkg_path}\","
+                fi
               done
-
-              FILTERED_PACKAGES=$(filter_packages "$ALL_CHANGED")
-
-              if [ -z "$FILTERED_PACKAGES" ]; then
-                echo "All changed packages are excluded from publishing."
-                MATRIX_JSON="[]"
-              else
-                echo "Changed publishable packages:"
-                MATRIX_JSON="["
-                for pkg in $FILTERED_PACKAGES; do
-                  echo "  - $pkg"
-                  MATRIX_JSON+="\"${pkg}\","
-                done
-                MATRIX_JSON="${MATRIX_JSON%,}]"
-              fi
+              MATRIX_JSON="${MATRIX_JSON%,}]"
             fi
           fi
 
