@@ -32,7 +32,7 @@ jobs:
     name: ⏳ Prepare list of packages
     runs-on: ubuntu-latest
     outputs:
-      matrix-packages: ${{ steps.set-matrix.outputs.matrix-packages }}
+      matrix-packages: ${{ steps.set-matrix.outputs['matrix-packages'] }}
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
     name: 🔨 Build all packages
     runs-on: ubuntu-latest
     needs: prepare
-    if: ${{ fromJson(needs.prepare.outputs.matrix-packages) && fromJson(needs.prepare.outputs.matrix-packages).length > 0 }}
+    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages']).length > 0 }}
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -110,14 +110,14 @@ jobs:
     name: 🚀 Publish packages
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ fromJson(needs.prepare.outputs.matrix-packages) && fromJson(needs.prepare.outputs.matrix-packages).length > 0 }}
+    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages']).length > 0 }}
     permissions:
       contents: write
       packages: write
     strategy:
       fail-fast: false
       matrix:
-        package-folder: ${{ fromJson(needs.prepare.outputs.matrix-packages) }}
+        package-folder: ${{ fromJson(needs.prepare.outputs['matrix-packages']) }}
 
     steps:
       - name: 📥 Checkout
