@@ -48,29 +48,68 @@ jobs:
       - name: 🔍 Define packages to publish
         id: set-matrix
         run: |
+          # Packages to exclude from publishing
+          EXCLUDED_PACKAGES=("docs" "vue" "app")
+
+          filter_packages() {
+            local input_packages="$1"
+            local filtered_packages=""
+
+            for pkg in $input_packages; do
+              pkg_name=$(basename "$pkg")
+              excluded=false
+
+              for excluded_pkg in "${EXCLUDED_PACKAGES[@]}"; do
+                if [ "$pkg_name" == "$excluded_pkg" ]; then
+                  echo "🚫 Excluding package: $pkg (not for publishing)"
+                  excluded=true
+                  break
+                fi
+              done
+
+              if [ "$excluded" == false ]; then
+                filtered_packages="$filtered_packages $pkg"
+              fi
+            done
+
+            echo "$filtered_packages"
+          }
+
           if [ -n "${{ github.event.inputs.packages }}" ]; then
             echo "📦 Manual packages specified: ${{ github.event.inputs.packages }}"
             IFS=',' read -ra ARR <<< "${{ github.event.inputs.packages }}"
-            MATRIX_JSON="["
+            ALL_SPECIFIED=""
             for pkg in "${ARR[@]}"; do
               trim="$(echo "$pkg" | xargs)"
-              echo "  - packages/${trim}"
-              MATRIX_JSON+="\"packages/${trim}\","
+              ALL_SPECIFIED="$ALL_SPECIFIED packages/${trim}"
             done
-            MATRIX_JSON="${MATRIX_JSON%,}]"
-          elif [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-            echo "🔄 Sync versions enabled - including all packages"
-            # Include all packages when sync_versions is enabled but no specific packages mentioned
-            ALL_PKGS=$(find packages -maxdepth 1 -type d | grep -v '^packages$' | sort)
-            echo "Found packages:"
-            for pkg in $ALL_PKGS; do
-              echo "  - $pkg"
-            done
+
+            # Filter out excluded packages
+            FILTERED_PACKAGES=$(filter_packages "$ALL_SPECIFIED")
+
             MATRIX_JSON="["
-            for pkg in $ALL_PKGS; do
+            for pkg in $FILTERED_PACKAGES; do
+              echo "  - $pkg"
               MATRIX_JSON+="\"${pkg}\","
             done
             MATRIX_JSON="${MATRIX_JSON%,}]"
+
+          elif [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
+            echo "🔄 Sync versions enabled - including all publishable packages"
+            # Include all packages when sync_versions is enabled but no specific packages mentioned
+            ALL_PKGS=$(find packages -maxdepth 1 -type d | grep -v '^packages$' | sort)
+
+            # Filter out excluded packages
+            FILTERED_PACKAGES=$(filter_packages "$ALL_PKGS")
+
+            echo "Found publishable packages:"
+            MATRIX_JSON="["
+            for pkg in $FILTERED_PACKAGES; do
+              echo "  - $pkg"
+              MATRIX_JSON+="\"${pkg}\","
+            done
+            MATRIX_JSON="${MATRIX_JSON%,}]"
+
           else
             echo "🔍 Checking for changed packages since ${{ github.event.before }}"
             CHANGED_PKGS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
@@ -79,13 +118,26 @@ jobs:
               echo "No changes in packages/, nothing to publish."
               MATRIX_JSON="[]"
             else
-              echo "Changed packages:"
-              MATRIX_JSON="["
+              # Filter out excluded packages from changed packages
+              ALL_CHANGED=""
               for pkg in $CHANGED_PKGS; do
-                echo "  - packages/${pkg}"
-                MATRIX_JSON+="\"packages/${pkg}\","
+                ALL_CHANGED="$ALL_CHANGED packages/${pkg}"
               done
-              MATRIX_JSON="${MATRIX_JSON%,}]"
+
+              FILTERED_PACKAGES=$(filter_packages "$ALL_CHANGED")
+
+              if [ -z "$FILTERED_PACKAGES" ]; then
+                echo "All changed packages are excluded from publishing."
+                MATRIX_JSON="[]"
+              else
+                echo "Changed publishable packages:"
+                MATRIX_JSON="["
+                for pkg in $FILTERED_PACKAGES; do
+                  echo "  - $pkg"
+                  MATRIX_JSON+="\"${pkg}\","
+                done
+                MATRIX_JSON="${MATRIX_JSON%,}]"
+              fi
             fi
           fi
 
@@ -97,6 +149,7 @@ jobs:
         if: github.event.inputs.sync_versions == 'true'
         run: |
           echo "🔄 Calculating synchronized version based on root package.json..."
+          echo "📝 Note: packages docs, vue, app are excluded from publishing"
 
           # Get version from root package.json
           ROOT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
@@ -501,7 +554,7 @@ jobs:
             if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
               git commit -m "chore: bump all packages to synchronized version v${{ needs.prepare.outputs.sync-version }}
 
-              Updated packages:
+              Updated publishable packages:
               $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]' | sed 's/packages\//- @xsolla-zk\//')"
 
               # Create unified tag for synchronized release
