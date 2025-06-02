@@ -57,9 +57,7 @@ USER nextjs
 
 EXPOSE 3003
 
-ENV PORT=3000 \
-    NODE_ENV=production \
-    HOSTNAME="0.0.0.0"
+ENV PORT=3000
 
 # Use tini for proper signal handling
 ENTRYPOINT ["tini", "--"]

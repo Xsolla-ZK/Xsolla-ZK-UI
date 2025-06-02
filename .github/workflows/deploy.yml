@@ -42,6 +42,6 @@ jobs:
           script: |
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ghcr.io/xsolla-zk/xsolla-zk-ui/docs:${{ github.ref_name }}
-            docker stop xsolla-zk-ui-docs || true
+            docker ps --filter "name=xsolla-zk-ui" -q | xargs -r docker stop || true
             docker rm xsolla-zk-ui-docs || true
             docker run -d --name xsolla-zk-ui-docs -p 3003:3000 ghcr.io/xsolla-zk/xsolla-zk-ui/docs:${{ github.ref_name }}
