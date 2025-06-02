@@ -554,10 +554,14 @@ jobs:
         run: |
           # Create releases for each published package
           for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
-            if [ -f "${pkg_folder}/package.json" ]; then
-              PKG_NAME=$(node -p "require('${pkg_folder}/package.json').name")
-              PKG_VERSION=$(node -p "require('${pkg_folder}/package.json').version")
+            PKG_JSON_PATH="${GITHUB_WORKSPACE}/${pkg_folder}/package.json"
+
+            if [ -f "$PKG_JSON_PATH" ]; then
+              PKG_NAME=$(node -p "require('$PKG_JSON_PATH').name")
+              PKG_VERSION=$(node -p "require('$PKG_JSON_PATH').version")
               PKG_SHORT=$(basename "$pkg_folder")
+
+              echo "Creating release for ${PKG_NAME} v${PKG_VERSION}"
 
               # Create individual package release
               gh release create "v${PKG_VERSION}" \
@@ -571,7 +575,9 @@ jobs:
 
               ### 📝 Changes
               See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/${pkg_folder}/CHANGELOG.md) for details." \
-                --latest=false || echo "Release may already exist"
+                --latest=false || echo "Release may already exist for v${PKG_VERSION}"
+            else
+              echo "Warning: package.json not found at $PKG_JSON_PATH"
             fi
           done
         env:
