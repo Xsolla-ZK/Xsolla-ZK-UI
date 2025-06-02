@@ -42,33 +42,25 @@ jobs:
       - name: 🔍 Define packages to publish
         id: set-matrix
         run: |
-          # If passed specific packages (comma-separated, without "packages/" prefix) through workflow_dispatch
           if [ -n "${{ github.event.inputs.packages }}" ]; then
             IFS=',' read -ra ARR <<< "${{ github.event.inputs.packages }}"
-            # Substitute "packages/<name>"
             MATRIX_JSON="["
-
             for pkg in "${ARR[@]}"; do
-              pkg_trimmed="$(echo "$pkg" | xargs)"  # remove extra spaces
-              MATRIX_JSON+="\"packages/${pkg_trimmed}\","
+              trim="$(echo "$pkg" | xargs)"
+              MATRIX_JSON+="\"packages/${trim}\","
             done
-
-            # remove comma at the end and close JSON array
             MATRIX_JSON="${MATRIX_JSON%,}]"
           else
-            # Auto-detect all changed packages in packages/*
-            # Find only changed files since the previous commit
-            CHANGED_PKGS=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d'/' -f2 | sort -u)
+            CHANGED_PKGS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+                        | grep '^packages/' | cut -d'/' -f2 | sort -u)
             if [ -z "$CHANGED_PKGS" ]; then
               echo "No changes in packages/, nothing to publish."
               MATRIX_JSON="[]"
             else
               MATRIX_JSON="["
-
               for pkg in $CHANGED_PKGS; do
                 MATRIX_JSON+="\"packages/${pkg}\","
               done
-
               MATRIX_JSON="${MATRIX_JSON%,}]"
             fi
           fi
