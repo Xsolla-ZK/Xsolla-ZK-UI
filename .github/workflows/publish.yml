@@ -224,6 +224,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate TAG_NAME and RELEASE_NAME
+        id: gen_release_vars
+        run: |
+          TAG="release-$(date +'%Y%m%d-%H%M%S')"
+          NAME="Release of packages $(date +'%Y-%m-%d %H:%M:%S')"
+          echo "TAG_NAME=$TAG" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Create and push git-tag
+        env:
+          TAG_NAME: ${{ env.TAG_NAME }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG_NAME"
+          git push origin "$TAG_NAME"
+
       - name: 📑 Collect list of latest tags
         id: get-tags
         run: |
@@ -233,8 +250,8 @@ jobs:
       - name: 🔖 Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: "release-$(date +'%Y%m%d-%H%M%S')"
-          name: "Release of packages $(date +'%Y-%m-%d %H:%M:%S')"
+          tag: ${{ env.TAG_NAME }}
+          name: ${{ env.RELEASE_NAME }}
           body: |
             ## 🚀 New release of packages
 
@@ -250,6 +267,7 @@ jobs:
             ```bash
             pnpm add @xsolla-zk/react @xsolla-zk/config @xsolla-zk/tokens
             ```
-          token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
