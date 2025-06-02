@@ -76,6 +76,16 @@ jobs:
           echo ">>> matrix-packages raw: $MATRIX_JSON"
           echo "matrix-packages=$MATRIX_JSON" >> $GITHUB_OUTPUT
 
+  debug-matrix:
+    name: 🐛 Debug matrix-packages
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show raw string and length
+        run: |
+          echo "RAW from prepare: ${{ needs.prepare.outputs['matrix-packages'] }}"
+          echo "Length via fromJson: ${{ fromJson(needs.prepare.outputs['matrix-packages']).length }}"
+
   build:
     name: 🔨 Build all packages
     runs-on: ubuntu-latest
