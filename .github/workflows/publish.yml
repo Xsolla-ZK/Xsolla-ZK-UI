@@ -224,8 +224,16 @@ jobs:
 
       - name: 🛡️ Setup npm Auth
         run: |
-          echo "//$(echo ${{ env.REGISTRY_URL }} | sed 's#https://##')/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          echo "registry=${{ env.REGISTRY_URL }}" >> ~/.npmrc
+          echo "Setting up NPM authentication for ${{ env.REGISTRY_URL }}"
+          if [[ "${{ env.REGISTRY_URL }}" == *"npmjs.org"* ]]; then
+            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          else
+            echo "//$(echo ${{ env.REGISTRY_URL }} | sed 's#https://##')/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            echo "registry=${{ env.REGISTRY_URL }}" >> ~/.npmrc
+          fi
+          echo "NPM configuration:"
+          cat ~/.npmrc | sed 's/authToken=.*/authToken=***HIDDEN***/'
 
       - name: 📦 Install dependencies (only root)
         run: pnpm install --frozen-lockfile
@@ -415,61 +423,6 @@ jobs:
 
           echo "Generated changelog for version $NEW_VERSION"
 
-      - name: 🎯 Commit version & tag
-        if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
-        run: |
-          PKG_FOLDER="${{ matrix['package-folder'] }}"
-          PKG_SHORT="${{ steps.check-changes.outputs.package_short_name }}"
-          NEW_VERSION="${{ steps.bump-version.outputs.new_version }}"
-          TAG_NAME="${{ steps.bump-version.outputs.tag_name }}"
-
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add "${PKG_FOLDER}/package.json"
-          git add "${PKG_FOLDER}/CHANGELOG.md" || true
-
-          # Check if there are changes to commit
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore(${PKG_SHORT}): bump version to v${NEW_VERSION}"
-          fi
-
-          # Create tag in format vX.X.X
-          git tag "$TAG_NAME" -m "Release ${PKG_SHORT} v${NEW_VERSION}" || echo "Tag already exists"
-
-          # Pull latest changes to avoid conflicts
-          echo "Pulling latest changes from remote..."
-          git pull --rebase origin main || {
-            echo "Pull failed, trying to resolve conflicts..."
-            # If there are conflicts, prefer our changes for package.json and CHANGELOG.md
-            git checkout --ours "${PKG_FOLDER}/package.json" || true
-            git checkout --ours "${PKG_FOLDER}/CHANGELOG.md" || true
-            git add "${PKG_FOLDER}/package.json" "${PKG_FOLDER}/CHANGELOG.md" || true
-            git rebase --continue || {
-              echo "Rebase failed, aborting rebase and trying force push..."
-              git rebase --abort || true
-            }
-          }
-
-          # Push commit and tag with retry logic
-          for i in {1..3}; do
-            echo "Push attempt $i..."
-            if git push origin HEAD --follow-tags; then
-              echo "Push successful"
-              break
-            else
-              if [ $i -eq 3 ]; then
-                echo "All push attempts failed"
-                exit 1
-              fi
-              echo "Push failed, waiting 10 seconds before retry..."
-              sleep 10
-              git pull --rebase origin main || true
-            fi
-          done
-
       - name: 📤 Publish to NPM
         if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
         working-directory: ${{ matrix['package-folder'] }}
@@ -501,37 +454,6 @@ jobs:
 
           echo "✅ Successfully published ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
 
-      - name: 🔖 Create GitHub Release
-        if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.bump-version.outputs.tag_name }}
-          name: "${{ steps.check-changes.outputs.package_short_name }} v${{ steps.bump-version.outputs.new_version }}"
-          body: |
-            ## 🚀 ${{ steps.check-changes.outputs.package_name }} v${{ steps.bump-version.outputs.new_version }}
-
-            ### 📦 Installation
-            ```bash
-            npm install ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
-            # or
-            pnpm add ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
-            # or
-            yarn add ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}
-            ```
-
-            ### 📝 Changes
-            Updated version: **${{ github.event.inputs.version || 'patch' }}**
-
-            See the [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/${{ matrix['package-folder'] }}/CHANGELOG.md) for details.
-
-            ### 🔗 Links
-            - [NPM Package](https://www.npmjs.com/package/${{ steps.check-changes.outputs.package_name }})
-            - [Documentation](https://github.com/${{ github.repository }}/tree/main/${{ matrix['package-folder'] }})
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 📋 Collect published packages info
         if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
         id: published-info
@@ -539,27 +461,104 @@ jobs:
           PKG_INFO="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
           echo "packages=${PKG_INFO}" >> $GITHUB_OUTPUT
 
+  commit-and-release:
+    name: 🎯 Commit & Create Releases
+    needs: [prepare, publish]
+    runs-on: ubuntu-latest
+    if: ${{ needs.publish.result == 'success' }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🎯 Commit all changes and create tags
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Get all packages that were published
+          PACKAGES='${{ toJson(fromJson(needs.prepare.outputs.matrix-packages)) }}'
+          echo "Processing packages: $PACKAGES"
+
+          # Add all package.json and CHANGELOG.md changes
+          for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              git add "${pkg_folder}/package.json" || true
+              git add "${pkg_folder}/CHANGELOG.md" || true
+              echo "Added changes for ${pkg_folder}"
+            fi
+          done
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
+              git commit -m "chore: bump synchronized version to v${{ needs.prepare.outputs.sync-version }}"
+              # Create unified tag for synchronized release
+              git tag "v${{ needs.prepare.outputs.sync-version }}" -m "Synchronized release v${{ needs.prepare.outputs.sync-version }}"
+            else
+              git commit -m "chore: bump package versions"
+            fi
+          fi
+
+          # Pull latest changes and push
+          git pull --rebase origin main || true
+          git push origin HEAD --follow-tags
+
+      - name: 🔖 Create GitHub Releases
+        run: |
+          # Create releases for each published package
+          for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              PKG_NAME=$(node -p "require('${pkg_folder}/package.json').name")
+              PKG_VERSION=$(node -p "require('${pkg_folder}/package.json').version")
+              PKG_SHORT=$(basename "$pkg_folder")
+
+              # Create individual package release
+              gh release create "v${PKG_VERSION}" \
+                --title "${PKG_SHORT} v${PKG_VERSION}" \
+                --notes "## 🚀 ${PKG_NAME} v${PKG_VERSION}
+
+              ### 📦 Installation
+              \`\`\`bash
+              npm install ${PKG_NAME}@${PKG_VERSION}
+              \`\`\`
+
+              ### 📝 Changes
+              See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/${pkg_folder}/CHANGELOG.md) for details." \
+                --latest=false || echo "Release may already exist"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   notify:
     name: 📢 Notify Results
-    needs: [prepare, publish]
+    needs: [prepare, publish, commit-and-release]
     runs-on: ubuntu-latest
     if: always() && fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages'])[0] != null
     steps:
       - name: 📊 Check overall status
         run: |
-          if [ "${{ needs.publish.result }}" == "success" ]; then
-            echo "✅ All packages published successfully!"
+          if [ "${{ needs.publish.result }}" == "success" ] && [ "${{ needs.commit-and-release.result }}" == "success" ]; then
+            echo "✅ All packages published and committed successfully!"
             echo "OVERALL_STATUS=success" >> $GITHUB_ENV
           elif [ "${{ needs.publish.result }}" == "failure" ]; then
-            echo "❌ Some packages failed to publish. All publishing stopped."
+            echo "❌ Packages failed to publish. No commits were made to main."
             echo "OVERALL_STATUS=failure" >> $GITHUB_ENV
             exit 1
+          elif [ "${{ needs.commit-and-release.result }}" == "failure" ]; then
+            echo "⚠️ Packages published but commit/release failed."
+            echo "OVERALL_STATUS=partial" >> $GITHUB_ENV
           elif [ "${{ needs.publish.result }}" == "cancelled" ]; then
             echo "⏹️ Publishing was cancelled."
             echo "OVERALL_STATUS=cancelled" >> $GITHUB_ENV
             exit 1
           else
-            echo "⚠️ Publishing completed with unknown status: ${{ needs.publish.result }}"
+            echo "⚠️ Publishing completed with unknown status"
             echo "OVERALL_STATUS=unknown" >> $GITHUB_ENV
           fi
 
@@ -567,11 +566,18 @@ jobs:
         if: env.OVERALL_STATUS == 'success'
         run: |
           echo "🚀 Deployment completed successfully!"
-          echo "All packages have been published to NPM and GitHub releases created."
+          echo "All packages have been published to NPM and changes committed to main."
 
       - name: 💥 Failure notification
         if: env.OVERALL_STATUS == 'failure'
         run: |
           echo "💥 Deployment failed!"
-          echo "One or more packages failed to publish. No packages were published to maintain consistency."
+          echo "Packages failed to publish. No changes were made to the repository."
           echo "Please check the logs above for details."
+
+      - name: ⚠️ Partial success notification
+        if: env.OVERALL_STATUS == 'partial'
+        run: |
+          echo "⚠️ Partial success!"
+          echo "Packages were published to NPM but commit/release creation failed."
+          echo "Manual intervention may be required."
