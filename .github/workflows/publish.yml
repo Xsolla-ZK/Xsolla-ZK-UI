@@ -77,6 +77,7 @@ jobs:
         run: |
           echo "RAW from prepare: ${{ needs.prepare.outputs['matrix-packages'] }}"
           echo "Not Empty: ${{ fromJson(needs.prepare.outputs['matrix-packages'])[0] != null }}"
+          echo "First Element: ${{ fromJson(needs.prepare.outputs['matrix-packages'])[0] }}"
 
   build:
     name: 🔨 Build all packages
@@ -149,7 +150,7 @@ jobs:
 
       - name: 🧐 Check changes in package
         id: check-changes
-        working-directory: ${{ matrix.package-folder }}
+        working-directory: ${{ matrix['package-folder'] }}
         run: |
           # Take name and version from specified package
           PACKAGE_NAME=$(node -p "require('${PWD}/package.json').name")
@@ -169,7 +170,7 @@ jobs:
       - name: 🔢 Bump version
         if: steps.check-changes.outputs.skip == 'false'
         id: bump-version
-        working-directory: ${{ matrix.package-folder }}
+        working-directory: ${{ matrix['package-folder'] }}
         run: |
           VERSION_TYPE="${{ github.event.inputs.version }}"
           # Update version in package.json without creating git tag
@@ -178,7 +179,7 @@ jobs:
 
       - name: 📝 Generate CHANGELOG
         if: steps.check-changes.outputs.skip == 'false'
-        working-directory: ${{ matrix.package-folder }}
+        working-directory: ${{ matrix['package-folder'] }}
         run: |
           if ! command -v conventional-changelog &> /dev/null; then
             npm install -g conventional-changelog-cli
@@ -188,7 +189,7 @@ jobs:
       - name: 🎯 Commit version & tag
         if: steps.check-changes.outputs.skip == 'false'
         run: |
-          PKG_FOLDER="${{ matrix.package-folder }}"
+          PKG_FOLDER="${{ matrix['package-folder'] }}"
           PKG_SHORT="${PKG_FOLDER##*/}"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -205,7 +206,7 @@ jobs:
 
       - name: 📤 Publish to NPM
         if: steps.check-changes.outputs.skip == 'false'
-        working-directory: ${{ matrix.package-folder }}
+        working-directory: ${{ matrix['package-folder'] }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
