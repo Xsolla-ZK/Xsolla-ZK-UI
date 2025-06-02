@@ -111,7 +111,7 @@ jobs:
 
   publish:
     name: 🚀 Publish packages
-    needs: build
+    needs: [prepare, build]
     runs-on: ubuntu-latest
     if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages'])[0] != null }}
     permissions:
