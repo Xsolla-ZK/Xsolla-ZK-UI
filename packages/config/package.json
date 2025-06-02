@@ -1,7 +1,7 @@
 {
   "name": "@xsolla-zk/config",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "sideEffects": false,
   "main": "dist/cjs",
   "source": "./src/index.ts",

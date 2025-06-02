@@ -1,6 +1,11 @@
 # Changelog
 
-## [1.0.0] - 2025-06-02
+## [0.1.0] - 2025-06-02
+
+### 🔧 Other Changes
+- chore(config): bump version to v1.0.0
+
+
 
 ### ✨ New Features
 - feat: prepare to publish
