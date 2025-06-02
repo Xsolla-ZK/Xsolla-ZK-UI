@@ -29,8 +29,8 @@ export const InputFrame = styled(Stack, {
 
   borderColor: '$borderColor',
   backgroundColor: '$background',
-  animation: 'state',
-  animateOnly: ['border', 'background'],
+  // animation: 'state',
+  // animateOnly: ['border', 'background'],
 
   variants: {
     focused: {
@@ -86,7 +86,6 @@ export const InputElement = styled(
   {
     name: INPUT_COMPONENT_NAME,
     context: InputContext,
-    // tag: 'input',
 
     alignSelf: 'stretch',
     borderRadius: 0,

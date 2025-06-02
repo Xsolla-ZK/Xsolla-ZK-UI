@@ -1,0 +1,208 @@
+# Input
+
+The `Input` component provides a customizable input field with slot support, various states and modes.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Input } from '@xsolla-zk/react'
+
+export default () => (
+  <Input placeholder="Enter text">
+    <Input.StartSlot />
+    <Input.EndSlot />
+  </Input>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Input } from '@xsolla-zk/react'
+
+function App() {
+  return <Input placeholder="Enter text" />
+}
+```
+
+### With state
+
+```tsx
+import { Input } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <Input
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      placeholder="Controlled input"
+    />
+  )
+}
+```
+
+### Textarea
+
+```tsx
+import { Input } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Input
+      tag="textarea"
+      placeholder="Multiline input"
+      rows={4}
+    />
+  )
+}
+```
+
+### All Sizes
+
+Input supports different sizes:
+
+```tsx
+<Input size="$200" placeholder="Small" />
+<Input size="$300" placeholder="Medium" />
+<Input size="$500" placeholder="Large" />
+```
+
+### States
+
+#### Disabled field
+
+```tsx
+<Input disabled placeholder="Disabled" />
+```
+
+#### Read only
+
+```tsx
+<Input readOnly value="Read only" />
+```
+
+#### With error
+
+```tsx
+<Input error placeholder="With error" />
+```
+
+### With Slots
+
+#### StartSlot
+
+```tsx
+import { Input, RichIcon } from '@xsolla-zk/react'
+import { DataTable } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Input placeholder="With start icon">
+      <Input.StartSlot>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={DataTable} />
+        </RichIcon>
+      </Input.StartSlot>
+    </Input>
+  )
+}
+```
+
+#### EndSlot
+
+```tsx
+import { Input, RichIcon } from '@xsolla-zk/react'
+import { BankCard } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Input placeholder="With end icon">
+      <Input.EndSlot>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={BankCard} />
+        </RichIcon>
+      </Input.EndSlot>
+    </Input>
+  )
+}
+```
+
+#### Interactive slots
+
+```tsx
+import { Input, RichIcon, Loader } from '@xsolla-zk/react'
+import { Cross } from '@xsolla-zk/icons'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  return (
+    <Input
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      placeholder="With interactive elements"
+    >
+      <Input.EndSlot>
+        {({ focused }) => (
+          <>
+            {focused && isLoading && <Loader />}
+            {value && (
+              <RichIcon
+                shape="squircle"
+                size="$200"
+                pressable
+                onPress={() => setValue('')}
+              >
+                <RichIcon.Icon icon={Cross} />
+              </RichIcon>
+            )}
+          </>
+        )}
+      </Input.EndSlot>
+    </Input>
+  )
+}
+```
+
+## API
+
+### Input Props
+
+Input extends Tamagui input inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `InputSizes` | `'$500'` | Input field size |
+| `placeholder` | `string` | - | Placeholder text |
+| `value` | `string` | - | Field value |
+| `disabled` | `boolean` | `false` | Disables the field |
+| `readOnly` | `boolean` | `false` | Makes field read-only |
+| `error` | `boolean` | `false` | Shows error state |
+| `tag` | `'input' \| 'textarea'` | `'input'` | HTML tag for rendering |
+| `onChange` | `(event: ChangeEvent) => void` | - | Change handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | Focus handler |
+| `onBlur` | `(event: FocusEvent) => void` | - | Blur handler |
+
+### Input.StartSlot Props
+
+Component for placing elements at the start of the input field.
+
+### Input.EndSlot Props
+
+Component for placing elements at the end of the input field. Receives `focused` parameter in render function.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Automatically associates label with input field
+- Supports ARIA attributes for states

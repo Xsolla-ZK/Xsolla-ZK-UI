@@ -1,0 +1,126 @@
+# Board
+
+The `Board` component provides a container with rounded corners and background styling, typically used for content sections or cards.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Board } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Board>
+      Some content
+    </Board>
+  )
+}
+```
+
+### With custom background
+
+```tsx
+import { Board } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Board backgroundColor="$background.positive-high">
+      Success message content
+    </Board>
+  )
+}
+```
+
+### As content card
+
+```tsx
+import { Board, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Board padding="$400">
+      <Typography preset="heading.300.bold">Card Title</Typography>
+      <Typography preset="text.250.default">
+        This is some content inside a board component that acts as a card.
+      </Typography>
+    </Board>
+  )
+}
+```
+
+### With different backgrounds
+
+```tsx
+import { Board } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Board backgroundColor="$background.neutral-primary">
+        Neutral background
+      </Board>
+
+      <Board backgroundColor="$background.positive-high">
+        Positive background
+      </Board>
+
+      <Board backgroundColor="$background.warning-high">
+        Warning background
+      </Board>
+
+      <Board backgroundColor="$background.negative-high">
+        Negative background
+      </Board>
+    </>
+  )
+}
+```
+
+### As interactive element
+
+```tsx
+import { Board } from '@xsolla-zk/react'
+
+function App() {
+  const handlePress = () => {
+    console.log('Board pressed')
+  }
+
+  return (
+    <Board
+      pressable
+      onPress={handlePress}
+      hoverStyle={{ backgroundColor: '$background.neutral-secondary' }}
+    >
+      Clickable board
+    </Board>
+  )
+}
+```
+
+## API
+
+### Board Props
+
+Board extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `backgroundColor` | `ColorType` | `'$background.neutral-primary'` | Background color |
+| `pressable` | `boolean` | `false` | Makes the board interactive |
+| `onPress` | `() => void` | - | Press handler |
+
+## Usage Notes
+
+- Use for grouping related content
+- Provides consistent rounded corners and spacing
+- Can be used as cards, panels, or content sections
+- Supports all Tamagui styling props for customization
+
+## Accessibility
+
+- Uses semantic container structure
+- Supports keyboard navigation when interactive
+- Maintains proper focus states
+- Works correctly with screen readers

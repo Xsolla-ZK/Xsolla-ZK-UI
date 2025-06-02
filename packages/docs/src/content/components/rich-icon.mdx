@@ -1,0 +1,169 @@
+# Rich Icon
+
+The `RichIcon` component provides a styled icon with various background shapes and interactivity.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { RichIcon } from '@xsolla-zk/react'
+
+export default () => (
+  <RichIcon>
+    <RichIcon.Icon />
+  </RichIcon>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { RichIcon } from '@xsolla-zk/react'
+import { Home } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <RichIcon>
+      <RichIcon.Icon icon={Home} />
+    </RichIcon>
+  )
+}
+```
+
+### With different shapes
+
+```tsx
+import { RichIcon } from '@xsolla-zk/react'
+import { Settings, User, Bell } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <div style={{ display: 'flex', gap: 12 }}>
+      <RichIcon shape="circle">
+        <RichIcon.Icon icon={Settings} />
+      </RichIcon>
+
+      <RichIcon shape="squircle">
+        <RichIcon.Icon icon={User} />
+      </RichIcon>
+
+      <RichIcon shape="square">
+        <RichIcon.Icon icon={Bell} />
+      </RichIcon>
+    </div>
+  )
+}
+```
+
+### Interactive icon
+
+```tsx
+import { RichIcon } from '@xsolla-zk/react'
+import { Heart } from '@xsolla-zk/icons'
+import { useState } from 'react'
+
+function App() {
+  const [liked, setLiked] = useState(false)
+
+  return (
+    <RichIcon
+      pressable
+      tone={liked ? 'positive' : 'neutral'}
+      onPress={() => setLiked(!liked)}
+    >
+      <RichIcon.Icon icon={Heart} />
+    </RichIcon>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<RichIcon size="$200">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+
+<RichIcon size="$300">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+
+<RichIcon size="$500">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+```
+
+### All Shapes
+
+#### Circle
+
+```tsx
+<RichIcon shape="circle">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+```
+
+#### Squircle
+
+```tsx
+<RichIcon shape="squircle">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+```
+
+#### Square
+
+```tsx
+<RichIcon shape="square">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+```
+
+### All Tones
+
+```tsx
+<RichIcon tone="brand">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+
+<RichIcon tone="positive">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+
+<RichIcon tone="warning">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+
+<RichIcon tone="negative">
+  <RichIcon.Icon icon={Home} />
+</RichIcon>
+```
+
+## API
+
+### RichIcon Props
+
+RichIcon extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `RichIconSizes` | `'$300'` | Icon size |
+| `shape` | `'circle' \| 'squircle' \| 'square'` | `'circle'` | Background shape |
+| `tone` | `RichIconTone` | `'neutral'` | Color tone |
+| `pressable` | `boolean` | `false` | Makes icon interactive |
+| `onPress` | `() => void` | - | Press handler |
+
+### RichIcon.Icon Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `icon` | `React.ComponentType` | - | Icon component |
+
+## Accessibility
+
+- Supports keyboard navigation (if pressable)
+- Works correctly with screen readers
+- Supports ARIA attributes for interactive elements

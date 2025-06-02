@@ -1,0 +1,189 @@
+# Tabs
+
+The `Tabs` component provides a tabbed interface for organizing content by categories.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Tabs } from '@xsolla-zk/react'
+
+export default () => (
+  <Tabs>
+    <Tabs.List>
+      <Tabs.Tab>
+        <Tabs.Tab.Icon />
+        <Tabs.Tab.Text />
+      </Tabs.Tab>
+    </Tabs.List>
+    <Tabs.Content />
+  </Tabs>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Tabs } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tabs defaultValue="tab1">
+      <Tabs.List>
+        <Tabs.Tab value="tab1">
+          <Tabs.Tab.Text>First tab</Tabs.Tab.Text>
+        </Tabs.Tab>
+        <Tabs.Tab value="tab2">
+          <Tabs.Tab.Text>Second tab</Tabs.Tab.Text>
+        </Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Content value="tab1">
+        <p>First tab content</p>
+      </Tabs.Content>
+
+      <Tabs.Content value="tab2">
+        <p>Second tab content</p>
+      </Tabs.Content>
+    </Tabs>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Tabs } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [activeTab, setActiveTab] = useState('tab1')
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">
+          <Tabs.Tab.Text>Tab 1</Tabs.Tab.Text>
+        </Tabs.Tab>
+        <Tabs.Tab value="tab2">
+          <Tabs.Tab.Text>Tab 2</Tabs.Tab.Text>
+        </Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Content value="tab1">
+        Content 1
+      </Tabs.Content>
+
+      <Tabs.Content value="tab2">
+        Content 2
+      </Tabs.Content>
+    </Tabs>
+  )
+}
+```
+
+### With icons
+
+```tsx
+import { Tabs } from '@xsolla-zk/react'
+import { Home, Settings } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Tabs defaultValue="home">
+      <Tabs.List>
+        <Tabs.Tab value="home">
+          <Tabs.Tab.Icon>
+            <Home />
+          </Tabs.Tab.Icon>
+          <Tabs.Tab.Text>Home</Tabs.Tab.Text>
+        </Tabs.Tab>
+
+        <Tabs.Tab value="settings">
+          <Tabs.Tab.Icon>
+            <Settings />
+          </Tabs.Tab.Icon>
+          <Tabs.Tab.Text>Settings</Tabs.Tab.Text>
+        </Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Content value="home">
+        Home page
+      </Tabs.Content>
+
+      <Tabs.Content value="settings">
+        Settings page
+      </Tabs.Content>
+    </Tabs>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<Tabs size="$200" defaultValue="tab1">
+  <Tabs.List>
+    <Tabs.Tab value="tab1">
+      <Tabs.Tab.Text>Small</Tabs.Tab.Text>
+    </Tabs.Tab>
+  </Tabs.List>
+</Tabs>
+
+<Tabs size="$500" defaultValue="tab1">
+  <Tabs.List>
+    <Tabs.Tab value="tab1">
+      <Tabs.Tab.Text>Large</Tabs.Tab.Text>
+    </Tabs.Tab>
+  </Tabs.List>
+</Tabs>
+```
+
+## API
+
+### Tabs Props
+
+Tabs extend Tamagui tabs inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `defaultValue` | `string` | - | Default active tab value |
+| `value` | `string` | - | Current active tab value |
+| `onValueChange` | `(value: string) => void` | - | Active tab change handler |
+| `size` | `TabsSizes` | `'$300'` | Tab size |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Tab orientation |
+
+### Tabs.List Props
+
+Container for the list of tabs.
+
+### Tabs.Tab Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Unique tab value |
+| `disabled` | `boolean` | `false` | Disables the tab |
+
+### Tabs.Tab.Text Props
+
+Component for displaying tab text.
+
+### Tabs.Tab.Icon Props
+
+Component for displaying tab icon.
+
+### Tabs.Content Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Associated tab value |
+
+## Accessibility
+
+- Supports keyboard navigation (Arrow keys, Home, End)
+- Works correctly with screen readers
+- Implements ARIA pattern for tabs
+- Automatically manages focus between tabs

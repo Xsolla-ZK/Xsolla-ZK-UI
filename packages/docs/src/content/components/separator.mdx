@@ -1,0 +1,80 @@
+# Separator
+
+The `Separator` component provides a visual divider to separate content sections.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Separator } from '@xsolla-zk/react'
+
+function App() {
+  return <Separator />
+}
+```
+
+### Vertical separator
+
+```tsx
+import { Separator } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <div style={{ display: 'flex', height: 100 }}>
+      <div>Left content</div>
+      <Separator vertical />
+      <div>Right content</div>
+    </div>
+  )
+}
+```
+
+### With custom color
+
+```tsx
+import { Separator } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Separator color="$color.accent-primary" />
+  )
+}
+```
+
+### All Weights
+
+```tsx
+<Separator weight="$stroke.50" />
+<Separator weight="$stroke.100" />
+<Separator weight="$stroke.150" />
+<Separator weight="$stroke.200" />
+```
+
+### All Orientations
+
+```tsx
+{/* Horizontal (default) */}
+<Separator />
+
+{/* Vertical */}
+<Separator vertical />
+```
+
+## API
+
+### Separator Props
+
+Separator extends Tamagui Stack inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `vertical` | `boolean` | `false` | Orientation of the separator |
+| `weight` | `SizeTokens` | `'$stroke.100'` | Thickness of the separator |
+| `color` | `ColorType` | `'$border.neutral-secondary'` | Color of the separator |
+
+## Accessibility
+
+- Provides visual separation without affecting screen reader navigation
+- Uses appropriate ARIA attributes when needed
+- Maintains semantic structure of content

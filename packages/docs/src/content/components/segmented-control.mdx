@@ -1,0 +1,206 @@
+# Segmented Control
+
+The `SegmentedControl` component provides a group of related buttons for selecting one option from several.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { SegmentedControl } from '@xsolla-zk/react'
+
+export default () => (
+  <SegmentedControl>
+    <SegmentedControl.Item>
+      <SegmentedControl.Item.Icon />
+      <SegmentedControl.Item.Text />
+    </SegmentedControl.Item>
+  </SegmentedControl>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { SegmentedControl } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SegmentedControl defaultValue="option1">
+      <SegmentedControl.Item value="option1">
+        <SegmentedControl.Item.Text>Option 1</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="option2">
+        <SegmentedControl.Item.Text>Option 2</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="option3">
+        <SegmentedControl.Item.Text>Option 3</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+    </SegmentedControl>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { SegmentedControl } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('list')
+
+  return (
+    <SegmentedControl value={value} onValueChange={setValue}>
+      <SegmentedControl.Item value="list">
+        <SegmentedControl.Item.Text>List</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="grid">
+        <SegmentedControl.Item.Text>Grid</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="card">
+        <SegmentedControl.Item.Text>Cards</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+    </SegmentedControl>
+  )
+}
+```
+
+### With icons
+
+```tsx
+import { SegmentedControl } from '@xsolla-zk/react'
+import { List, Grid, Card } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <SegmentedControl defaultValue="list">
+      <SegmentedControl.Item value="list">
+        <SegmentedControl.Item.Icon>
+          <List />
+        </SegmentedControl.Item.Icon>
+        <SegmentedControl.Item.Text>List</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="grid">
+        <SegmentedControl.Item.Icon>
+          <Grid />
+        </SegmentedControl.Item.Icon>
+        <SegmentedControl.Item.Text>Grid</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="card">
+        <SegmentedControl.Item.Icon>
+          <Card />
+        </SegmentedControl.Item.Icon>
+        <SegmentedControl.Item.Text>Cards</SegmentedControl.Item.Text>
+      </SegmentedControl.Item>
+    </SegmentedControl>
+  )
+}
+```
+
+### Icons only
+
+```tsx
+import { SegmentedControl } from '@xsolla-zk/react'
+import { Bold, Italic, Underline } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <SegmentedControl defaultValue="bold">
+      <SegmentedControl.Item value="bold">
+        <SegmentedControl.Item.Icon>
+          <Bold />
+        </SegmentedControl.Item.Icon>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="italic">
+        <SegmentedControl.Item.Icon>
+          <Italic />
+        </SegmentedControl.Item.Icon>
+      </SegmentedControl.Item>
+      <SegmentedControl.Item value="underline">
+        <SegmentedControl.Item.Icon>
+          <Underline />
+        </SegmentedControl.Item.Icon>
+      </SegmentedControl.Item>
+    </SegmentedControl>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<SegmentedControl size="$200" defaultValue="option1">
+  <SegmentedControl.Item value="option1">
+    <SegmentedControl.Item.Text>Small</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="option2">
+    <SegmentedControl.Item.Text>Size</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+</SegmentedControl>
+
+<SegmentedControl size="$500" defaultValue="option1">
+  <SegmentedControl.Item value="option1">
+    <SegmentedControl.Item.Text>Large</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="option2">
+    <SegmentedControl.Item.Text>Size</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+</SegmentedControl>
+```
+
+### States
+
+#### Disabled item
+
+```tsx
+<SegmentedControl defaultValue="option1">
+  <SegmentedControl.Item value="option1">
+    <SegmentedControl.Item.Text>Active</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="option2" disabled>
+    <SegmentedControl.Item.Text>Disabled</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="option3">
+    <SegmentedControl.Item.Text>Active</SegmentedControl.Item.Text>
+  </SegmentedControl.Item>
+</SegmentedControl>
+```
+
+## API
+
+### SegmentedControl Props
+
+SegmentedControl extends Tamagui radio group inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Current selected value |
+| `defaultValue` | `string` | - | Default value |
+| `onValueChange` | `(value: string) => void` | - | Value change handler |
+| `size` | `SegmentedControlSizes` | `'$300'` | Control size |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation |
+
+### SegmentedControl.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Item value |
+| `disabled` | `boolean` | `false` | Disables the item |
+
+### SegmentedControl.Item.Text Props
+
+Component for displaying item text.
+
+### SegmentedControl.Item.Icon Props
+
+Component for displaying item icon.
+
+## Accessibility
+
+- Supports keyboard navigation (Arrow keys)
+- Works correctly with screen readers
+- Implements ARIA pattern for radio groups
+- Automatically manages focus between items

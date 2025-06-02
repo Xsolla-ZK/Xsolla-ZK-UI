@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
-import { createInput } from '../input/create-input';
+import { type StyleProp } from '@tamagui/core';
+import { forwardRef, useRef, useState } from 'react';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { createInput } from '../input';
 import { InlineInputElement } from './inline-input.styled';
 import type { InlineInputProps } from './inline-input.types';
-import type { StyleProp } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 import type {
   LayoutChangeEvent,
@@ -14,65 +15,86 @@ import type {
 
 const InlineInputBase = createInput(InlineInputElement);
 
+function extractTypographyValues(size: string) {
+  const config = getComponentsConfig();
+  const componentProps = config.inlineInput[size as keyof typeof config.inlineInput];
+
+  if (!componentProps) {
+    return {};
+  }
+
+  return getMappedStyles(componentProps) as TextStyle;
+}
+
+function getScaleConfig(size: string) {
+  const scaleConfigs = {
+    $600: { maxScale: 0.5 },
+    $500: { maxScale: 0.7 },
+    $400: { maxScale: 1.0 },
+  };
+
+  return scaleConfigs[size as keyof typeof scaleConfigs] || { maxScale: 1.0 };
+}
+
 export const InlineInput = InlineInputBase.styleable(
   forwardRef((props: InlineInputProps, ref: ForwardedRef<TextInput>) => {
-    const { size = '$500', style, ...rest } = props;
-
-    const [scale, setScale] = useState(1);
+    const { size = '$500', ...rest } = props;
+    const [scaledStyle, setScaledStyle] = useState<StyleProp<TextStyle>>({});
     const [inputWidth, setInputWidth] = useState(0);
-    const [contentWidth, setContentWidth] = useState(0);
-    const [inputHeight, setInputHeight] = useState(0);
-    const initialHeight = useRef(0);
+    const textInputRef = useRef<TextInput>(null);
 
-    const handleLayout = (e: LayoutChangeEvent) => {
-      const { width, height } = e.nativeEvent.layout;
+    const { fontSize: originalFontSize, lineHeight: originalLineHeight } =
+      extractTypographyValues(size);
+    const scaleConfig = getScaleConfig(size);
+
+    const handleLayout = (event: LayoutChangeEvent) => {
+      const { width } = event.nativeEvent.layout;
       setInputWidth(width);
-
-      if (initialHeight.current === 0) {
-        initialHeight.current = height;
-        setInputHeight(height);
-      }
     };
 
     const handleContentSizeChange = (
-      e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
+      event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
     ) => {
-      setContentWidth(e.nativeEvent.contentSize.width);
-    };
-
-    useEffect(() => {
-      if (inputWidth > 0 && contentWidth > 0) {
-        if (contentWidth <= inputWidth) {
-          setScale(1);
-          return;
-        }
-
-        let newScale = inputWidth / contentWidth;
-
-        if (size === '$600') {
-          newScale = Math.max(0.5, newScale);
-        } else if (size === '$500') {
-          newScale = Math.max(0.7, newScale);
-        } else if (size === '$400') {
-          newScale = 1;
-        }
-
-        setScale(newScale);
+      if (scaleConfig.maxScale === 1.0) {
+        return;
       }
-    }, [inputWidth, contentWidth, size]);
 
-    const scaledStyle: StyleProp<TextStyle> = {
-      ...(style as object),
-      transform: [{ scale }],
-      transformOrigin: 'left center',
-      height: inputHeight || initialHeight.current,
+      const { contentSize } = event.nativeEvent;
+      const contentWidth = contentSize.width;
+
+      if (contentWidth > inputWidth && inputWidth > 0) {
+        const ratio = inputWidth / contentWidth;
+        const scale = Math.max(scaleConfig.maxScale, ratio);
+
+        setScaledStyle({
+          fontSize: Math.floor((originalFontSize ?? 16) * scale),
+          minHeight: originalLineHeight,
+          lineHeight: originalLineHeight,
+        });
+      } else {
+        setScaledStyle({
+          fontSize: originalFontSize,
+          minHeight: originalLineHeight,
+          lineHeight: originalLineHeight,
+        });
+      }
     };
 
     return (
       <InlineInputElement
         {...rest}
         size={size}
-        style={scaledStyle}
+        style={
+          {
+            ...(scaledStyle as Record<string, unknown>),
+            overflowX: 'hidden',
+            whiteSpace: 'pre-wrap',
+            width: '100%',
+            wordBreak: 'break-word',
+            resize: 'none',
+          } as Record<string, unknown>
+        }
+        multiline
         onLayout={handleLayout}
         onContentSizeChange={handleContentSizeChange}
         ref={ref}

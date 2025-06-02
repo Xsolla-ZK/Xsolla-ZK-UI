@@ -49,6 +49,7 @@ export const DialogContentFrame = styled(Stack, {
   zIndex: 100_000,
   outlineStyle: 'none',
   backgroundColor: '$background',
+  overflow: 'hidden',
 
   variants: {
     size: (val: DialogSizes) => {

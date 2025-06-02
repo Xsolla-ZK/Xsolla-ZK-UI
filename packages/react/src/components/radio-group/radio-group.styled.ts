@@ -58,8 +58,8 @@ export const RadioGroupOverlay = styled(Stack, {
   zIndex: 2,
   borderRadius: 'inherit',
   mixBlendMode: 'color-dodge',
-  animation: 'state',
-  animateOnly: ['opacity'],
+  // animation: 'state',
+  // animateOnly: ['opacity'],
   backgroundColor: '$background.neutral-high',
 
   '$group-hover': {

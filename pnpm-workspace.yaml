@@ -29,6 +29,9 @@ catalogs:
     "@tamagui/floating": 1.126.13
     "@tamagui/focusable": 1.126.13
     "@tamagui/focus-scope": 1.126.13
+    "@tamagui/next-plugin": 1.126.13
+    "@tamagui/next-theme": 1.126.13
+    "@tamagui/polyfill-dev": 1.126.13
     "@tamagui/radio-headless": 1.126.13
     "@tamagui/remove-scroll": 1.126.13
     "@tamagui/roving-focus": 1.126.13

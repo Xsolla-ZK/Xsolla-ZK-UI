@@ -1,0 +1,136 @@
+# Toast
+
+The `Toast` component provides temporary notifications for the user.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Toast } from '@xsolla-zk/react'
+
+export default () => (
+  <Toast>
+    <Toast.Title />
+    <Toast.Description />
+    <Toast.Action />
+    <Toast.Close />
+  </Toast>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Toast, Button } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button onPress={() => setOpen(true)}>
+        <Button.Text>Show Toast</Button.Text>
+      </Button>
+
+      <Toast open={open} onOpenChange={setOpen}>
+        <Toast.Title>Success!</Toast.Title>
+        <Toast.Description>Operation completed successfully</Toast.Description>
+      </Toast>
+    </>
+  )
+}
+```
+
+### With actions
+
+```tsx
+import { Toast, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Toast>
+      <Toast.Title>New message</Toast.Title>
+      <Toast.Description>You have a new message</Toast.Description>
+      <Toast.Action>
+        <Button size="$200">
+          <Button.Text>View</Button.Text>
+        </Button>
+      </Toast.Action>
+      <Toast.Close>
+        <Button variant="tertiary" size="$200">
+          <Button.Text>Close</Button.Text>
+        </Button>
+      </Toast.Close>
+    </Toast>
+  )
+}
+```
+
+### All Variants
+
+#### Success
+
+```tsx
+<Toast variant="success">
+  <Toast.Title>Success</Toast.Title>
+  <Toast.Description>Data saved</Toast.Description>
+</Toast>
+```
+
+#### Error
+
+```tsx
+<Toast variant="error">
+  <Toast.Title>Error</Toast.Title>
+  <Toast.Description>Failed to save data</Toast.Description>
+</Toast>
+```
+
+#### Warning
+
+```tsx
+<Toast variant="warning">
+  <Toast.Title>Warning</Toast.Title>
+  <Toast.Description>Please check the entered data</Toast.Description>
+</Toast>
+```
+
+## API
+
+### Toast Props
+
+Toast extends Tamagui toast inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `open` | `boolean` | - | Visibility state |
+| `onOpenChange` | `(open: boolean) => void` | - | State change handler |
+| `variant` | `'default' \| 'success' \| 'error' \| 'warning'` | `'default'` | Display variant |
+| `duration` | `number` | `5000` | Display time in milliseconds |
+
+### Toast.Title Props
+
+Component for displaying the notification title.
+
+### Toast.Description Props
+
+Component for displaying the notification description.
+
+### Toast.Action Props
+
+Component for placing actions in the notification.
+
+### Toast.Close Props
+
+Component for placing the close button.
+
+## Accessibility
+
+- Supports ARIA attributes for notifications
+- Automatically manages focus
+- Supports screen readers
+- Automatically closes after the specified time

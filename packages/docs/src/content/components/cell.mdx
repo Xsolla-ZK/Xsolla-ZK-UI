@@ -1,0 +1,302 @@
+# Cell
+
+The `Cell` component provides a flexible container for content with slots and optional board styling, commonly used in lists and grids.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Cell } from '@xsolla-zk/react'
+
+export default () => (
+  <Cell>
+    <Cell.Slot />
+    <Cell.Content />
+    <Cell.Slot />
+  </Cell>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Cell } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Cell>
+      <Cell.Content>
+        Basic cell content
+      </Cell.Content>
+    </Cell>
+  )
+}
+```
+
+### With slots
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+import { User, ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Cell>
+      <Cell.Slot>
+        <RichIcon size="$300">
+          <RichIcon.Icon icon={User} />
+        </RichIcon>
+      </Cell.Slot>
+      <Cell.Content>
+        <Typography>User Profile</Typography>
+      </Cell.Content>
+      <Cell.Slot>
+        <RichIcon size="$200">
+          <RichIcon.Icon icon={ChevronRight} />
+        </RichIcon>
+      </Cell.Slot>
+    </Cell>
+  )
+}
+```
+
+### With board styling
+
+```tsx
+import { Cell, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Cell withBoard>
+      <Cell.Content>
+        <Typography>Cell with board styling</Typography>
+      </Cell.Content>
+    </Cell>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { Cell, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Cell size="small">
+        <Cell.Content>
+          <Typography>Small Cell</Typography>
+        </Cell.Content>
+      </Cell>
+
+      <Cell size="medium">
+        <Cell.Content>
+          <Typography>Medium Cell</Typography>
+        </Cell.Content>
+      </Cell>
+
+      <Cell size="large">
+        <Cell.Content>
+          <Typography>Large Cell</Typography>
+        </Cell.Content>
+      </Cell>
+    </>
+  )
+}
+```
+
+### Interactive cell
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+import { Settings, ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  const handlePress = () => {
+    console.log('Cell pressed')
+  }
+
+  return (
+    <Cell
+      pressable
+      onPress={handlePress}
+      hoverStyle={{ backgroundColor: '$background.neutral-secondary' }}
+    >
+      <Cell.Slot>
+        <RichIcon size="$300">
+          <RichIcon.Icon icon={Settings} />
+        </RichIcon>
+      </Cell.Slot>
+      <Cell.Content>
+        <Typography>Settings</Typography>
+      </Cell.Content>
+      <Cell.Slot>
+        <RichIcon size="$200">
+          <RichIcon.Icon icon={ChevronRight} />
+        </RichIcon>
+      </Cell.Slot>
+    </Cell>
+  )
+}
+```
+
+### Complex content cell
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+import { Mail } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Cell withBoard>
+      <Cell.Slot>
+        <RichIcon size="$400" shape="circle">
+          <RichIcon.Icon icon={Mail} />
+        </RichIcon>
+      </Cell.Slot>
+      <Cell.Content>
+        <Typography preset="text.400.default">New Message</Typography>
+        <Typography preset="text.200.default" color="$content.neutral-secondary">
+          You have received a new message from John Doe
+        </Typography>
+      </Cell.Content>
+      <Cell.Slot>
+        <Typography preset="text.200.default" color="$content.neutral-tertiary">
+          2m ago
+        </Typography>
+      </Cell.Slot>
+    </Cell>
+  )
+}
+```
+
+### List of cells
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+import { User, Settings, Bell, ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  const menuItems = [
+    { icon: User, title: 'Profile', subtitle: 'Manage your account' },
+    { icon: Settings, title: 'Settings', subtitle: 'App preferences' },
+    { icon: Bell, title: 'Notifications', subtitle: 'Manage alerts' },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {menuItems.map((item, index) => (
+        <Cell key={index} withBoard pressable>
+          <Cell.Slot>
+            <RichIcon size="$300">
+              <RichIcon.Icon icon={item.icon} />
+            </RichIcon>
+          </Cell.Slot>
+          <Cell.Content>
+            <Typography preset="text.300.default">{item.title}</Typography>
+            <Typography preset="text.200.default" color="$content.neutral-secondary">
+              {item.subtitle}
+            </Typography>
+          </Cell.Content>
+          <Cell.Slot>
+            <RichIcon size="$200">
+              <RichIcon.Icon icon={ChevronRight} />
+            </RichIcon>
+          </Cell.Slot>
+        </Cell>
+      ))}
+    </div>
+  )
+}
+```
+
+## API
+
+### Cell Props
+
+Cell extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Cell size |
+| `withBoard` | `boolean` | `false` | Adds board styling with background and borders |
+| `pressable` | `boolean` | `false` | Makes the cell interactive |
+| `onPress` | `() => void` | - | Press handler |
+
+### Cell.Slot Props
+
+Container for side content like icons, buttons, or additional information.
+
+### Cell.Content Props
+
+Container for the main cell content.
+
+## Usage Patterns
+
+### Menu Items
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+import { ChevronRight } from '@xsolla-zk/icons'
+
+function MenuItem({ icon, title, onPress }) {
+  return (
+    <Cell pressable onPress={onPress}>
+      <Cell.Slot>
+        <RichIcon size="$300">
+          <RichIcon.Icon icon={icon} />
+        </RichIcon>
+      </Cell.Slot>
+      <Cell.Content>
+        <Typography>{title}</Typography>
+      </Cell.Content>
+      <Cell.Slot>
+        <RichIcon size="$200">
+          <RichIcon.Icon icon={ChevronRight} />
+        </RichIcon>
+      </Cell.Slot>
+    </Cell>
+  )
+}
+```
+
+### Notification Items
+
+```tsx
+import { Cell, RichIcon, Typography } from '@xsolla-zk/react'
+
+function NotificationItem({ icon, title, message, time }) {
+  return (
+    <Cell withBoard>
+      <Cell.Slot>
+        <RichIcon size="$400" shape="circle">
+          <RichIcon.Icon icon={icon} />
+        </RichIcon>
+      </Cell.Slot>
+      <Cell.Content>
+        <Typography preset="text.300.default">{title}</Typography>
+        <Typography preset="text.200.default" color="$content.neutral-secondary">
+          {message}
+        </Typography>
+      </Cell.Content>
+      <Cell.Slot>
+        <Typography preset="text.200.default" color="$content.neutral-tertiary">
+          {time}
+        </Typography>
+      </Cell.Slot>
+    </Cell>
+  )
+}
+```
+
+## Accessibility
+
+- Uses semantic container structure
+- Supports keyboard navigation when interactive
+- Maintains proper focus states
+- Works correctly with screen readers
+- Provides clear content hierarchy

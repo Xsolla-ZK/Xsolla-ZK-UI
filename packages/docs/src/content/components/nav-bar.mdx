@@ -1,0 +1,251 @@
+# NavBar
+
+The `NavBar` component provides a navigation bar with title, subtitle, and action slots for mobile and desktop interfaces.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { NavBar } from '@xsolla-zk/react'
+
+export default () => (
+  <NavBar>
+    <NavBar.StartSlot />
+    <NavBar.Center>
+      <NavBar.Title />
+      <NavBar.Subtitle />
+    </NavBar.Center>
+    <NavBar.EndSlot />
+  </NavBar>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { NavBar } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <NavBar>
+      <NavBar.Center>
+        <NavBar.Title>Page Title</NavBar.Title>
+      </NavBar.Center>
+    </NavBar>
+  )
+}
+```
+
+### With subtitle
+
+```tsx
+import { NavBar } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <NavBar>
+      <NavBar.Center>
+        <NavBar.Title>Main Title</NavBar.Title>
+        <NavBar.Subtitle>Subtitle text</NavBar.Subtitle>
+      </NavBar.Center>
+    </NavBar>
+  )
+}
+```
+
+### With navigation actions
+
+```tsx
+import { NavBar, RichIcon } from '@xsolla-zk/react'
+import { ArrowLeft, Cross } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <NavBar>
+      <NavBar.StartSlot>
+        <RichIcon size="$300" pressable>
+          <RichIcon.Icon icon={ArrowLeft} />
+        </RichIcon>
+      </NavBar.StartSlot>
+      <NavBar.Center>
+        <NavBar.Title>Settings</NavBar.Title>
+      </NavBar.Center>
+      <NavBar.EndSlot>
+        <RichIcon size="$300" pressable>
+          <RichIcon.Icon icon={Cross} />
+        </RichIcon>
+      </NavBar.EndSlot>
+    </NavBar>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { NavBar } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <NavBar size="$300">
+        <NavBar.Center>
+          <NavBar.Title>Small NavBar</NavBar.Title>
+        </NavBar.Center>
+      </NavBar>
+
+      <NavBar size="$400">
+        <NavBar.Center>
+          <NavBar.Title>Medium NavBar</NavBar.Title>
+        </NavBar.Center>
+      </NavBar>
+
+      <NavBar size="$500">
+        <NavBar.Center>
+          <NavBar.Title>Large NavBar</NavBar.Title>
+        </NavBar.Center>
+      </NavBar>
+    </>
+  )
+}
+```
+
+### All Presets
+
+#### Default preset
+
+```tsx
+<NavBar preset="default">
+  <NavBar.Center>
+    <NavBar.Title>Default</NavBar.Title>
+  </NavBar.Center>
+</NavBar>
+```
+
+#### Prominent preset
+
+```tsx
+<NavBar preset="prominent">
+  <NavBar.Center>
+    <NavBar.Title>Prominent</NavBar.Title>
+    <NavBar.Subtitle>Larger spacing and emphasis</NavBar.Subtitle>
+  </NavBar.Center>
+</NavBar>
+```
+
+### With animated back button
+
+```tsx
+import { NavBar, RichIcon } from '@xsolla-zk/react'
+import { ArrowLeft } from '@xsolla-zk/icons'
+import { AnimatePresence } from '@tamagui/animate-presence'
+import { useState } from 'react'
+
+function App() {
+  const [showBack, setShowBack] = useState(false)
+
+  return (
+    <NavBar>
+      <AnimatePresence>
+        {showBack && (
+          <NavBar.StartSlot
+            animation="state"
+            enterStyle={{ opacity: 1 }}
+            exitStyle={{ opacity: 0, width: 0 }}
+          >
+            <RichIcon size="$300" pressable onPress={() => setShowBack(false)}>
+              <RichIcon.Icon icon={ArrowLeft} />
+            </RichIcon>
+          </NavBar.StartSlot>
+        )}
+      </AnimatePresence>
+      <NavBar.Center>
+        <NavBar.Title>Dynamic Navigation</NavBar.Title>
+      </NavBar.Center>
+      <NavBar.EndSlot>
+        <button onClick={() => setShowBack(!showBack)}>
+          Toggle Back
+        </button>
+      </NavBar.EndSlot>
+    </NavBar>
+  )
+}
+```
+
+## API
+
+### NavBar Props
+
+NavBar extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `NavBarSizes` | `'$500'` | NavBar size |
+| `preset` | `NavBarPresets` | `'default'` | Visual preset |
+
+### NavBar.StartSlot Props
+
+Container for start actions (typically back button).
+
+### NavBar.Center Props
+
+Container for title and subtitle content.
+
+### NavBar.EndSlot Props
+
+Container for end actions (typically close or menu buttons).
+
+### NavBar.Title Props
+
+Component for displaying the main title.
+
+### NavBar.Subtitle Props
+
+Component for displaying subtitle text.
+
+## Usage Patterns
+
+### Multi-step Navigation
+
+The NavBar is commonly used in multi-step flows where the back button appears/disappears:
+
+```tsx
+import { NavBar, RichIcon } from '@xsolla-zk/react'
+import { ArrowLeft } from '@xsolla-zk/icons'
+import { AnimatePresence } from '@tamagui/animate-presence'
+
+function MultiStepNavBar({ step, onBack }) {
+  return (
+    <NavBar>
+      <AnimatePresence>
+        {step > 0 && (
+          <NavBar.StartSlot
+            animation="state"
+            enterStyle={{ opacity: 1 }}
+            exitStyle={{ opacity: 0, width: 0 }}
+          >
+            <RichIcon size="$300" pressable onPress={onBack}>
+              <RichIcon.Icon icon={ArrowLeft} />
+            </RichIcon>
+          </NavBar.StartSlot>
+        )}
+      </AnimatePresence>
+      <NavBar.Center>
+        <NavBar.Title>Step {step + 1}</NavBar.Title>
+        <NavBar.Subtitle>Complete the form</NavBar.Subtitle>
+      </NavBar.Center>
+    </NavBar>
+  )
+}
+```
+
+## Accessibility
+
+- Uses semantic navigation structure
+- Supports keyboard navigation for interactive elements
+- Maintains proper focus order
+- Works correctly with screen readers
+- Implements proper ARIA attributes for navigation landmarks

@@ -15,7 +15,7 @@ export const SwitchFrame = styled(Stack, {
   tag: 'button',
   tabIndex: 0,
 
-  animation: 'colorChange',
+  // animation: 'colorChange',
   userSelect: 'none',
   backgroundColor: '$background',
   borderColor: '$borderColor',
@@ -67,14 +67,14 @@ export const SwitchFrame = styled(Stack, {
 
 export const SwitchOverlay = styled(BoardOverlay, {
   borderWidth: 0,
-  animation: 'fade',
+  // animation: 'fade',
 });
 
 export const SwitchKnob = styled(Stack, {
   name: SWITCH_KNOB_COMPONENT_NAME,
 
   backgroundColor: '$background',
-  animation: 'bounceReturn',
+  // animation: 'bounceReturn',
 
   variants: {
     checked: {

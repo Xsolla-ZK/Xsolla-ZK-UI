@@ -1,5 +1,6 @@
 import { useComposedRefs, withStaticProperties } from '@tamagui/core';
-import { forwardRef, isValidElement, useMemo, useRef, useState } from 'react';
+import { useControllableState } from '@tamagui/use-controllable-state';
+import { forwardRef, isValidElement, useMemo, useRef } from 'react';
 import { useChildrenArray } from '../../hooks';
 import { createInput } from './create-input';
 import {
@@ -25,10 +26,16 @@ const InputComponent = InputBase.styleable<InputProps>(
       error,
       onFocus,
       onBlur,
+      isFocused,
+      onFocusChange,
       ...props
     } = _props;
     const childrenArray = useChildrenArray(children);
-    const [focused, setFocused] = useState(false);
+    const [focused, setFocused] = useControllableState({
+      prop: isFocused,
+      defaultProp: false,
+      onChange: onFocusChange,
+    });
     const ref = useRef<TamaguiElement>(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
     const isInteractingWithFrame = useRef(false);

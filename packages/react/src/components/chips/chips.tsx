@@ -46,6 +46,7 @@ const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
         size = '$500',
         multiselect = false,
         scrollable = false,
+        singleMode = false,
         ...props
       },
       ref: ForwardedRef<TamaguiElement>,
@@ -95,7 +96,9 @@ const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
             return newSet;
           }
 
-          if (prev === chipValue) return '';
+          if (!singleMode) {
+            if (prev === chipValue) return '';
+          }
 
           return chipValue;
         });

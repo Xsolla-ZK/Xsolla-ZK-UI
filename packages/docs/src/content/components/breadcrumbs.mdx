@@ -1,0 +1,175 @@
+# Breadcrumbs
+
+The `Breadcrumbs` component provides navigation breadcrumbs to show the user's location within a hierarchical structure.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Breadcrumbs } from '@xsolla-zk/react'
+
+export default () => (
+  <Breadcrumbs delimiter={<span>/</span>}>
+    <Breadcrumbs.Item>
+      <Breadcrumbs.Item.Text />
+    </Breadcrumbs.Item>
+  </Breadcrumbs>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Breadcrumbs, RichIcon } from '@xsolla-zk/react'
+import { ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  const delimiter = (
+    <RichIcon size="$100">
+      <RichIcon.Icon icon={ChevronRight} />
+    </RichIcon>
+  )
+
+  return (
+    <Breadcrumbs delimiter={delimiter}>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Home</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Products</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Electronics</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+    </Breadcrumbs>
+  )
+}
+```
+
+### With custom items
+
+```tsx
+import { Breadcrumbs, Badge, RichIcon } from '@xsolla-zk/react'
+import { ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  const delimiter = (
+    <RichIcon size="$100">
+      <RichIcon.Icon icon={ChevronRight} />
+    </RichIcon>
+  )
+
+  return (
+    <Breadcrumbs delimiter={delimiter}>
+      <Breadcrumbs.Item asChild>
+        <Badge>
+          <Badge.Text>Home</Badge.Text>
+        </Badge>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item asChild>
+        <Badge tone="brand">
+          <Badge.Text>Products</Badge.Text>
+        </Badge>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item asChild>
+        <Badge>
+          <Badge.Text>Electronics</Badge.Text>
+        </Badge>
+      </Breadcrumbs.Item>
+    </Breadcrumbs>
+  )
+}
+```
+
+### With custom delimiter
+
+```tsx
+import { Breadcrumbs, RichIcon } from '@xsolla-zk/react'
+import { Bookmark } from '@xsolla-zk/icons'
+
+function App() {
+  const customDelimiter = (
+    <RichIcon size="$200">
+      <RichIcon.Icon icon={Bookmark} />
+    </RichIcon>
+  )
+
+  return (
+    <Breadcrumbs delimiter={customDelimiter}>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Home</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Products</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+    </Breadcrumbs>
+  )
+}
+```
+
+### Interactive breadcrumbs
+
+```tsx
+import { Breadcrumbs, RichIcon } from '@xsolla-zk/react'
+import { ChevronRight } from '@xsolla-zk/icons'
+
+function App() {
+  const handleBreadcrumbClick = (item: string) => {
+    console.log(`Navigate to: ${item}`)
+  }
+
+  const delimiter = (
+    <RichIcon size="$100">
+      <RichIcon.Icon icon={ChevronRight} />
+    </RichIcon>
+  )
+
+  return (
+    <Breadcrumbs delimiter={delimiter}>
+      <Breadcrumbs.Item pressable onPress={() => handleBreadcrumbClick('home')}>
+        <Breadcrumbs.Item.Text>Home</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item pressable onPress={() => handleBreadcrumbClick('products')}>
+        <Breadcrumbs.Item.Text>Products</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+      <Breadcrumbs.Item>
+        <Breadcrumbs.Item.Text>Current Page</Breadcrumbs.Item.Text>
+      </Breadcrumbs.Item>
+    </Breadcrumbs>
+  )
+}
+```
+
+## API
+
+### Breadcrumbs Props
+
+Breadcrumbs extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `delimiter` | `ReactNode` | - | Separator element between items |
+
+### Breadcrumbs.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `asChild` | `boolean` | `false` | Use child component as root element |
+| `pressable` | `boolean` | `false` | Makes item interactive |
+| `onPress` | `() => void` | - | Press handler |
+
+### Breadcrumbs.Item.Text Props
+
+Component for displaying breadcrumb item text.
+
+## Accessibility
+
+- Uses semantic navigation structure
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Implements ARIA breadcrumb pattern
+- Provides proper landmark navigation
+- Maintains logical tab order

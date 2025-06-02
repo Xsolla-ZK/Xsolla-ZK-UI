@@ -1,0 +1,288 @@
+# Field
+
+The `Field` component provides a complete form field wrapper with label, control, hints, and error states.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+export default () => (
+  <Field>
+    <Field.Row>
+      <Field.Label />
+      <Field.LabelValue />
+    </Field.Row>
+    <Field.Control />
+    <Field.Row>
+      <Field.Hint />
+      <Field.HintValue />
+    </Field.Row>
+    <Field.Row>
+      <Field.Error />
+      <Field.ErrorValue />
+    </Field.Row>
+  </Field>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Username</Field.Label>
+      </Field.Row>
+      <Field.Control placeholder="Enter username" />
+    </Field>
+  )
+}
+```
+
+### Full anatomy
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field error>
+      <Field.Row>
+        <Field.Label>Email</Field.Label>
+        <Field.LabelValue>Required</Field.LabelValue>
+      </Field.Row>
+      <Field.Control placeholder="Enter email" />
+      <Field.Row>
+        <Field.Hint>We'll never share your email</Field.Hint>
+        <Field.HintValue>0/50</Field.HintValue>
+      </Field.Row>
+      <Field.Row>
+        <Field.Error>Invalid email format</Field.Error>
+        <Field.ErrorValue>400</Field.ErrorValue>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+### With rich control
+
+```tsx
+import { Field, Input, RichIcon } from '@xsolla-zk/react'
+import { Search } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Search</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <Input placeholder="Search...">
+          <Input.EndSlot>
+            <RichIcon size="$200">
+              <RichIcon.Icon icon={Search} />
+            </RichIcon>
+          </Input.EndSlot>
+        </Input>
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### With TextArea control
+
+```tsx
+import { Field, TextArea } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Description</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <TextArea placeholder="Enter description" rows={4} />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Field size="$200">
+        <Field.Row>
+          <Field.Label>Small Field</Field.Label>
+        </Field.Row>
+        <Field.Control placeholder="Small input" />
+      </Field>
+
+      <Field size="$300">
+        <Field.Row>
+          <Field.Label>Medium Field</Field.Label>
+        </Field.Row>
+        <Field.Control placeholder="Medium input" />
+      </Field>
+
+      <Field size="$500">
+        <Field.Row>
+          <Field.Label>Large Field</Field.Label>
+        </Field.Row>
+        <Field.Control placeholder="Large input" />
+      </Field>
+    </>
+  )
+}
+```
+
+### With error state
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field error>
+      <Field.Row>
+        <Field.Label>Name</Field.Label>
+      </Field.Row>
+      <Field.Control placeholder="Enter name" />
+      <Field.Row>
+        <Field.Error>This field is required</Field.Error>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+### With hint
+
+```tsx
+import { Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Password</Field.Label>
+      </Field.Row>
+      <Field.Control type="password" placeholder="Enter password" />
+      <Field.Row>
+        <Field.Hint>Minimum 8 characters, including letters and numbers</Field.Hint>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+### With custom validation
+
+```tsx
+import { Field, Input } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+  const [error, setError] = useState<string | undefined>(undefined)
+
+  const handleChange = (e) => {
+    const newValue = e.target.value
+    setValue(newValue)
+
+    if (!newValue) {
+      setError('Field is required')
+    } else if (newValue.length < 3) {
+      setError('Minimum 3 characters')
+    } else {
+      setError(undefined)
+    }
+  }
+
+  return (
+    <Field error={Boolean(error)}>
+      <Field.Row>
+        <Field.Label>Username</Field.Label>
+        <Field.LabelValue>Required</Field.LabelValue>
+      </Field.Row>
+      <Field.Control>
+        <Input value={value} onChange={handleChange} placeholder="Enter username" />
+      </Field.Control>
+      <Field.Row>
+        <Field.Error>{error}</Field.Error>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+## API
+
+### Field Props
+
+Field extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `FieldSizes` | `'$500'` | Field size |
+| `error` | `boolean` | `false` | Shows error state |
+
+### Field.Row Props
+
+Container for organizing field elements in rows.
+
+### Field.Label Props
+
+Component for displaying the field label.
+
+### Field.LabelValue Props
+
+Component for displaying additional label information (e.g., "Required", "Optional").
+
+### Field.Control Props
+
+Container for the main form control. Can be used with or without children.
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `placeholder` | `string` | - | Placeholder text (when used without children) |
+| `type` | `string` | `'text'` | Input type (when used without children) |
+
+### Field.Hint Props
+
+Component for displaying helpful hints below the control.
+
+### Field.HintValue Props
+
+Component for displaying additional hint information (e.g., character count).
+
+### Field.Error Props
+
+Component for displaying error messages.
+
+### Field.ErrorValue Props
+
+Component for displaying error codes or additional error information.
+
+## Accessibility
+
+- Automatically associates labels with controls
+- Manages ARIA attributes for error states
+- Supports screen readers
+- Maintains proper focus order
+- Implements form field accessibility patterns

@@ -1,0 +1,125 @@
+# Checkbox
+
+The `Checkbox` component provides an interactive element for selecting one or multiple options.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Checkbox } from '@xsolla-zk/react'
+
+export default () => (
+  <Checkbox>
+    <Checkbox.Indicator />
+  </Checkbox>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Checkbox } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Checkbox>
+      <Checkbox.Indicator />
+    </Checkbox>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Checkbox } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [checked, setChecked] = useState(false)
+
+  return (
+    <Checkbox checked={checked} onCheckedChange={setChecked}>
+      <Checkbox.Indicator />
+    </Checkbox>
+  )
+}
+```
+
+### With label
+
+```tsx
+import { Checkbox, Label } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label>
+      <Checkbox>
+        <Checkbox.Indicator />
+      </Checkbox>
+      Agree to terms
+    </Label>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<Checkbox size="$200">
+  <Checkbox.Indicator />
+</Checkbox>
+
+<Checkbox size="$300">
+  <Checkbox.Indicator />
+</Checkbox>
+
+<Checkbox size="$500">
+  <Checkbox.Indicator />
+</Checkbox>
+```
+
+### States
+
+#### Disabled
+
+```tsx
+<Checkbox disabled>
+  <Checkbox.Indicator />
+</Checkbox>
+```
+
+#### Indeterminate state
+
+```tsx
+<Checkbox checked="indeterminate">
+  <Checkbox.Indicator />
+</Checkbox>
+```
+
+## API
+
+### Checkbox Props
+
+Checkbox extends Tamagui checkbox inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `checked` | `boolean \| 'indeterminate'` | `false` | Checkbox state |
+| `onCheckedChange` | `(checked: boolean) => void` | - | State change handler |
+| `disabled` | `boolean` | `false` | Disables the checkbox |
+| `size` | `CheckboxSizes` | `'$300'` | Checkbox size |
+
+### Checkbox.Indicator Props
+
+Component for displaying the checkbox state indicator.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Supports ARIA attributes
+- Automatically associates with labels

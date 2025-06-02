@@ -1,9 +1,9 @@
-import { forwardRef, useId, useRef } from 'react';
+import { type TamaguiElement } from '@tamagui/core';
+import { forwardRef, useEffect, useId, useRef, useState } from 'react';
 import { Input } from '../input';
 import { OTPFieldFrame } from './otp-field.styled';
 import type { OTPFieldProps } from './otp-field.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { ChangeEvent, ClipboardEvent, ForwardedRef, KeyboardEvent } from 'react';
+import type { ChangeEvent, ClipboardEvent, FocusEvent, ForwardedRef, KeyboardEvent } from 'react';
 
 const replaceAt = (string: string, index: number, replace: string) =>
   string.substring(0, index) + replace + string.substring(index + 1);
@@ -14,11 +14,13 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       length = 4,
       id: propId,
       onChange,
+      onFocus,
       onPasteError,
       name,
       size = '$500',
       value,
       defaultValue,
+      disabled,
       ...rest
     } = props;
     const uniqueId = useId();
@@ -45,13 +47,15 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
           onChange?.(currentValue.current);
         }
 
-        const newTarget =
-          index < length - 1
-            ? (inputRefs.current[index + 1] as HTMLInputElement | undefined)
-            : e.target;
+        if (!disabled) {
+          const newTarget =
+            index < length - 1
+              ? (inputRefs.current[index + 1] as HTMLInputElement | undefined)
+              : e.target;
 
-        if (newTarget) {
-          newTarget.focus();
+          if (newTarget) {
+            newTarget.focus();
+          }
         }
       }
     };
@@ -68,6 +72,10 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
         e.key !== 'Enter'
       ) {
         e.preventDefault();
+      }
+
+      if (e.key === 'Escape') {
+        target.blur();
       }
 
       if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -116,8 +124,17 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       onChange?.(currentValue.current);
     };
 
+    const [isFocused, setIsFocused] = useState(false);
+
+    useEffect(() => {
+      if (disabled) {
+        setIsFocused(false);
+      }
+    }, [disabled]);
+
     return (
-      <OTPFieldFrame size={size} ref={ref}>
+      // @ts-ignore: TODO: web only fix for native
+      <OTPFieldFrame size={size} onPaste={handleOnPaste} ref={ref}>
         {Array.from({ length }, () => '').map((val, idx) => (
           <Input
             key={`input-code-${id}:${idx}`}
@@ -126,26 +143,35 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
             autoComplete="one-time-code"
             textContentType="oneTimeCode"
             size={size}
-            onPaste={handleOnPaste}
             onFocus={(e) => {
-              const input = e.currentTarget as HTMLInputElement;
-              input.select();
+              const input = e.nativeEvent.target as HTMLInputElement;
+              const filledLength = currentValue.current.trim().length;
+              if (filledLength < idx) {
+                input?.blur();
+                inputRefs.current[filledLength]?.focus();
+              }
+              onFocus?.(e as FocusEvent<HTMLInputElement>);
             }}
             name={name ? `${name}.${idx}` : undefined}
             onChange={(e) => handleChange(e as ChangeEvent<HTMLInputElement>, idx)}
-            ref={(elem: HTMLInputElement) => {
-              inputRefs.current[idx] = elem;
-            }}
             defaultValue={value === undefined ? defaultValue?.[idx] : undefined}
             value={value !== undefined ? (value?.[idx] ?? val) : undefined}
             onKeyDown={(e) => handleKeyDown(e, idx)}
-            maxLength={length}
             selectTextOnFocus
             enterKeyHint={idx === length - 1 ? 'done' : 'next'}
             width="100%"
             textAlign="center"
             frameStyles={{ flex: 1 }}
+            onFocusChange={(val) => {
+              setIsFocused(val);
+            }}
+            disabled={disabled}
+            isFocused={isFocused}
+            maxLength={length}
             {...rest}
+            ref={(elem: HTMLInputElement) => {
+              inputRefs.current[idx] = elem;
+            }}
           />
         ))}
       </OTPFieldFrame>

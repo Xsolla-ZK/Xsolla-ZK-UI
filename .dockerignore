@@ -1,5 +1,45 @@
+# Зависимости
 node_modules
+.pnpm
+.npm
+
+# Git
 .git
 .gitignore
+.github/workflows
+
+# Документация и README
 *.md
+README*
+
+# Сборки и временные файлы
 dist
+build
+.next
+.tamagui
+out
+.storybook-out
+storybook-build
+
+# Кэши и логи
+.cache
+*.log
+.DS_Store
+.env*
+
+# Инструменты разработки
+.vscode
+.idea
+*.tgz
+coverage
+
+# Тестирование
+__tests__
+*.test.*
+*.spec.*
+
+# Исходники, которые не нужны для сборки
+packages/app
+packages/vue
+raw-icons
+scripts

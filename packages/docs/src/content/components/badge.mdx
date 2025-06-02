@@ -1,0 +1,146 @@
+# Badge
+
+The `Badge` component is designed for displaying small informational labels, counters, or statuses.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Badge } from '@xsolla-zk/react'
+
+export default () => (
+  <Badge>
+    <Badge.Icon />
+    <Badge.Text />
+  </Badge>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Badge } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Badge>
+      <Badge.Text>New</Badge.Text>
+    </Badge>
+  )
+}
+```
+
+### With icon
+
+```tsx
+import { Badge } from '@xsolla-zk/react'
+import { Star } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Badge>
+      <Badge.Icon>
+        <Star />
+      </Badge.Icon>
+      <Badge.Text>Favorite</Badge.Text>
+    </Badge>
+  )
+}
+```
+
+### Counter
+
+```tsx
+import { Badge } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Badge variant="numeric">
+      <Badge.Text>99+</Badge.Text>
+    </Badge>
+  )
+}
+```
+
+### All Variants
+
+#### Default
+
+```tsx
+<Badge variant="default">
+  <Badge.Text>Default</Badge.Text>
+</Badge>
+```
+
+#### Dot
+
+```tsx
+<Badge variant="dot" />
+```
+
+#### Numeric
+
+```tsx
+<Badge variant="numeric">
+  <Badge.Text>5</Badge.Text>
+</Badge>
+```
+
+### All Sizes
+
+```tsx
+<Badge size="$200">
+  <Badge.Text>Small</Badge.Text>
+</Badge>
+
+<Badge size="$300">
+  <Badge.Text>Medium</Badge.Text>
+</Badge>
+
+<Badge size="$500">
+  <Badge.Text>Large</Badge.Text>
+</Badge>
+```
+
+### All Tones
+
+```tsx
+<Badge tone="brand">
+  <Badge.Text>Brand</Badge.Text>
+</Badge>
+
+<Badge tone="positive">
+  <Badge.Text>Success</Badge.Text>
+</Badge>
+
+<Badge tone="warning">
+  <Badge.Text>Warning</Badge.Text>
+</Badge>
+
+<Badge tone="negative">
+  <Badge.Text>Error</Badge.Text>
+</Badge>
+```
+
+## API
+
+### Badge Props
+
+Badge extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `variant` | `'default' \| 'dot' \| 'numeric'` | `'default'` | Display variant |
+| `size` | `BadgeSizes` | `'$300'` | Badge size |
+| `tone` | `BadgeTone` | `'brand'` | Color tone |
+
+### Badge.Text Props
+
+Component for displaying text inside the badge.
+
+### Badge.Icon Props
+
+Component for displaying icon inside the badge.

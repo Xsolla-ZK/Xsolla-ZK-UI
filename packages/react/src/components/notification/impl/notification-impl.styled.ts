@@ -6,21 +6,15 @@ import type { NotificationSizes } from '../notification.types';
 export const NotificationImplFrame = styled(Stack, {
   name: NOTIFICATION_IMPL_COMPONENT_NAME,
 
-  flexDirection: 'row',
-  alignItems: 'center',
-  overflow: 'hidden',
-
-  backgroundColor: '$overlay.neutral',
-  backdropFilter: 'blur(200px)',
-
   variants: {
     size: (val: NotificationSizes) => {
       const config = getComponentsConfig();
-      const componentProps = config.toast[val as keyof typeof config.toast];
+      const componentProps =
+        config.notificationProvider[val as keyof typeof config.notificationProvider];
       if (!componentProps) {
         return {};
       }
-      return getMappedStyles(componentProps.frame);
+      return getMappedStyles(componentProps);
     },
   } as const,
 

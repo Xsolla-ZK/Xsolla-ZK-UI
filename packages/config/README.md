@@ -1,142 +1,353 @@
 # @xsolla-zk/config
 
-Пакет содержит конфигурацию Tamagui для приложений Xsolla ZK UI, включая темы, токены, анимации и другие настройки стилей. Поддерживает различные платформы (web, iOS, Android) и предоставляет типизированный доступ к дизайн-системе.
+A comprehensive Tamagui configuration package for Xsolla ZK UI applications, providing themes, design tokens, animations, and styling configurations. Supports multiple platforms (web, iOS, Android) and offers typed access to the complete design system.
 
-## Установка
+## Installation
 
-Перед установкой необходимо настроить доступ к GitHub npm registry:
-
-1. Создайте персональный токен доступа (Personal Access Token) с правами `read:packages` на GitHub:
-   - Перейдите в Settings → Developer settings → Personal access tokens
-   - Создайте новый токен с правами `read:packages`
-   - Сохраните токен в переменную окружения `GITHUB_TOKEN`
-   - `GITHUB_TOKEN` так же будет использоваться для доступа к репозиторию с дизайн-токенами
-
-2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
-```
-@xsolla-zk:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-
-3. Установите пакет одним из следующих способов:
+Install the package using your preferred package manager:
 
 ```bash
-# Используя npm
+# Using npm
 npm install @xsolla-zk/config
 
-# Используя pnpm
+# Using pnpm
 pnpm install @xsolla-zk/config
 
-# Используя yarn
+# Using yarn
 yarn add @xsolla-zk/config
 ```
 
-## Использование
+## Usage
 
-### Базовая конфигурация
+### Basic Configuration
 
 ```tsx
 import { createTamagui } from '@tamagui/core';
 import { webConfig } from '@xsolla-zk/config/web';
-// или для мобильных платформ:
+// For mobile platforms:
 // import { iosConfig } from '@xsolla-zk/config/ios';
 // import { androidConfig } from '@xsolla-zk/config/android';
 
 export const config = createTamagui(webConfig);
 
-// Для правильной типизации
+// For proper TypeScript support
 declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends typeof config {}
 }
 ```
 
-### Доступные конфигурации
+### Available Configurations
 
-Пакет экспортирует три основные конфигурации для разных платформ:
+The package exports three main configurations for different platforms:
 
-- `webConfig` - конфигурация для веб-приложений
-- `iosConfig` - конфигурация для iOS приложений
-- `androidConfig` - конфигурация для Android приложений
+- `webConfig` - Configuration for web applications
+- `iosConfig` - Configuration for iOS applications
+- `androidConfig` - Configuration for Android applications
 
-### Структура конфигурации
+### Configuration Structure
 
-Каждая конфигурация включает:
+Each configuration includes:
 
-1. **Темы**
-   - Светлая и темная темы
-   - Цветовые токены для различных состояний
-   - Семантические цвета (brand, content, background и т.д.)
+1. **Themes**
+   - Light and dark themes
+   - Color tokens for various states
+   - Semantic colors (brand, content, background, etc.)
 
-2. **Типографика**
-   - Шрифты (Onest)
-   - Размеры текста (от 150 до 900)
-   - Высота строк
-   - Жирность шрифта
+2. **Typography**
+   - Font families (Onest)
+   - Text sizes (from 150 to 900)
+   - Line heights
+   - Font weights
 
-3. **Размеры и отступы**
-   - Размеры компонентов (size)
-   - Отступы (space)
-   - Радиусы скругления (radius)
-   - Толщина обводки (stroke)
+3. **Sizing & Spacing**
+   - Component sizes (size)
+   - Padding and margins (space)
+   - Border radius (radius)
+   - Border thickness (stroke)
 
-4. **Анимации**
-   - Предустановленные анимации для состояний
-   - Функции плавности (easing functions)
+4. **Animations**
+   - Predefined state animations
+   - Easing functions
+   - Transition configurations
 
-5. **Медиа-запросы**
-   - Брейкпоинты для адаптивного дизайна
-   - Специфичные настройки для разных платформ
+5. **Media Queries**
+   - Responsive breakpoints
+   - Platform-specific settings
 
-### Утилиты
+### Setup with TamaguiProvider
+
+```tsx
+import { TamaguiProvider } from '@tamagui/core';
+import { config } from './tamagui.config';
+
+function App() {
+  return (
+    <TamaguiProvider config={config}>
+      <YourApp />
+    </TamaguiProvider>
+  );
+}
+```
+
+### Using Design Tokens
+
+```tsx
+import { styled, Text, View } from '@tamagui/core';
+
+// Using tokens in styled components
+const Container = styled(View, {
+  backgroundColor: '$background',
+  padding: '$4',
+  borderRadius: '$3',
+  margin: '$2',
+});
+
+// Using tokens directly in components
+function MyComponent() {
+  return (
+    <View
+      backgroundColor="$surface"
+      padding="$4"
+      borderRadius="$radius.medium"
+    >
+      <Text
+        color="$color.text"
+        fontSize="$5"
+        fontWeight="$weight.medium"
+      >
+        Hello World
+      </Text>
+    </View>
+  );
+}
+```
+
+### Typography Utilities
 
 ```tsx
 import { styled, Text } from '@tamagui/core';
 import { getTypographyPreset } from '@xsolla-zk/config';
 
-const TextComponent = styled(
-  Text,
-  {
-    name: 'SemanticText',
-    // Получение предустановленных стилей типографики
-    ...getTypographyPreset('display.500.accent'),
-  }
-);
+const HeadingText = styled(Text, {
+  name: 'HeadingText',
+  // Apply predefined typography styles
+  ...getTypographyPreset('display.500.accent'),
+});
+
+function Typography() {
+  return (
+    <View>
+      <HeadingText>This is a heading</HeadingText>
+      <Text {...getTypographyPreset('body.400.regular')}>
+        This is body text
+      </Text>
+    </View>
+  );
+}
 ```
 
-### Сокращения (Shorthands)
+### Theme Switching
 
-Пакет включает набор сокращений для часто используемых свойств:
+```tsx
+import { Theme, useTheme } from '@tamagui/core';
+import { useState } from 'react';
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+
+  return (
+    <Theme name={isDark ? 'dark' : 'light'}>
+      <View backgroundColor="$background" padding="$4">
+        <Button onPress={() => setIsDark(!isDark)}>
+          Switch to {isDark ? 'light' : 'dark'} mode
+        </Button>
+        <Text color="$color">This text respects the theme</Text>
+      </View>
+    </Theme>
+  );
+}
+```
+
+### Responsive Design
+
+```tsx
+import { styled, View } from '@tamagui/core';
+
+const ResponsiveContainer = styled(View, {
+  width: '100%',
+  padding: '$2',
+
+  // Responsive breakpoints
+  '$sm': {
+    padding: '$4',
+  },
+  '$md': {
+    padding: '$6',
+    maxWidth: 768,
+  },
+  '$lg': {
+    padding: '$8',
+    maxWidth: 1024,
+  },
+});
+```
+
+### Animation Configuration
+
+```tsx
+import { AnimatePresence } from '@tamagui/animate-presence';
+import { styled, View } from '@tamagui/core';
+
+const AnimatedCard = styled(View, {
+  backgroundColor: '$surface',
+  padding: '$4',
+  borderRadius: '$3',
+
+  // Built-in animations
+  animation: 'bouncy',
+
+  variants: {
+    visible: {
+      true: {
+        opacity: 1,
+        scale: 1,
+      },
+      false: {
+        opacity: 0,
+        scale: 0.9,
+      },
+    },
+  },
+});
+```
+
+## Shorthands
+
+The package includes convenient shorthands for frequently used properties:
 
 ```tsx
 {
   m: 'margin',
+  mt: 'marginTop',
+  mr: 'marginRight',
+  mb: 'marginBottom',
+  ml: 'marginLeft',
+  mx: ['marginLeft', 'marginRight'],
+  my: ['marginTop', 'marginBottom'],
+
   p: 'padding',
+  pt: 'paddingTop',
+  pr: 'paddingRight',
+  pb: 'paddingBottom',
+  pl: 'paddingLeft',
+  px: ['paddingLeft', 'paddingRight'],
+  py: ['paddingTop', 'paddingBottom'],
+
   bg: 'backgroundColor',
   rounded: 'borderRadius',
-  // и другие...
+  // and more...
 }
 ```
 
-## Генерация токенов
+## Token Generation
 
-Токены генерируются автоматически из дизайн-системы с помощью пакета `@xsolla-zk/tokens`:
+Tokens are automatically generated from the design system using the `@xsolla-zk/tokens` package:
 
 ```bash
-# Генерация новых токенов
+# Generate new tokens
 pnpm generate
 ```
 
-## Структура пакета
+## Package Structure
 
 ```
 src/
-├── tokens/         # Сгенерированные токены
-│   ├── fonts.ts    # Настройки шрифтов
-│   ├── media/      # Медиа-запросы для разных платформ
-│   ├── themes.ts   # Темы (светлая/темная)
-│   └── tokens.ts   # Основные токены
-├── web.ts         # Конфигурация для веб
-├── ios.ts         # Конфигурация для iOS
-├── android.ts     # Конфигурация для Android
-└── shared.ts      # Общие настройки
+├── tokens/         # Generated tokens
+│   ├── fonts.ts    # Font configurations
+│   ├── media/      # Media queries for different platforms
+│   ├── themes.ts   # Themes (light/dark)
+│   └── tokens.ts   # Core design tokens
+├── web.ts         # Web configuration
+├── ios.ts         # iOS configuration
+├── android.ts     # Android configuration
+└── shared.ts      # Shared configurations
 ```
+
+## Platform-Specific Features
+
+### Web Configuration
+- CSS custom properties support
+- Responsive breakpoints
+- Browser-optimized animations
+- SSR compatibility
+
+### iOS Configuration
+- Native iOS styling conventions
+- Platform-specific spacing
+- iOS-style animations
+- Safe area handling
+
+### Android Configuration
+- Material Design compliance
+- Android-specific theming
+- Platform animations
+- System UI integration
+
+## Development
+
+To contribute or develop with this package:
+
+```bash
+# Clone the repository
+git clone https://github.com/Xsolla-ZK/Xsolla-ZK-UI.git
+
+# Install dependencies
+pnpm install
+
+# Navigate to config package
+cd packages/config
+
+# Generate tokens
+pnpm generate
+
+# Build the package
+pnpm build
+```
+
+## TypeScript Support
+
+The configuration provides full TypeScript support with:
+
+- Typed token access
+- IntelliSense for design system values
+- Type-safe theme switching
+- Component prop validation
+
+```tsx
+import type { GetThemeValueForKey } from '@tamagui/core';
+
+// Get typed color values
+type ColorValue = GetThemeValueForKey<'color'>;
+type SpaceValue = GetThemeValueForKey<'space'>;
+```
+
+## Best Practices
+
+1. **Use semantic tokens** instead of hardcoded values
+2. **Leverage responsive breakpoints** for adaptive designs
+3. **Stick to the design system** for consistency
+4. **Use theme switching** for dark/light mode support
+5. **Optimize for performance** with proper token usage
+
+## Migration Guide
+
+When updating from older versions:
+
+1. Check for token name changes in the changelog
+2. Update theme configurations if needed
+3. Test responsive breakpoints
+4. Verify animation configurations
+
+## License
+
+This package is part of the Xsolla ZK UI design system and is licensed under the MIT License.

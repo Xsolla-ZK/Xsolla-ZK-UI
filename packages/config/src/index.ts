@@ -7,7 +7,7 @@ export { tokens } from './tokens/tokens';
 export {
   deepMerge,
   createTheme,
-  createThemes,
+  composeThemes,
   createComponentTheme,
 } from './utils/create-component-theme';
 export { sharedConfig } from './shared';

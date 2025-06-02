@@ -1,0 +1,247 @@
+# Accordion
+
+The `Accordion` component provides collapsible content sections with smooth animations and flexible configuration.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Accordion } from '@xsolla-zk/react'
+
+export default () => (
+  <Accordion>
+    <Accordion.Item>
+      <Accordion.Header>
+        <Accordion.Trigger />
+      </Accordion.Header>
+      <Accordion.HeightAnimator>
+        <Accordion.Content />
+      </Accordion.HeightAnimator>
+    </Accordion.Item>
+  </Accordion>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Accordion, Typography, RichIcon } from '@xsolla-zk/react'
+import { ChevronDown } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Accordion type="single">
+      <Accordion.Item value="item-1">
+        <Accordion.Header asChild>
+          <Accordion.Trigger>
+            {({ open }) => (
+              <>
+                <Typography preset="compact.300.default">Header</Typography>
+                <RichIcon
+                  size="$200"
+                  animation="bounceReturn"
+                  rotate={open ? '180deg' : '0deg'}
+                >
+                  <RichIcon.Icon icon={ChevronDown} />
+                </RichIcon>
+              </>
+            )}
+          </Accordion.Trigger>
+        </Accordion.Header>
+
+        <Accordion.HeightAnimator animation="bounceReturn">
+          <Accordion.Content animation="bounceReturn" exitStyle={{ opacity: 0 }}>
+            <Typography>Content goes here</Typography>
+          </Accordion.Content>
+        </Accordion.HeightAnimator>
+      </Accordion.Item>
+    </Accordion>
+  )
+}
+```
+
+### Multiple sections
+
+```tsx
+import { Accordion, Typography, RichIcon } from '@xsolla-zk/react'
+import { ChevronDown } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Accordion type="single" gap="$200">
+      <Accordion.Item value="item-1" backgroundColor="$overlay.neutral">
+        <Accordion.Header asChild>
+          <Accordion.Trigger>
+            {({ open }) => (
+              <>
+                <Typography preset="compact.300.default">Header 1</Typography>
+                <RichIcon
+                  size="$200"
+                  animation="bounceReturn"
+                  rotate={open ? '180deg' : '0deg'}
+                >
+                  <RichIcon.Icon icon={ChevronDown} />
+                </RichIcon>
+              </>
+            )}
+          </Accordion.Trigger>
+        </Accordion.Header>
+
+        <Accordion.HeightAnimator animation="bounceReturn">
+          <Accordion.Content animation="bounceReturn" exitStyle={{ opacity: 0 }}>
+            <Typography>First section content</Typography>
+          </Accordion.Content>
+        </Accordion.HeightAnimator>
+      </Accordion.Item>
+
+      <Accordion.Item value="item-2" backgroundColor="$overlay.neutral">
+        <Accordion.Header asChild>
+          <Accordion.Trigger>
+            {({ open }) => (
+              <>
+                <Typography preset="compact.300.default">Header 2</Typography>
+                <RichIcon
+                  size="$200"
+                  animation="bounceReturn"
+                  rotate={open ? '180deg' : '0deg'}
+                >
+                  <RichIcon.Icon icon={ChevronDown} />
+                </RichIcon>
+              </>
+            )}
+          </Accordion.Trigger>
+        </Accordion.Header>
+
+        <Accordion.HeightAnimator animation="bounceReturn">
+          <Accordion.Content animation="bounceReturn" exitStyle={{ opacity: 0 }}>
+            <Typography>Second section content</Typography>
+          </Accordion.Content>
+        </Accordion.HeightAnimator>
+      </Accordion.Item>
+    </Accordion>
+  )
+}
+```
+
+### All Types
+
+#### Single (only one item can be open)
+
+```tsx
+<Accordion type="single">
+  {/* Items */}
+</Accordion>
+```
+
+#### Multiple (multiple items can be open)
+
+```tsx
+<Accordion type="multiple">
+  {/* Items */}
+</Accordion>
+```
+
+#### Single with toggle (can close all items)
+
+```tsx
+<Accordion type="single" toggleable>
+  {/* Items */}
+</Accordion>
+```
+
+### With default value
+
+```tsx
+<Accordion type="single" defaultValue="item-2">
+  {/* Items */}
+</Accordion>
+```
+
+### Custom trigger layout
+
+```tsx
+import { Accordion, Typography, RichIcon } from '@xsolla-zk/react'
+import { ChevronDown } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Accordion type="single">
+      <Accordion.Item value="item-1">
+        <Accordion.Header>
+          <Typography preset="compact.300.default">Header</Typography>
+          <Accordion.Trigger>
+            {({ open }) => (
+              <RichIcon
+                size="$200"
+                animation="bounceReturn"
+                rotate={open ? '180deg' : '0deg'}
+              >
+                <RichIcon.Icon icon={ChevronDown} />
+              </RichIcon>
+            )}
+          </Accordion.Trigger>
+        </Accordion.Header>
+
+        <Accordion.HeightAnimator animation="bounceReturn">
+          <Accordion.Content animation="bounceReturn" exitStyle={{ opacity: 0 }}>
+            <Typography>Content with separate trigger</Typography>
+          </Accordion.Content>
+        </Accordion.HeightAnimator>
+      </Accordion.Item>
+    </Accordion>
+  )
+}
+```
+
+## API
+
+### Accordion Props
+
+Accordion extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `type` | `'single' \| 'multiple'` | - | Accordion behavior type |
+| `defaultValue` | `string` | - | Default open item (single type) |
+| `value` | `string` | - | Controlled open item (single type) |
+| `onValueChange` | `(value: string) => void` | - | Value change handler (single type) |
+| `toggleable` | `boolean` | `false` | Allow closing all items (single type) |
+| `gap` | `SizeTokens` | - | Gap between items |
+
+### Accordion.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Unique item identifier |
+| `disabled` | `boolean` | `false` | Disables the item |
+
+### Accordion.Header Props
+
+Container for the accordion header content.
+
+### Accordion.Trigger Props
+
+Trigger component that receives open state via render prop.
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `children` | `({ open: boolean }) => ReactNode` | - | Render function with open state |
+
+### Accordion.HeightAnimator Props
+
+Wrapper for content animation.
+
+### Accordion.Content Props
+
+Container for accordion content.
+
+## Accessibility
+
+- Implements WAI-ARIA accordion pattern
+- Supports keyboard navigation (Enter, Space, Arrow keys)
+- Proper focus management
+- Screen reader compatible
+- Automatic ARIA attributes management

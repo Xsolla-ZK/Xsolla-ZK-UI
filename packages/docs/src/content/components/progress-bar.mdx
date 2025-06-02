@@ -1,0 +1,95 @@
+# Progress Bar
+
+The `ProgressBar` component displays the progress of an operation or loading.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { ProgressBar } from '@xsolla-zk/react'
+
+export default () => (
+  <ProgressBar value={50} max={100} />
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { ProgressBar } from '@xsolla-zk/react'
+
+function App() {
+  return <ProgressBar value={50} max={100} />
+}
+```
+
+### With animation
+
+```tsx
+import { ProgressBar } from '@xsolla-zk/react'
+import { useState, useEffect } from 'react'
+
+function App() {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress(prev => prev < 100 ? prev + 10 : 0)
+    }, 500)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  return <ProgressBar value={progress} max={100} />
+}
+```
+
+### Indeterminate progress
+
+```tsx
+import { ProgressBar } from '@xsolla-zk/react'
+
+function App() {
+  return <ProgressBar indeterminate />
+}
+```
+
+### All Sizes
+
+```tsx
+<ProgressBar size="$200" value={50} />
+<ProgressBar size="$300" value={50} />
+<ProgressBar size="$500" value={50} />
+```
+
+### All Tones
+
+```tsx
+<ProgressBar tone="brand" value={50} />
+<ProgressBar tone="positive" value={50} />
+<ProgressBar tone="warning" value={50} />
+<ProgressBar tone="negative" value={50} />
+```
+
+## API
+
+### ProgressBar Props
+
+ProgressBar extends Tamagui progress inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `number` | - | Current progress value |
+| `max` | `number` | `100` | Maximum value |
+| `indeterminate` | `boolean` | `false` | Indeterminate progress |
+| `size` | `ProgressBarSizes` | `'$300'` | Progress bar size |
+| `tone` | `ProgressBarTone` | `'brand'` | Color tone |
+
+## Accessibility
+
+- Supports ARIA attributes for progress
+- Works correctly with screen readers
+- Automatically updates values for assistive technologies

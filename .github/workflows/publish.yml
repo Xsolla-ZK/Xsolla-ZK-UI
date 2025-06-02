@@ -1,0 +1,266 @@
+name: Build & Publish Packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version type (major, minor, patch)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      packages:
+        description: 'Packages to publish (leave empty for all)'
+        required: false
+        type: string
+
+env:
+  REGISTRY_URL: 'https://registry.npmjs.org'
+  # Alternative GitHub Package Registry:
+  # REGISTRY_URL: 'https://npm.pkg.github.com'
+
+jobs:
+  prepare:
+    name: Prepare package matrix
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.set-matrix.outputs.packages }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Define packages to build
+        id: set-matrix
+        run: |
+          if [ -n "${{ github.event.inputs.packages }}" ]; then
+            # If specific packages are specified, use them
+            packages='["${{ github.event.inputs.packages }}"]'
+          else
+            # Use all packages by default
+            packages='[
+              "packages/config",
+              "packages/icons",
+              "packages/icons-generator",
+              "packages/react",
+              "packages/tokens"
+            ]'
+          fi
+          echo "packages=$packages" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build all packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: ${{ env.REGISTRY_URL }}
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.3.0'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate tokens
+        run: pnpm generate:tokens
+
+      - name: Generate config
+        run: pnpm generate:config
+
+      - name: Generate icons
+        run: pnpm generate:icons
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Lint packages
+        run: |
+          pnpm lint:react
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            packages/*/dist
+            packages/*/types
+            packages/*/src
+          retention-days: 1
+
+  publish:
+    name: Publish packages
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package-folder: ${{ fromJson(needs.prepare.outputs.packages) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: ${{ env.REGISTRY_URL }}
+          always-auth: true
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.3.0'
+
+      - name: Configure NPM authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "registry=${{ env.REGISTRY_URL }}" >> ~/.npmrc
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Check package changes
+        id: check-changes
+        working-directory: ${{ matrix.package-folder }}
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          # Check if there are changes in the package
+          if git diff --quiet HEAD~1 HEAD -- .; then
+            echo "No changes in package $PACKAGE_NAME"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in package $PACKAGE_NAME"
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+            echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump package version
+        if: steps.check-changes.outputs.skip == 'false'
+        id: bump-version
+        working-directory: ${{ matrix.package-folder }}
+        run: |
+          VERSION_TYPE="${{ github.event.inputs.version || 'patch' }}"
+          NEW_VERSION=$(pnpm version $VERSION_TYPE --no-git-tag-version)
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Version of the package has been updated to $NEW_VERSION"
+
+      - name: Generate CHANGELOG
+        if: steps.check-changes.outputs.skip == 'false'
+        working-directory: ${{ matrix.package-folder }}
+        run: |
+          # Install conventional-changelog-cli if it's not installed
+          if ! command -v conventional-changelog &> /dev/null; then
+            npm install -g conventional-changelog-cli
+          fi
+
+          # Generate changelog
+          conventional-changelog -p angular -i CHANGELOG.md -s -r 0 || echo "Changelog generation skipped"
+
+      - name: Commit version changes
+        if: steps.check-changes.outputs.skip == 'false'
+        run: |
+          PACKAGE_SHORT_NAME="${{ matrix.package-folder }}"
+          PACKAGE_SHORT_NAME="${PACKAGE_SHORT_NAME##*/}"
+
+          git add ${{ matrix.package-folder }}/package.json
+          git add ${{ matrix.package-folder }}/CHANGELOG.md || true
+
+          git commit -m "chore($PACKAGE_SHORT_NAME): bump version to ${{ steps.bump-version.outputs.new_version }}" || true
+
+          # Create a tag for the release
+          TAG_NAME="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
+          git tag "$TAG_NAME" -m "Release $TAG_NAME"
+
+      - name: Publish package to NPM
+        if: steps.check-changes.outputs.skip == 'false'
+        working-directory: ${{ matrix.package-folder }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "Publishing package ${{ steps.check-changes.outputs.package_name }}..."
+          pnpm publish --access public --no-git-checks
+
+      - name: Push changes and tags
+        if: steps.check-changes.outputs.skip == 'false'
+        run: |
+          git push origin HEAD || true
+          git push origin --tags || true
+
+  create-release:
+    name: Create release
+    needs: [publish]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tags
+        id: get-tags
+        run: |
+          # Get all tags created in this workflow
+          LATEST_TAGS=$(git tag --sort=-creatordate | head -5 | tr '\n' ' ')
+          echo "latest_tags=$LATEST_TAGS" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "release-$(date +'%Y%m%d-%H%M%S')"
+          name: "Release of packages $(date +'%Y-%m-%d %H:%M:%S')"
+          body: |
+            ## 🚀 New release of packages
+
+            Published packages:
+            ${{ steps.get-tags.outputs.latest_tags }}
+
+            ### Changes
+            - Automatic versioning: ${{ github.event.inputs.version || 'patch' }}
+            - Updated dependencies
+            - Fixed linter warnings
+
+            Installation:
+            ```bash
+            pnpm add @xsolla-zk/react @xsolla-zk/config @xsolla-zk/tokens
+            ```
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false

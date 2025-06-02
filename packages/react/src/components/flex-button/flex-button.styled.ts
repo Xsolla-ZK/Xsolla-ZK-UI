@@ -75,8 +75,8 @@ export const FlexButtonOverlay = styled(Stack, {
   bottom: -4,
   borderRadius: '$300',
   borderWidth: '$stroke.100',
-  animation: 'state',
-  animateOnly: ['background', 'border'],
+  // animation: 'state',
+  // animateOnly: ['background', 'border'],
   backgroundColor: 'transparent',
   borderColor: 'transparent',
 

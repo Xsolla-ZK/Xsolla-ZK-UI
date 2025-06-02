@@ -3,6 +3,114 @@ export * from './utils';
 export * from './hooks';
 export type * from './types';
 declare const componentsTheme: {
+    listTitleTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_ListTitle`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        [x: `dark_${string}_ListTitle`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        light_ListTitle: {
+            color: string;
+        };
+        dark_ListTitle: {
+            color: string;
+        };
+    };
+    listTitleValueTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_ListTitleValue`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        [x: `dark_${string}_ListTitleValue`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        light_ListTitleValue: {
+            color: string;
+        };
+        dark_ListTitleValue: {
+            color: string;
+        };
+    };
+    listSubtitleTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_ListSubtitle`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        [x: `dark_${string}_ListSubtitle`]: {
+            [x: string]: string;
+        } | {
+            color: string;
+        };
+        light_ListSubtitle: {
+            color: string;
+        };
+        dark_ListSubtitle: {
+            color: string;
+        };
+    };
+    listBoardTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_ListBoard`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        [x: `dark_${string}_ListBoard`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        light_ListBoard: {
+            background: string;
+        };
+        dark_ListBoard: {
+            background: string;
+        };
+    };
+    cellBoardTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_CellBoard`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        [x: `dark_${string}_CellBoard`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        light_CellBoard: {
+            background: string;
+        };
+        dark_CellBoard: {
+            background: string;
+        };
+    };
+    toastTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+        [x: `light_${string}_Toast`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        [x: `dark_${string}_Toast`]: {
+            [x: string]: string;
+        } | {
+            background: string;
+        };
+        light_Toast: {
+            background: string;
+        };
+        dark_Toast: {
+            background: string;
+        };
+    };
     inlineInputTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
         light_InlineInput: {
             borderColorFocus: string;
@@ -452,6 +560,66 @@ declare const componentsTheme: {
             borderColorPress: string;
             color: string;
         };
+        light_positive_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        dark_positive_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        light_warning_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        dark_warning_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        light_info_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        dark_info_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        light_negative_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        dark_negative_FlexButton: {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        "light_brand-extra_FlexButton": {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
+        "dark_brand-extra_FlexButton": {
+            backgroundHover: string;
+            backgroundPress: string;
+            borderColorPress: string;
+            color: string;
+        };
     };
     chipsTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
         light_Chip: {
@@ -735,4 +903,5 @@ declare const componentsTheme: {
     };
 };
 export { componentsTheme };
+export * from '@tamagui/core';
 //# sourceMappingURL=index.d.ts.map

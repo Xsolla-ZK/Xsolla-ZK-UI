@@ -64,11 +64,13 @@ export declare const space: {
     '0': number;
     '25': number;
     '50': number;
+    '75': number;
     '100': number;
     '150': number;
     '200': number;
     '250': number;
     '300': number;
+    '325': number;
     '350': number;
     '400': number;
     '450': number;
@@ -151,11 +153,13 @@ export declare const tokens: {
         '0': number;
         '25': number;
         '50': number;
+        '75': number;
         '100': number;
         '150': number;
         '200': number;
         '250': number;
         '300': number;
+        '325': number;
         '350': number;
         '400': number;
         '450': number;

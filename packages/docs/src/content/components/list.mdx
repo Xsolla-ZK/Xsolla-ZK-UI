@@ -1,0 +1,246 @@
+# List
+
+The `List` component provides a container for organizing content in rows with optional board styling.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+export default () => (
+  <List>
+    <List.Row>
+      <List.Title />
+      <List.TitleValue />
+    </List.Row>
+    <List.Row>
+      <List.Subtitle />
+      <List.SubtitleValue />
+    </List.Row>
+  </List>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <List>
+      <List.Row>
+        <List.Title>Item 1</List.Title>
+      </List.Row>
+      <List.Row>
+        <List.Title>Item 2</List.Title>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+### With board styling
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <List withBoard>
+      <List.Row>
+        <List.Title>Settings</List.Title>
+        <List.TitleValue>Configure</List.TitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Title>Profile</List.Title>
+        <List.TitleValue>Edit</List.TitleValue>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+### With titles and values
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <List>
+      <List.Row>
+        <List.Title>Username</List.Title>
+        <List.TitleValue>john_doe</List.TitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Email</List.Subtitle>
+        <List.SubtitleValue>john@example.com</List.SubtitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Status</List.Subtitle>
+        <List.SubtitleValue>Active</List.SubtitleValue>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <List size="$300">
+        <List.Row>
+          <List.Title>Small List</List.Title>
+        </List.Row>
+      </List>
+
+      <List size="$400">
+        <List.Row>
+          <List.Title>Medium List</List.Title>
+        </List.Row>
+      </List>
+
+      <List size="$500">
+        <List.Row>
+          <List.Title>Large List</List.Title>
+        </List.Row>
+      </List>
+    </>
+  )
+}
+```
+
+### Complex list with mixed content
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <List withBoard>
+      <List.Row>
+        <List.Title>Account Information</List.Title>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Name</List.Subtitle>
+        <List.SubtitleValue>John Doe</List.SubtitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Email</List.Subtitle>
+        <List.SubtitleValue>john@example.com</List.SubtitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Title>Preferences</List.Title>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Theme</List.Subtitle>
+        <List.SubtitleValue>Dark</List.SubtitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Language</List.Subtitle>
+        <List.SubtitleValue>English</List.SubtitleValue>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+## API
+
+### List Props
+
+List extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `ListSizes` | `'$500'` | List size |
+| `withBoard` | `boolean` | `false` | Adds board styling with background and borders |
+
+### List.Row Props
+
+Container for list row content.
+
+### List.Title Props
+
+Component for displaying primary title text.
+
+### List.TitleValue Props
+
+Component for displaying values associated with titles.
+
+### List.Subtitle Props
+
+Component for displaying secondary subtitle text.
+
+### List.SubtitleValue Props
+
+Component for displaying values associated with subtitles.
+
+## Usage Patterns
+
+### Settings List
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function SettingsList() {
+  return (
+    <List withBoard>
+      <List.Row>
+        <List.Title>Notifications</List.Title>
+        <List.TitleValue>Enabled</List.TitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Title>Privacy</List.Title>
+        <List.TitleValue>Public</List.TitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Title>Language</List.Title>
+        <List.TitleValue>English</List.TitleValue>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+### Information Display
+
+```tsx
+import { List } from '@xsolla-zk/react'
+
+function UserInfo() {
+  return (
+    <List>
+      <List.Row>
+        <List.Title>User Details</List.Title>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Full Name</List.Subtitle>
+        <List.SubtitleValue>John Smith</List.SubtitleValue>
+      </List.Row>
+      <List.Row>
+        <List.Subtitle>Member Since</List.Subtitle>
+        <List.SubtitleValue>January 2023</List.SubtitleValue>
+      </List.Row>
+    </List>
+  )
+}
+```
+
+## Accessibility
+
+- Uses semantic list structure
+- Maintains proper reading order
+- Works correctly with screen readers
+- Supports keyboard navigation
+- Provides clear content hierarchy

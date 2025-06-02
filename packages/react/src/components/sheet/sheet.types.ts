@@ -7,6 +7,7 @@ import type { RemoveScroll } from '@tamagui/remove-scroll';
 import type { ComponentType, Dispatch, SetStateAction, ReactNode, ComponentProps } from 'react';
 
 export type SheetSizes = keyof ComponentsConfig['modal'] | (string & {});
+export type SheetPresets = 'bottom-sheet' | 'fullscreen' | 'popup';
 
 export type SheetScopedProps<P> = P & { __scopeSheet?: Scope };
 

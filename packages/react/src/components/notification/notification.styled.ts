@@ -30,7 +30,6 @@ export const NotificationDescription = styled(Typography, {
 
 export const NotificationCloseFrame = styled(Stack, {
   name: NOTIFICATION_CLOSE_COMPONENT_NAME,
-  tag: 'button',
 });
 
 export const VisuallyHidden = styled(Stack, {

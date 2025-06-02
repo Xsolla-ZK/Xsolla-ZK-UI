@@ -1,0 +1,86 @@
+# Loader
+
+The `Loader` component provides a loading indicator to display the progress of operations.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Loader } from '@xsolla-zk/react'
+
+function App() {
+  return <Loader />
+}
+```
+
+### With custom size
+
+```tsx
+import { Loader } from '@xsolla-zk/react'
+
+function App() {
+  return <Loader size="$500" />
+}
+```
+
+### With custom color
+
+```tsx
+import { Loader } from '@xsolla-zk/react'
+
+function App() {
+  return <Loader tone="positive" />
+}
+```
+
+### All Sizes
+
+```tsx
+<Loader size="$200" />
+<Loader size="$300" />
+<Loader size="$500" />
+```
+
+### All Tones
+
+```tsx
+<Loader tone="brand" />
+<Loader tone="neutral" />
+<Loader tone="positive" />
+<Loader tone="warning" />
+<Loader tone="negative" />
+```
+
+### Usage in other components
+
+Loader is often used inside other components to indicate loading:
+
+```tsx
+import { Button, Loader } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Button>
+      <Loader size="$200" />
+      <Button.Text>Loading...</Button.Text>
+    </Button>
+  )
+}
+```
+
+## API
+
+### Loader Props
+
+Loader extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `LoaderSizes` | `'$300'` | Indicator size |
+| `tone` | `LoaderTone` | `'brand'` | Color tone |
+
+## Accessibility
+
+- Works correctly with screen readers
+- Provides appropriate ARIA labels for loading states

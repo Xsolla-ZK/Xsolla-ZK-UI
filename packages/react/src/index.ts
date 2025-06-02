@@ -18,6 +18,9 @@ import {
   progressBarThemes,
   segmentedControlThemes,
   inlineInputThemes,
+  toastThemes,
+  cellThemes,
+  listThemes,
 } from './components';
 export * from './components';
 export * from './utils';
@@ -44,6 +47,11 @@ const componentsTheme = {
   ...progressBarThemes,
   ...segmentedControlThemes,
   ...inlineInputThemes,
+  ...toastThemes,
+  ...cellThemes,
+  ...listThemes,
 };
 
 export { componentsTheme };
+
+export * from '@tamagui/core';

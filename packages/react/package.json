@@ -2,7 +2,7 @@
   "name": "@xsolla-zk/react",
   "private": false,
   "version": "0.0.1",
-  "sideEffects": false,
+  "removeSideEffects": true,
   "main": "dist/cjs",
   "source": "./src/index.ts",
   "types": "./types/index.d.ts",
@@ -12,7 +12,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "src/reset.css"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -25,10 +26,15 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./reset.css": {
+      "import": "./src/reset.css",
+      "require": "./src/reset.css",
+      "default": "./src/reset.css"
     }
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -52,7 +58,6 @@
   "peerDependencies": {
     "@tamagui/adapt": "catalog:tamagui",
     "@tamagui/animate-presence": "catalog:tamagui",
-    "@tamagui/core": "catalog:tamagui",
     "@tamagui/image": "catalog:tamagui",
     "@tamagui/portal": "catalog:tamagui",
     "burnt": "0.13.0",
@@ -67,6 +72,7 @@
     "@tamagui/checkbox-headless": "catalog:tamagui",
     "@tamagui/compose-refs": "catalog:tamagui",
     "@tamagui/collapsible": "catalog:tamagui",
+    "@tamagui/core": "catalog:tamagui",
     "@tamagui/create-context": "catalog:tamagui",
     "@tamagui/dismissable": "catalog:tamagui",
     "@tamagui/floating": "catalog:tamagui",
@@ -85,7 +91,6 @@
     "@tamagui/use-direction": "catalog:tamagui",
     "@tamagui/z-index-stack": "catalog:tamagui",
     "burnt": "0.13.0",
-    "libphonenumber-js": "^1.12.8",
     "react-native-reanimated": "^3.17.5",
     "react-native-svg": "catalog:"
   },
@@ -100,7 +105,6 @@
     "@storybook/test": "catalog:storybook",
     "@storybook/theming": "catalog:storybook",
     "@tamagui/build": "catalog:tamagui",
-    "@tamagui/core": "catalog:tamagui",
     "@tamagui/vite-plugin": "catalog:tamagui",
     "@types/react": "*",
     "@types/react-dom": "*",

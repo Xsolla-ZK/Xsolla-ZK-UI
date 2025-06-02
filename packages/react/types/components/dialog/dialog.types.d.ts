@@ -1,3 +1,4 @@
+import type { SheetPresets } from '../sheet';
 import type { DialogBodyFrame, DialogCloseFrame, DialogContentFrame, DialogDescriptionFrame, DialogFooterFrame, DialogHeaderFrame, DialogOverlayFrame, DialogPortalFrame, DialogTitleFrame, DialogTriggerFrame } from './dialog.styled';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, TamaguiElement } from '@tamagui/core';
@@ -8,6 +9,7 @@ import type { RemoveScroll } from '@tamagui/remove-scroll';
 import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import type { ComponentProps } from 'react';
 export type DialogSizes = keyof ComponentsConfig['modal'] | (string & {});
+export type DialogPresets = SheetPresets;
 export type DialogScopedProps<P> = P & {
     __scopeDialog?: Scope;
 };

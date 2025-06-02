@@ -35,12 +35,14 @@ export type ChipsSingleSelectProps = {
     value?: ChipsValue;
     defaultValue?: ChipsValue;
     onValueChange?: (value: ChipsValue) => void;
+    singleMode?: boolean;
 };
 export type ChipsMultiSelectProps = {
     multiselect: true;
     value?: ChipsMultiValue;
     defaultValue?: ChipsMultiValue;
     onValueChange?: (value: ChipsMultiValue) => void;
+    singleMode?: never;
 };
 export type ChipsProps = ChipsSharedProps & {
     tone?: ChipTone;
