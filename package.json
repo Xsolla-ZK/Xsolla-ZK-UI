@@ -27,7 +27,6 @@
     "version:minor": "pnpm workspaces foreach --topological-dev exec pnpm version minor --no-git-tag-version",
     "version:major": "pnpm workspaces foreach --topological-dev exec pnpm version major --no-git-tag-version",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "git config --local core.hooksPath .githooks",
     "publish": "pnpm workspaces foreach --topological-dev run publish",
     "release": "pnpm build && pnpm publish",
     "storybook:react": "pnpm --filter @xsolla-zk/react storybook"

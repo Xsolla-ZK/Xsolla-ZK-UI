@@ -1,43 +1,54 @@
-FROM node:20-alpine AS base
+# Build stage
+FROM node:20-alpine AS deps
+
+# Install pnpm
 RUN npm install -g pnpm@10.3.0
 
-FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/docs/package.json ./packages/docs/
-COPY packages/config/package.json ./packages/config/
-COPY packages/icons/package.json ./packages/icons/
-COPY packages/react/package.json ./packages/react/
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile --ignore-scripts
 
-FROM base AS builder
+# Copy workspace configuration
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml .npmrc ./
+
+# Copy root configuration files
+COPY tsconfig.json eslint.config.mjs prettier.config.mjs ./
+
+# Copy package.json for all packages to resolve dependencies
+COPY packages/ ./packages/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Build stage
+FROM node:20-alpine AS builder
+
+# Install pnpm
+RUN npm install -g pnpm@10.3.0
+
 WORKDIR /app
-COPY . .
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages/docs/node_modules ./packages/docs/node_modules
 
-# Set production mode for standalone build
-ENV NODE_ENV=production
+# Copy from deps stage
+COPY --from=deps /app ./
 
-# Generate tokens and icons before building
-RUN pnpm generate:all
+# First build workspace packages (config, icons, react)
+RUN pnpm --filter @xsolla-zk/config build
+RUN pnpm --filter @xsolla-zk/icons build
+RUN pnpm --filter @xsolla-zk/react build
 
-# Build all workspace packages first
-RUN pnpm build
+# Now build documentation
+RUN pnpm --filter @xsolla-zk/docs build
 
-# Then build the documentation
-RUN pnpm build:docs
-
-# Final image with minimal size
+# Runtime stage with minimal size
 FROM node:20-alpine AS runner
+
 WORKDIR /srv/ui-kit
 
-# Create a user without root privileges for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Install only minimal dependencies and clean up in single layer
+RUN apk add --no-cache tini && \
+    addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs && \
+    rm -rf /var/cache/apk/*
 
-# Copy only necessary files for standalone build
+# Copy only standalone build
 COPY --from=builder --chown=nextjs:nodejs /app/packages/docs/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/packages/docs/.next/static ./packages/docs/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/packages/docs/public ./packages/docs/public
@@ -46,4 +57,10 @@ USER nextjs
 
 EXPOSE 3003
 
+ENV PORT=3003 \
+    NODE_ENV=production \
+    HOSTNAME="0.0.0.0"
+
+# Use tini for proper signal handling
+ENTRYPOINT ["tini", "--"]
 CMD ["node", "packages/docs/server.js"]
