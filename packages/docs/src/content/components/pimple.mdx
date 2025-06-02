@@ -1,0 +1,171 @@
+# Pimple
+
+The `Pimple` component provides a small notification badge or indicator, typically used to show counts or status.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+
+export default () => (
+  <Pimple>
+    <Pimple.Text />
+    <Pimple.Icon />
+  </Pimple>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Pimple>
+      <Pimple.Text>2</Pimple.Text>
+    </Pimple>
+  )
+}
+```
+
+### With icon
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+import { Plus } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <Pimple>
+      <Pimple.Icon icon={Plus} />
+    </Pimple>
+  )
+}
+```
+
+### With more content
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Pimple>
+      <Pimple.Text>9+</Pimple.Text>
+    </Pimple>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Pimple size="$200">
+        <Pimple.Text>1</Pimple.Text>
+      </Pimple>
+      <Pimple size="$300">
+        <Pimple.Text>2</Pimple.Text>
+      </Pimple>
+      <Pimple size="$400">
+        <Pimple.Text>3</Pimple.Text>
+      </Pimple>
+      <Pimple size="$500">
+        <Pimple.Text>4</Pimple.Text>
+      </Pimple>
+    </>
+  )
+}
+```
+
+### All Sizes with Icon
+
+```tsx
+import { Pimple } from '@xsolla-zk/react'
+import { Plus } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <>
+      <Pimple size="$200">
+        <Pimple.Icon icon={Plus} />
+      </Pimple>
+      <Pimple size="$300">
+        <Pimple.Icon icon={Plus} />
+      </Pimple>
+      <Pimple size="$400">
+        <Pimple.Icon icon={Plus} />
+      </Pimple>
+      <Pimple size="$500">
+        <Pimple.Icon icon={Plus} />
+      </Pimple>
+    </>
+  )
+}
+```
+
+### As notification badge
+
+```tsx
+import { Pimple, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <Button>
+        <Button.Text>Notifications</Button.Text>
+      </Button>
+      <div style={{ position: 'absolute', top: -8, right: -8 }}>
+        <Pimple>
+          <Pimple.Text>5</Pimple.Text>
+        </Pimple>
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+### Pimple Props
+
+Pimple extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `PimpleSizes` | `'$500'` | Size of the pimple |
+
+### Pimple.Text Props
+
+Component for displaying text content in the pimple.
+
+### Pimple.Icon Props
+
+Component for displaying an icon in the pimple.
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `icon` | `IconComponent` | - | Icon component to display |
+
+## Usage Notes
+
+- The smallest size (`$200`) only shows the indicator without content
+- Use for notification counts, status indicators, or small badges
+- Typically positioned absolutely over other components
+- Keep text content short (1-2 characters or "9+" for larger numbers)
+
+## Accessibility
+
+- Uses appropriate ARIA attributes for screen readers
+- Maintains sufficient contrast for visibility
+- Supports keyboard navigation when interactive
+- Provides semantic meaning for notification badges

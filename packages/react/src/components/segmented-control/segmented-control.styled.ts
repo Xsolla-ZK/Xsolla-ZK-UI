@@ -75,14 +75,8 @@ export const SegmentedControlSegmentFrame = styled(Stack, {
   cursor: 'pointer',
   backgroundColor: '$background',
   borderColor: '$borderColor',
-  animation: 'colorChange',
+  // animation: 'colorChange',
 
-  pressStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
   // focusStyle: {
   //   outlineWidth: 2,
   //   outlineColor: '$background',
@@ -134,12 +128,34 @@ export const SegmentedControlSegmentFrame = styled(Stack, {
   } as const,
 });
 
+// export const SegmentedControlSegmentOverlayFrame = styled(Stack, {
+//   name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
+//   tag: 'span',
+//   position: 'absolute',
+//   top: 0,
+//   bottom: 0,
+//   left: 0,
+//   right: 0,
+//   pointerEvents: 'none',
+//   opacity: 0,
+//   zIndex: 2,
+//   borderRadius: 'inherit',
+//   mixBlendMode: 'overlay',
+//   backgroundColor: '$background.neutral-high',
+
+//   hoverStyle: {
+//     opacity: 1,
+//   },
+//   pressStyle: {
+//     opacity: 0.5,
+//   },
+// });
+
 export const SegmentedControlSegmentText = styled(Typography, {
   name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
   color: '$color',
-  fontSize: '$500',
   userSelect: 'none',
-  animation: 'colorChange',
+  // animation: 'colorChange',
 
   variants: {
     size: (val: SegmentedControlSizes) => {

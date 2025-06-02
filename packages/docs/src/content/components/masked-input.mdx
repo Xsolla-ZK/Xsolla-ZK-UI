@@ -1,0 +1,279 @@
+# Masked Input
+
+The `MaskedInput` component provides an input field with formatting masks for structured data entry like phone numbers, dates, and custom formats.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { MaskedInput } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <MaskedInput
+      mask="AA-AA-99-AA"
+      placeholder="AA-AA-99-AA"
+    />
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [values, setValues] = useState({
+    raw: '',
+    masked: ''
+  })
+
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>License Plate</Field.Label>
+        <Field.LabelValue>Raw: {values.raw}</Field.LabelValue>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput
+          mask="AA-AA-99-AA"
+          value={values.masked}
+          onChangeText={(masked, raw) => setValues({ raw, masked })}
+          placeholder="AA-AA-99-AA"
+        />
+      </Field.Control>
+      <Field.Row>
+        <Field.Hint>Masked: {values.masked}</Field.Hint>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+### Phone number mask
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [phone, setPhone] = useState('')
+
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Phone Number</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput
+          mask={{
+            prefix: '+',
+            type: 'phone',
+            lockPrefix: true,
+            includePrefixInRawValue: true
+          }}
+          value={phone}
+          onChangeText={(masked, raw) => setPhone(masked)}
+          placeholder="+1 (555) 123-4567"
+        />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### Custom format mask
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Custom Format</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput
+          mask={{
+            prefix: '+7 ',
+            type: 'custom',
+            format: '(999) 999 99 99'
+          }}
+          value={value}
+          onChangeText={(masked, raw) => setValue(masked)}
+          placeholder="+7 (999) 999 99 99"
+        />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### Number mask
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Number Input</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput
+          mask={{
+            prefix: 'Value: ',
+            type: 'number'
+          }}
+          value={value}
+          onChangeText={(masked, raw) => setValue(masked)}
+          placeholder="Value: 1,234"
+        />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### Currency mask
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Price</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput
+          mask={{ type: 'currency' }}
+          value={value}
+          onChangeText={(masked, raw) => setValue(masked)}
+          placeholder="$0.00"
+        />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { MaskedInput } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <MaskedInput
+        size="$200"
+        mask="99/99/9999"
+        placeholder="MM/DD/YYYY"
+      />
+      <MaskedInput
+        size="$300"
+        mask="99/99/9999"
+        placeholder="MM/DD/YYYY"
+      />
+      <MaskedInput
+        size="$500"
+        mask="99/99/9999"
+        placeholder="MM/DD/YYYY"
+      />
+    </>
+  )
+}
+```
+
+## API
+
+### MaskedInput Props
+
+MaskedInput extends standard input props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `mask` | `string \| MaskConfig` | - | Mask pattern or configuration |
+| `value` | `string` | - | Controlled value |
+| `onChangeText` | `(masked: string, raw: string) => void` | - | Change handler with both masked and raw values |
+| `size` | `InputSizes` | `'$500'` | Input size |
+| `placeholder` | `string` | - | Placeholder text |
+| `disabled` | `boolean` | `false` | Disables the input |
+| `error` | `boolean` | `false` | Shows error state |
+
+### Mask Types
+
+#### String Mask
+
+Simple pattern using characters:
+- `9` - Numeric digit
+- `A` - Alphabetic character
+- `*` - Alphanumeric character
+
+```tsx
+mask="99/99/9999" // Date format
+mask="AAA-999" // Custom format
+```
+
+#### Object Mask
+
+Advanced configuration:
+
+```tsx
+interface MaskConfig {
+  type: 'phone' | 'currency' | 'number' | 'custom'
+  prefix?: string
+  format?: string // For custom type
+  lockPrefix?: boolean
+  includePrefixInRawValue?: boolean
+  options?: object // For number/currency formatting
+}
+```
+
+## Usage with Field
+
+The MaskedInput component works seamlessly with Field wrapper:
+
+```tsx
+import { MaskedInput, Field } from '@xsolla-zk/react'
+
+function FormExample() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Credit Card</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <MaskedInput mask="9999 9999 9999 9999" />
+      </Field.Control>
+      <Field.Row>
+        <Field.Hint>Enter your 16-digit card number</Field.Hint>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Maintains proper ARIA attributes
+- Provides clear formatting feedback
+- Supports all standard input accessibility features

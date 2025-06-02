@@ -1,0 +1,188 @@
+# Tab Bar
+
+The `TabBar` component provides a navigation panel with tabs, commonly used in mobile applications.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { TabBar } from '@xsolla-zk/react'
+
+export default () => (
+  <TabBar>
+    <TabBar.Tab>
+      <TabBar.Tab.Icon />
+      <TabBar.Tab.Text />
+    </TabBar.Tab>
+  </TabBar>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { TabBar } from '@xsolla-zk/react'
+import { Home, Search, Profile } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <TabBar defaultValue="home">
+      <TabBar.Tab value="home">
+        <TabBar.Tab.Icon>
+          <Home />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Home</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="search">
+        <TabBar.Tab.Icon>
+          <Search />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Search</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="profile">
+        <TabBar.Tab.Icon>
+          <Profile />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Profile</TabBar.Tab.Text>
+      </TabBar.Tab>
+    </TabBar>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { TabBar } from '@xsolla-zk/react'
+import { Home, Search, Profile } from '@xsolla-zk/icons'
+import { useState } from 'react'
+
+function App() {
+  const [activeTab, setActiveTab] = useState('home')
+
+  return (
+    <TabBar value={activeTab} onValueChange={setActiveTab}>
+      <TabBar.Tab value="home">
+        <TabBar.Tab.Icon>
+          <Home />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Home</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="search">
+        <TabBar.Tab.Icon>
+          <Search />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Search</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="profile">
+        <TabBar.Tab.Icon>
+          <Profile />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Profile</TabBar.Tab.Text>
+      </TabBar.Tab>
+    </TabBar>
+  )
+}
+```
+
+### With badges
+
+```tsx
+import { TabBar, Badge } from '@xsolla-zk/react'
+import { Home, Bell, Messages } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <TabBar defaultValue="home">
+      <TabBar.Tab value="home">
+        <TabBar.Tab.Icon>
+          <Home />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Home</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="notifications">
+        <TabBar.Tab.Icon>
+          <Bell />
+          <Badge variant="dot" />
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Notifications</TabBar.Tab.Text>
+      </TabBar.Tab>
+
+      <TabBar.Tab value="messages">
+        <TabBar.Tab.Icon>
+          <Messages />
+          <Badge variant="numeric">
+            <Badge.Text>3</Badge.Text>
+          </Badge>
+        </TabBar.Tab.Icon>
+        <TabBar.Tab.Text>Messages</TabBar.Tab.Text>
+      </TabBar.Tab>
+    </TabBar>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<TabBar size="$200" defaultValue="home">
+  <TabBar.Tab value="home">
+    <TabBar.Tab.Icon>
+      <Home />
+    </TabBar.Tab.Icon>
+    <TabBar.Tab.Text>Small</TabBar.Tab.Text>
+  </TabBar.Tab>
+</TabBar>
+
+<TabBar size="$500" defaultValue="home">
+  <TabBar.Tab value="home">
+    <TabBar.Tab.Icon>
+      <Home />
+    </TabBar.Tab.Icon>
+    <TabBar.Tab.Text>Large</TabBar.Tab.Text>
+  </TabBar.Tab>
+</TabBar>
+```
+
+## API
+
+### TabBar Props
+
+TabBar extends Tamagui radio group inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Current active tab value |
+| `defaultValue` | `string` | - | Default active tab value |
+| `onValueChange` | `(value: string) => void` | - | Active tab change handler |
+| `size` | `TabBarSizes` | `'$300'` | Tab bar size |
+
+### TabBar.Tab Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Unique tab value |
+| `disabled` | `boolean` | `false` | Disables the tab |
+
+### TabBar.Tab.Icon Props
+
+Component for displaying the tab icon.
+
+### TabBar.Tab.Text Props
+
+Component for displaying the tab text.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Implements ARIA pattern for navigation tabs
+- Automatically manages active tab state

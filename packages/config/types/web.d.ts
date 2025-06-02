@@ -467,6 +467,27 @@ export declare const webConfig: {
             'font-weight.compact.default': number;
             'font-weight.compact.accent': number;
         };
+        color: {
+            background: string;
+            backgroundHover: string;
+            backgroundPress: string;
+            backgroundFocus: string;
+            color: string;
+            colorHover: string;
+            colorPress: string;
+            colorFocus: string;
+            borderColor: string;
+            borderColorHover: string;
+            borderColorPress: string;
+            borderColorFocus: string;
+            shadowColor: string;
+            shadowColorHover: string;
+            shadowColorPress: string;
+            shadowColorFocus: string;
+            placeholderColor: string;
+            outlineColor: string;
+            spinColor: string;
+        };
         opacity: {
             'content.secondary.light': number;
             'content.secondary.dark': number;
@@ -529,11 +550,13 @@ export declare const webConfig: {
             '0': number;
             '25': number;
             '50': number;
+            '75': number;
             '100': number;
             '150': number;
             '200': number;
             '250': number;
             '300': number;
+            '325': number;
             '350': number;
             '400': number;
             '450': number;
@@ -581,6 +604,10 @@ export declare const webConfig: {
         allowedStyleValues: "somewhat-strict-web";
         themeClassNameOnRoot: true;
         onlyAllowShorthands: false;
+    };
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
     };
     animations: import("@tamagui/core").AnimationDriver<{
         state: string;

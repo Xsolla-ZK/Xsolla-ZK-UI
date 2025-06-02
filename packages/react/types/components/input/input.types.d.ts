@@ -35,6 +35,8 @@ export type InputElementProps = DetailedInputProps & InputElementBaseProps & Omi
 };
 export interface InputProps extends InputElementProps {
     frameStyles?: StackStyle;
+    isFocused?: boolean;
+    onFocusChange?: (value: boolean) => void;
     children?: ReactNode;
 }
 export {};

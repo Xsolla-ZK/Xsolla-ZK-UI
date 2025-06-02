@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { View, withStaticProperties } from '@tamagui/core';
-import { useId, useMemo, forwardRef } from 'react';
+import { withStaticProperties } from '@tamagui/core';
+import { useId, useMemo, forwardRef, cloneElement, Children, isValidElement } from 'react';
 import { useChildrenArray } from '../../hooks';
 import { Input } from '../input';
 import {
@@ -23,19 +23,28 @@ import type {
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
-const FieldControlComponent = Input.styleable<InputProps>(
-  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
-    const { id, error, size } = FieldContext.useStyledContext();
-    const { asChild, ...otherProps } = props;
+const FieldControlComponent = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const { id, error, size } = FieldContext.useStyledContext();
+  const { asChild, children, ...otherProps } = props;
 
-    return (
-      // @ts-ignore okay
-      <View asChild id={id} error={error} size={size} {...otherProps} ref={ref}>
-        {props.children ? props.children : <Input />}
-      </View>
-    );
-  }),
-);
+  const content = Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, {
+        id,
+        error,
+        size,
+        ...otherProps,
+      });
+    }
+    return child;
+  });
+
+  if (!content || content.length === 0) {
+    return <Input id={id} error={error} size={size} {...otherProps} ref={ref} />;
+  }
+
+  return content;
+});
 
 const FieldErrorComponent = FieldHint.styleable<FieldHintProps>(
   forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {

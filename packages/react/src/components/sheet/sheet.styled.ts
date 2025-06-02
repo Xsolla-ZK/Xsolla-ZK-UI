@@ -9,7 +9,8 @@ import {
   SHEET_HEADER_COMPONENT_NAME,
   SHEET_OVERLAY_COMPONENT_NAME,
 } from './sheet.constants';
-import type { SheetSizes } from './sheet.types';
+import type { SheetPresets, SheetSizes } from './sheet.types';
+import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 
 export const SheetFrame = styled(Stack, {
   name: SHEET_COMPONENT_NAME,
@@ -19,7 +20,15 @@ export const SheetFrame = styled(Stack, {
   overflow: 'hidden',
 
   variants: {
+    preset: {
+      'bottom-sheet': {},
+      fullscreen: {},
+      popup: {},
+    },
     size: (val: SheetSizes, extras) => {
+      const { props } = extras as VariantSpreadExtras<
+        GetProps<typeof Stack> & { preset?: SheetPresets }
+      >;
       if (extras.props.componentName === SHEET_COVER_COMPONENT_NAME) {
         return {
           backgroundColor: 'transparent',
@@ -32,12 +41,31 @@ export const SheetFrame = styled(Stack, {
         return {};
       }
 
+      if (props.preset === 'bottom-sheet') {
+        const br = componentProps.frame.borderRadius;
+        const styles = getMappedStyles({ borderTopLeftRadius: br, borderTopRightRadius: br });
+        return {
+          margin: 0,
+          ...styles,
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
+        };
+      }
+
+      if (props.preset === 'fullscreen') {
+        return {
+          margin: 0,
+          borderRadius: 0,
+        };
+      }
+
       return getMappedStyles(componentProps.frame);
     },
   } as const,
 
   defaultVariants: {
     size: '$500',
+    preset: 'bottom-sheet',
   },
 });
 

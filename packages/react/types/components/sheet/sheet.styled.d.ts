@@ -1,6 +1,7 @@
 import type { SheetSizes } from './sheet.types';
 export declare const SheetFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SheetSizes | undefined;
+    preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const SheetHandle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     open?: boolean | undefined;

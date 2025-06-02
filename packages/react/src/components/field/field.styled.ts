@@ -60,6 +60,9 @@ export const FieldRow = styled(Stack, {
 });
 
 export const FieldLabel = styled(Label, {
+  name: FIELD_COMPONENT_NAME,
+  color: '$color',
+
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
@@ -73,7 +76,11 @@ export const FieldLabel = styled(Label, {
 });
 
 export const FieldLabelValue = styled(Typography, {
+  name: FIELD_COMPONENT_NAME,
   context: FieldContext,
+
+  color: '$color',
+
   variants: {
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
@@ -90,15 +97,15 @@ export const FieldLabelValue = styled(Typography, {
 });
 
 export const FieldHint = styled(Typography, {
+  name: FIELD_COMPONENT_NAME,
   context: FieldContext,
+
+  color: '$color',
+
   variants: {
     error: {
-      true: {
-        color: '$content.negative-primary',
-      },
-      false: {
-        color: '$content.neutral-secondary',
-      },
+      true: {},
+      false: {},
     },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
@@ -112,18 +119,16 @@ export const FieldHint = styled(Typography, {
 });
 
 export const FieldHintValue = styled(Typography, {
+  name: FIELD_COMPONENT_NAME,
   context: FieldContext,
 
   userSelect: 'none',
+  color: '$color',
 
   variants: {
     error: {
-      true: {
-        color: '$content.negative-primary',
-      },
-      false: {
-        color: '$content.neutral-secondary',
-      },
+      true: {},
+      false: {},
     },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();

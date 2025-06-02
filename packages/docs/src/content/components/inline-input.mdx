@@ -1,0 +1,132 @@
+# Inline Input
+
+The `InlineInput` component provides an input field that looks like regular text until interaction.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { InlineInput } from '@xsolla-zk/react'
+
+export default () => (
+  <InlineInput placeholder="Click to edit" />
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { InlineInput } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <InlineInput
+      defaultValue="Editable text"
+      placeholder="Click to edit"
+    />
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { InlineInput } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('Initial value')
+
+  return (
+    <InlineInput
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      placeholder="Enter text"
+    />
+  )
+}
+```
+
+### With validation
+
+```tsx
+import { InlineInput } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+  const [error, setError] = useState(false)
+
+  const handleChange = (e) => {
+    const newValue = e.target.value
+    setValue(newValue)
+    setError(newValue.length < 3)
+  }
+
+  return (
+    <InlineInput
+      value={value}
+      onChange={handleChange}
+      error={error}
+      placeholder="Minimum 3 characters"
+    />
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<InlineInput size="$200" defaultValue="Small" />
+<InlineInput size="$300" defaultValue="Medium" />
+<InlineInput size="$500" defaultValue="Large" />
+```
+
+### States
+
+#### Read only
+
+```tsx
+<InlineInput readOnly value="Read only" />
+```
+
+#### Disabled
+
+```tsx
+<InlineInput disabled value="Disabled" />
+```
+
+#### With error
+
+```tsx
+<InlineInput error value="Invalid value" />
+```
+
+## API
+
+### InlineInput Props
+
+InlineInput extends Tamagui input inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Field value |
+| `defaultValue` | `string` | - | Default value |
+| `placeholder` | `string` | - | Placeholder text |
+| `size` | `InlineInputSizes` | `'$300'` | Field size |
+| `disabled` | `boolean` | `false` | Disables the field |
+| `readOnly` | `boolean` | `false` | Makes field read-only |
+| `error` | `boolean` | `false` | Shows error state |
+| `onChange` | `(event: ChangeEvent) => void` | - | Change handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | Focus handler |
+| `onBlur` | `(event: FocusEvent) => void` | - | Blur handler |
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Supports ARIA attributes for states
+- Automatically switches between view and edit modes

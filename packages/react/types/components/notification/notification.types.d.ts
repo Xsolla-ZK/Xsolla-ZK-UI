@@ -1,7 +1,7 @@
 import type { NotificationCloseFrame, NotificationDescription, NotificationTitle } from './notification.styled';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, ScopedProps } from '@tamagui/core';
-export type NotificationSizes = keyof ComponentsConfig['toast'] | (string & {});
+export type NotificationSizes = keyof ComponentsConfig['notificationProvider'] | (string & {});
 export type NotificationScopedProps<T> = ScopedProps<T, 'Notification'>;
 export type NotificationTitleProps = GetProps<typeof NotificationTitle>;
 export type NotificationDescriptionProps = GetProps<typeof NotificationDescription>;

@@ -1,39 +1,25 @@
 # @xsolla-zk/icons
 
-Пакет содержит набор оптимизированных SVG иконок, преобразованных в React Native компоненты для использования в приложениях Xsolla ZK UI. Иконки поддерживают изменение размера и цвета, а также интеграцию с темами Tamagui.
+A comprehensive collection of optimized SVG icons converted to React Native components for use in Xsolla ZK UI applications. The icons support customizable sizing and coloring, with seamless integration into Tamagui themes.
 
-## Установка
+## Installation
 
-Перед установкой необходимо настроить доступ к GitHub npm registry:
-
-1. Создайте персональный токен доступа (Personal Access Token) с правами `read:packages` на GitHub:
-   - Перейдите в Settings → Developer settings → Personal access tokens
-   - Создайте новый токен с правами `read:packages`
-   - Сохраните токен в переменную окружения `GITHUB_TOKEN`
-   - `GITHUB_TOKEN` так же будет использоваться для доступа к репозиторию с дизайн-токенами
-
-2. Создайте или обновите файл `.npmrc` в корне вашего проекта:
-```
-@xsolla-zk:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-
-3. Установите пакет одним из следующих способов:
+Install the package using your preferred package manager:
 
 ```bash
-# Используя npm
+# Using npm
 npm install @xsolla-zk/icons
 
-# Используя pnpm
+# Using pnpm
 pnpm install @xsolla-zk/icons
 
-# Используя yarn
+# Using yarn
 yarn add @xsolla-zk/icons
 ```
 
-## Использование
+## Usage
 
-### Базовое использование
+### Basic Usage
 
 ```tsx
 import { ChevronUp, Search, Home } from '@xsolla-zk/icons';
@@ -41,25 +27,25 @@ import { ChevronUp, Search, Home } from '@xsolla-zk/icons';
 function MyComponent() {
   return (
     <>
-      {/* Базовое использование с размером по умолчанию (24px) и цветом по умолчанию (black) */}
+      {/* Basic usage with default size (24px) and color (black) */}
       <ChevronUp />
 
-      {/* Изменение размера */}
+      {/* Custom size */}
       <Search size={16} />
 
-      {/* Изменение цвета */}
+      {/* Custom color */}
       <Home color="red" />
 
-      {/* Использование с токенами темы Tamagui */}
+      {/* Using Tamagui theme tokens */}
       <ChevronUp size="$2" color="$color.brand" />
     </>
   );
 }
 ```
 
-### Использование с компонентами Tamagui
+### Usage with Tamagui Components
 
-Иконки полностью совместимы с компонентами Tamagui и могут использоваться в любых компонентах UI библиотеки:
+Icons are fully compatible with Tamagui components and can be used in any UI library component:
 
 ```tsx
 import { Button } from '@xsolla-zk/react';
@@ -71,57 +57,229 @@ function SearchButton() {
       <Button.Icon>
         <Search />
       </Button.Icon>
-      <Button.Text>Поиск</Button.Text>
+      <Button.Text>Search</Button.Text>
     </Button>
   );
 }
 ```
 
-## Доступные иконки
+### Advanced Usage with Themes
 
-Пакет содержит более 100 иконок, включая:
+```tsx
+import { Theme, styled } from '@tamagui/core';
+import { StarFilled, Heart, Download } from '@xsolla-zk/icons';
 
-- Навигационные иконки (стрелки, шевроны)
-- Действия (поиск, добавление, удаление)
-- Интерфейсные элементы (меню, настройки)
-- Коммуникация (чат, телефон)
-- Медиа (воспроизведение, пауза)
-- И многие другие
+const IconContainer = styled('div', {
+  display: 'flex',
+  gap: '$2',
+  padding: '$3',
+});
 
-Все иконки имеют единый стиль и размер 24x24 пикселя по умолчанию.
+function ThemedIcons() {
+  return (
+    <Theme name="dark">
+      <IconContainer>
+        <StarFilled color="$yellow10" size="$4" />
+        <Heart color="$red10" size="$4" />
+        <Download color="$blue10" size="$4" />
+      </IconContainer>
+    </Theme>
+  );
+}
+```
 
-## Свойства компонентов иконок
+## Available Icons
 
-Все иконки принимают следующие свойства:
+The package contains over 100 icons across various categories:
 
-| Свойство | Тип | По умолчанию | Описание |
-|----------|-----|--------------|----------|
-| `size` | `number \| SizeTokens` | `24` | Размер иконки в пикселях или токен размера Tamagui |
-| `color` | `string \| ThemeTokens` | `'black'` | Цвет иконки в формате CSS или токен цвета Tamagui |
-| `...props` | `SVGProps` | - | Любые другие свойства, поддерживаемые SVG компонентами |
+### Navigation
+- Arrows (up, down, left, right)
+- Chevrons (up, down, left, right)
+- Navigation arrows
+- Menu icons
 
-## Генерация иконок
+### Actions
+- Search, add, delete, edit
+- Save, download, upload
+- Copy, paste, cut
+- Print, share, export
 
-Иконки генерируются из SVG файлов с помощью CLI пакета `@xsolla-zk/icons-generator`. Исходные SVG файлы находятся в директории `raw-icons`.
+### Interface Elements
+- Menu, settings, options
+- Close, minimize, maximize
+- Refresh, sync, reload
+- Lock, unlock, shield
 
-Для обновления или добавления новых иконок:
+### Communication
+- Chat, message, comment
+- Phone, email, contact
+- Notification, bell, alert
 
-1. Добавьте SVG файлы в директорию `raw-icons`
-2. Запустите скрипт генерации:
+### Media & Files
+- Play, pause, stop
+- Volume controls
+- File types (PDF, image, video)
+- Folder operations
+
+### Social & Commerce
+- Social media icons
+- Shopping cart, payment
+- User, profile, account
+- Star, heart, like
+
+All icons maintain a consistent 24x24 pixel design with unified styling.
+
+## Icon Component Props
+
+All icon components accept the following properties:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `size` | `number \| SizeTokens` | `24` | Icon size in pixels or Tamagui size token |
+| `color` | `string \| ThemeTokens` | `'black'` | Icon color in CSS format or Tamagui color token |
+| `...props` | `SVGProps` | - | Any other properties supported by SVG components |
+
+### Size Examples
+
+```tsx
+import { Settings } from '@xsolla-zk/icons';
+
+// Pixel values
+<Settings size={16} />
+<Settings size={24} />
+<Settings size={32} />
+
+// Tamagui size tokens
+<Settings size="$1" />  // 12px
+<Settings size="$2" />  // 16px
+<Settings size="$3" />  // 20px
+<Settings size="$4" />  // 24px
+<Settings size="$5" />  // 28px
+```
+
+### Color Examples
+
+```tsx
+import { Heart } from '@xsolla-zk/icons';
+
+// CSS colors
+<Heart color="red" />
+<Heart color="#ff0000" />
+<Heart color="rgb(255, 0, 0)" />
+
+// Tamagui color tokens
+<Heart color="$red10" />
+<Heart color="$color.brand" />
+<Heart color="$color.accent" />
+```
+
+## Icon Generation
+
+Icons are automatically generated from SVG files using the `@xsolla-zk/icons-generator` CLI package. Source SVG files are located in the `raw-icons` directory.
+
+To update or add new icons:
+
+1. Add SVG files to the `raw-icons` directory
+2. Run the generation script:
 
 ```bash
-# В директории пакета icons
+# In the icons package directory
 npm run generate
-# или
+# or
 yarn generate
-# или
+# or
 pnpm generate
 ```
 
-## Требования к SVG файлам
+## SVG File Requirements
 
-Для корректной генерации иконок, SVG файлы должны:
+For proper icon generation, SVG files must:
 
-1. Иметь размер 24x24 пикселя
-2. Использовать атрибуты `fill="black"` или `stroke="black"` для элементов, цвет которых должен меняться
-3. Иметь уникальные имена файлов в формате kebab-case (они будут преобразованы в PascalCase для имен компонентов)
+1. **Be 24x24 pixels** in size
+2. **Use `fill="black"` or `stroke="black"`** for elements that should change color
+3. **Have unique filenames** in kebab-case (converted to PascalCase for component names)
+4. **Be optimized** and contain minimal unnecessary elements
+
+### Example SVG Structure
+
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path fill="black" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+</svg>
+```
+
+## TypeScript Support
+
+All icons are fully typed with TypeScript support:
+
+```tsx
+import type { IconProps } from '@xsolla-zk/icons';
+
+interface CustomIconProps extends IconProps {
+  isActive?: boolean;
+}
+
+const CustomIcon: React.FC<CustomIconProps> = ({ isActive, ...props }) => {
+  const Icon = isActive ? StarFilled : Star;
+  return <Icon {...props} />;
+};
+```
+
+## Performance
+
+Icons are optimized for performance:
+- **Memoized components** prevent unnecessary re-renders
+- **Tree-shaking support** for smaller bundle sizes
+- **SVG optimization** reduces file sizes
+- **Minimal props** for fast rendering
+
+## Accessibility
+
+Icons include proper accessibility features:
+- Semantic SVG structure
+- ARIA labels when needed
+- Screen reader compatibility
+- High contrast support
+
+## Browser Support
+
+Icons work in all modern browsers:
+- Chrome 60+
+- Firefox 55+
+- Safari 12+
+- Edge 79+
+- React Native (iOS/Android)
+
+## Development
+
+To contribute or develop icons:
+
+```bash
+# Clone the repository
+git clone https://github.com/Xsolla-ZK/Xsolla-ZK-UI.git
+
+# Install dependencies
+pnpm install
+
+# Navigate to icons package
+cd packages/icons
+
+# Generate icons from SVG files
+pnpm generate
+
+# Build the package
+pnpm build
+```
+
+## Migration Guide
+
+When updating from older versions:
+
+1. Check for renamed icons in the changelog
+2. Update import statements if needed
+3. Test icon sizing with new tokens
+4. Verify theme integration
+
+## License
+
+This package is part of the Xsolla ZK UI design system and is licensed under the MIT License.

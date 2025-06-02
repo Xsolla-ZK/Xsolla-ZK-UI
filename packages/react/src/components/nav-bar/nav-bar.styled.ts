@@ -22,6 +22,7 @@ export const NavBarFrame = styled(Stack, {
   context: NavBarContext,
 
   width: '100%',
+  justifyContent: 'center',
 
   variants: {
     size: (val: NavBarSizes) => {

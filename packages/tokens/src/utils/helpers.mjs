@@ -119,14 +119,14 @@ export function withoutEmpty(obj) {
  * @returns {string}
  */
 export function getInputPath() {
-  return process.env.XSOLLA_ZK_UI_TOKENS_INPUT_PATH ?? '';
+  return process.env.XSOLLA_ZK_TOKENS_INPUT_PATH ?? '';
 }
 
 /**
  * @returns {string}
  */
 export function getOutputPath() {
-  return process.env.XSOLLA_ZK_UI_TOKENS_OUTPUT_PATH ?? '';
+  return process.env.XSOLLA_ZK_TOKENS_OUTPUT_PATH ?? '';
 }
 
 /**
@@ -135,7 +135,9 @@ export function getOutputPath() {
  * @returns {string}
  */
 export function getDesignTokensFile(filename, ext = 'json') {
-  return path.join(getInputPath(), 'tokens', `${filename}.${ext}`);
+  const sourceType = process.env.XSOLLA_ZK_SOURCE_TYPE;
+  const tokensPath = sourceType === 'local' ? '' : 'tokens';
+  return path.join(getInputPath(), tokensPath, `${filename}.${ext}`);
 }
 
 /**

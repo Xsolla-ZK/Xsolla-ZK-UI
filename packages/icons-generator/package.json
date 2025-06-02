@@ -1,11 +1,11 @@
 {
   "name": "@xsolla-zk/icons-generator",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "type": "module",
   "main": "./index.mjs",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,12 @@
   "scripts": {
     "generate": "node index.mjs generate"
   },
+  "dependencies": {
+    "prettier": "catalog:"
+  },
   "devDependencies": {
     "chalk": "^5.4.1",
     "fs-extra": "^11.3.0",
-    "prettier": "catalog:",
     "svgo": "^3.3.2",
     "yargs": "^17.7.2"
   }

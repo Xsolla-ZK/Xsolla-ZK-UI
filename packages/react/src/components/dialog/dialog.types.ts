@@ -1,3 +1,4 @@
+import type { SheetPresets } from '../sheet';
 import type {
   DialogBodyFrame,
   DialogCloseFrame,
@@ -20,6 +21,8 @@ import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import type { ComponentProps } from 'react';
 
 export type DialogSizes = keyof ComponentsConfig['modal'] | (string & {});
+
+export type DialogPresets = SheetPresets;
 
 export type DialogScopedProps<P> = P & { __scopeDialog?: Scope };
 

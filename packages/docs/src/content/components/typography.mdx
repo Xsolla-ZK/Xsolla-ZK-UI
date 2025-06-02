@@ -1,0 +1,83 @@
+# Typography
+
+The `Typography` component provides text rendering with design system presets for consistent typography across the application.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Typography>Default text</Typography>
+  )
+}
+```
+
+### With preset
+
+```tsx
+import { Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Typography preset="heading.500.bold">
+      Large heading
+    </Typography>
+  )
+}
+```
+
+### All Presets
+
+Typography supports various presets based on the design system:
+
+```tsx
+<Typography preset="heading.700.bold">Heading Large</Typography>
+<Typography preset="heading.500.bold">Heading Medium</Typography>
+<Typography preset="heading.300.bold">Heading Small</Typography>
+<Typography preset="text.400.default">Body Large</Typography>
+<Typography preset="text.250.default">Body Medium</Typography>
+<Typography preset="text.200.default">Body Small</Typography>
+<Typography preset="compact.300.default">Compact Text</Typography>
+```
+
+### With custom styling
+
+```tsx
+import { Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Typography
+      preset="text.400.default"
+      color="$color.accent-primary"
+      textAlign="center"
+    >
+      Styled text
+    </Typography>
+  )
+}
+```
+
+## API
+
+### Typography Props
+
+Typography extends Tamagui Text inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `preset` | `TypographyPresets` | `'text.250.default'` | Typography preset from design system |
+| `color` | `string` | `'$color'` | Text color |
+| `textAlign` | `'left' \| 'center' \| 'right'` | - | Text alignment |
+| `tag` | `string` | `'span'` | HTML tag to render |
+
+## Accessibility
+
+- Uses semantic HTML tags based on the `tag` prop
+- Maintains readable contrast ratios
+- Works correctly with screen readers
+- Supports all standard text accessibility attributes

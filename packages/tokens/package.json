@@ -9,7 +9,7 @@
     "prettier.config.mjs"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -22,12 +22,14 @@
   "scripts": {
     "generate": "node src/index.mjs generate"
   },
+  "dependencies": {
+    "prettier": "catalog:"
+  },
   "devDependencies": {
     "chalk": "^5.4.1",
     "color": "^5.0.0",
     "dotenv": "^16.4.7",
     "fs-extra": "^11.3.0",
-    "prettier": "^3.5.0",
     "yargs": "^17.7.2"
   }
 }

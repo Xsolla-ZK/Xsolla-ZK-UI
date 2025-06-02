@@ -77,8 +77,10 @@ export declare function createSheet<E extends Record<string, TamaguiComponent> =
     } & import("react").RefAttributes<View>> & E & {
         Content: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             size?: import("./sheet.types").SheetSizes | undefined;
+            preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
         }>, "native" | "animation" | "zIndex" | "modal" | "children" | "open" | "snapPoints" | "snapPointsMode" | "defaultOpen" | "onOpenChange" | "defaultPosition" | "onPositionChange" | "dismissOnOverlayPress" | "dismissOnSnapToBottom" | "forceRemoveScrollEnabled" | "animationConfig" | "unmountChildrenWhenHidden" | "handleDisableScroll" | "disableDrag" | "portalProps" | "moveOnKeyboardChange" | "containerComponent" | "__scopeSheet" | keyof ExtraFrameProps> & Omit<SheetProps, "position"> & ExtraFrameProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<SheetProps, "position"> & ExtraFrameProps, import("@tamagui/web").StackStyleBase, {
             size?: import("./sheet.types").SheetSizes | undefined;
+            preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
         Overlay: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             open?: boolean | undefined;
@@ -138,8 +140,10 @@ export declare function createSheet<E extends Record<string, TamaguiComponent> =
     };
     Content: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("./sheet.types").SheetSizes | undefined;
+        preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
     }>, "native" | "animation" | "zIndex" | "modal" | "children" | "open" | "snapPoints" | "snapPointsMode" | "defaultOpen" | "onOpenChange" | "defaultPosition" | "onPositionChange" | "dismissOnOverlayPress" | "dismissOnSnapToBottom" | "forceRemoveScrollEnabled" | "animationConfig" | "unmountChildrenWhenHidden" | "handleDisableScroll" | "disableDrag" | "portalProps" | "moveOnKeyboardChange" | "containerComponent" | "__scopeSheet" | keyof ExtraFrameProps> & Omit<SheetProps, "position"> & ExtraFrameProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<SheetProps, "position"> & ExtraFrameProps, import("@tamagui/web").StackStyleBase, {
         size?: import("./sheet.types").SheetSizes | undefined;
+        preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Overlay: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         open?: boolean | undefined;

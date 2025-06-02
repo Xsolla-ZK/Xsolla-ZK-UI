@@ -1,0 +1,117 @@
+# Switch
+
+The `Switch` component represents a toggle for enabling/disabling features or settings.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Switch } from '@xsolla-zk/react'
+
+export default () => (
+  <Switch>
+    <Switch.Thumb />
+  </Switch>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Switch } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Switch>
+      <Switch.Thumb />
+    </Switch>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Switch } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [enabled, setEnabled] = useState(false)
+
+  return (
+    <Switch checked={enabled} onCheckedChange={setEnabled}>
+      <Switch.Thumb />
+    </Switch>
+  )
+}
+```
+
+### With label
+
+```tsx
+import { Switch, Label } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label>
+      <Switch>
+        <Switch.Thumb />
+      </Switch>
+      Enable notifications
+    </Label>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<Switch size="$200">
+  <Switch.Thumb />
+</Switch>
+
+<Switch size="$300">
+  <Switch.Thumb />
+</Switch>
+
+<Switch size="$500">
+  <Switch.Thumb />
+</Switch>
+```
+
+### States
+
+#### Disabled
+
+```tsx
+<Switch disabled>
+  <Switch.Thumb />
+</Switch>
+```
+
+## API
+
+### Switch Props
+
+Switch extends Tamagui switch inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `checked` | `boolean` | `false` | Switch state |
+| `onCheckedChange` | `(checked: boolean) => void` | - | State change handler |
+| `disabled` | `boolean` | `false` | Disables the switch |
+| `size` | `SwitchSizes` | `'$300'` | Switch size |
+
+### Switch.Thumb Props
+
+Component for displaying the switch thumb slider.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Supports ARIA attributes
+- Automatically associates with labels

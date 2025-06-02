@@ -1,0 +1,130 @@
+# Semantic Text
+
+The `SemanticText` component provides semantic text rendering with predefined variants for consistent typography and proper HTML semantics.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { SemanticText } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SemanticText>Default text</SemanticText>
+  )
+}
+```
+
+### With variant
+
+```tsx
+import { SemanticText } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SemanticText variant="headingL">
+      Large heading
+    </SemanticText>
+  )
+}
+```
+
+### All Variants
+
+```tsx
+<SemanticText variant="headingXL">Heading Extra Large</SemanticText>
+<SemanticText variant="headingL">Heading Large</SemanticText>
+<SemanticText variant="headingM">Heading Medium</SemanticText>
+<SemanticText variant="headingS">Heading Small</SemanticText>
+<SemanticText variant="paragraphL">Paragraph Large</SemanticText>
+<SemanticText variant="paragraphM">Paragraph Medium</SemanticText>
+<SemanticText variant="paragraphS">Paragraph Small</SemanticText>
+<SemanticText variant="captionL">Caption Large</SemanticText>
+<SemanticText variant="captionM">Caption Medium</SemanticText>
+<SemanticText variant="captionS">Caption Small</SemanticText>
+```
+
+### With semantic tags
+
+```tsx
+import { SemanticText } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <SemanticText variant="headingL" tag="h1">
+        Main Heading
+      </SemanticText>
+      <SemanticText variant="headingM" tag="h2">
+        Section Heading
+      </SemanticText>
+      <SemanticText variant="paragraphM" tag="p">
+        Paragraph content
+      </SemanticText>
+    </>
+  )
+}
+```
+
+### With custom styling
+
+```tsx
+import { SemanticText } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SemanticText
+      variant="paragraphL"
+      color="$content.info-primary"
+      textAlign="center"
+    >
+      Styled semantic text
+    </SemanticText>
+  )
+}
+```
+
+### With custom color
+
+```tsx
+import { SemanticText } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SemanticText
+      variant="headingM"
+      color="#1cb084"
+    >
+      Custom colored text
+    </SemanticText>
+  )
+}
+```
+
+## API
+
+### SemanticText Props
+
+SemanticText extends Tamagui Text inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `variant` | `SemanticTextVariants` | `'paragraphM'` | Text variant from design system |
+| `color` | `string` | `'$color'` | Text color |
+| `textAlign` | `'left' \| 'center' \| 'right'` | - | Text alignment |
+| `tag` | `string` | `'div'` | HTML tag to render |
+
+### Available Variants
+
+- **Headings**: `headingXL`, `headingL`, `headingM`, `headingS`
+- **Paragraphs**: `paragraphL`, `paragraphM`, `paragraphS`
+- **Captions**: `captionL`, `captionM`, `captionS`
+
+## Accessibility
+
+- Uses semantic HTML tags based on the `tag` prop
+- Maintains proper heading hierarchy when using heading variants
+- Provides appropriate contrast ratios
+- Works correctly with screen readers
+- Supports all standard text accessibility attributes

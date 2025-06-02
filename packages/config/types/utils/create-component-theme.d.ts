@@ -1,6 +1,6 @@
 import type { themes } from '../tokens/themes';
-type ThemeNames = keyof typeof themes;
 type Themes = typeof themes;
+type ThemeNames = keyof Themes;
 type ThemeTokens = Themes[ThemeNames];
 type StyleDefinition = Record<string, string>;
 interface ThemeStyleGenerator<T extends StyleDefinition> {
@@ -44,7 +44,7 @@ type CreateThemesReturnType<T extends Record<ThemeNames, Record<string, string>>
  * @param compose - An object containing optional base and component themes
  * @returns A merged theme object with support for base and component themes
  */
-export declare function createThemes<T extends Record<ThemeNames, Record<string, string>>, B extends ReturnType<typeof createTheme>, C extends Record<string, ReturnType<typeof createTheme>>>(themes: T, compose?: {
+export declare function composeThemes<T extends Record<ThemeNames, Record<string, string>>, B extends ReturnType<typeof createTheme>, C extends Record<string, ReturnType<typeof createTheme>>>(themes: T, compose?: {
     base?: B;
     components?: C;
 }): CreateThemesReturnType<T, B, C>;

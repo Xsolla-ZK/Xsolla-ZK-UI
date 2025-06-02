@@ -1,0 +1,147 @@
+# Snack Bar
+
+The `SnackBar` component provides brief notifications that appear at the bottom of the screen.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { SnackBar } from '@xsolla-zk/react'
+
+export default () => (
+  <SnackBar>
+    <SnackBar.Icon />
+    <SnackBar.Text />
+    <SnackBar.Action />
+  </SnackBar>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { SnackBar, Button } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button onPress={() => setOpen(true)}>
+        <Button.Text>Show SnackBar</Button.Text>
+      </Button>
+
+      <SnackBar open={open} onOpenChange={setOpen}>
+        <SnackBar.Text>Message saved</SnackBar.Text>
+      </SnackBar>
+    </>
+  )
+}
+```
+
+### With action
+
+```tsx
+import { SnackBar, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <SnackBar>
+      <SnackBar.Text>Item deleted</SnackBar.Text>
+      <SnackBar.Action>
+        <Button variant="tertiary" size="$200">
+          <Button.Text>Undo</Button.Text>
+        </Button>
+      </SnackBar.Action>
+    </SnackBar>
+  )
+}
+```
+
+### With icon
+
+```tsx
+import { SnackBar } from '@xsolla-zk/react'
+import { CheckCircle } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <SnackBar>
+      <SnackBar.Icon>
+        <CheckCircle />
+      </SnackBar.Icon>
+      <SnackBar.Text>Operation completed successfully</SnackBar.Text>
+    </SnackBar>
+  )
+}
+```
+
+### All Variants
+
+#### Default
+
+```tsx
+<SnackBar variant="default">
+  <SnackBar.Text>Regular notification</SnackBar.Text>
+</SnackBar>
+```
+
+#### Success
+
+```tsx
+<SnackBar variant="success">
+  <SnackBar.Text>Successfully completed</SnackBar.Text>
+</SnackBar>
+```
+
+#### Error
+
+```tsx
+<SnackBar variant="error">
+  <SnackBar.Text>An error occurred</SnackBar.Text>
+</SnackBar>
+```
+
+#### Warning
+
+```tsx
+<SnackBar variant="warning">
+  <SnackBar.Text>Warning</SnackBar.Text>
+</SnackBar>
+```
+
+## API
+
+### SnackBar Props
+
+SnackBar extends Tamagui toast inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `open` | `boolean` | - | Visibility state |
+| `onOpenChange` | `(open: boolean) => void` | - | State change handler |
+| `variant` | `'default' \| 'success' \| 'error' \| 'warning'` | `'default'` | Display variant |
+| `duration` | `number` | `4000` | Display time in milliseconds |
+
+### SnackBar.Text Props
+
+Component for displaying notification text.
+
+### SnackBar.Icon Props
+
+Component for displaying notification icon.
+
+### SnackBar.Action Props
+
+Component for placing actions in the notification.
+
+## Accessibility
+
+- Supports ARIA attributes for notifications
+- Works correctly with screen readers
+- Automatically closes after the specified time
+- Supports gestures for dismissing

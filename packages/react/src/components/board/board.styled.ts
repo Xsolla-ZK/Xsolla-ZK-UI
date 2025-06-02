@@ -33,8 +33,8 @@ export const BoardOverlay = styled(Stack, {
   borderColor: '$border.neutral-primary',
   borderRadius: 'inherit',
   mixBlendMode: 'overlay',
-  animation: 'state',
-  animateOnly: ['opacity'],
+  // animation: 'state',
+  // animateOnly: ['opacity'],
   backgroundColor: '$overlay.static-light',
 
   '$group-hover': {

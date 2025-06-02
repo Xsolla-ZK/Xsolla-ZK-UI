@@ -1,0 +1,146 @@
+# Button
+
+Component `Button` is an interactive button that can contain text, icons, and a loading indicator.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Button } from '@xsolla-zk/react'
+
+export default () => (
+  <Button>
+    <Button.Icon />
+    <Button.Text />
+    <Button.Icon />
+  </Button>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Button>
+      <Button.Text>Press me</Button.Text>
+    </Button>
+  )
+}
+```
+
+import { AllSizes, AllVariants, AllTones } from '../../stories/button';
+import { CodePreview } from '../../components';
+
+### All Sizes
+
+Buttons support different sizes based on the components design system tokens:
+
+<CodePreview code={AllSizes} lang="tsx" sourceCode={`
+  import { Button, ButtonSizes, getComponentsConfig, View } from '@xsolla-zk/react';
+
+  const sizes = Object.keys(getComponentsConfig().button) as ButtonSizes[];
+
+  export const AllSizes = () => {
+    return (
+      <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+        {sizes.map((size) => (
+          <Button key={size} size={size} />
+        ))}
+      </View>
+    )
+  };
+`} title="All sizes" />
+
+### All Tones
+
+Buttons support different tones based on the components theme config:
+<CodePreview code={AllTones} lang="tsx" sourceCode={`
+import { Button, ButtonTone, View } from '@xsolla-zk/react';
+
+const tones = [
+  'brand',
+  'neutral',
+  'positive',
+  'warning',
+  'info',
+  'negative',
+  'brand-extra',
+] as const;
+
+export const AllTones = () => {
+  return (
+    <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+      {tones.map((tone) => (
+        <Button key={tone} tone={tone as ButtonTone} />
+      ))}
+    </View>
+  )
+};
+`} title="All Tones" />
+
+
+### All Variants
+<CodePreview code={AllVariants} lang="tsx" sourceCode={`
+import { Button, ButtonSizes, getComponentsConfig, View, Separator } from '@xsolla-zk/react';
+import { Fragment } from 'react';
+
+const variants = ['primary', 'secondary', 'tertiary'] as const;
+
+export const AllVariants = () => {
+  return (
+    <View display="flex" flexDirection="row" alignItems="center" gap={12}>
+      {variants.map((variant, idx) => (
+        <Fragment key={variant}>
+          <View display="flex" flexDirection="column" alignItems="center" gap={12}>
+            <Button variant={variant} />
+            <Button variant={variant} disabled />
+            <Button variant={variant} isLoading />
+          </View>
+          {idx < variants.length - 1 && <Separator vertical />}
+        </Fragment>
+      ))}
+    </View>
+  )
+};
+`} title="All Variants" />
+
+
+## API
+
+### Button Props
+
+Buttons extend Stack views inheriting all the [Tamagui standard props](https://tamagui.dev/docs/intro/props), plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | Variant of the button |
+| `size` | `ButtonSizes` | `'$500'` | Button size |
+| `tone` | `ButtonTone` | `'brand'` | Button tone |
+| `disabled` | `boolean` | `false` | Disables the button |
+| `isLoading` | `boolean` | `false` | Shows the loading indicator |
+| `blured` | `boolean` | `false` | Applies the blur effect |
+
+
+### Button.Text Props
+
+Component for displaying text inside the button.
+
+### Button.Icon Props
+
+Component for displaying an icon inside the button.
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `icon` | `React.ReactNode` | - | Icon to display |
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Automatically manages the `disabled` state when loading

@@ -6,7 +6,7 @@ import type {
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, ScopedProps } from '@tamagui/core';
 
-export type NotificationSizes = keyof ComponentsConfig['toast'] | (string & {});
+export type NotificationSizes = keyof ComponentsConfig['notificationProvider'] | (string & {});
 
 export type NotificationScopedProps<T> = ScopedProps<T, 'Notification'>;
 

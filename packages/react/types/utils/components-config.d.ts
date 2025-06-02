@@ -580,12 +580,13 @@ export declare const defaultComponentsConfig: {
                 frame: {
                     gap: string;
                 };
-                title: {
+                row: {
                     gap: string;
+                };
+                title: {
                     typography: string;
                 };
                 subtitle: {
-                    gap: string;
                     typography: string;
                 };
             };
@@ -593,12 +594,13 @@ export declare const defaultComponentsConfig: {
                 frame: {
                     gap: string;
                 };
-                title: {
+                row: {
                     gap: string;
+                };
+                title: {
                     typography: string;
                 };
                 subtitle: {
-                    gap: string;
                     typography: string;
                 };
             };

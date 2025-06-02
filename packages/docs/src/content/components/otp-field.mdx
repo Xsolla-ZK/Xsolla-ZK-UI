@@ -1,0 +1,227 @@
+# OTP Field
+
+The `OTPField` component provides an input field for one-time passwords (OTP) with automatic focus management and validation.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { OTPField } from '@xsolla-zk/react'
+
+function App() {
+  return <OTPField />
+}
+```
+
+### With field wrapper
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Enter OTP Code</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <OTPField />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const handleChange = (val: string) => {
+    setValue(val)
+    setError(null)
+
+    if (val.length === 4) {
+      // Validate OTP
+      if (val === '1234') {
+        console.log('Valid OTP')
+      } else {
+        setError('Invalid code')
+      }
+    }
+  }
+
+  return (
+    <Field error={Boolean(error)}>
+      <Field.Row>
+        <Field.Label>OTP Verification</Field.Label>
+        <Field.LabelValue>Expected: 1234</Field.LabelValue>
+      </Field.Row>
+      <Field.Control>
+        <OTPField value={value} onChange={handleChange} />
+      </Field.Control>
+      <Field.Row>
+        <Field.Error>{error}</Field.Error>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+### With custom length
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>6-digit Code</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <OTPField length={6} />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### With default value
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Pre-filled Code</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <OTPField defaultValue="1234" />
+      </Field.Control>
+    </Field>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Field size="$200">
+        <Field.Label>Small</Field.Label>
+        <Field.Control>
+          <OTPField />
+        </Field.Control>
+      </Field>
+
+      <Field size="$300">
+        <Field.Label>Medium</Field.Label>
+        <Field.Control>
+          <OTPField />
+        </Field.Control>
+      </Field>
+
+      <Field size="$500">
+        <Field.Label>Large</Field.Label>
+        <Field.Control>
+          <OTPField />
+        </Field.Control>
+      </Field>
+    </>
+  )
+}
+```
+
+### With paste error handling
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [error, setError] = useState<string | null>(null)
+
+  const handlePasteError = (errorCode: number) => {
+    if (errorCode === 10) {
+      setError('The clipboard contains invalid characters')
+    }
+  }
+
+  return (
+    <Field error={Boolean(error)}>
+      <Field.Row>
+        <Field.Label>OTP with Paste Validation</Field.Label>
+      </Field.Row>
+      <Field.Control>
+        <OTPField onPasteError={handlePasteError} />
+      </Field.Control>
+      <Field.Row>
+        <Field.Error>{error}</Field.Error>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+## API
+
+### OTPField Props
+
+OTPField extends standard input props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `length` | `number` | `4` | Number of OTP digits |
+| `value` | `string` | - | Controlled value |
+| `defaultValue` | `string` | - | Default value |
+| `disabled` | `boolean` | `false` | Disables the field |
+| `error` | `boolean` | `false` | Shows error state |
+| `onChange` | `(value: string) => void` | - | Value change handler |
+| `onPasteError` | `(errorCode: number) => void` | - | Paste error handler |
+
+## Usage with Field
+
+The OTPField component is typically used within a Field wrapper for complete form functionality:
+
+```tsx
+import { OTPField, Field } from '@xsolla-zk/react'
+
+function CompleteExample() {
+  return (
+    <Field>
+      <Field.Row>
+        <Field.Label>Verification Code</Field.Label>
+        <Field.LabelValue>Sent to your phone</Field.LabelValue>
+      </Field.Row>
+      <Field.Control>
+        <OTPField />
+      </Field.Control>
+      <Field.Row>
+        <Field.Hint>Enter the 4-digit code</Field.Hint>
+      </Field.Row>
+    </Field>
+  )
+}
+```
+
+## Accessibility
+
+- Supports keyboard navigation between inputs
+- Each input has proper ARIA attributes
+- Screen reader compatible
+- Maintains focus management for optimal UX
+- Supports paste functionality with validation
+- Proper tab order and keyboard shortcuts

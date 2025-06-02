@@ -1,0 +1,142 @@
+# Label
+
+The `Label` component provides accessible labels for form controls with automatic association and focus management.
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Label, Input } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label>
+      Username
+      <Input placeholder="Enter username" />
+    </Label>
+  )
+}
+```
+
+### With htmlFor association
+
+```tsx
+import { Label, Input } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Label htmlFor="email">Email Address</Label>
+      <Input id="email" placeholder="Enter email" />
+    </>
+  )
+}
+```
+
+### With checkbox
+
+```tsx
+import { Label, Checkbox } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label>
+      <Checkbox>
+        <Checkbox.Indicator />
+      </Checkbox>
+      I agree to the terms and conditions
+    </Label>
+  )
+}
+```
+
+### With radio group
+
+```tsx
+import { Label, RadioGroup } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <RadioGroup defaultValue="option1">
+      <Label>
+        <RadioGroup.Item value="option1">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 1
+      </Label>
+
+      <Label>
+        <RadioGroup.Item value="option2">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 2
+      </Label>
+    </RadioGroup>
+  )
+}
+```
+
+### With switch
+
+```tsx
+import { Label, Switch } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label>
+      <Switch>
+        <Switch.Thumb />
+      </Switch>
+      Enable notifications
+    </Label>
+  )
+}
+```
+
+### Styled label
+
+```tsx
+import { Label, Input } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Label color="$color.accent-primary" fontWeight="bold">
+      Important Field
+      <Input placeholder="Enter value" />
+    </Label>
+  )
+}
+```
+
+## API
+
+### Label Props
+
+Label extends Tamagui Text inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `htmlFor` | `string` | - | ID of the associated form control |
+| `id` | `string` | - | Unique identifier for the label |
+| `onPress` | `(event) => void` | - | Press handler |
+| `onMouseDown` | `(event) => void` | - | Mouse down handler |
+
+## Usage with form controls
+
+The Label component automatically handles accessibility concerns:
+
+- **Wrapping pattern**: When wrapping form controls, clicking the label focuses the control
+- **htmlFor pattern**: When using `htmlFor`, the label is associated via ID
+- **ARIA attributes**: Automatically manages `aria-labelledby` attributes
+- **Focus management**: Proper focus delegation to associated controls
+
+## Accessibility
+
+- Implements proper label-control association patterns
+- Supports both wrapping and `htmlFor` association methods
+- Automatically manages ARIA attributes
+- Provides keyboard and mouse interaction support
+- Works correctly with screen readers
+- Prevents text selection on double-click
+- Maintains proper focus order

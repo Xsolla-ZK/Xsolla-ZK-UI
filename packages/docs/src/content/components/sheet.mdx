@@ -1,0 +1,243 @@
+# Sheet
+
+The `Sheet` component provides a slide-out panel that appears from the edge of the screen.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Sheet } from '@xsolla-zk/react'
+
+export default () => (
+  <Sheet>
+    <Sheet.Trigger />
+    <Sheet.Portal>
+      <Sheet.Overlay />
+      <Sheet.Frame>
+        <Sheet.Handle />
+        <Sheet.Content />
+        <Sheet.Close />
+      </Sheet.Frame>
+    </Sheet.Portal>
+  </Sheet>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Sheet, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Sheet>
+      <Sheet.Trigger>
+        <Button>
+          <Button.Text>Open Sheet</Button.Text>
+        </Button>
+      </Sheet.Trigger>
+
+      <Sheet.Portal>
+        <Sheet.Overlay />
+        <Sheet.Frame>
+          <Sheet.Handle />
+          <Sheet.Content>
+            <h2>Title</h2>
+            <p>Slide-out panel content</p>
+
+            <Sheet.Close>
+              <Button>
+                <Button.Text>Close</Button.Text>
+              </Button>
+            </Sheet.Close>
+          </Sheet.Content>
+        </Sheet.Frame>
+      </Sheet.Portal>
+    </Sheet>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Sheet, Button } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet.Trigger>
+        <Button>
+          <Button.Text>Open panel</Button.Text>
+        </Button>
+      </Sheet.Trigger>
+
+      <Sheet.Portal>
+        <Sheet.Overlay />
+        <Sheet.Frame>
+          <Sheet.Handle />
+          <Sheet.Content>
+            <h2>Settings</h2>
+            <p>Here you can change application settings</p>
+
+            <Button onPress={() => setOpen(false)}>
+              <Button.Text>Save and close</Button.Text>
+            </Button>
+          </Sheet.Content>
+        </Sheet.Frame>
+      </Sheet.Portal>
+    </Sheet>
+  )
+}
+```
+
+### All Positions
+
+#### Different positions
+
+```tsx
+import { Sheet, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <div style={{ display: 'flex', gap: 12 }}>
+      <Sheet position="bottom">
+        <Sheet.Trigger>
+          <Button>
+            <Button.Text>Bottom</Button.Text>
+          </Button>
+        </Sheet.Trigger>
+        <Sheet.Portal>
+          <Sheet.Overlay />
+          <Sheet.Frame>
+            <Sheet.Handle />
+            <Sheet.Content>Bottom content</Sheet.Content>
+          </Sheet.Frame>
+        </Sheet.Portal>
+      </Sheet>
+
+      <Sheet position="right">
+        <Sheet.Trigger>
+          <Button>
+            <Button.Text>Right</Button.Text>
+          </Button>
+        </Sheet.Trigger>
+        <Sheet.Portal>
+          <Sheet.Overlay />
+          <Sheet.Frame>
+            <Sheet.Content>Right content</Sheet.Content>
+          </Sheet.Frame>
+        </Sheet.Portal>
+      </Sheet>
+    </div>
+  )
+}
+```
+
+#### Bottom (default)
+
+```tsx
+<Sheet position="bottom">
+  <Sheet.Trigger>
+    <Button>
+      <Button.Text>Bottom</Button.Text>
+    </Button>
+  </Sheet.Trigger>
+  <Sheet.Portal>
+    <Sheet.Overlay />
+    <Sheet.Frame>
+      <Sheet.Handle />
+      <Sheet.Content>Content</Sheet.Content>
+    </Sheet.Frame>
+  </Sheet.Portal>
+</Sheet>
+```
+
+#### Right
+
+```tsx
+<Sheet position="right">
+  <Sheet.Trigger>
+    <Button>
+      <Button.Text>Right</Button.Text>
+    </Button>
+  </Sheet.Trigger>
+  <Sheet.Portal>
+    <Sheet.Overlay />
+    <Sheet.Frame>
+      <Sheet.Content>Content</Sheet.Content>
+    </Sheet.Frame>
+  </Sheet.Portal>
+</Sheet>
+```
+
+#### Left
+
+```tsx
+<Sheet position="left">
+  <Sheet.Trigger>
+    <Button>
+      <Button.Text>Left</Button.Text>
+    </Button>
+  </Sheet.Trigger>
+  <Sheet.Portal>
+    <Sheet.Overlay />
+    <Sheet.Frame>
+      <Sheet.Content>Content</Sheet.Content>
+    </Sheet.Frame>
+  </Sheet.Portal>
+</Sheet>
+```
+
+## API
+
+### Sheet Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `open` | `boolean` | - | Visibility state |
+| `onOpenChange` | `(open: boolean) => void` | - | State change handler |
+| `position` | `'bottom' \| 'right' \| 'left' \| 'top'` | `'bottom'` | Appearance position |
+| `modal` | `boolean` | `true` | Modal behavior |
+
+### Sheet.Trigger Props
+
+Trigger component for opening the panel.
+
+### Sheet.Portal Props
+
+Portal for rendering the panel outside the DOM tree.
+
+### Sheet.Overlay Props
+
+Component for displaying a darkened background.
+
+### Sheet.Frame Props
+
+Container for panel content.
+
+### Sheet.Handle Props
+
+Component for displaying the drag handle (only for bottom position).
+
+### Sheet.Content Props
+
+Container for main panel content.
+
+### Sheet.Close Props
+
+Component for closing the panel.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Automatically manages focus
+- Supports screen readers
+- Closes on Escape
+- Supports drag gestures for closing

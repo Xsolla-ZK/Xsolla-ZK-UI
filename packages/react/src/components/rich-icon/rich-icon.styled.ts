@@ -41,7 +41,7 @@ export const RichIconFrame = styled(Stack, {
         backgroundColor: 'transparent',
         padding: 0,
         cursor: 'pointer',
-        animation: 'pop',
+        // animation: 'pop',
         pressStyle: {
           scale: 0.96,
         },

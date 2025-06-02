@@ -1,12 +1,12 @@
+import { type CreateTamaguiProps } from '@tamagui/core';
 import { settings } from './settings';
 import { sharedConfig } from './shared';
+import { tokens } from './tokens';
 import { fonts } from './tokens/fonts';
 import { media } from './tokens/media/web';
 import { web } from './tokens/platform';
 import { themes } from './tokens/themes';
-import { tokens } from './tokens/tokens';
 import { typography } from './tokens/typography';
-import type { CreateTamaguiProps } from '@tamagui/core';
 
 export const webConfig = {
   ...sharedConfig,
@@ -19,4 +19,29 @@ export const webConfig = {
   },
   media,
   settings,
+  selectionStyles: (theme) => ({
+    backgroundColor: theme['background.brand-high'],
+    color: theme['content.on-brand'],
+  }),
 } satisfies CreateTamaguiProps;
+
+// const kk = createAppConfig(webConfig, {
+//   button: createComponentTheme(
+//     'button',
+//     (tokens) => ({
+//       background: tokens['layer.floor-0'],
+//       color: tokens['content.neutral-primary'],
+//     }),
+//     {
+//       make: (tokens) => ({
+//         background: tokens['layer.floor-0'],
+//         color: tokens['content.neutral-primary'],
+//       }),
+//     },
+//   ),
+// });
+
+// const ff = createTamagui(webConfig);
+
+// const s = ff.themes.light['absinthe.100']
+// const s1 = kk.themes.dark['background']

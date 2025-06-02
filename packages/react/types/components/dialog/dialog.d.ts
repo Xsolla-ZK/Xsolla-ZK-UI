@@ -88,6 +88,7 @@ export declare const Dialog: import("react").ForwardRefExoticComponent<DialogPro
     } & {
         Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             size?: import("..").SheetSizes | undefined;
+            preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
         }>, "native" | "animation" | "zIndex" | "modal" | "children" | "open" | "snapPoints" | "snapPointsMode" | "defaultOpen" | "onOpenChange" | "defaultPosition" | "onPositionChange" | "dismissOnOverlayPress" | "dismissOnSnapToBottom" | "forceRemoveScrollEnabled" | "animationConfig" | "unmountChildrenWhenHidden" | "handleDisableScroll" | "disableDrag" | "portalProps" | "moveOnKeyboardChange" | "containerComponent" | "__scopeSheet" | keyof {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
@@ -99,6 +100,7 @@ export declare const Dialog: import("react").ForwardRefExoticComponent<DialogPro
             adjustPaddingForOffscreenContent?: boolean;
         }, import("@tamagui/web").StackStyleBase, {
             size?: import("..").SheetSizes | undefined;
+            preset?: "fullscreen" | "popup" | "bottom-sheet" | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
         Overlay: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             open?: boolean | undefined;

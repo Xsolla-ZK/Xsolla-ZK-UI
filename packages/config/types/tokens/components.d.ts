@@ -582,12 +582,13 @@ export declare const list: {
             frame: {
                 gap: string;
             };
-            title: {
+            row: {
                 gap: string;
+            };
+            title: {
                 typography: string;
             };
             subtitle: {
-                gap: string;
                 typography: string;
             };
         };
@@ -595,12 +596,13 @@ export declare const list: {
             frame: {
                 gap: string;
             };
-            title: {
+            row: {
                 gap: string;
+            };
+            title: {
                 typography: string;
             };
             subtitle: {
-                gap: string;
                 typography: string;
             };
         };
@@ -2027,12 +2029,13 @@ export declare const components: {
                 frame: {
                     gap: string;
                 };
-                title: {
+                row: {
                     gap: string;
+                };
+                title: {
                     typography: string;
                 };
                 subtitle: {
-                    gap: string;
                     typography: string;
                 };
             };
@@ -2040,12 +2043,13 @@ export declare const components: {
                 frame: {
                     gap: string;
                 };
-                title: {
+                row: {
                     gap: string;
+                };
+                title: {
                     typography: string;
                 };
                 subtitle: {
-                    gap: string;
                     typography: string;
                 };
             };

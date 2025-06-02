@@ -3,22 +3,13 @@ import { useMask } from '../../hooks/use-mask';
 import { Input } from '../input/input';
 import { InputContext, InputEndSlot, InputStartSlot } from '../input/input.styled';
 import type { MaskedInputProps } from './masked-input.types';
-import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
-function MaskedInputBase({
-  mask,
-  value,
-  onChange,
-  onChangeText,
-  onKeyDown,
-  ...props
-}: MaskedInputProps) {
+function MaskedInputBase({ mask, value, onChangeText, onKeyDown, ...props }: MaskedInputProps) {
   const {
     value: maskedValue,
     handleChange,
-    handleKeyDown,
     inputRef,
-    isMaxLengthReached,
   } = useMask({
     initialValue: value,
     mask,
@@ -31,13 +22,7 @@ function MaskedInputBase({
       value={maskedValue}
       ref={inputRef}
       onChange={(e) => {
-        const target = e.target as HTMLInputElement;
-        handleChange(target.value);
-        onChange?.(e as ChangeEvent<HTMLInputElement>);
-      }}
-      onKeyDown={(e) => {
-        handleKeyDown(e.nativeEvent);
-        onKeyDown?.(e);
+        handleChange(e as ChangeEvent<HTMLInputElement>);
       }}
     />
   );

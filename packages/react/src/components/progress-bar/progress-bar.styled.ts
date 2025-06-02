@@ -23,7 +23,7 @@ export const ProgressBarFrame = styled(Stack, {
 export const ProgressBarActiveTrack = styled(Stack, {
   name: PROGRESS_BAR_ACTIVE_TRACK_NAME,
   position: 'absolute',
-  animation: 'pop',
+  // animation: 'pop',
   backgroundColor: '$background',
 
   variants: {

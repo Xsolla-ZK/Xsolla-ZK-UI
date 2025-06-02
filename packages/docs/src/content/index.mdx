@@ -1,0 +1,500 @@
+import { Tabs } from 'nextra/components'
+
+# Introduction to Xsolla ZK UI
+
+Welcome to the **Xsolla ZK** documentation — a modern React UI component library built specifically for the Xsolla ecosystem.
+
+## About the Library
+
+Xsolla ZK UI is a comprehensive design system built on top of [Tamagui](https://tamagui.dev), providing developers with a powerful set of ready-to-use components for creating modern user interfaces.
+
+### Key Features
+
+- **🎨 Design System** — Consistent components following Xsolla design principles
+- **⚡ High Performance** — Optimized components with minimal bundle size
+- **🌐 Cross-platform** — Support for Web, React Native, and other platforms through Tamagui
+- **♿ Accessibility** — Full compliance with WCAG 2.1 and WAI-ARIA standards
+- **🎭 Theming** — Built-in support for light and dark themes
+- **📱 Responsive** — Responsive design out of the box
+- **🔧 TypeScript** — Full typing for better developer experience
+- **🎯 Composable API** — Flexible components with compound interface
+
+### Development Principles
+
+- **Consistency** — Uniform interaction patterns and visual design
+- **Flexibility** — Components easily customizable for specific requirements
+- **Performance** — Minimal overhead and optimized rendering
+- **Accessibility** — Support for assistive technologies and keyboard navigation
+
+## Installation
+
+Install the required packages in your project:
+
+<Tabs items={['pnpm', 'yarn', 'npm']}>
+  <Tabs.Tab>
+  ```bash copy
+  pnpm add @xsolla-zk/react @xsolla-zk/config
+  ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```bash copy
+  yarn add @xsolla-zk/react @xsolla-zk/config
+  ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```bash copy
+  npm install @xsolla-zk/react @xsolla-zk/config
+  ```
+  </Tabs.Tab>
+</Tabs>
+
+## Configuration and Setup
+
+### Understanding the Architecture
+
+Xsolla ZK UI is built on a layered architecture:
+
+- **`@xsolla-zk/config`** — Core configuration, themes, tokens, and Tamagui setup
+- **`@xsolla-zk/react`** — React components that consume the configuration
+- **`@xsolla-zk/icons`** — Icon library (optional, for examples)
+
+### Basic Setup
+
+Create a configuration file in your project root:
+
+```typescript
+// tamagui.config.ts
+import { config } from '@xsolla-zk/config'
+
+export default config
+```
+
+Set up the provider at your application root:
+
+```tsx
+// App.tsx
+import { TamaguiProvider } from '@tamagui/core'
+import config from './tamagui.config'
+
+function App() {
+  return (
+    <TamaguiProvider config={config}>
+      {/* Your application */}
+    </TamaguiProvider>
+  )
+}
+
+export default App
+```
+
+### Advanced Configuration
+
+#### Custom Theme Configuration
+
+You can extend or customize the default configuration:
+
+```typescript
+// tamagui.config.ts
+import { createTamagui } from '@tamagui/core'
+import { config as baseConfig } from '@xsolla-zk/config'
+
+const config = createTamagui({
+  ...baseConfig,
+  themes: {
+    ...baseConfig.themes,
+    // Add custom themes
+    customLight: {
+      ...baseConfig.themes.light,
+      background: '#f8f9fa',
+      color: '#212529',
+    },
+    customDark: {
+      ...baseConfig.themes.dark,
+      background: '#1a1a1a',
+      color: '#f8f9fa',
+    },
+  },
+})
+
+export default config
+```
+
+#### Platform-Specific Setup
+
+<Tabs items={['Web', 'React Native', 'Next.js']}>
+  <Tabs.Tab>
+  **Web (Vite/Create React App)**
+
+  ```typescript
+  // tamagui.config.ts
+  import { config } from '@xsolla-zk/config'
+
+  export default config
+  ```
+
+  ```tsx
+  // App.tsx
+  import { TamaguiProvider } from '@tamagui/core'
+  import config from './tamagui.config'
+
+  function App() {
+    return (
+      <TamaguiProvider config={config}>
+        {/* Your app */}
+      </TamaguiProvider>
+    )
+  }
+  ```
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+  **React Native**
+
+  ```typescript
+  // tamagui.config.ts
+  import { config } from '@xsolla-zk/config'
+
+  export default config
+  ```
+
+  ```tsx
+  // App.tsx
+  import { TamaguiProvider } from '@tamagui/core'
+  import config from './tamagui.config'
+
+  export default function App() {
+    return (
+      <TamaguiProvider config={config}>
+        {/* Your app */}
+      </TamaguiProvider>
+    )
+  }
+  ```
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+  **Next.js**
+
+  ```typescript
+  // tamagui.config.ts
+  import { config } from '@xsolla-zk/config'
+
+  export default config
+  ```
+
+  ```tsx
+  // pages/_app.tsx
+  import { TamaguiProvider } from '@tamagui/core'
+  import { useServerInsertedHTML } from 'next/navigation'
+  import config from '../tamagui.config'
+
+  export default function App({ Component, pageProps }) {
+    return (
+      <TamaguiProvider config={config}>
+        <Component {...pageProps} />
+      </TamaguiProvider>
+    )
+  }
+  ```
+  </Tabs.Tab>
+</Tabs>
+
+### CSS Variables and Theming
+
+#### Automatic CSS Variables
+
+The configuration automatically generates CSS variables for all design tokens:
+
+```css
+:root {
+  --color-background: #ffffff;
+  --color-text: #000000;
+  --space-1: 4px;
+  --space-2: 8px;
+  /* ... hundreds more */
+}
+
+[data-theme="dark"] {
+  --color-background: #000000;
+  --color-text: #ffffff;
+  /* ... dark theme overrides */
+}
+```
+
+#### Manual CSS Import (if needed)
+
+```tsx
+// Only needed for some build setups
+import '@xsolla-zk/config/css'
+```
+
+### Theme Switching
+
+Implement theme switching in your application:
+
+```tsx
+import { useTheme } from '@tamagui/core'
+import { Button } from '@xsolla-zk/react'
+
+function ThemeToggle() {
+  const theme = useTheme()
+  const [currentTheme, setCurrentTheme] = useState('light')
+
+  const toggleTheme = () => {
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light'
+    setCurrentTheme(newTheme)
+    // Update document theme
+    document.documentElement.setAttribute('data-theme', newTheme)
+  }
+
+  return (
+    <Button onPress={toggleTheme}>
+      <Button.Text>
+        Switch to {currentTheme === 'light' ? 'Dark' : 'Light'} Theme
+      </Button.Text>
+    </Button>
+  )
+}
+```
+
+### TypeScript Configuration
+
+#### Augmenting Theme Types
+
+To get proper TypeScript support for custom themes:
+
+```typescript
+// types/tamagui.d.ts
+import { config } from '@xsolla-zk/config'
+
+type Conf = typeof config
+
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+```
+
+#### Theme Token Intellisense
+
+The configuration provides full TypeScript intellisense for all tokens:
+
+```tsx
+// All these will have full autocomplete
+<View backgroundColor="$background.primary" />
+<Text color="$color.accent.primary" />
+<Button size="$4" />
+```
+
+### Build Configuration
+
+#### Vite Setup
+
+```typescript
+// vite.config.ts
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    tamaguiPlugin({
+      config: './tamagui.config.ts',
+      components: ['@xsolla-zk/react'],
+    }),
+    process.env.NODE_ENV === 'production' ? tamaguiExtractPlugin() : null,
+  ].filter(Boolean),
+})
+```
+
+#### Webpack Setup
+
+```javascript
+// webpack.config.js
+const { TamaguiPlugin } = require('@tamagui/webpack-plugin')
+
+module.exports = {
+  plugins: [
+    new TamaguiPlugin({
+      config: './tamagui.config.ts',
+      components: ['@xsolla-zk/react'],
+    }),
+  ],
+}
+```
+
+### Environment Variables
+
+Configure build-time optimizations:
+
+```bash
+# .env
+TAMAGUI_TARGET=web
+TAMAGUI_OPTIMIZE=1
+TAMAGUI_DISABLE_WARN=1
+```
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Missing CSS Variables**: Ensure `TamaguiProvider` wraps your app root
+2. **TypeScript Errors**: Check that `tamagui.config.ts` is properly exported
+3. **Build Errors**: Verify that all required packages are installed
+4. **Theme Not Applying**: Confirm theme switching logic updates document attributes
+
+#### Debug Mode
+
+Enable debug mode to see token resolution:
+
+```tsx
+<TamaguiProvider config={config} disableInjectCSS={false}>
+  {/* Your app */}
+</TamaguiProvider>
+```
+
+## Quick Start
+
+### Basic Example
+
+```tsx
+import { Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Button onPress={() => console.log('Button pressed')}>
+      <Button.Text>Click me</Button.Text>
+    </Button>
+  )
+}
+```
+
+### Compound Components
+
+Most components use a compound API for maximum flexibility:
+
+```tsx
+import { Input, RichIcon } from '@xsolla-zk/react'
+import { Search, User } from '@xsolla-zk/icons'
+
+function LoginForm() {
+  return (
+    <>
+      <Input placeholder="Username">
+        <Input.StartSlot>
+          <RichIcon size="$200">
+            <RichIcon.Icon icon={User} />
+          </RichIcon>
+        </Input.StartSlot>
+      </Input>
+
+      <Input placeholder="Search...">
+        <Input.EndSlot>
+          <RichIcon size="$200">
+            <RichIcon.Icon icon={Search} />
+          </RichIcon>
+        </Input.EndSlot>
+      </Input>
+    </>
+  )
+}
+```
+
+### Working with Forms
+
+```tsx
+import { Field, Input, Button } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function RegistrationForm() {
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+
+  return (
+    <form>
+      <Field error={Boolean(error)}>
+        <Field.Row>
+          <Field.Label>Email</Field.Label>
+          <Field.LabelValue>Required field</Field.LabelValue>
+        </Field.Row>
+        <Field.Control>
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+          />
+        </Field.Control>
+        <Field.Row>
+          <Field.Error>{error}</Field.Error>
+        </Field.Row>
+      </Field>
+
+      <Button type="submit">
+        <Button.Text>Register</Button.Text>
+      </Button>
+    </form>
+  )
+}
+```
+
+## Component Catalog
+
+The library includes a complete set of UI components for creating modern interfaces:
+
+### Forms and Input
+- **[Button](/components/button)** — Interactive buttons with various styling options
+- **[Input](/components/input)** — Text input fields with slot support
+- **[TextArea](/components/textarea)** — Multi-line text input fields
+- **[Checkbox](/components/checkbox)** — Checkboxes for option selection
+- **[RadioGroup](/components/radio-group)** — Radio button groups
+- **[Switch](/components/switch-component)** — Toggle switches for on/off states
+- **[Slider](/components/slider)** — Sliders for value selection
+- **[OTPField](/components/otp-field)** — Fields for one-time password input
+- **[MaskedInput](/components/masked-input)** — Input fields with formatting masks
+- **[Field](/components/field)** — Form field wrapper with labels and validation
+
+### Navigation and Structure
+- **[Tabs](/components/tabs)** — Tabs for content organization
+- **[TabBar](/components/tab-bar)** — Tab navigation bar
+- **[Breadcrumbs](/components/breadcrumbs)** — Breadcrumb navigation
+- **[NavBar](/components/nav-bar)** — Navigation bar with title and actions
+- **[Accordion](/components/accordion)** — Collapsible sections
+
+### Data Display
+- **[Badge](/components/badge)** — Badges and labels
+- **[Chips](/components/chips)** — Interactive tags
+- **[ProgressBar](/components/progress-bar)** — Progress indicators
+- **[Typography](/components/typography)** — Typography elements
+- **[SemanticText](/components/semantic-text)** — Semantic text components
+- **[List](/components/list)** — Lists with titles and values
+- **[Cell](/components/cell)** — Cells for lists and grids
+
+### Feedback
+- **[Toast](/components/toast)** — Pop-up notifications
+- **[SnackBar](/components/snack-bar)** — Bottom notifications
+- **[Loader](/components/loader)** — Loading indicators
+- **[Dialog](/components/dialog)** — Modal dialogs
+
+### Layout and Containers
+- **[Sheet](/components/sheet)** — Slide-out panels
+- **[Separator](/components/separator)** — Content dividers
+- **[Board](/components/board)** — Containers with background and rounded corners
+
+### Additional Components
+- **[RichIcon](/components/rich-icon)** — Icons with various shapes and states
+- **[Pimple](/components/pimple)** — Small indicators and counters
+- **[Label](/components/label)** — Labels for form elements
+
+## Support and Community
+
+- **Documentation** — Detailed examples and API for each component
+- **Storybook** — Interactive examples and sandbox for experimentation
+- **TypeScript** — Full typing for safe development
+- **Testing** — Test coverage for component stability
+
+## Next Steps
+
+- Explore [components](/components/button) and their capabilities
+- Learn about [design principles](https://tamagui.dev/docs/intro/themes) in Tamagui
+- Check out usage examples in Storybook
+- Join developer community discussions
+
+Ready to get started? Navigate to individual components in the sidebar!

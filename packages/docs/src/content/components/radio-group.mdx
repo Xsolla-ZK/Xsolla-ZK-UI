@@ -1,0 +1,199 @@
+# Radio Group
+
+The `RadioGroup` component provides a group of radio buttons for selecting one option from several.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { RadioGroup } from '@xsolla-zk/react'
+
+export default () => (
+  <RadioGroup>
+    <RadioGroup.Item>
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+  </RadioGroup>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { RadioGroup, Label } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <RadioGroup defaultValue="option1">
+      <Label>
+        <RadioGroup.Item value="option1">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 1
+      </Label>
+
+      <Label>
+        <RadioGroup.Item value="option2">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 2
+      </Label>
+
+      <Label>
+        <RadioGroup.Item value="option3">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 3
+      </Label>
+    </RadioGroup>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { RadioGroup, Label } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('option1')
+
+  return (
+    <RadioGroup value={value} onValueChange={setValue}>
+      <Label>
+        <RadioGroup.Item value="option1">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        First option
+      </Label>
+
+      <Label>
+        <RadioGroup.Item value="option2">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Second option
+      </Label>
+    </RadioGroup>
+  )
+}
+```
+
+### Vertical orientation
+
+```tsx
+import { RadioGroup, Label } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <RadioGroup orientation="vertical" defaultValue="option1">
+      <Label>
+        <RadioGroup.Item value="option1">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 1
+      </Label>
+
+      <Label>
+        <RadioGroup.Item value="option2">
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        Option 2
+      </Label>
+    </RadioGroup>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<RadioGroup size="$200" defaultValue="option1">
+  <Label>
+    <RadioGroup.Item value="option1">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    Small
+  </Label>
+</RadioGroup>
+
+<RadioGroup size="$500" defaultValue="option1">
+  <Label>
+    <RadioGroup.Item value="option1">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    Large
+  </Label>
+</RadioGroup>
+```
+
+### States
+
+#### Disabled group
+
+```tsx
+<RadioGroup disabled defaultValue="option1">
+  <Label>
+    <RadioGroup.Item value="option1">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    Disabled
+  </Label>
+</RadioGroup>
+```
+
+#### Disabled item
+
+```tsx
+<RadioGroup defaultValue="option1">
+  <Label>
+    <RadioGroup.Item value="option1">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    Active
+  </Label>
+
+  <Label>
+    <RadioGroup.Item value="option2" disabled>
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    Disabled
+  </Label>
+</RadioGroup>
+```
+
+## API
+
+### RadioGroup Props
+
+RadioGroup extends Tamagui radio group inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Current selected value |
+| `defaultValue` | `string` | - | Default value |
+| `onValueChange` | `(value: string) => void` | - | Value change handler |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Group orientation |
+| `size` | `RadioGroupSizes` | `'$300'` | Radio button size |
+| `disabled` | `boolean` | `false` | Disables the entire group |
+
+### RadioGroup.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `string` | - | Item value |
+| `disabled` | `boolean` | `false` | Disables the item |
+
+### RadioGroup.Indicator Props
+
+Component for displaying the selection indicator.
+
+## Accessibility
+
+- Supports keyboard navigation (Arrow keys)
+- Works correctly with screen readers
+- Implements ARIA pattern for radio groups
+- Automatically manages focus between items

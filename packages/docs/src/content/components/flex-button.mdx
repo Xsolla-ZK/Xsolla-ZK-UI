@@ -1,0 +1,186 @@
+# Flex Button
+
+The `FlexButton` component represents a flexible button with extended layout and styling capabilities.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { FlexButton } from '@xsolla-zk/react'
+
+export default () => (
+  <FlexButton>
+    <FlexButton.Icon />
+    <FlexButton.Content>
+      <FlexButton.Text />
+      <FlexButton.Description />
+    </FlexButton.Content>
+    <FlexButton.Extra />
+  </FlexButton>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { FlexButton } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <FlexButton>
+      <FlexButton.Text>Flex Button</FlexButton.Text>
+    </FlexButton>
+  )
+}
+```
+
+### With icon and description
+
+```tsx
+import { FlexButton } from '@xsolla-zk/react'
+import { Settings } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <FlexButton>
+      <FlexButton.Icon>
+        <Settings />
+      </FlexButton.Icon>
+      <FlexButton.Content>
+        <FlexButton.Text>Settings</FlexButton.Text>
+        <FlexButton.Description>Manage parameters</FlexButton.Description>
+      </FlexButton.Content>
+    </FlexButton>
+  )
+}
+```
+
+### With additional content
+
+```tsx
+import { FlexButton, Badge } from '@xsolla-zk/react'
+import { Bell } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <FlexButton>
+      <FlexButton.Icon>
+        <Bell />
+      </FlexButton.Icon>
+      <FlexButton.Content>
+        <FlexButton.Text>Notifications</FlexButton.Text>
+        <FlexButton.Description>New messages</FlexButton.Description>
+      </FlexButton.Content>
+      <FlexButton.Extra>
+        <Badge variant="numeric">
+          <Badge.Text>5</Badge.Text>
+        </Badge>
+      </FlexButton.Extra>
+    </FlexButton>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<FlexButton size="$200">
+  <FlexButton.Text>Small</FlexButton.Text>
+</FlexButton>
+
+<FlexButton size="$300">
+  <FlexButton.Text>Medium</FlexButton.Text>
+</FlexButton>
+
+<FlexButton size="$500">
+  <FlexButton.Text>Large</FlexButton.Text>
+</FlexButton>
+```
+
+### All Variants
+
+#### Default
+
+```tsx
+<FlexButton variant="default">
+  <FlexButton.Text>Default</FlexButton.Text>
+</FlexButton>
+```
+
+#### Outlined
+
+```tsx
+<FlexButton variant="outlined">
+  <FlexButton.Text>Outlined</FlexButton.Text>
+</FlexButton>
+```
+
+#### Ghost
+
+```tsx
+<FlexButton variant="ghost">
+  <FlexButton.Text>Ghost</FlexButton.Text>
+</FlexButton>
+```
+
+### States
+
+#### Disabled
+
+```tsx
+<FlexButton disabled>
+  <FlexButton.Text>Disabled</FlexButton.Text>
+</FlexButton>
+```
+
+#### Active
+
+```tsx
+<FlexButton active>
+  <FlexButton.Text>Active</FlexButton.Text>
+</FlexButton>
+```
+
+## API
+
+### FlexButton Props
+
+FlexButton extends Tamagui stack views inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `variant` | `'default' \| 'outlined' \| 'ghost'` | `'default'` | Display variant |
+| `size` | `FlexButtonSizes` | `'$300'` | Button size |
+| `disabled` | `boolean` | `false` | Disables the button |
+| `active` | `boolean` | `false` | Active state |
+| `onPress` | `() => void` | - | Press handler |
+
+### FlexButton.Icon Props
+
+Component for displaying an icon.
+
+### FlexButton.Content Props
+
+Container for main content.
+
+### FlexButton.Text Props
+
+Component for displaying main text.
+
+### FlexButton.Description Props
+
+Component for displaying additional description.
+
+### FlexButton.Extra Props
+
+Component for placing additional elements.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Supports ARIA attributes for states
+- Automatically manages focus

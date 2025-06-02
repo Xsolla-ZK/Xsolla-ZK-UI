@@ -1,0 +1,192 @@
+# TextArea
+
+The `TextArea` component provides a multiline text input field with slot support and various states.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { TextArea } from '@xsolla-zk/react'
+
+export default () => (
+  <TextArea placeholder="Enter text">
+    <TextArea.StartSlot />
+    <TextArea.EndSlot />
+  </TextArea>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { TextArea } from '@xsolla-zk/react'
+
+function App() {
+  return <TextArea placeholder="Enter multiline text" />
+}
+```
+
+### With controlled state
+
+```tsx
+import { TextArea } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <TextArea
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      placeholder="Controlled textarea"
+    />
+  )
+}
+```
+
+### With rows configuration
+
+```tsx
+import { TextArea } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <TextArea placeholder="Fixed 3 rows" rows={3} />
+      <TextArea placeholder="Min 2 rows" minRows={2} />
+      <TextArea placeholder="Max 5 rows" maxRows={5} />
+    </>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<TextArea size="$200" placeholder="Small" />
+<TextArea size="$300" placeholder="Medium" />
+<TextArea size="$500" placeholder="Large" />
+```
+
+### States
+
+#### Disabled
+
+```tsx
+<TextArea disabled placeholder="Disabled" />
+```
+
+#### Read only
+
+```tsx
+<TextArea readOnly value="Read only text" />
+```
+
+#### With error
+
+```tsx
+<TextArea error placeholder="With error" />
+```
+
+### With Slots
+
+#### StartSlot
+
+```tsx
+import { TextArea, RichIcon } from '@xsolla-zk/react'
+import { DataTable } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <TextArea placeholder="With start icon">
+      <TextArea.StartSlot>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={DataTable} />
+        </RichIcon>
+      </TextArea.StartSlot>
+    </TextArea>
+  )
+}
+```
+
+#### EndSlot
+
+```tsx
+import { TextArea, RichIcon } from '@xsolla-zk/react'
+import { BankCard } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <TextArea placeholder="With end icon">
+      <TextArea.EndSlot>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={BankCard} />
+        </RichIcon>
+      </TextArea.EndSlot>
+    </TextArea>
+  )
+}
+```
+
+#### Multiple icons in slot
+
+```tsx
+import { TextArea, RichIcon } from '@xsolla-zk/react'
+import { Plus, Cross } from '@xsolla-zk/icons'
+
+function App() {
+  return (
+    <TextArea placeholder="With multiple icons">
+      <TextArea.EndSlot>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={Plus} />
+        </RichIcon>
+        <RichIcon shape="squircle" size="$200">
+          <RichIcon.Icon icon={Cross} />
+        </RichIcon>
+      </TextArea.EndSlot>
+    </TextArea>
+  )
+}
+```
+
+## API
+
+### TextArea Props
+
+TextArea extends Tamagui TextArea inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `size` | `InputSizes` | `'$500'` | TextArea size |
+| `placeholder` | `string` | - | Placeholder text |
+| `value` | `string` | - | Field value |
+| `disabled` | `boolean` | `false` | Disables the field |
+| `readOnly` | `boolean` | `false` | Makes field read-only |
+| `error` | `boolean` | `false` | Shows error state |
+| `rows` | `number` | - | Fixed number of rows |
+| `minRows` | `number` | - | Minimum number of rows |
+| `maxRows` | `number` | - | Maximum number of rows |
+| `onChange` | `(event: ChangeEvent) => void` | - | Change handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | Focus handler |
+| `onBlur` | `(event: FocusEvent) => void` | - | Blur handler |
+
+### TextArea.StartSlot Props
+
+Component for placing elements at the start of the textarea.
+
+### TextArea.EndSlot Props
+
+Component for placing elements at the end of the textarea.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Automatically associates label with textarea
+- Supports ARIA attributes for states
+- Maintains proper tab order with slotted elements

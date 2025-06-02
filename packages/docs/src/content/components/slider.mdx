@@ -1,0 +1,131 @@
+# Slider
+
+The `Slider` component provides an interactive element for selecting a value from a range.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Slider } from '@xsolla-zk/react'
+
+export default () => (
+  <Slider>
+    <Slider.Track>
+      <Slider.Range />
+    </Slider.Track>
+    <Slider.Thumb />
+  </Slider>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Slider } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Slider defaultValue={[50]} max={100} step={1}>
+      <Slider.Track>
+        <Slider.Range />
+      </Slider.Track>
+      <Slider.Thumb />
+    </Slider>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Slider } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [value, setValue] = useState([25])
+
+  return (
+    <Slider value={value} onValueChange={setValue} max={100}>
+      <Slider.Track>
+        <Slider.Range />
+      </Slider.Track>
+      <Slider.Thumb />
+    </Slider>
+  )
+}
+```
+
+### Range values
+
+```tsx
+import { Slider } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Slider defaultValue={[25, 75]} max={100}>
+      <Slider.Track>
+        <Slider.Range />
+      </Slider.Track>
+      <Slider.Thumb />
+      <Slider.Thumb />
+    </Slider>
+  )
+}
+```
+
+### All Sizes
+
+```tsx
+<Slider size="$200" defaultValue={[50]}>
+  <Slider.Track>
+    <Slider.Range />
+  </Slider.Track>
+  <Slider.Thumb />
+</Slider>
+
+<Slider size="$500" defaultValue={[50]}>
+  <Slider.Track>
+    <Slider.Range />
+  </Slider.Track>
+  <Slider.Thumb />
+</Slider>
+```
+
+## API
+
+### Slider Props
+
+Slider extends Tamagui slider inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `value` | `number[]` | - | Current slider values |
+| `defaultValue` | `number[]` | - | Default values |
+| `onValueChange` | `(value: number[]) => void` | - | Value change handler |
+| `min` | `number` | `0` | Minimum value |
+| `max` | `number` | `100` | Maximum value |
+| `step` | `number` | `1` | Step increment |
+| `disabled` | `boolean` | `false` | Disables the slider |
+| `size` | `SliderSizes` | `'$300'` | Slider size |
+
+### Slider.Track Props
+
+Component for displaying the slider track.
+
+### Slider.Range Props
+
+Component for displaying the selected range.
+
+### Slider.Thumb Props
+
+Component for displaying the slider thumb.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Works correctly with screen readers
+- Supports ARIA attributes
+- Automatically manages focus between thumbs

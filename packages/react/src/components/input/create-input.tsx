@@ -1,212 +1,223 @@
-import { useComposedRefs, useTheme, type GetProps } from '@tamagui/core';
-import { registerFocusable } from '@tamagui/focusable';
-import { forwardRef, useEffect, useRef, useState } from 'react';
-import type { InputCSSVariables, InputElementBaseProps, InputElementProps } from './input.types';
+import { isWeb, useComposedRefs, useTheme, type GetProps } from '@tamagui/core';
+import { registerFocusable, useFocusable } from '@tamagui/focusable';
+import { forwardRef, useEffect, useMemo, useRef } from 'react';
+import type { InputElementBaseProps, InputElementProps } from './input.types';
 import type { TamaguiComponent, TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, KeyboardEvent, RefObject } from 'react';
+import type { ColorValue, TextInput } from 'react-native';
 
 export function createInput<T extends TamaguiComponent>(Element: T) {
   return Element.styleable<GetProps<T>>(
     forwardRef((_props: InputElementProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
       const Component = Element as unknown as TamaguiComponent<InputElementBaseProps>;
-      const {
-        allowFontScaling,
-        selectTextOnFocus,
-        showSoftInputOnFocus,
-        textContentType,
-        passwordRules,
-        textBreakStrategy,
-        underlineColorAndroid,
-        selection,
-        lineBreakStrategyIOS,
-        returnKeyLabel,
-        disabled,
-        onSubmitEditing,
-        caretHidden,
-        clearButtonMode,
-        clearTextOnFocus,
-        contextMenuHidden,
-        dataDetectorTypes,
-        id,
-        type,
-        enablesReturnKeyAutomatically,
-        importantForAutofill,
-        inlineImageLeft,
-        inlineImagePadding,
-        inputAccessoryViewID,
-        keyboardAppearance,
-        cursorColor,
-        disableFullscreenUI,
-        maxFontSizeMultiplier,
-        numberOfLines,
-        onContentSizeChange,
-        onEndEditing,
-        onScroll,
-        onSelectionChange,
-        caretColor,
-        placeholderTextColor,
-        blurOnSubmit,
-        enterKeyHint,
-        returnKeyType,
-        rejectResponderTermination,
-        scrollEnabled,
-        selectionColor,
-        inputMode,
-        rows,
-        minRows,
-        maxRows,
-        error,
-        size = '$500',
-        ...props
-      } = _props;
-      const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+      const ref = useRef<TextInput>(null);
       const composedRefs = useComposedRefs(forwardedRef, ref);
-      const theme = useTheme();
+
+      const { size = '$500', type, id, rows, minRows = 1, maxRows, ...restProps } = _props;
+
+      const inputProps = useInputProps({ ...restProps, type, rows, minRows, maxRows }, ref);
 
       useEffect(() => {
-        if (!id || disabled) return;
-
+        if (!id || !inputProps.editable) return;
         return registerFocusable(id, {
           focusAndSelect: () => {
             ref.current?.focus();
           },
           focus: () => {},
         });
-      }, [id, disabled]);
+      }, [id, inputProps.editable]);
 
-      const cssVariables: InputCSSVariables = {};
+      // const [height, setHeight] = useState<number>();
 
-      if (placeholderTextColor) {
-        cssVariables['--placeholderColor'] =
-          theme[placeholderTextColor]?.variable ?? placeholderTextColor;
-      }
+      // const handleContentSizeChange = (
+      //   e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
+      // ) => {
+      //   const contentHeight = e.nativeEvent.contentSize.height;
+      //   setHeight(contentHeight);
+      // };
 
-      if (selectionColor) {
-        cssVariables['--selectionColor'] = theme[selectionColor]?.variable ?? selectionColor;
-      }
+      // const handleLayout = (e: LayoutChangeEvent) => {
+      //   if (!isWeb) return;
+      //   const el = e.target as unknown as HTMLTextAreaElement;
+      //   if (!el) return;
 
-      const inputProps = {
-        ...props,
-        id,
-        disabled,
-        caretColor,
-        type,
-        inputMode,
-        enterKeyHint,
-        size,
-        rows,
-        style: {
-          ...(props.style as Record<string, unknown>),
-          ...cssVariables,
-        },
-      };
+      //   const computedStyle = window.getComputedStyle(el);
+      //   const lineHeight =
+      //     parseFloat(computedStyle.lineHeight) || parseFloat(computedStyle.fontSize) * 1.2;
 
-      const [height, setHeight] = useState(0);
+      //   const minHeight = minRows * lineHeight;
+      //   const maxHeight = maxRows ? maxRows * lineHeight : Infinity;
 
-      const multiline = Boolean(rows || minRows || maxRows);
+      //   el.style.height = 'auto';
 
-      useEffect(() => {
-        const el = ref.current as HTMLTextAreaElement;
-        if (!el || !multiline) return;
+      //   let newHeight = Math.max(el.scrollHeight, minHeight);
+      //   if (maxHeight !== Infinity) {
+      //     newHeight = Math.min(newHeight, maxHeight);
+      //   }
 
-        // Get initial line height
-        const computedStyle = window.getComputedStyle(el);
-        const initialLineHeight = parseInt(computedStyle.lineHeight, 10) || el.clientHeight;
+      //   el.style.height = `${newHeight}px`;
+      //   el.style.overflowY = newHeight >= maxHeight ? 'auto' : 'hidden';
+      // };
 
-        const resize = () => {
-          if (!el) return;
-
-          // Save current scroll position
-          const scrollPos = el.scrollTop;
-
-          // Temporarily reset height to accurately measure scrollHeight
-          el.style.height = 'auto';
-
-          const scrollHeight = el.scrollHeight;
-
-          // Add a small padding for comfortable editing
-          const paddingHeight = 4; // pixels for padding
-
-          const _minRows = rows || minRows || 1;
-          const _maxRows = rows || maxRows || 0;
-
-          // Set height with limits
-          const minHeight = _minRows * (initialLineHeight + paddingHeight);
-          const maxHeight = _maxRows * (initialLineHeight + paddingHeight);
-
-          const newHeight = Math.max(minHeight, Math.min(scrollHeight + paddingHeight, maxHeight));
-
-          // Set new height
-          el.style.height = `${newHeight}px`;
-          setHeight(newHeight);
-
-          if (_maxRows) {
-            // Enable scroll only if content requires more lines than maxRows
-            el.style.overflowY = scrollHeight > maxHeight ? 'auto' : 'hidden';
-
-            // Restore scroll position
-            el.scrollTop = scrollPos;
-          }
-        };
-
-        // Initial resize
-        resize();
-
-        // Create observer for automatic size change when content changes
-        const observer = new ResizeObserver(() => {
-          requestAnimationFrame(resize);
-        });
-        observer.observe(el);
-
-        // Track changes in value to account for line breaks
-        const handleInput = () => {
-          requestAnimationFrame(resize);
-        };
-
-        el.addEventListener('input', handleInput);
-
-        return () => {
-          observer.disconnect();
-          el.removeEventListener('input', handleInput);
-        };
-      }, [minRows, maxRows, props.value, multiline, rows]);
+      // const handleInput = (e: InputEvent) => {
+      //   if (!isWeb) return;
+      //   handleLayout(e as unknown as LayoutChangeEvent);
+      // };
 
       return (
-        <>
-          {process.env.TAMAGUI_TARGET === 'web' && (
-            <style>
-              {`
-                input::selection, textarea::selection {
-                  background-color: var(--selectionColor) !important;
-                }
-                input::placeholder, textarea::placeholder {
-                  color: var(--placeholderColor) !important;
-                }
-              `}
-            </style>
-          )}
-          <Component
-            {...inputProps}
-            {...(multiline
-              ? {
-                  tag: 'textarea',
-                  rows,
-                  style: {
-                    ...(props.style as Record<string, unknown>),
-                    ...cssVariables,
-                    height: height ? `${height}px` : 'auto',
-                    resize: 'none',
-                    overflow: 'hidden',
-                  },
-                }
-              : {})}
-            ref={composedRefs}
-          />
-        </>
+        <Component
+          id={id}
+          size={size}
+          {...inputProps}
+          {...(inputProps.multiline
+            ? {
+                tag: 'textarea',
+                rows,
+                minRows,
+                maxRows,
+                ...(!isWeb ? { flexWrap: 'wrap' } : {}),
+                overflowX: 'hidden',
+                whiteSpace: 'pre-wrap',
+                width: '100%',
+                style: {
+                  wordBreak: 'break-word',
+                  resize: 'none',
+                } as Record<string, unknown>,
+              }
+            : {})}
+          ref={composedRefs}
+        />
       );
     }),
-    {
-      disableTheme: true,
-    },
+    { disableTheme: true },
+  );
+}
+
+function useInputProps(props: InputElementProps, ref: RefObject<TextInput | null>) {
+  const {
+    type,
+    onKeyDown,
+    onKeyUp,
+    autoFocus,
+    disabled,
+    placeholderTextColor: placeholderProp,
+    rows,
+    minRows = 1,
+    maxRows,
+    onPaste,
+    ...rest
+  } = props;
+
+  const theme = useTheme();
+  const focusable = useFocusable({
+    props,
+    ref,
+    isInput: true,
+  });
+
+  // const [text, setText] = useState('');
+  // const [previousText, setPreviousText] = useState('');
+
+  // useEffect(() => {
+  //   if (text !== previousText) {
+  //     // Check if the change is due to pasting (length difference is significant)
+  //     if (Math.abs(text.length - previousText.length) > 1) {
+  //       // Handle paste event
+  //       console.log('Text pasted:', text);
+  //     }
+  //     setPreviousText(text);
+  //   }
+  // }, [text, previousText]);
+
+  // placeholderTextColor
+  const placeholderTextColor = useMemo(
+    () =>
+      (theme[placeholderProp as keyof typeof theme]?.get() ??
+        placeholderProp ??
+        theme.placeholderColor?.get()) as ColorValue,
+    [placeholderProp, theme],
+  );
+
+  // keyboardType по type
+  const keyboardType = useMemo<NonNullable<InputElementProps['keyboardType']>>(() => {
+    switch (type) {
+      case 'email':
+        return 'email-address';
+      case 'tel':
+        return 'phone-pad';
+      case 'url':
+        return 'url';
+      case 'search':
+        return 'web-search';
+      case 'number':
+      case 'numeric':
+        return 'numeric';
+      case 'decimal':
+        return 'decimal-pad';
+      default:
+        return 'default';
+    }
+  }, [type]);
+
+  const multiline = Boolean(rows || minRows > 1);
+  const numberOfLines = rows || Math.max(minRows, 1);
+
+  return useMemo<InputElementBaseProps>(
+    () => ({
+      ref: focusable.ref,
+
+      // editable ↔ disabled
+      editable: !disabled,
+
+      // placeholder
+      placeholderTextColor,
+
+      // password ↔ secureTextEntry
+      secureTextEntry: type === 'password',
+
+      // inputMode - keyboardType
+      keyboardType,
+
+      // rows - numberOfLines
+      multiline,
+      numberOfLines,
+      tag: multiline ? 'textarea' : undefined,
+
+      // autoFocus
+      autoFocus,
+
+      // onKeyDown/web → onKeyPress RN
+      ...(onKeyDown
+        ? {
+            onKeyPress: (e) => {
+              onKeyDown(e as unknown as KeyboardEvent<HTMLInputElement>);
+            },
+            onSubmitEditing: (e) => {
+              onKeyDown(e as unknown as KeyboardEvent<HTMLInputElement>);
+            },
+          }
+        : {}),
+
+      // onChange(web) → onChangeText(RN)
+      onChangeText: (text: string) => {
+        // setText(text);
+        focusable.onChangeText(text);
+      },
+
+      // other valid props
+      ...rest,
+    }),
+    [
+      focusable,
+      disabled,
+      placeholderTextColor,
+      type,
+      keyboardType,
+      multiline,
+      numberOfLines,
+      autoFocus,
+      rest,
+      onKeyDown,
+    ],
   );
 }

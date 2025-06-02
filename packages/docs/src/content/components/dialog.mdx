@@ -1,0 +1,199 @@
+# Dialog
+
+The `Dialog` component provides a modal window for displaying important information or forms.
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Dialog } from '@xsolla-zk/react'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger />
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Dialog, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dialog>
+      <Dialog.Trigger>
+        <Button>
+          <Button.Text>Open dialog</Button.Text>
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Title>Dialog title</Dialog.Title>
+          <Dialog.Description>
+            Description of the dialog content
+          </Dialog.Description>
+
+          <Dialog.Close>
+            <Button>
+              <Button.Text>Close</Button.Text>
+            </Button>
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+```
+
+### With controlled state
+
+```tsx
+import { Dialog, Button } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger>
+        <Button>
+          <Button.Text>Open dialog</Button.Text>
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Title>Confirmation</Dialog.Title>
+          <Dialog.Description>
+            Are you sure you want to delete this item?
+          </Dialog.Description>
+
+          <div style={{ display: 'flex', gap: 12 }}>
+            <Button variant="secondary" onPress={() => setOpen(false)}>
+              <Button.Text>Cancel</Button.Text>
+            </Button>
+            <Button tone="negative" onPress={() => setOpen(false)}>
+              <Button.Text>Delete</Button.Text>
+            </Button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+```
+
+### With form
+
+```tsx
+import { Dialog, Button, Input, Label } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dialog>
+      <Dialog.Trigger>
+        <Button>
+          <Button.Text>Add user</Button.Text>
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Title>New user</Dialog.Title>
+          <Dialog.Description>
+            Fill out the form to create a new user
+          </Dialog.Description>
+
+          <form>
+            <Label>
+              Name
+              <Input placeholder="Enter name" />
+            </Label>
+
+            <Label>
+              Email
+              <Input placeholder="Enter email" />
+            </Label>
+
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Dialog.Close>
+                <Button variant="secondary">
+                  <Button.Text>Cancel</Button.Text>
+                </Button>
+              </Dialog.Close>
+              <Button type="submit">
+                <Button.Text>Create</Button.Text>
+              </Button>
+            </div>
+          </form>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+```
+
+## API
+
+### Dialog Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|----------|
+| `open` | `boolean` | - | Dialog visibility state |
+| `onOpenChange` | `(open: boolean) => void` | - | State change handler |
+| `modal` | `boolean` | `true` | Modal behavior |
+
+### Dialog.Trigger Props
+
+Trigger component for opening the dialog.
+
+### Dialog.Portal Props
+
+Portal for rendering the dialog outside the DOM tree.
+
+### Dialog.Overlay Props
+
+Component for displaying the darkened background.
+
+### Dialog.Content Props
+
+Container for dialog content.
+
+### Dialog.Title Props
+
+Component for displaying the dialog title.
+
+### Dialog.Description Props
+
+Component for displaying the dialog description.
+
+### Dialog.Close Props
+
+Component for closing the dialog.
+
+## Accessibility
+
+- Supports keyboard navigation
+- Automatically manages focus
+- Supports screen readers
+- Implements ARIA pattern for dialogs
+- Closes on Escape
+- Blocks page scrolling
