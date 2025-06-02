@@ -76,13 +76,13 @@ jobs:
       - name: Show raw string and length
         run: |
           echo "RAW from prepare: ${{ needs.prepare.outputs['matrix-packages'] }}"
-          echo "Length via fromJson: ${{ fromJson(needs.prepare.outputs['matrix-packages']).length }}"
+          echo "Not Empty: ${{ needs.prepare.outputs['matrix-packages'][0] != null }}"
 
   build:
     name: 🔨 Build all packages
     runs-on: ubuntu-latest
     needs: prepare
-    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages']).length > 0 }}
+    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && needs.prepare.outputs['matrix-packages'][0] != null }}
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -112,7 +112,7 @@ jobs:
     name: 🚀 Publish packages
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages']).length > 0 }}
+    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && needs.prepare.outputs['matrix-packages'][0] != null }}
     permissions:
       contents: write
       packages: write
