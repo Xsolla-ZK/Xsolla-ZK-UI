@@ -1,4 +1,4 @@
-# Зависимости
+# Dependencies
 node_modules
 .pnpm
 .npm
@@ -8,11 +8,11 @@ node_modules
 .gitignore
 .github/workflows
 
-# Документация и README
+# Documentation and README
 *.md
 README*
 
-# Сборки и временные файлы
+# Builds and temporary files
 dist
 build
 .next
@@ -21,24 +21,24 @@ out
 .storybook-out
 storybook-build
 
-# Кэши и логи
+# Cache and logs
 .cache
 *.log
 .DS_Store
 .env*
 
-# Инструменты разработки
+# Development tools
 .vscode
 .idea
 *.tgz
 coverage
 
-# Тестирование
+# Testing
 __tests__
 *.test.*
 *.spec.*
 
-# Исходники, которые не нужны для сборки
+# Sources that are not needed for building
 packages/app
 packages/vue
 raw-icons
