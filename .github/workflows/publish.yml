@@ -66,9 +66,7 @@ jobs:
           fi
 
           echo ">>> matrix-packages raw: $MATRIX_JSON"
-          echo "matrix-packages<<EOF" >> $GITHUB_OUTPUT
-          echo "$MATRIX_JSON" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "matrix-packages=$(echo "$MATRIX_JSON" | jq -c .)" >> $GITHUB_OUTPUT
 
   debug-matrix:
     name: 🐛 Debug matrix-packages
