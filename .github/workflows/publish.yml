@@ -254,21 +254,15 @@ jobs:
 
       - name: 🛡️ Setup npm Auth
         run: |
-          echo "Setting up NPM authentication for npmjs.org"
+          echo "Setting up NPM authentication for ${{ env.REGISTRY_URL }}"
 
-          # Force use npmjs.org registry
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-
-          # Configure pnpm to use npmjs.org
-          pnpm config set registry https://registry.npmjs.org/
+          # Setup .npmrc with registry and auth token
+          echo "${{ env.REGISTRY_URL }}/:_authToken=${{ secrets.NPM_TOKEN }}" | sed 's|https://|//|' > ~/.npmrc
+          echo "registry=${{ env.REGISTRY_URL }}/" >> ~/.npmrc
 
           # Verify configuration
           echo "NPM configuration:"
           cat ~/.npmrc | sed 's/_authToken=.*/_authToken=***HIDDEN***/'
-
-          echo "PNPM configuration:"
-          pnpm config get registry
 
           # Test authentication
           echo "Testing NPM authentication:"
