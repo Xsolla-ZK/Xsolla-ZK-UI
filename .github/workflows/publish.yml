@@ -250,21 +250,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          registry-url: ${{ env.REGISTRY_URL }}
           always-auth: true
 
       - name: 🛡️ Setup npm Auth
         run: |
-          echo "Setting up NPM authentication for ${{ env.REGISTRY_URL }}"
-          if [[ "${{ env.REGISTRY_URL }}" == *"npmjs.org"* ]]; then
-            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-          else
-            echo "//$(echo ${{ env.REGISTRY_URL }} | sed 's#https://##')/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-            echo "registry=${{ env.REGISTRY_URL }}" >> ~/.npmrc
-          fi
+          echo "Setting up NPM authentication for npmjs.org"
+
+          # Force use npmjs.org registry
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+
+          # Configure pnpm to use npmjs.org
+          pnpm config set registry https://registry.npmjs.org/
+
+          # Verify configuration
           echo "NPM configuration:"
-          cat ~/.npmrc | sed 's/authToken=.*/authToken=***HIDDEN***/'
+          cat ~/.npmrc | sed 's/_authToken=.*/_authToken=***HIDDEN***/'
+
+          echo "PNPM configuration:"
+          pnpm config get registry
+
+          # Test authentication
+          echo "Testing NPM authentication:"
+          npm whoami || echo "Warning: npm whoami failed, but this might be normal for org tokens"
 
       - name: 📦 Install dependencies (only root)
         run: pnpm install --frozen-lockfile
