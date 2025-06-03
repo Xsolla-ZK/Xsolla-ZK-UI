@@ -229,6 +229,12 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 📥 Download updated package files
+        uses: actions/download-artifact@v4
+        with:
+          name: built-packages
+          path: .
+
       - name: ⚙️ Setup Node.js & PNPM
         uses: pnpm/action-setup@v4
         with:
@@ -257,12 +263,6 @@ jobs:
 
       - name: 📦 Install dependencies (only root)
         run: pnpm install --frozen-lockfile
-
-      - name: 📥 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: built-packages
-          path: .
 
       - name: 🧐 Check package info
         id: check-changes
@@ -362,16 +362,20 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 📥 Download updated package files
+        uses: actions/download-artifact@v4
+        with:
+          name: built-packages
+          path: .
+
       - name: 🎯 Commit all changes and create tag
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add root package.json if sync_versions is enabled
-          if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-            git add "package.json" || true
-            echo "Added root package.json"
-          fi
+          # Add root package.json (always updated with new version)
+          git add "package.json" || true
+          echo "Added root package.json"
 
           # Add all package.json changes (no CHANGELOG.md)
           for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
@@ -384,6 +388,20 @@ jobs:
           # Use calculated version from prepare job
           NEW_VERSION="${{ needs.build.outputs.new-version }}"
           echo "Using version: $NEW_VERSION"
+
+          # Debug: Check file status
+          echo "📋 Checking file status before staging:"
+          git status --porcelain || true
+
+          echo "📋 Files that will be staged:"
+          echo "Root package.json version: $(node -p "require('./package.json').version" 2>/dev/null || echo 'NOT_FOUND')"
+
+          for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              pkg_version=$(node -p "require('./${pkg_folder}/package.json').version" 2>/dev/null || echo 'NOT_FOUND')
+              echo "${pkg_folder}/package.json version: $pkg_version"
+            fi
+          done
 
           # Check if there are changes to commit
           if git diff --staged --quiet; then
