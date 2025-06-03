@@ -33,7 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix-packages: ${{ steps.set-matrix.outputs['matrix-packages'] }}
-      new-version: ${{ steps.calculate-version.outputs['new-version'] }}
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -96,6 +95,19 @@ jobs:
           echo ">>> Final matrix-packages: $MATRIX_JSON"
           echo "matrix-packages=$(jq -cr '@json' <<< "$MATRIX_JSON")" >> $GITHUB_OUTPUT
 
+  build:
+    name: 🔨 Build all packages
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages'])[0] != null }}
+    outputs:
+      new-version: ${{ steps.calculate-version.outputs['new-version'] }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: 🔢 Calculate version
         id: calculate-version
         run: |
@@ -143,17 +155,6 @@ jobs:
           echo "Updated root package.json to version: $NEW_VERSION"
           echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-  build:
-    name: 🔨 Build all packages
-    runs-on: ubuntu-latest
-    needs: prepare
-    if: ${{ fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages'])[0] != null }}
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: ⚙️ Setup Node.js & PNPM
         uses: pnpm/action-setup@v4
         with:
@@ -172,6 +173,29 @@ jobs:
       - name: 📝 Lint packages
         run: pnpm lint:react
 
+      - name: 🔍 Check build artifacts
+        run: |
+          echo "Checking which packages have dist and types folders:"
+          for pkg_dir in packages/*/; do
+            pkg_name=$(basename "$pkg_dir")
+            echo "📦 Package: $pkg_name"
+
+            if [ -d "${pkg_dir}dist" ]; then
+              echo "  ✅ dist/ folder found"
+              ls -la "${pkg_dir}dist" | head -3
+            else
+              echo "  ❌ dist/ folder not found"
+            fi
+
+            if [ -d "${pkg_dir}types" ]; then
+              echo "  ✅ types/ folder found"
+              ls -la "${pkg_dir}types" | head -3
+            else
+              echo "  ❌ types/ folder not found"
+            fi
+            echo ""
+          done
+
       - name: 📤 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -179,6 +203,8 @@ jobs:
           path: |
             packages/*/dist/
             packages/*/types/
+            package.json
+          if-not-found: ignore
 
   publish:
     name: 🚀 Publish packages
@@ -263,7 +289,7 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
 
           # Always use calculated version from prepare job
-          NEW_VERSION="${{ needs.prepare.outputs.new-version }}"
+          NEW_VERSION="${{ needs.build.outputs.new-version }}"
           echo "🔄 Using version: $NEW_VERSION (was: $CURRENT_VERSION)"
 
           # Skip if version hasn't changed
@@ -326,7 +352,7 @@ jobs:
 
   commit-and-release:
     name: 🎯 Commit & Create Tag
-    needs: [prepare, publish]
+    needs: [prepare, build, publish]
     runs-on: ubuntu-latest
     if: ${{ needs.publish.result == 'success' }}
     steps:
@@ -356,7 +382,7 @@ jobs:
           done
 
           # Use calculated version from prepare job
-          NEW_VERSION="${{ needs.prepare.outputs.new-version }}"
+          NEW_VERSION="${{ needs.build.outputs.new-version }}"
           echo "Using version: $NEW_VERSION"
 
           # Check if there are changes to commit
@@ -387,7 +413,7 @@ jobs:
 
   notify:
     name: 📢 Notify Results
-    needs: [prepare, publish, commit-and-release]
+    needs: [prepare, build, publish, commit-and-release]
     runs-on: ubuntu-latest
     if: always() && fromJson(needs.prepare.outputs['matrix-packages']) && fromJson(needs.prepare.outputs['matrix-packages'])[0] != null
     steps:
