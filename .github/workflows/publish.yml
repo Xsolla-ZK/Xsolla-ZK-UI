@@ -1,11 +1,6 @@
 name: Build & Publish Packages
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'packages/**'
   workflow_dispatch:
     inputs:
       version:
@@ -18,7 +13,7 @@ on:
           - minor
           - major
       packages:
-        description: 'Comma-separated list of packages to publish (without `packages/` prefix). If left empty — will be found all changed packages.'
+        description: 'Comma-separated list of packages to publish (without `packages/` prefix). If left empty — will publish all packages.'
         required: false
         type: string
       sync_versions:
@@ -38,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix-packages: ${{ steps.set-matrix.outputs['matrix-packages'] }}
-      sync-version: ${{ steps.calculate-sync-version.outputs['sync-version'] }}
+      new-version: ${{ steps.calculate-version.outputs['new-version'] }}
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -78,8 +73,8 @@ jobs:
             done
             MATRIX_JSON="${MATRIX_JSON%,}]"
 
-          elif [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-            echo "🔄 Sync versions enabled - including all publishable packages"
+          else
+            echo "🔄 Including all publishable packages"
             MATRIX_JSON="["
             for pkg_dir in packages/*/; do
               if [ -d "$pkg_dir" ]; then
@@ -96,39 +91,15 @@ jobs:
               fi
             done
             MATRIX_JSON="${MATRIX_JSON%,}]"
-
-          else
-            echo "🔍 Checking for changed packages since ${{ github.event.before }}"
-            CHANGED_PKGS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
-                        | grep '^packages/' | cut -d'/' -f2 | sort -u)
-            if [ -z "$CHANGED_PKGS" ]; then
-              echo "No changes in packages/, nothing to publish."
-              MATRIX_JSON="[]"
-            else
-              echo "Found changed packages, filtering for publishable ones:"
-              MATRIX_JSON="["
-              for pkg in $CHANGED_PKGS; do
-                pkg_path="packages/${pkg}"
-
-                if is_excluded "$pkg"; then
-                  echo "🚫 Excluding package: $pkg_path (not for publishing)"
-                else
-                  echo "✅ Including package: $pkg_path"
-                  MATRIX_JSON+="\"${pkg_path}\","
-                fi
-              done
-              MATRIX_JSON="${MATRIX_JSON%,}]"
-            fi
           fi
 
           echo ">>> Final matrix-packages: $MATRIX_JSON"
           echo "matrix-packages=$(jq -cr '@json' <<< "$MATRIX_JSON")" >> $GITHUB_OUTPUT
 
-      - name: 🔢 Calculate synchronized version
-        id: calculate-sync-version
-        if: github.event.inputs.sync_versions == 'true'
+      - name: 🔢 Calculate version
+        id: calculate-version
         run: |
-          echo "🔄 Calculating synchronized version based on root package.json..."
+          echo "🔄 Calculating new version based on root package.json..."
           echo "📝 Note: packages docs, vue, app are excluded from publishing"
 
           # Get version from root package.json
@@ -158,30 +129,19 @@ jobs:
               ;;
           esac
 
-          SYNC_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          echo "New synchronized version: $SYNC_VERSION"
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "New version: $NEW_VERSION"
 
           # Update root package.json version
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.version = '$SYNC_VERSION';
+            pkg.version = '$NEW_VERSION';
             fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
           "
 
-          echo "Updated root package.json to version: $SYNC_VERSION"
-          echo "sync-version=$SYNC_VERSION" >> $GITHUB_OUTPUT
-
-  debug-matrix:
-    name: 🐛 Debug matrix-packages
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
-      - name: Show raw string and length
-        run: |
-          echo "RAW from prepare: ${{ needs.prepare.outputs['matrix-packages'] }}"
-          echo "Not Empty: ${{ fromJson(needs.prepare.outputs['matrix-packages'])[0] != null }}"
-          echo "First Element: ${{ fromJson(needs.prepare.outputs['matrix-packages'])[0] }}"
+          echo "Updated root package.json to version: $NEW_VERSION"
+          echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
   build:
     name: 🔨 Build all packages
@@ -243,13 +203,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🔍 Check if previous packages failed
-        run: |
-          echo "Checking status of parallel jobs..."
-          # This step will help us track if we should continue
-          echo "Current package: ${{ matrix.package-folder }}"
-          echo "All jobs are being processed sequentially due to max-parallel: 1"
-
       - name: ⚙️ Setup Node.js & PNPM
         uses: pnpm/action-setup@v4
         with:
@@ -285,32 +238,19 @@ jobs:
           name: built-packages
           path: .
 
-      - name: 🧐 Check changes in package
+      - name: 🧐 Check package info
         id: check-changes
         working-directory: ${{ matrix['package-folder'] }}
         run: |
-          # Take name and version from specified package
+          # Get package info
           PACKAGE_NAME=$(node -p "require('${PWD}/package.json').name")
           CURRENT_VERSION=$(node -p "require('${PWD}/package.json').version")
           PACKAGE_SHORT_NAME=${PWD##*/}
 
-          # When sync_versions is enabled OR packages are manually specified, always process
-          if [ "${{ github.event.inputs.sync_versions }}" == "true" ] || [ -n "${{ github.event.inputs.packages }}" ]; then
-            echo "🔄 Manual trigger or sync versions - processing package: $PACKAGE_NAME"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          # For workflow_dispatch without sync_versions and packages, process all
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "📦 Manual trigger - processing package: $PACKAGE_NAME"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          # For push events, check if there are changes in this folder
-          elif git diff --quiet HEAD~1 HEAD -- . 2>/dev/null; then
-            echo "⏭️ No changes in package: $PACKAGE_NAME - skipping"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "📝 Changes detected in package: $PACKAGE_NAME - processing"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
+          echo "📦 Processing package: $PACKAGE_NAME"
+          echo "📊 Current version: $CURRENT_VERSION"
 
+          echo "skip=false" >> $GITHUB_OUTPUT
           echo "package_name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
           echo "package_short_name=${PACKAGE_SHORT_NAME}" >> $GITHUB_OUTPUT
           echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
@@ -322,42 +262,9 @@ jobs:
         run: |
           CURRENT_VERSION=$(node -p "require('./package.json').version")
 
-          # Use synchronized version if sync_versions is enabled
-          if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-            NEW_VERSION="${{ needs.prepare.outputs.sync-version }}"
-            echo "🔄 Using synchronized version: $NEW_VERSION (was: $CURRENT_VERSION)"
-          else
-            VERSION_TYPE="${{ github.event.inputs.version || 'patch' }}"
-            echo "📊 Current version: $CURRENT_VERSION"
-            echo "🔧 Version bump type: $VERSION_TYPE"
-
-            # Parse current version
-            IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
-            MAJOR=${VERSION_PARTS[0]}
-            MINOR=${VERSION_PARTS[1]}
-            PATCH=${VERSION_PARTS[2]}
-
-            # Calculate new version based on type
-            case "$VERSION_TYPE" in
-              "major")
-                MAJOR=$((MAJOR + 1))
-                MINOR=0
-                PATCH=0
-                ;;
-              "minor")
-                MINOR=$((MINOR + 1))
-                ;;
-              "patch")
-                PATCH=$((PATCH + 1))
-                ;;
-              *)
-                echo "❌ Unknown version type: $VERSION_TYPE"
-                exit 1
-                ;;
-            esac
-
-            NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          fi
+          # Always use calculated version from prepare job
+          NEW_VERSION="${{ needs.prepare.outputs.new-version }}"
+          echo "🔄 Using version: $NEW_VERSION (was: $CURRENT_VERSION)"
 
           # Skip if version hasn't changed
           if [ "$NEW_VERSION" == "$CURRENT_VERSION" ]; then
@@ -378,96 +285,6 @@ jobs:
           fi
 
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-          echo "tag_name=v${NEW_VERSION}" >> $GITHUB_OUTPUT
-
-      - name: 📝 Generate CHANGELOG
-        if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
-        working-directory: ${{ matrix['package-folder'] }}
-        run: |
-          PKG_NAME="${{ steps.check-changes.outputs.package_short_name }}"
-          NEW_VERSION="${{ steps.bump-version.outputs.new_version }}"
-          OLD_VERSION="${{ steps.check-changes.outputs.current_version }}"
-
-          # Get commits since last version tag
-          LAST_TAG=$(git describe --tags --abbrev=0 --match="v*" 2>/dev/null || echo "")
-
-          if [ -n "$LAST_TAG" ]; then
-            COMMITS=$(git log --oneline --no-merges ${LAST_TAG}..HEAD -- .)
-          else
-            COMMITS=$(git log --oneline --no-merges -- . | head -10)
-          fi
-
-          # Create or update CHANGELOG.md
-          if [ ! -f "CHANGELOG.md" ]; then
-            echo "# Changelog" > CHANGELOG.md
-            echo "" >> CHANGELOG.md
-            echo "All notable changes to this project will be documented in this file." >> CHANGELOG.md
-            echo "" >> CHANGELOG.md
-          fi
-
-          # Prepare new changelog entry
-          TEMP_CHANGELOG=$(mktemp)
-          echo "# Changelog" > $TEMP_CHANGELOG
-          echo "" >> $TEMP_CHANGELOG
-
-          # Add new version entry
-          echo "## [${NEW_VERSION}] - $(date +%Y-%m-%d)" >> $TEMP_CHANGELOG
-          echo "" >> $TEMP_CHANGELOG
-
-          # Categorize commits
-          FEATURES=""
-          FIXES=""
-          CHORES=""
-          BREAKING=""
-
-          while IFS= read -r commit; do
-            if [ -n "$commit" ]; then
-              if echo "$commit" | grep -q "^[a-f0-9]* feat[(!:]"; then
-                FEATURES="${FEATURES}- ${commit#* }\n"
-              elif echo "$commit" | grep -q "^[a-f0-9]* fix[(!:]"; then
-                FIXES="${FIXES}- ${commit#* }\n"
-              elif echo "$commit" | grep -q "^[a-f0-9]* BREAKING CHANGE"; then
-                BREAKING="${BREAKING}- ${commit#* }\n"
-              elif echo "$commit" | grep -qE "^[a-f0-9]* (chore|docs|style|refactor|test|build|ci)[(!:]"; then
-                CHORES="${CHORES}- ${commit#* }\n"
-              else
-                CHORES="${CHORES}- ${commit#* }\n"
-              fi
-            fi
-          done <<< "$COMMITS"
-
-          # Add categorized changes
-          if [ -n "$BREAKING" ]; then
-            echo "### 💥 Breaking Changes" >> $TEMP_CHANGELOG
-            echo -e "$BREAKING" >> $TEMP_CHANGELOG
-          fi
-
-          if [ -n "$FEATURES" ]; then
-            echo "### ✨ New Features" >> $TEMP_CHANGELOG
-            echo -e "$FEATURES" >> $TEMP_CHANGELOG
-          fi
-
-          if [ -n "$FIXES" ]; then
-            echo "### 🐛 Bug Fixes" >> $TEMP_CHANGELOG
-            echo -e "$FIXES" >> $TEMP_CHANGELOG
-          fi
-
-          if [ -n "$CHORES" ]; then
-            echo "### 🔧 Other Changes" >> $TEMP_CHANGELOG
-            echo -e "$CHORES" >> $TEMP_CHANGELOG
-          fi
-
-          echo "" >> $TEMP_CHANGELOG
-
-          # Append existing changelog content (skip first few lines)
-          if [ -f "CHANGELOG.md" ]; then
-            tail -n +4 CHANGELOG.md >> $TEMP_CHANGELOG
-          fi
-
-          # Replace changelog
-          mv $TEMP_CHANGELOG CHANGELOG.md
-
-          echo "Generated changelog for version $NEW_VERSION"
 
       - name: 📤 Publish to NPM
         if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
@@ -508,7 +325,7 @@ jobs:
           echo "packages=${PKG_INFO}" >> $GITHUB_OUTPUT
 
   commit-and-release:
-    name: 🎯 Commit & Create Releases
+    name: 🎯 Commit & Create Tag
     needs: [prepare, publish]
     runs-on: ubuntu-latest
     if: ${{ needs.publish.result == 'success' }}
@@ -519,14 +336,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🎯 Commit all changes and create tags
+      - name: 🎯 Commit all changes and create tag
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Get all packages that were published
-          PACKAGES='${{ toJson(fromJson(needs.prepare.outputs.matrix-packages)) }}'
-          echo "Processing packages: $PACKAGES"
 
           # Add root package.json if sync_versions is enabled
           if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
@@ -534,68 +347,43 @@ jobs:
             echo "Added root package.json"
           fi
 
-          # Add all package.json and CHANGELOG.md changes
+          # Add all package.json changes (no CHANGELOG.md)
           for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
             if [ -f "${pkg_folder}/package.json" ]; then
               git add "${pkg_folder}/package.json" || true
-              git add "${pkg_folder}/CHANGELOG.md" || true
-              echo "Added changes for ${pkg_folder}"
+              echo "Added package.json for ${pkg_folder}"
             fi
           done
+
+          # Use calculated version from prepare job
+          NEW_VERSION="${{ needs.prepare.outputs.new-version }}"
+          echo "Using version: $NEW_VERSION"
 
           # Check if there are changes to commit
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
+            # Create commit message
             if [ "${{ github.event.inputs.sync_versions }}" == "true" ]; then
-              git commit -m "chore: bump all packages to synchronized version v${{ needs.prepare.outputs.sync-version }}
+              git commit -m "chore: bump all packages to synchronized version v${NEW_VERSION}
 
-              Updated publishable packages:
+              Published packages:
               $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]' | sed 's/packages\//- @xsolla-zk\//')"
-
-              # Create unified tag for synchronized release
-              git tag "v${{ needs.prepare.outputs.sync-version }}" -m "Synchronized release v${{ needs.prepare.outputs.sync-version }}"
             else
-              git commit -m "chore: bump package versions"
+              git commit -m "chore: publish packages
+
+              Published packages:
+              $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]' | sed 's/packages\//- @xsolla-zk\//')"
             fi
+
+            # Create single tag with root version
+            git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
+            echo "Created tag: v${NEW_VERSION}"
           fi
 
           # Pull latest changes and push
           git pull --rebase origin main || true
           git push origin HEAD --follow-tags
-
-      - name: 🔖 Create GitHub Releases
-        run: |
-          # Create releases for each published package
-          for pkg_folder in $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]'); do
-            PKG_JSON_PATH="${GITHUB_WORKSPACE}/${pkg_folder}/package.json"
-
-            if [ -f "$PKG_JSON_PATH" ]; then
-              PKG_NAME=$(node -p "require('$PKG_JSON_PATH').name")
-              PKG_VERSION=$(node -p "require('$PKG_JSON_PATH').version")
-              PKG_SHORT=$(basename "$pkg_folder")
-
-              echo "Creating release for ${PKG_NAME} v${PKG_VERSION}"
-
-              # Create individual package release
-              gh release create "v${PKG_VERSION}" \
-                --title "${PKG_SHORT} v${PKG_VERSION}" \
-                --notes "## 🚀 ${PKG_NAME} v${PKG_VERSION}
-
-              ### 📦 Installation
-              \`\`\`bash
-              npm install ${PKG_NAME}@${PKG_VERSION}
-              \`\`\`
-
-              ### 📝 Changes
-              See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/${pkg_folder}/CHANGELOG.md) for details." \
-                --latest=false || echo "Release may already exist for v${PKG_VERSION}"
-            else
-              echo "Warning: package.json not found at $PKG_JSON_PATH"
-            fi
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify:
     name: 📢 Notify Results
@@ -613,7 +401,7 @@ jobs:
             echo "OVERALL_STATUS=failure" >> $GITHUB_ENV
             exit 1
           elif [ "${{ needs.commit-and-release.result }}" == "failure" ]; then
-            echo "⚠️ Packages published but commit/release failed."
+            echo "⚠️ Packages published but commit/tagging failed."
             echo "OVERALL_STATUS=partial" >> $GITHUB_ENV
           elif [ "${{ needs.publish.result }}" == "cancelled" ]; then
             echo "⏹️ Publishing was cancelled."
@@ -641,5 +429,5 @@ jobs:
         if: env.OVERALL_STATUS == 'partial'
         run: |
           echo "⚠️ Partial success!"
-          echo "Packages were published to NPM but commit/release creation failed."
+          echo "Packages were published to NPM but commit/tagging failed."
           echo "Manual intervention may be required."
