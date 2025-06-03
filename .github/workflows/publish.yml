@@ -355,6 +355,9 @@ jobs:
     needs: [prepare, build, publish]
     runs-on: ubuntu-latest
     if: ${{ needs.publish.result == 'success' }}
+    permissions:
+      contents: write
+      actions: write
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -428,6 +431,34 @@ jobs:
           # Pull latest changes and push
           git pull --rebase origin main || true
           git push origin HEAD --follow-tags
+
+      - name: 🔖 Trigger Changelog Workflow
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const newVersion = '${{ needs.build.outputs.new-version }}';
+
+            console.log(`🔖 Triggering changelog workflow for version: v${newVersion}`);
+
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'changelog.yml',
+                ref: 'main',
+                inputs: {
+                  tag: `v${newVersion}`,
+                  version: newVersion
+                }
+              });
+
+              console.log('✅ Changelog workflow triggered');
+            } catch (error) {
+              console.error('❌ Error triggering changelog workflow:', error.message);
+              // Don't break the workflow if changelog doesn't trigger
+            }
 
   notify:
     name: 📢 Notify Results

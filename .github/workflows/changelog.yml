@@ -1,9 +1,21 @@
 name: Changelog & Release
 
 on:
+  # Fallback
   push:
     tags:
       - "v*"
+  # Main way: run from publish.yml
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag version (e.g., v1.0.0)'
+        required: true
+        type: string
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        type: string
 
 jobs:
   create-release:
@@ -19,10 +31,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🔖 Set release variables
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            echo "title=Release ${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+            echo "title=Release ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: 🔖 Create Release with Changelog
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: ${{ github.ref_name }}
-          title: "Release ${{ github.ref_name }}"
+          automatic_release_tag: ${{ steps.vars.outputs.tag }}
+          title: ${{ steps.vars.outputs.title }}
