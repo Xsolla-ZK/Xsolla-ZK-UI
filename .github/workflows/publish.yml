@@ -212,6 +212,14 @@ jobs:
       - name: 📝 Lint packages
         run: pnpm lint:react
 
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-packages
+          path: |
+            packages/*/dist/
+            packages/*/types/
+
   publish:
     name: 🚀 Publish packages
     needs: [prepare, build]
@@ -270,6 +278,12 @@ jobs:
 
       - name: 📦 Install dependencies (only root)
         run: pnpm install --frozen-lockfile
+
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: built-packages
+          path: .
 
       - name: 🧐 Check changes in package
         id: check-changes
