@@ -457,8 +457,8 @@ jobs:
       - name: 🎯 Commit all changes and create tag
         id: commit-changes
         run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ secrets.USER_EMAIL || format('{0}@users.noreply.github.com', github.actor) }}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           # Use calculated version from prepare job
           NEW_VERSION="${{ needs.build.outputs.new-version }}"
