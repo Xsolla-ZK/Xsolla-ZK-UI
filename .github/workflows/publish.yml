@@ -545,16 +545,14 @@ jobs:
 
             # Push only the tag (main branch is protected, no commits to main)
             if [ "$TAG_EXISTS" = false ]; then
-              echo "✅ Creating tag v${NEW_VERSION} at $PRE_REBASE_COMMIT"
-              git tag "v${NEW_VERSION}" "$PRE_REBASE_COMMIT" -m "Release v${NEW_VERSION}"
+              echo "✅ Creating tag v${NEW_VERSION}"
+              git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
             else
               echo "⏭️ Tag v${NEW_VERSION} already exists - skipping tag creation"
             fi
           fi
 
-
-
-          if [ "$TAG_EXISTS" = false ] && git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
+          if [ "$TAG_EXISTS" = false ]; then
             echo "📤 Pushing tag v${NEW_VERSION}..."
             git push origin "v${NEW_VERSION}" || {
               echo "⚠️ Failed to push tag v${NEW_VERSION}"
