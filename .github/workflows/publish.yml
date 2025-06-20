@@ -454,7 +454,8 @@ jobs:
 
             # Create single tag with root version
             echo "🔍 Checking if tag v${NEW_VERSION} already exists..."
-            if git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
+            # Check both local and remote tags
+            if git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}" || git ls-remote --tags origin "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
               echo "⏭️ Tag v${NEW_VERSION} already exists - skipping tag creation"
             else
               git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
@@ -473,9 +474,17 @@ jobs:
 
           # Push tags separately to handle existing tags gracefully
           echo "📤 Pushing tags..."
-          git push origin --tags || {
-            echo "⚠️ Some tags may already exist, but continuing..."
-          }
+          # Only push tags that don't already exist remotely
+          for tag in $(git tag --list); do
+            if ! git ls-remote --tags origin "$tag" | grep -q "$tag"; then
+              echo "📤 Pushing tag: $tag"
+              git push origin "$tag" || {
+                echo "⚠️ Failed to push tag $tag, but continuing..."
+              }
+            else
+              echo "⏭️ Tag $tag already exists remotely - skipping"
+            fi
+          done
 
       - name: 🔖 Trigger Changelog Workflow
         if: success() && steps.commit-changes.outputs.release_branch_exists != 'true'
