@@ -19,7 +19,7 @@ on:
       sync_versions:
         description: 'Synchronize all packages to the same version'
         required: false
-        default: false
+        default: true
         type: boolean
 
 env:
@@ -328,10 +328,15 @@ jobs:
           }
 
           # Check if version already exists on NPM
+          echo "🔍 Checking if version ${{ steps.bump-version.outputs.new_version }} already exists on NPM..."
           EXISTING_VERSION=$(npm view ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }} version 2>/dev/null || echo "")
           if [ -n "$EXISTING_VERSION" ]; then
-            echo "❌ Version ${{ steps.bump-version.outputs.new_version }} already exists on NPM"
-            exit 1
+            echo "⏭️ Version ${{ steps.bump-version.outputs.new_version }} already exists on NPM - skipping publication"
+            echo "version_exists=true" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "✅ Version ${{ steps.bump-version.outputs.new_version }} does not exist on NPM - proceeding with publication"
+            echo "version_exists=false" >> $GITHUB_OUTPUT
           fi
 
           # Publish package
@@ -347,14 +352,21 @@ jobs:
         if: steps.check-changes.outputs.skip == 'false' && steps.bump-version.outputs.version_changed == 'true'
         id: published-info
         run: |
-          PKG_INFO="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
-          echo "packages=${PKG_INFO}" >> $GITHUB_OUTPUT
+          # Check if version was published or already existed
+          if [ "${{ steps.publish.outputs.version_exists || 'false' }}" == "true" ]; then
+            echo "📋 Package ${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }} already existed on NPM"
+          else
+            PKG_INFO="${{ steps.check-changes.outputs.package_name }}@${{ steps.bump-version.outputs.new_version }}"
+            echo "packages=${PKG_INFO}" >> $GITHUB_OUTPUT
+          fi
 
   commit-and-release:
     name: 🎯 Commit & Create Tag
     needs: [prepare, build, publish]
     runs-on: ubuntu-latest
-    if: ${{ needs.publish.result == 'success' }}
+    if: ${{ needs.publish.result == 'success' || needs.publish.result == 'skipped' }}
+    outputs:
+      release-branch-exists: ${{ steps.commit-changes.outputs.release_branch_exists }}
     permissions:
       contents: write
       actions: write
@@ -372,9 +384,30 @@ jobs:
           path: .
 
       - name: 🎯 Commit all changes and create tag
+        id: commit-changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ secrets.USER_EMAIL || format('{0}@users.noreply.github.com', github.actor) }}"
+
+          # Use calculated version from prepare job
+          NEW_VERSION="${{ needs.build.outputs.new-version }}"
+          echo "Using version: $NEW_VERSION"
+
+          # Check if release branch already exists for this version
+          echo "🔍 Checking if release branch for version v${NEW_VERSION} already exists..."
+          RELEASE_BRANCH="release/v${NEW_VERSION}"
+
+          # Fetch all branches to check for existing release branch
+          git fetch origin --depth=1 || true
+
+          if git ls-remote --heads origin "$RELEASE_BRANCH" | grep -q "$RELEASE_BRANCH"; then
+            echo "⏭️ Release branch $RELEASE_BRANCH already exists - skipping commit and tag creation"
+            echo "release_branch_exists=true" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "✅ Release branch $RELEASE_BRANCH does not exist - proceeding with commit and tag creation"
+            echo "release_branch_exists=false" >> $GITHUB_OUTPUT
+          fi
 
           # Add root package.json (always updated with new version)
           git add "package.json" || true
@@ -387,10 +420,6 @@ jobs:
               echo "Added package.json for ${pkg_folder}"
             fi
           done
-
-          # Use calculated version from prepare job
-          NEW_VERSION="${{ needs.build.outputs.new-version }}"
-          echo "Using version: $NEW_VERSION"
 
           # Debug: Check file status
           echo "📋 Checking file status before staging:"
@@ -433,7 +462,7 @@ jobs:
           git push origin HEAD --follow-tags
 
       - name: 🔖 Trigger Changelog Workflow
-        if: success()
+        if: success() && steps.commit-changes.outputs.release_branch_exists != 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -468,16 +497,28 @@ jobs:
     steps:
       - name: 📊 Check overall status
         run: |
-          if [ "${{ needs.publish.result }}" == "success" ] && [ "${{ needs.commit-and-release.result }}" == "success" ]; then
+          if [ "${{ needs.publish.result }}" == "success" ] && [ "${{ needs.commit-and-release.result }}" == "success" ] && [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" != "true" ]; then
             echo "✅ All packages published and committed successfully!"
             echo "OVERALL_STATUS=success" >> $GITHUB_ENV
+          elif [ "${{ needs.publish.result }}" == "success" ] && [ "${{ needs.commit-and-release.result }}" == "success" ] && [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" == "true" ]; then
+            echo "✅ All packages published, release branch already existed - no new commits needed!"
+            echo "OVERALL_STATUS=success" >> $GITHUB_ENV
+          elif [ "${{ needs.publish.result }}" == "success" ] && [ "${{ needs.commit-and-release.result }}" == "failure" ]; then
+            echo "⚠️ Packages published but commit/tagging failed."
+            echo "OVERALL_STATUS=partial" >> $GITHUB_ENV
+          elif [ "${{ needs.publish.result }}" == "skipped" ] && [ "${{ needs.commit-and-release.result }}" == "success" ] && [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" != "true" ]; then
+            echo "✅ All packages already existed on NPM, changes committed successfully!"
+            echo "OVERALL_STATUS=success" >> $GITHUB_ENV
+          elif [ "${{ needs.publish.result }}" == "skipped" ] && [ "${{ needs.commit-and-release.result }}" == "success" ] && [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" == "true" ]; then
+            echo "✅ All packages already existed on NPM, release branch already existed - no new commits needed!"
+            echo "OVERALL_STATUS=success" >> $GITHUB_ENV
+          elif [ "${{ needs.publish.result }}" == "skipped" ] && [ "${{ needs.commit-and-release.result }}" == "failure" ]; then
+            echo "⚠️ Packages already existed on NPM but commit/tagging failed."
+            echo "OVERALL_STATUS=partial" >> $GITHUB_ENV
           elif [ "${{ needs.publish.result }}" == "failure" ]; then
             echo "❌ Packages failed to publish. No commits were made to main."
             echo "OVERALL_STATUS=failure" >> $GITHUB_ENV
             exit 1
-          elif [ "${{ needs.commit-and-release.result }}" == "failure" ]; then
-            echo "⚠️ Packages published but commit/tagging failed."
-            echo "OVERALL_STATUS=partial" >> $GITHUB_ENV
           elif [ "${{ needs.publish.result }}" == "cancelled" ]; then
             echo "⏹️ Publishing was cancelled."
             echo "OVERALL_STATUS=cancelled" >> $GITHUB_ENV
@@ -490,8 +531,19 @@ jobs:
       - name: 🎉 Success notification
         if: env.OVERALL_STATUS == 'success'
         run: |
-          echo "🚀 Deployment completed successfully!"
-          echo "All packages have been published to NPM and changes committed to main."
+          if [ "${{ needs.publish.result }}" == "skipped" ] && [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" == "true" ]; then
+            echo "✅ Deployment completed successfully!"
+            echo "All packages already existed on NPM, release branch already existed - no new commits needed."
+          elif [ "${{ needs.publish.result }}" == "skipped" ]; then
+            echo "✅ Deployment completed successfully!"
+            echo "All packages already existed on NPM, changes committed to main."
+          elif [ "${{ needs.commit-and-release.outputs.release-branch-exists }}" == "true" ]; then
+            echo "✅ Deployment completed successfully!"
+            echo "All packages have been published to NPM, release branch already existed - no new commits needed."
+          else
+            echo "🚀 Deployment completed successfully!"
+            echo "All packages have been published to NPM and changes committed to main."
+          fi
 
       - name: 💥 Failure notification
         if: env.OVERALL_STATUS == 'failure'
@@ -503,6 +555,12 @@ jobs:
       - name: ⚠️ Partial success notification
         if: env.OVERALL_STATUS == 'partial'
         run: |
-          echo "⚠️ Partial success!"
-          echo "Packages were published to NPM but commit/tagging failed."
-          echo "Manual intervention may be required."
+          if [ "${{ needs.publish.result }}" == "skipped" ]; then
+            echo "⚠️ Partial success!"
+            echo "Packages already existed on NPM but commit/tagging failed."
+            echo "Manual intervention may be required."
+          else
+            echo "⚠️ Partial success!"
+            echo "Packages were published to NPM but commit/tagging failed."
+            echo "Manual intervention may be required."
+          fi
