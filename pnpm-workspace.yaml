@@ -12,40 +12,40 @@ catalog:
 
 catalogs:
   tamagui:
-    "@tamagui/adapt": 1.126.13
-    "@tamagui/animate-presence": 1.126.13
-    "@tamagui/animations-css": 1.126.13
-    "@tamagui/animations-moti": 1.126.13
-    "@tamagui/animations-react-native": 1.126.13
-    "@tamagui/aria-hidden": 1.126.13
-    "@tamagui/build": 1.126.13
-    "@tamagui/collapsible": 1.126.13
-    "@tamagui/config": 1.126.13
-    "@tamagui/core": 1.126.13
-    "@tamagui/checkbox-headless": 1.126.13
-    "@tamagui/compose-refs": 1.126.13
-    "@tamagui/create-context": 1.126.13
-    "@tamagui/dismissable": 1.126.13
-    "@tamagui/floating": 1.126.13
-    "@tamagui/focusable": 1.126.13
-    "@tamagui/focus-scope": 1.126.13
-    "@tamagui/next-plugin": 1.126.13
-    "@tamagui/next-theme": 1.126.13
-    "@tamagui/polyfill-dev": 1.126.13
-    "@tamagui/radio-headless": 1.126.13
-    "@tamagui/remove-scroll": 1.126.13
-    "@tamagui/roving-focus": 1.126.13
-    "@tamagui/switch-headless": 1.126.13
-    "@tamagui/web": 1.126.13
-    "@tamagui/vite-plugin": 1.126.13
-    "@tamagui/helpers-icon": 1.126.13
-    "@tamagui/popper": 1.126.13
-    "@tamagui/portal": 1.126.13
-    "@tamagui/scroll-view": 1.126.13
-    "@tamagui/image": 1.126.13
-    "@tamagui/use-controllable-state": 1.126.13
-    "@tamagui/use-direction": 1.126.13
-    "@tamagui/z-index-stack": 1.126.13
+    "@tamagui/adapt": 1.127.2
+    "@tamagui/animate-presence": 1.127.2
+    "@tamagui/animations-css": 1.127.2
+    "@tamagui/animations-moti": 1.127.2
+    "@tamagui/animations-react-native": 1.127.2
+    "@tamagui/aria-hidden": 1.127.2
+    "@tamagui/build": 1.127.2
+    "@tamagui/collapsible": 1.127.2
+    "@tamagui/config": 1.127.2
+    "@tamagui/core": 1.127.2
+    "@tamagui/checkbox-headless": 1.127.2
+    "@tamagui/compose-refs": 1.127.2
+    "@tamagui/create-context": 1.127.2
+    "@tamagui/dismissable": 1.127.2
+    "@tamagui/floating": 1.127.2
+    "@tamagui/focusable": 1.127.2
+    "@tamagui/focus-scope": 1.127.2
+    "@tamagui/next-plugin": 1.127.2
+    "@tamagui/next-theme": 1.127.2
+    "@tamagui/polyfill-dev": 1.127.2
+    "@tamagui/radio-headless": 1.127.2
+    "@tamagui/remove-scroll": 1.127.2
+    "@tamagui/roving-focus": 1.127.2
+    "@tamagui/switch-headless": 1.127.2
+    "@tamagui/web": 1.127.2
+    "@tamagui/vite-plugin": 1.127.2
+    "@tamagui/helpers-icon": 1.127.2
+    "@tamagui/popper": 1.127.2
+    "@tamagui/portal": 1.127.2
+    "@tamagui/scroll-view": 1.127.2
+    "@tamagui/image": 1.127.2
+    "@tamagui/use-controllable-state": 1.127.2
+    "@tamagui/use-direction": 1.127.2
+    "@tamagui/z-index-stack": 1.127.2
   eslint9:
     eslint: 9.26.0
     "@eslint/js": 9.26.0
