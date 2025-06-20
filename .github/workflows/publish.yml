@@ -554,6 +554,7 @@ jobs:
 
           if [ "$TAG_EXISTS" = false ]; then
             echo "📤 Pushing tag v${NEW_VERSION}..."
+            git pull --rebase origin main || true
             git push origin "v${NEW_VERSION}" || {
               echo "⚠️ Failed to push tag v${NEW_VERSION}"
               exit 1
