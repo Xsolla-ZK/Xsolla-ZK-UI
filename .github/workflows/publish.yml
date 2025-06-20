@@ -492,6 +492,10 @@ jobs:
             fi
           done
 
+          echo "🧹 Removing any staged workflow files"
+          git restore --staged .github/workflows || true
+          git checkout -- .github/workflows || true
+
           # Debug: Check file status
           echo "📋 Checking file status before staging:"
           git status --porcelain || true
