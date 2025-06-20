@@ -453,13 +453,29 @@ jobs:
             fi
 
             # Create single tag with root version
-            git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
-            echo "Created tag: v${NEW_VERSION}"
+            echo "🔍 Checking if tag v${NEW_VERSION} already exists..."
+            if git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
+              echo "⏭️ Tag v${NEW_VERSION} already exists - skipping tag creation"
+            else
+              git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
+              echo "Created tag: v${NEW_VERSION}"
+            fi
           fi
 
           # Pull latest changes and push
           git pull --rebase origin main || true
-          git push origin HEAD --follow-tags
+
+          # Push commits and tags (if they exist)
+          echo "📤 Pushing changes to main branch..."
+          git push origin HEAD || {
+            echo "⚠️ Failed to push commits, but continuing..."
+          }
+
+          # Push tags separately to handle existing tags gracefully
+          echo "📤 Pushing tags..."
+          git push origin --tags || {
+            echo "⚠️ Some tags may already exist, but continuing..."
+          }
 
       - name: 🔖 Trigger Changelog Workflow
         if: success() && steps.commit-changes.outputs.release_branch_exists != 'true'
