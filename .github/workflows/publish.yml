@@ -469,7 +469,7 @@ jobs:
           RELEASE_BRANCH="release/v${NEW_VERSION}"
 
           # Fetch all branches to check for existing release branch
-          git pull --rebase origin main || true
+          git fetch origin --depth=1 || true
 
           if git ls-remote --heads origin "$RELEASE_BRANCH" | grep -q "$RELEASE_BRANCH"; then
             echo "⏭️ Release branch $RELEASE_BRANCH already exists - skipping commit and tag creation"
