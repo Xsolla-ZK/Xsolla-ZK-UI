@@ -135,6 +135,7 @@ jobs:
               ;;
             "minor")
               MINOR=$((MINOR + 1))
+              PATCH=0
               ;;
             "patch")
               PATCH=$((PATCH + 1))
@@ -154,6 +155,35 @@ jobs:
 
           echo "Updated root package.json to version: $NEW_VERSION"
           echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: 🔄 Update package versions
+        id: update-package-versions
+        run: |
+          NEW_VERSION="${{ steps.calculate-version.outputs.new-version }}"
+          SYNC_VERSIONS="${{ github.event.inputs.sync_versions }}"
+
+          echo "🔄 Updating package versions..."
+          echo "New version: $NEW_VERSION"
+          echo "Sync versions: $SYNC_VERSIONS"
+
+          # Get list of packages to update from prepare job
+          PACKAGES_TO_UPDATE=$(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]')
+
+          for pkg_folder in $PACKAGES_TO_UPDATE; do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              echo "📦 Updating ${pkg_folder}/package.json to version $NEW_VERSION"
+
+              # Update package.json with new version
+              node -e "
+                const fs = require('fs');
+                const pkg = JSON.parse(fs.readFileSync('${pkg_folder}/package.json', 'utf8'));
+                pkg.version = '$NEW_VERSION';
+                fs.writeFileSync('${pkg_folder}/package.json', JSON.stringify(pkg, null, 2) + '\n');
+              "
+            fi
+          done
+
+          echo "✅ All package versions updated to $NEW_VERSION"
 
       - name: ⚙️ Setup Node.js & PNPM
         uses: pnpm/action-setup@v4
@@ -203,6 +233,7 @@ jobs:
           path: |
             packages/*/dist/
             packages/*/types/
+            packages/*/package.json
             package.json
           if-not-found: ignore
 
@@ -234,6 +265,30 @@ jobs:
         with:
           name: built-packages
           path: .
+
+      - name: 🔄 Restore updated package.json files
+        run: |
+          echo "🔄 Restoring updated package.json files from build job..."
+
+          # Get list of packages that were updated in build job
+          PACKAGES_TO_RESTORE=$(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]')
+
+          for pkg_folder in $PACKAGES_TO_RESTORE; do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              echo "📦 Restoring ${pkg_folder}/package.json with updated version"
+
+              # Update package.json with new version from build job
+              NEW_VERSION="${{ needs.build.outputs.new-version }}"
+              node -e "
+                const fs = require('fs');
+                const pkg = JSON.parse(fs.readFileSync('${pkg_folder}/package.json', 'utf8'));
+                pkg.version = '$NEW_VERSION';
+                fs.writeFileSync('${pkg_folder}/package.json', JSON.stringify(pkg, null, 2) + '\n');
+              "
+            fi
+          done
+
+          echo "✅ All package.json files restored with updated versions"
 
       - name: ⚙️ Setup Node.js & PNPM
         uses: pnpm/action-setup@v4
@@ -292,22 +347,14 @@ jobs:
           NEW_VERSION="${{ needs.build.outputs.new-version }}"
           echo "🔄 Using version: $NEW_VERSION (was: $CURRENT_VERSION)"
 
-          # Skip if version hasn't changed
+          # Check if version matches expected version (should be already updated in build job)
           if [ "$NEW_VERSION" == "$CURRENT_VERSION" ]; then
-            echo "⏭️ Version unchanged ($NEW_VERSION) - skipping package updates"
-            echo "version_changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "✅ Updating version: $CURRENT_VERSION → $NEW_VERSION"
-
-            # Update package.json with new version
-            node -e "
-              const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-              pkg.version = '$NEW_VERSION';
-              fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-            "
-
+            echo "✅ Version already updated to: $NEW_VERSION"
             echo "version_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Version mismatch: expected $NEW_VERSION, got $CURRENT_VERSION"
+            echo "This might indicate an issue with the build process"
+            echo "version_changed=false" >> $GITHUB_OUTPUT
           fi
 
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
@@ -383,6 +430,30 @@ jobs:
           name: built-packages
           path: .
 
+      - name: 🔄 Restore updated package.json files
+        run: |
+          echo "🔄 Restoring updated package.json files from build job..."
+
+          # Get list of packages that were updated in build job
+          PACKAGES_TO_RESTORE=$(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]')
+
+          for pkg_folder in $PACKAGES_TO_RESTORE; do
+            if [ -f "${pkg_folder}/package.json" ]; then
+              echo "📦 Restoring ${pkg_folder}/package.json with updated version"
+
+              # Update package.json with new version from build job
+              NEW_VERSION="${{ needs.build.outputs.new-version }}"
+              node -e "
+                const fs = require('fs');
+                const pkg = JSON.parse(fs.readFileSync('${pkg_folder}/package.json', 'utf8'));
+                pkg.version = '$NEW_VERSION';
+                fs.writeFileSync('${pkg_folder}/package.json', JSON.stringify(pkg, null, 2) + '\n');
+              "
+            fi
+          done
+
+          echo "✅ All package.json files restored with updated versions"
+
       - name: 🎯 Commit all changes and create tag
         id: commit-changes
         run: |
@@ -452,14 +523,27 @@ jobs:
               $(echo '${{ needs.prepare.outputs.matrix-packages }}' | jq -r '.[]' | sed 's/packages\//- @xsolla-zk\//')"
             fi
 
-            # Create single tag with root version
+            # Check if tag already exists (both locally and remotely)
             echo "🔍 Checking if tag v${NEW_VERSION} already exists..."
-            # Check both local and remote tags
-            if git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}" || git ls-remote --tags origin "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
-              echo "⏭️ Tag v${NEW_VERSION} already exists - skipping tag creation"
-            else
+            TAG_EXISTS=false
+
+            # Check local tags
+            if git tag -l "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
+              echo "⏭️ Tag v${NEW_VERSION} already exists locally"
+              TAG_EXISTS=true
+            fi
+
+            # Check remote tags
+            if git ls-remote --tags origin "v${NEW_VERSION}" | grep -q "v${NEW_VERSION}"; then
+              echo "⏭️ Tag v${NEW_VERSION} already exists remotely"
+              TAG_EXISTS=true
+            fi
+
+            if [ "$TAG_EXISTS" = false ]; then
+              echo "✅ Creating tag v${NEW_VERSION}"
               git tag "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
-              echo "Created tag: v${NEW_VERSION}"
+            else
+              echo "⏭️ Tag v${NEW_VERSION} already exists - skipping tag creation"
             fi
           fi
 
