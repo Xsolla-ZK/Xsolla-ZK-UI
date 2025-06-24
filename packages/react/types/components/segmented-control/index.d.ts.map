@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/components/segmented-control/index.ts"],"names":[],"mappings":"AAAA,cAAc,qBAAqB,CAAC;AACpC,cAAc,+BAA+B,CAAC;AAC9C,cAAc,4BAA4B,CAAC;AAC3C,OAAO,KAAK,sBAAsB,MAAM,2BAA2B,CAAC;AAEpE,mBAAmB,2BAA2B,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/components/segmented-control/index.ts"],"names":[],"mappings":"AAAA,cAAc,qBAAqB,CAAC;AAEpC,mBAAmB,2BAA2B,CAAC"}

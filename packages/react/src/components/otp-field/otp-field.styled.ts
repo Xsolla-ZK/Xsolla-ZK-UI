@@ -1,6 +1,6 @@
 import { Stack, styled } from '@tamagui/core';
+import { OTP_FIELD_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { OTP_FIELD_COMPONENT_NAME } from './otp-field.constants';
 import type { FieldSizes } from '../field/field.types';
 
 export const OTPFieldFrame = styled(Stack, {

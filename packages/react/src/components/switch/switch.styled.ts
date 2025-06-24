@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { SWITCH_COMPONENT_NAME, SWITCH_KNOB_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, getSafeTokenValue } from '../../utils';
 import { BoardOverlay } from '../board/board.styled';
-import { SWITCH_COMPONENT_NAME, SWITCH_KNOB_COMPONENT_NAME } from './switch.constants';
 import type { SwitchContextType, SwitchSizes } from './switch.types';
 
 export const SwitchContext = createStyledContext<SwitchContextType>({

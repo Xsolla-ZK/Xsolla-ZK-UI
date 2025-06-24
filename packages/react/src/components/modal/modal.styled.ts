@@ -5,7 +5,7 @@ import {
   MODAL_HEADER_COMPONENT_NAME,
   MODAL_CONTENT_COMPONENT_NAME,
   MODAL_FOOTER_COMPONENT_NAME,
-} from './modal.constants';
+} from '@xsolla-zk/constants';
 
 type ModalContextType = {
   variant: 'sheet' | 'dialog';

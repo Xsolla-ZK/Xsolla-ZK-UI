@@ -8,6 +8,7 @@
   "exclude": ["types"],
   "references": [
     { "path": "../config" },
-    { "path": "../icons" }
+    { "path": "../icons" },
+    { "path": "../constants" }
   ]
 }

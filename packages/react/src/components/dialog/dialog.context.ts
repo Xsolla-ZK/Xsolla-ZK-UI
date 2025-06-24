@@ -5,7 +5,7 @@ import {
   DIALOG_PORTAL_COMPONENT_NAME,
   DIALOG_TITLE_COMPONENT_NAME,
   DIALOG_WARNING_COMPONENT_NAME,
-} from './dialog.constants';
+} from '@xsolla-zk/constants';
 import type { DialogContextValue, PortalContextValue } from './dialog.types';
 
 const [createDialogContext, _createDialogScope] = createContextScope(DIALOG_COMPONENT_NAME);

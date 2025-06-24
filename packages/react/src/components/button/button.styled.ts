@@ -1,7 +1,7 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
+import { BUTTON_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
-import { BUTTON_COMPONENT_NAME } from './button.constants';
 import type {
   ButtonContextType,
   ButtonSizes,

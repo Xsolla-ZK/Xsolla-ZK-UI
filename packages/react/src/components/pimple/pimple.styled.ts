@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { PIMPLE_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
-import { PIMPLE_COMPONENT_NAME } from './pimple.constants';
 import type { PimpleContextType, PimpleSizes } from './pimple.types';
 
 export const PimpleContext = createStyledContext<PimpleContextType>({

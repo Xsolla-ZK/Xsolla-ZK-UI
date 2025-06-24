@@ -12,5 +12,10 @@
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.mjs"
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

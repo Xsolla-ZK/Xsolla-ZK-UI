@@ -14,14 +14,14 @@ import { Dismissable } from '@tamagui/dismissable';
 import { composeEventHandlers } from '@tamagui/helpers';
 import { PortalItem } from '@tamagui/portal';
 
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { PanResponder } from 'react-native';
-import { NotificationAnnounce } from '../announce/notification-announce';
 import {
   NOTIFICATION_CONTEXT,
   NOTIFICATION_VIEWPORT_PAUSE,
   NOTIFICATION_VIEWPORT_RESUME,
-} from '../notification.constants';
+} from '@xsolla-zk/constants';
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { PanResponder } from 'react-native';
+import { NotificationAnnounce } from '../announce/notification-announce';
 import { Collection, useNotificationProviderContext } from '../provider/notification-provider';
 import { NotificationImplFrame } from './notification-impl.styled';
 import type { NotificationScopedProps, NotificationSizes } from '../notification.types';

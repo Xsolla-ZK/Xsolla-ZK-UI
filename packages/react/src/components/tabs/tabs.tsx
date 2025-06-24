@@ -14,8 +14,8 @@ import { RovingFocusGroup } from '@tamagui/roving-focus';
 import { ScrollView } from '@tamagui/scroll-view';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
+import { TABS_CONTEXT } from '@xsolla-zk/constants';
 import { forwardRef, useEffect, useId, useRef, useState } from 'react';
-import { TABS_CONTEXT } from './tabs.constants';
 import {
   TabsContentFrame,
   TabsContext,

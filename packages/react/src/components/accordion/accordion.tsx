@@ -9,13 +9,13 @@ import { Stack, useEvent, View } from '@tamagui/core';
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
-import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
   ACCORDION_CONTEXT,
   ACCORDION_HEADER_NAME,
   ACCORDION_KEYS,
   ACCORDION_NAME,
-} from './accordion.constants';
+} from '@xsolla-zk/constants';
+import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
   AccordionCollapsibleContext,
   AccordionImplContext,

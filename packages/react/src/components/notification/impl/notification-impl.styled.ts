@@ -1,6 +1,6 @@
 import { styled, Stack } from '@tamagui/core';
+import { NOTIFICATION_IMPL_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../../utils';
-import { NOTIFICATION_IMPL_COMPONENT_NAME } from '../notification.constants';
 import type { NotificationSizes } from '../notification.types';
 
 export const NotificationImplFrame = styled(Stack, {

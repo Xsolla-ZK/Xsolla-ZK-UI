@@ -1,6 +1,6 @@
 import { withStaticProperties } from '@tamagui/core';
-import { useMask } from '../../hooks/use-mask';
-import { Input } from '../input/input';
+import { useMask } from '../../hooks';
+import { Input } from '../input';
 import { InputContext, InputEndSlot, InputStartSlot } from '../input/input.styled';
 import type { MaskedInputProps } from './masked-input.types';
 import type { ChangeEvent } from 'react';

@@ -1,12 +1,12 @@
 import { composeEventHandlers, Stack, styled } from '@tamagui/core';
-import { createElement } from 'react';
-import { getComponentsConfig, getMappedStyles, getTypographyPreset } from '../../utils';
-import { Typography } from '../typography';
 import {
   NAV_BAR_COMPONENT_NAME,
   NAV_BAR_END_SLOT_COMPONENT_NAME,
   NAV_BAR_START_SLOT_COMPONENT_NAME,
-} from './nav-bar.constants';
+} from '@xsolla-zk/constants';
+import { createElement } from 'react';
+import { getComponentsConfig, getMappedStyles, getTypographyPreset } from '../../utils';
+import { Typography } from '../typography';
 import { NavBarContext, NavBarStateContext } from './nav-bar.context';
 import type {
   NavBarContextType,

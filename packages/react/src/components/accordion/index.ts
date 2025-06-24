@@ -1,4 +1,3 @@
-export * from './accordion.constants';
 export { Accordion } from './accordion';
 
 export type {

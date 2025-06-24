@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { SNACK_BAR_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig } from '../../utils';
 import { getMappedStyles } from '../../utils';
-import { SNACK_BAR_COMPONENT_NAME } from './snack-bar.constants';
 import type { SnackBarContextType, SnackBarSizes } from './snack-bar.types';
 
 export const SnackBarContext = createStyledContext<SnackBarContextType>({

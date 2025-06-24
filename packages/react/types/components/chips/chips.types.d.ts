@@ -1,8 +1,8 @@
-import type { CHIP_COMPONENT_NAME } from './chips.constants';
 import type { ChipFrame, ChipsFrame } from './chips.styled';
 import type { IconsPosition, GetComponentTone } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
+import type { CHIP_COMPONENT_NAME } from '@xsolla-zk/constants';
 export type ChipVariants = 'primary' | 'secondary' | 'tertiary';
 export type ChipsSizes = keyof ComponentsConfig['chips'] | (string & {});
 export type ChipSizes = keyof ComponentsConfig['chip'] | (string & {});

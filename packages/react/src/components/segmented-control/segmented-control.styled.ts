@@ -1,11 +1,11 @@
 import { createStyledContext, Stack } from '@tamagui/core';
 import { styled } from '@tamagui/core';
-import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
-import { Typography } from '../typography';
 import {
   SEGMENTED_CONTROL_COMPONENT_NAME,
   SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
-} from './segmented-control.constants';
+} from '@xsolla-zk/constants';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
+import { Typography } from '../typography';
 import type {
   SegmentedControlContextValue,
   SegmentedControlSegmentPlacement,

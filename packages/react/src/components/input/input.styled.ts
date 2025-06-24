@@ -1,12 +1,12 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { createElement } from 'react';
-import { TextInput } from 'react-native';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   INPUT_COMPONENT_NAME,
   INPUT_END_SLOT_COMPONENT_NAME,
   INPUT_START_SLOT_COMPONENT_NAME,
-} from './input.constants';
+} from '@xsolla-zk/constants';
+import { createElement } from 'react';
+import { TextInput } from 'react-native';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { inputSharedStyledOptions } from './input.shared';
 import type { InputContextType, InputSizes } from './input.types';
 import type { GetProps, StyledContext } from '@tamagui/core';

@@ -1,7 +1,7 @@
 import { createStyledContext, styled, Text } from '@tamagui/core';
+import { BADGE_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
-import { BADGE_COMPONENT_NAME } from './badge.constants';
 import type { BadgeContextType, BadgeSizes, BadgeVariantSpreadExtras } from './badge.types';
 import type { GetProps, Stack } from '@tamagui/core';
 

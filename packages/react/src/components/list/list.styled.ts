@@ -1,14 +1,14 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { Board } from '../board';
-import { Typography } from '../typography';
 import {
   LIST_BOARD_COMPONENT_NAME,
   LIST_COMPONENT_NAME,
   LIST_SUBTITLE_COMPONENT_NAME,
   LIST_TITLE_COMPONENT_NAME,
   LIST_TITLE_VALUE_COMPONENT_NAME,
-} from './list.constants';
+} from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { Board } from '../board';
+import { Typography } from '../typography';
 import type { ListContextValue, ListSizes } from './list.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 

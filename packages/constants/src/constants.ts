@@ -1,0 +1,176 @@
+export const ACCORDION_NAME = 'Accordion';
+export const ACCORDION_CONTEXT = 'Accordion';
+export const ACCORDION_TRIGGER_COMPONENT_NAME = 'AccordionTrigger';
+export const ACCORDION_ITEM_COMPONENT_NAME = 'AccordionItem';
+export const ACCORDION_HEADER_NAME = 'AccordionHeader';
+
+// Keyboard keys for navigation
+export const ACCORDION_KEYS = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
+
+export const BADGE_COMPONENT_NAME = 'Badge';
+
+export const BUTTON_COMPONENT_NAME = 'Button';
+
+export const CELL_COMPONENT_NAME = 'Cell';
+export const CELL_BOARD_COMPONENT_NAME = 'CellBoard';
+
+export const CHECKBOX_COMPONENT_NAME = 'Checkbox';
+export const CHECKBOX_COMPONENT_INDICATOR_NAME = 'CheckboxIndicator';
+
+export const CHIPS_COMPONENT_NAME = 'Chips';
+export const CHIP_COMPONENT_NAME = 'Chip';
+
+export const DIALOG_COMPONENT_NAME = 'Dialog';
+export const DIALOG_HEADER_COMPONENT_NAME = 'DialogHeader';
+export const DIALOG_BODY_COMPONENT_NAME = 'DialogBody';
+export const DIALOG_FOOTER_COMPONENT_NAME = 'DialogFooter';
+export const DIALOG_TRIGGER_COMPONENT_NAME = 'DialogTrigger';
+export const DIALOG_PORTAL_COMPONENT_NAME = 'DialogPortal';
+export const DIALOG_OVERLAY_COMPONENT_NAME = 'DialogOverlay';
+export const DIALOG_CONTENT_COMPONENT_NAME = 'DialogContent';
+export const DIALOG_TITLE_COMPONENT_NAME = 'DialogTitle';
+export const DIALOG_DESCRIPTION_COMPONENT_NAME = 'DialogDescription';
+export const DIALOG_CLOSE_COMPONENT_NAME = 'DialogClose';
+export const DIALOG_WARNING_COMPONENT_NAME = 'DialogWarning';
+export const DIALOG_TITLE_WARNING_NAME = 'DialogTitleWarning';
+export const DIALOG_DESCRIPTION_WARNING_NAME = 'DialogDescriptionWarning';
+export const DIALOG_SHEET_CONTROLLER_COMPONENT_NAME = 'DialogSheetController';
+
+export const DIALOG_CONTEXT = 'Dialog';
+
+export const FIELD_COMPONENT_NAME = 'Field';
+
+export const FLEX_BUTTON_COMPONENT_NAME = 'FlexButton';
+
+export const INLINE_INPUT_COMPONENT_NAME = 'InlineInput';
+
+export const INPUT_COMPONENT_NAME = 'Input';
+export const INPUT_START_SLOT_COMPONENT_NAME = 'InputStartSlot';
+export const INPUT_END_SLOT_COMPONENT_NAME = 'InputEndSlot';
+
+export const LABEL_COMPONENT_NAME = 'Label';
+
+export const LIST_COMPONENT_NAME = 'List';
+export const LIST_BOARD_COMPONENT_NAME = 'ListBoard';
+export const LIST_TITLE_COMPONENT_NAME = 'ListTitle';
+export const LIST_TITLE_VALUE_COMPONENT_NAME = 'ListTitleValue';
+export const LIST_SUBTITLE_COMPONENT_NAME = 'ListSubtitle';
+
+export const LOADER_COMPONENT_NAME = 'Loader';
+
+export const MODAL_COMPONENT_NAME = 'Modal';
+export const MODAL_HEADER_COMPONENT_NAME = 'ModalHeader';
+export const MODAL_CONTENT_COMPONENT_NAME = 'ModalContent';
+export const MODAL_FOOTER_COMPONENT_NAME = 'ModalFooter';
+
+export const NAV_BAR_COMPONENT_NAME = 'NavBar';
+export const NAV_BAR_START_SLOT_COMPONENT_NAME = 'NavBarStartSlot';
+export const NAV_BAR_END_SLOT_COMPONENT_NAME = 'NavBarEndSlot';
+export const NAV_BAR_TITLE_COMPONENT_NAME = 'NavBarTitle';
+export const NAV_BAR_SUBTITLE_COMPONENT_NAME = 'NavBarSubtitle';
+
+export const NOTIFICATION_CONTEXT = 'Notification';
+export const NOTIFICATION_PROVIDER_NAME = 'NotificationProvider';
+
+export const NOTIFICATION_COMPONENT_NAME = 'Notification';
+export const NOTIFICATION_TITLE_COMPONENT_NAME = 'NotificationTitle';
+export const NOTIFICATION_DESCRIPTION_COMPONENT_NAME = 'NotificationDescription';
+export const NOTIFICATION_ACTION_COMPONENT_NAME = 'NotificationAction';
+export const NOTIFICATION_CLOSE_COMPONENT_NAME = 'NotificationClose';
+export const NOTIFICATION_ANNOUNCE_EXCLUDE_COMPONENT_NAME = 'NotificationAnnounceExclude';
+export const NOTIFICATION_IMPL_COMPONENT_NAME = 'NotificationImpl';
+
+// Viewport
+export const NOTIFICATION_VIEWPORT_NAME = 'NotificationViewport';
+export const NOTIFICATION_VIEWPORT_WRAPPER_NAME = 'NotificationViewportWrapper';
+export const NOTIFICATION_VIEWPORT_DEFAULT_HOTKEY = ['F8'];
+export const NOTIFICATION_VIEWPORT_PAUSE = 'notification.viewportPause';
+export const NOTIFICATION_VIEWPORT_RESUME = 'notification.viewportResume';
+export const NOTIFICATION_FOCUS_PROXY_NAME = 'NotificationFocusProxy';
+
+export const OTP_FIELD_COMPONENT_NAME = 'OTPField';
+
+export const PIMPLE_COMPONENT_NAME = 'Pimple';
+
+export const PROGRESS_BAR_COMPONENT_NAME = 'ProgressBar';
+export const PROGRESS_BAR_ACTIVE_TRACK_NAME = 'ProgressBarActiveTrack';
+
+export const RADIO_GROUP_COMPONENT_NAME = 'RadioGroup';
+export const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem';
+export const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator';
+
+export const RICH_ICON_COMPONENT_NAME = 'RichIcon';
+
+export const RICH_ICON_SHAPES = {
+  circle:
+    'M80 40C80 62.0914 62.0914 80 40 80C17.9086 80 0 62.0914 0 40C0 17.9086 17.9086 0 40 0C62.0914 0 80 17.9086 80 40Z',
+  squircle:
+    'M2.38219 19.7574C4.43485 11.1584 11.1584 4.43485 19.7574 2.38219C33.0632 -0.794063 46.9368 -0.794063 60.2426 2.38219C68.8415 4.43485 75.565 11.1584 77.6178 19.7574C80.7941 33.0632 80.7941 46.9368 77.6178 60.2426C75.565 68.8415 68.8415 75.565 60.2426 77.6178C46.9368 80.7941 33.0632 80.7941 19.7574 77.6178C11.1584 75.565 4.43485 68.8415 2.38219 60.2426C-0.794063 46.9368 -0.794063 33.0632 2.38219 19.7574Z',
+  rhombus: 'M5 40L40 0L75 40L40 80L5 40Z',
+  blocksHorizontal:
+    'M20 0C8.95431 0 0 8.95431 0 20C0 31.0457 8.95431 40 20 40C8.95431 40 0 48.9543 0 60C0 71.0457 8.95431 80 20 80H60C71.0457 80 80 71.0457 80 60C80 48.9543 71.0457 40 60 40C71.0457 40 80 31.0457 80 20C80 8.95431 71.0457 0 60 0H20Z',
+  circlesTLBR:
+    'M21.2854 58.7146C8.96691 54.981 0 43.5377 0 30C0 13.4315 13.4315 0 30 0C43.5377 0 54.981 8.96691 58.7146 21.2854C71.0331 25.019 80 36.4623 80 50C80 66.5685 66.5685 80 50 80C36.4623 80 25.019 71.0331 21.2854 58.7146Z',
+  leaf: 'M0 36.5714C0 23.7702 0 17.3696 2.49128 12.4802C4.68267 8.17937 8.17937 4.68267 12.4802 2.49128C17.3696 0 23.7702 0 36.5714 0H80V43.4286C80 56.2298 80 62.6304 77.5087 67.5198C75.3173 71.8206 71.8206 75.3173 67.5198 77.5087C62.6304 80 56.2298 80 43.4286 80H0V36.5714Z',
+  arrowUp:
+    'M0 0L11.7157 11.7157C4.4771 18.9543 0 28.9543 0 40C0 62.0914 17.9086 80 40 80C51.0457 80 61.0457 75.5229 68.2843 68.2843L80 80V36.5714C80 23.7702 80 17.3696 77.5087 12.4802C75.3173 8.17941 71.8206 4.6827 67.5198 2.49128C62.6304 0 56.2298 0 43.4286 0H0Z',
+  arrowDown:
+    'M80 80L68.2843 68.2843C75.5229 61.0457 80 51.0457 80 40C80 17.9086 62.0914 0 40 0C28.9543 0 18.9543 4.4771 11.7157 11.7157L0 0V43.4286C0 56.2298 0 62.6304 2.49128 67.5198C4.6827 71.8206 8.17941 75.3173 12.4802 77.5087C17.3696 80 23.7702 80 36.5714 80H80Z',
+  diamond: 'M0 45.7143L14.2857 0H40H65.7143L80 45.7143L40 80L0 45.7143Z',
+  oval: 'M80 40C80 56.5685 62.0914 70 40 70C17.9086 70 0 56.5685 0 40C0 23.4315 17.9086 10 40 10C62.0914 10 80 23.4315 80 40Z',
+  cross:
+    'M5.88745 5.88745C-1.96248 13.7374 -1.96248 26.4646 5.88745 34.3146L11.5729 40L5.88745 45.6854C-1.96248 53.5354 -1.96248 66.2626 5.88745 74.1125C13.7374 81.9625 26.4646 81.9625 34.3146 74.1125L40 68.4271L45.6854 74.1125C53.5354 81.9625 66.2626 81.9625 74.1125 74.1125C81.9625 66.2626 81.9625 53.5354 74.1125 45.6854L68.4271 40L74.1125 34.3146C81.9625 26.4646 81.9625 13.7374 74.1125 5.88745C66.2626 -1.96248 53.5354 -1.96248 45.6854 5.88745L40 11.5729L34.3146 5.88745C26.4646 -1.96248 13.7374 -1.96248 5.88745 5.88745Z',
+  hexagon: 'M40 0L75 20V60L40 80L5 60V20L40 0Z',
+  blocksVertical:
+    'M0 60C0 71.0457 8.95431 80 20 80C31.0457 80 40 71.0457 40 60C40 71.0457 48.9543 80 60 80C71.0457 80 80 71.0457 80 60V20C80 8.9543 71.0457 0 60 0C48.9543 0 40 8.9543 40 20C40 8.9543 31.0457 0 20 0C8.95431 0 0 8.9543 0 20V60Z',
+};
+
+export const SEGMENTED_CONTROL_COMPONENT_NAME = 'SegmentedControl';
+export const SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME = 'SegmentedControlSegment';
+
+export const SEGMENTED_CONTROL_CONTEXT = 'SegmentedControl';
+
+export const SEMANTIC_TEXT_COMPONENT_NAME = 'SemanticText';
+
+export const SEPARATOR_COMPONENT_NAME = 'Separator';
+
+export const SHEET_COMPONENT_NAME = 'Sheet';
+export const SHEET_HEADER_COMPONENT_NAME = 'SheetHeader';
+export const SHEET_BODY_COMPONENT_NAME = 'SheetBody';
+export const SHEET_FOOTER_COMPONENT_NAME = 'SheetFooter';
+export const SHEET_HANDLE_COMPONENT_NAME = 'SheetHandle';
+export const SHEET_OVERLAY_COMPONENT_NAME = 'SheetOverlay';
+export const SHEET_SCROLL_VIEW_COMPONENT_NAME = 'SheetScrollView';
+export const SHEET_COVER_COMPONENT_NAME = 'SheetCover';
+
+export const SLIDER_COMPONENT_NAME = 'Slider';
+export const SLIDER_KNOB_NAME = 'SliderKnob';
+export const SLIDER_TRACK_NAME = 'SliderTrack';
+export const SLIDER_TRACK_ACTIVE_NAME = 'SliderTrackActive';
+
+export const PAGE_KEYS = ['PageUp', 'PageDown'];
+export const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+export const BACK_KEYS: Record<'ltr' | 'rtl', string[]> = {
+  ltr: ['ArrowDown', 'Home', 'ArrowLeft', 'PageDown'],
+  rtl: ['ArrowDown', 'Home', 'ArrowRight', 'PageDown'],
+};
+
+export const SNACK_BAR_COMPONENT_NAME = 'SnackBar';
+
+export const SWITCH_COMPONENT_NAME = 'Switch';
+export const SWITCH_KNOB_COMPONENT_NAME = 'SwitchKnob';
+
+export const TAB_BAR_COMPONENT_NAME = 'TabBar';
+export const TAB_BAR_ITEM_COMPONENT_NAME = 'TabBarItem';
+export const TAB_BAR_ITEM_TITLE_COMPONENT_NAME = 'TabBarItemTitle';
+export const TAB_BAR_ITEM_ICON_COMPONENT_NAME = 'TabBarItemIcon';
+
+export const TABS_COMPONENT_NAME = 'Tabs';
+export const TABS_TAB_COMPONENT_NAME = 'TabsTab';
+export const TABS_PANEL_COMPONENT_NAME = 'TabsPanel';
+export const TABS_LIST_COMPONENT_NAME = 'TabsList';
+export const TABS_LIST_INDICATOR_COMPONENT_NAME = 'TabsListIndicator';
+
+export const TABS_CONTEXT = 'TabsContext';
+
+export const TOAST_COMPONENT_NAME = 'Toast';

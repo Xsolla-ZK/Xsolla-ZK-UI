@@ -1,6 +1,6 @@
 import { styled, Text } from '@tamagui/core';
+import { SEMANTIC_TEXT_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { SEMANTIC_TEXT_COMPONENT_NAME } from './semantic-text.constants';
 import type { SemanticTextVariants } from './semantic-text.types';
 
 export const SemanticTextRoot = styled(

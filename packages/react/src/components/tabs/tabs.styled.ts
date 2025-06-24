@@ -1,13 +1,13 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
 import { Text } from '@tamagui/core';
-import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   TABS_COMPONENT_NAME,
   TABS_LIST_COMPONENT_NAME,
   TABS_LIST_INDICATOR_COMPONENT_NAME,
   TABS_PANEL_COMPONENT_NAME,
   TABS_TAB_COMPONENT_NAME,
-} from './tabs.constants';
+} from '@xsolla-zk/constants';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
 import type { TabsContextType, TabsSizes } from './tabs.types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 

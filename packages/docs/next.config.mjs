@@ -26,10 +26,10 @@ export default () => {
   /** @type {import('next').NextConfig} */
   let config = {
     output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-    typescript: {
-      ignoreBuildErrors: true,
-    },
     eslint: {
+      ignoreDuringBuilds: true,
+    },
+    typescript: {
       ignoreBuildErrors: true,
     },
     transpilePackages: ['react-native-web'],

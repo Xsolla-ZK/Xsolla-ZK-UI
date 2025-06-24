@@ -1,7 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs';
 import { ScrollView } from '@tamagui/scroll-view';
+import { SHEET_SCROLL_VIEW_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { forwardRef, useEffect, useRef } from 'react';
-import { SHEET_SCROLL_VIEW_COMPONENT_NAME } from './sheet.constants';
 import { useSheetContext } from './sheet.context';
 import type { SheetScopedProps } from './sheet.types';
 import type { GetRef } from '@tamagui/core';

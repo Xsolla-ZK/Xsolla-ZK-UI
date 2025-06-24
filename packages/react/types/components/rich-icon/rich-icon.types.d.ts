@@ -1,8 +1,8 @@
-import type { RICH_ICON_SHAPES } from './rich-icon.constants';
 import type { RichIconFrame, RichIconShapePath } from './rich-icon.styled';
 import type { ColorType } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, UnionableString } from '@tamagui/core';
+import type { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
 export type RichIconShape = keyof typeof RICH_ICON_SHAPES;
 export type RichIconSizes = keyof ComponentsConfig['richIcon'] | (string & {});
 export type RichIconContextType = {

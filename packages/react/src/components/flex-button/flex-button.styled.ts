@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { FLEX_BUTTON_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
-import { FLEX_BUTTON_COMPONENT_NAME } from './flex-button.constants';
 import type { FlexButtonContextType, FlexButtonSizes, FlexButtonTone } from './flex-button.types';
 import type { GetProps } from '@tamagui/core';
 

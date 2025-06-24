@@ -1,5 +1,5 @@
 import { useTheme, withStaticProperties } from '@tamagui/core';
-import { forwardRef, useContext, useEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { Easing, useAnimatedProps, withRepeat, withTiming } from 'react-native-reanimated';
 import { useSharedValue } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';

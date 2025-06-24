@@ -4,10 +4,9 @@
   "version": "1.0.1",
   "sideEffects": false,
   "main": "dist/cjs",
+  "module": "dist/esm",
   "source": "./src/index.ts",
   "types": "./types/index.d.ts",
-  "type": "module",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
@@ -38,6 +37,14 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
+    },
+    "./components-theme": {
+      "react-native": {
+        "import": "./dist/esm/components-theme.native.js",
+        "require": "./dist/cjs/components-theme.native.js"
+      },
+      "import": "./dist/esm/components-theme.mjs",
+      "require": "./dist/cjs/components-theme.cjs"
     },
     "./web": {
       "react-native": {
@@ -72,6 +79,7 @@
     "@tamagui/animations-moti": "catalog:tamagui",
     "@tamagui/animations-react-native": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
+    "@xsolla-zk/constants": "workspace:*",
     "react-native-reanimated": "^3.18.0",
     "react-native": "*"
   },

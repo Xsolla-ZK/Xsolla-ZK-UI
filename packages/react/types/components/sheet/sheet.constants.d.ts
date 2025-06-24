@@ -1,9 +1,0 @@
-export declare const SHEET_COMPONENT_NAME = "Sheet";
-export declare const SHEET_HEADER_COMPONENT_NAME = "SheetHeader";
-export declare const SHEET_BODY_COMPONENT_NAME = "SheetBody";
-export declare const SHEET_FOOTER_COMPONENT_NAME = "SheetFooter";
-export declare const SHEET_HANDLE_COMPONENT_NAME = "SheetHandle";
-export declare const SHEET_OVERLAY_COMPONENT_NAME = "SheetOverlay";
-export declare const SHEET_SCROLL_VIEW_COMPONENT_NAME = "SheetScrollView";
-export declare const SHEET_COVER_COMPONENT_NAME = "SheetCover";
-//# sourceMappingURL=sheet.constants.d.ts.map

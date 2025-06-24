@@ -1,8 +1,8 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { FIELD_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { Label } from '../label/label';
 import { Typography } from '../typography/typography';
-import { FIELD_COMPONENT_NAME } from './field.constants';
 import type { FieldContextType, FieldSizes } from './field.types';
 
 export const FieldContext = createStyledContext<FieldContextType>({

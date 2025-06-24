@@ -2,7 +2,7 @@ import { isWeb, Stack, styled } from '@tamagui/core';
 import {
   NOTIFICATION_VIEWPORT_NAME,
   NOTIFICATION_VIEWPORT_WRAPPER_NAME,
-} from '../notification.constants';
+} from '@xsolla-zk/constants';
 
 export const NotificationViewportWrapperFrame = styled(Stack, {
   name: NOTIFICATION_VIEWPORT_WRAPPER_NAME,

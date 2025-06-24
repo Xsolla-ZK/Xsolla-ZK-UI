@@ -6,17 +6,17 @@ import { resolveViewZIndex } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr';
 import { StackZIndexContext } from '@tamagui/z-index-stack';
-import { forwardRef, useMemo } from 'react';
-import { Platform } from 'react-native';
-import { getNativeSheet } from './native-sheet';
-import { SheetImplCustom } from './sheet-impl-custom';
-import { SheetScrollView } from './sheet-scroll-view';
 import {
   SHEET_COMPONENT_NAME,
   SHEET_COVER_COMPONENT_NAME,
   SHEET_HANDLE_COMPONENT_NAME,
   SHEET_OVERLAY_COMPONENT_NAME,
-} from './sheet.constants';
+} from '@xsolla-zk/constants';
+import { forwardRef, useMemo } from 'react';
+import { Platform } from 'react-native';
+import { getNativeSheet } from './native-sheet';
+import { SheetImplCustom } from './sheet-impl-custom';
+import { SheetScrollView } from './sheet-scroll-view';
 import { useSheetContext } from './sheet.context';
 import { useSheetController, useSheetOffscreenSize } from './sheet.hooks';
 import type {

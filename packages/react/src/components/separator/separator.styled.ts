@@ -1,5 +1,5 @@
 import { isWeb, Stack, styled } from '@tamagui/core';
-import { SEPARATOR_COMPONENT_NAME } from './separator.constants';
+import { SEPARATOR_COMPONENT_NAME } from '@xsolla-zk/constants';
 import type { ColorType } from '../../types';
 import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/core';
 

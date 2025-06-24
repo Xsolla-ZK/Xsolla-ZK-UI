@@ -1,8 +1,8 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { CHECKBOX_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { cloneElement, createElement, isValidElement, useContext } from 'react';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { CHECKBOX_COMPONENT_NAME } from './checkbox.constants';
 import type {
   CheckboxContextType,
   CheckboxIndicatorProps,

@@ -12,7 +12,7 @@ import {
   DIALOG_BODY_COMPONENT_NAME,
   DIALOG_TITLE_COMPONENT_NAME,
   DIALOG_TRIGGER_COMPONENT_NAME,
-} from './dialog.constants';
+} from '@xsolla-zk/constants';
 import type { DialogSizes } from './dialog.types';
 
 export const DialogTriggerFrame = styled(View, {

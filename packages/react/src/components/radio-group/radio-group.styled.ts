@@ -1,6 +1,6 @@
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { RADIO_GROUP_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { RADIO_GROUP_COMPONENT_NAME } from './radio-group.constants';
 import type {
   RadioGroupContextType,
   RadioGroupSizes,

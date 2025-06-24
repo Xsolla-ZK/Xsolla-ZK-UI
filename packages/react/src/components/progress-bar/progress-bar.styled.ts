@@ -1,10 +1,7 @@
 import { createStyledContext, Stack } from '@tamagui/core';
 import { styled } from '@tamagui/core';
+import { PROGRESS_BAR_ACTIVE_TRACK_NAME, PROGRESS_BAR_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import {
-  PROGRESS_BAR_ACTIVE_TRACK_NAME,
-  PROGRESS_BAR_COMPONENT_NAME,
-} from './progress-bar.constants';
 import type { ProgressBarContextType, ProgressBarSizes } from './progress-bar.types';
 
 export const ProgressBarContext = createStyledContext<ProgressBarContextType>({

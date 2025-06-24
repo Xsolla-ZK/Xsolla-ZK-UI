@@ -1,11 +1,11 @@
 import { createStyledContext, Stack, styled, View } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   SLIDER_TRACK_ACTIVE_NAME,
   SLIDER_KNOB_NAME,
   SLIDER_TRACK_NAME,
   SLIDER_COMPONENT_NAME,
-} from './slider.constants';
+} from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import type { SliderContextType, SliderSizes } from './slider.types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 

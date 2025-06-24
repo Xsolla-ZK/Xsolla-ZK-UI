@@ -1,5 +1,4 @@
 import { Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   SHEET_COMPONENT_NAME,
   SHEET_BODY_COMPONENT_NAME,
@@ -8,7 +7,8 @@ import {
   SHEET_HANDLE_COMPONENT_NAME,
   SHEET_HEADER_COMPONENT_NAME,
   SHEET_OVERLAY_COMPONENT_NAME,
-} from './sheet.constants';
+} from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import type { SheetPresets, SheetSizes } from './sheet.types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 

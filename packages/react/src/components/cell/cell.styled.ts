@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { CELL_BOARD_COMPONENT_NAME, CELL_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
 import { Board } from '../board';
-import { CELL_BOARD_COMPONENT_NAME, CELL_COMPONENT_NAME } from './cell.constants';
 import type { CellContextValue, CellSizes } from './cell.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 

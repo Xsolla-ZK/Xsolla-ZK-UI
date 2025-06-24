@@ -1,6 +1,6 @@
 import { withStaticProperties } from '@tamagui/core';
 import { forwardRef, type ForwardedRef } from 'react';
-import { Input } from '../input/input';
+import { Input } from '../input';
 import { InputContext, InputEndSlot, InputStartSlot } from '../input/input.styled';
 import type { InputProps } from '../input/input.types';
 

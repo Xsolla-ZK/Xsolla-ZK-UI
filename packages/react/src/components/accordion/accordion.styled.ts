@@ -1,10 +1,10 @@
 import { Collapsible } from '@tamagui/collapsible';
 import { Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
 import {
   ACCORDION_ITEM_COMPONENT_NAME,
   ACCORDION_TRIGGER_COMPONENT_NAME,
-} from './accordion.constants';
+} from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import type { AccordionImplContextValue, AccordionSizes } from './accordion.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 

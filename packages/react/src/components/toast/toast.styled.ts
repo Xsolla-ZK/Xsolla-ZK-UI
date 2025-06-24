@@ -1,7 +1,6 @@
 import { Stack, styled } from '@tamagui/core';
-import { getMappedStyles } from '../../utils';
-import { getComponentsConfig } from '../../utils';
-import { TOAST_COMPONENT_NAME } from './toast.constants';
+import { TOAST_COMPONENT_NAME } from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
 import type { ToastSizes } from './toast.types';
 
 export const ToastFrame = styled(Stack, {

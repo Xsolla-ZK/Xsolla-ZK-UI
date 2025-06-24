@@ -1,13 +1,13 @@
 import { createStyledContext, Stack, Text } from '@tamagui/core';
 import { styled } from '@tamagui/core';
-import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
-import { Board } from '../board/board';
 import {
   TAB_BAR_COMPONENT_NAME,
   TAB_BAR_ITEM_COMPONENT_NAME,
   TAB_BAR_ITEM_ICON_COMPONENT_NAME,
   TAB_BAR_ITEM_TITLE_COMPONENT_NAME,
-} from './tab-bar.constants';
+} from '@xsolla-zk/constants';
+import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
+import { Board } from '../board/board';
 import type { TabBarContextType, TabBarSize } from './tab-bar.types';
 
 export const TabBarContext = createStyledContext<TabBarContextType>({

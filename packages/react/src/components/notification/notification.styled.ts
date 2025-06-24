@@ -1,10 +1,10 @@
 import { Stack, styled } from '@tamagui/core';
-import { Typography } from '../typography';
 import {
   NOTIFICATION_CLOSE_COMPONENT_NAME,
   NOTIFICATION_DESCRIPTION_COMPONENT_NAME,
   NOTIFICATION_TITLE_COMPONENT_NAME,
-} from './notification.constants';
+} from '@xsolla-zk/constants';
+import { Typography } from '../typography';
 
 export const NotificationTitle = styled(Typography, {
   name: NOTIFICATION_TITLE_COMPONENT_NAME,

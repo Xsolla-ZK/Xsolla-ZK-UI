@@ -1,6 +1,6 @@
 import { styled } from '@tamagui/core';
+import { LABEL_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { Typography } from '../typography/typography';
-import { LABEL_COMPONENT_NAME } from './label.constants';
 
 export const LabelFrame = styled(
   Typography,

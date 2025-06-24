@@ -1,7 +1,7 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { CHIP_COMPONENT_NAME, CHIPS_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
 import { Board } from '../board/board';
-import { CHIP_COMPONENT_NAME, CHIPS_COMPONENT_NAME } from './chips.constants';
 import type {
   ChipContextType,
   ChipSizes,

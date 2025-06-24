@@ -1,8 +1,8 @@
-import type { LOADER_COMPONENT_NAME } from './loader.constants';
 import type { LoaderFrame } from './loader.styled';
 import type { ColorType } from '../../types';
 import type { GetComponentTone } from '../../types';
 import type { GetProps } from '@tamagui/core';
+import type { LOADER_COMPONENT_NAME } from '@xsolla-zk/constants';
 
 export type LoaderTone = GetComponentTone<typeof LOADER_COMPONENT_NAME>;
 

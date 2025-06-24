@@ -1,8 +1,8 @@
 import { withStaticProperties } from '@tamagui/core';
+import { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
 import { forwardRef } from 'react';
 import { ClipPath, Defs, G, Image, Rect } from 'react-native-svg';
 import { getSafeTokenValue } from '../../utils';
-import { RICH_ICON_SHAPES } from './rich-icon.constants';
 import {
   RichIconContent,
   RichIconContext,

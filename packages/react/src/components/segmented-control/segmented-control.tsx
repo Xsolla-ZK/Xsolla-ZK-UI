@@ -8,8 +8,8 @@ import {
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
+import { SEGMENTED_CONTROL_CONTEXT } from '@xsolla-zk/constants';
 import { forwardRef, useEffect, useId, useRef, useState } from 'react';
-import { SEGMENTED_CONTROL_CONTEXT } from './segmented-control.constants';
 import {
   SegmentedControlContext,
   SegmentedControlFrame,

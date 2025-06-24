@@ -19,7 +19,7 @@
       "@xsolla-zk/react": ["./packages/react/src"],
       "@xsolla-zk/react/*": ["./packages/react/src/*"],
       "@xsolla-zk/icons": ["./packages/icons/src"],
-      "@xsolla-zk/icons/*": ["./packages/icons/src/*"],
+      "@xsolla-zk/icons/*": ["./packages/icons/src/*"]
     }
   },
   "exclude": ["**/build", "**/dist", "**/node_modules", "**/*__tests__/**", "**/.*/**", "**/*.test.ts", "**/*.spec.ts"]

@@ -15,9 +15,9 @@ import {
 } from '@tamagui/core';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
+import { ARROW_KEYS, BACK_KEYS, PAGE_KEYS } from '@xsolla-zk/constants';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { getComponentsConfig, getMappedStyles, getSafeTokenValue } from '../../utils';
-import { ARROW_KEYS, BACK_KEYS, PAGE_KEYS } from './slider.constants';
 import {
   SliderContext,
   SliderFrame,

@@ -1,6 +1,6 @@
 import { createContextScope } from '@tamagui/create-context';
+import { SHEET_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { createContext } from 'react';
-import { SHEET_COMPONENT_NAME } from './sheet.constants';
 import type { SheetContextValue, SheetControllerContextValue } from './sheet.types';
 
 export const [createSheetContext, createSheetScope] = createContextScope(SHEET_COMPONENT_NAME);

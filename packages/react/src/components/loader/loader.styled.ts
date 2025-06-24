@@ -1,6 +1,6 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { LOADER_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { Circle } from 'react-native-svg';
-import { LOADER_COMPONENT_NAME } from './loader.constants';
 import type { LoaderContextType } from './loader.types';
 import type { ThemeTokens } from '@tamagui/core';
 

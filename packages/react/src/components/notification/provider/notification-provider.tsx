@@ -1,9 +1,9 @@
 import { createCollection } from '@tamagui/collection';
 import { createStyledContext } from '@tamagui/core';
 import { startTransition } from '@tamagui/start-transition';
+import { NOTIFICATION_CONTEXT } from '@xsolla-zk/constants';
 import { useCallback, useId, useMemo, useRef, useState } from 'react';
 import { NotificationImperativeProvider } from '../imperative/notification-imperative';
-import { NOTIFICATION_CONTEXT } from '../notification.constants';
 import type { NotificationScopedProps } from '../notification.types';
 import type {
   NotificationProviderContextValue,

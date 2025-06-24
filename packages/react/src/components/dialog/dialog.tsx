@@ -23,17 +23,6 @@ import { RemoveScroll } from '@tamagui/remove-scroll';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { StackZIndexContext } from '@tamagui/z-index-stack';
 import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useId,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
-import { Sheet } from '../sheet/sheet';
-import { SheetController } from '../sheet/sheet-controller';
-import {
   DIALOG_BODY_COMPONENT_NAME,
   DIALOG_CLOSE_COMPONENT_NAME,
   DIALOG_CONTENT_COMPONENT_NAME,
@@ -47,7 +36,18 @@ import {
   DIALOG_TITLE_COMPONENT_NAME,
   DIALOG_TITLE_WARNING_NAME,
   DIALOG_TRIGGER_COMPONENT_NAME,
-} from './dialog.constants';
+} from '@xsolla-zk/constants';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import { Sheet } from '../sheet/sheet';
+import { SheetController } from '../sheet/sheet-controller';
 import {
   DialogProvider,
   PortalProvider,
