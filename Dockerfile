@@ -30,6 +30,7 @@ WORKDIR /app
 COPY --from=deps /app ./
 
 # First build workspace packages (config, icons, react)
+RUN pnpm --filter @xsolla-zk/constants build
 RUN pnpm --filter @xsolla-zk/config build
 RUN pnpm --filter @xsolla-zk/icons build
 RUN pnpm --filter @xsolla-zk/react build

@@ -1,6 +1,6 @@
 {
   "name": "@xsolla-zk/monorepo",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "private": true,
   "author": {
     "email": "knuckleswolf@gmail.com",
@@ -11,7 +11,7 @@
     "publish:all": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' run publish --no-git-checks",
     "publish:tokens": "pnpm --filter @xsolla-zk/tokens publish --no-git-checks",
     "publish:react": "pnpm --filter @xsolla-zk/react publish --no-git-checks",
-    "build": "pnpm --filter='@xsolla-zk/config' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' run build",
+    "build": "pnpm --filter='@xsolla-zk/constants' --filter='@xsolla-zk/config' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' run build",
     "build:publish": "pnpm generate:all && pnpm build",
     "build:storybook:react": "pnpm --filter @xsolla-zk/react storybook:build -o ../../storybook-build/react",
     "build:docs": "pnpm --filter @xsolla-zk/docs build",
