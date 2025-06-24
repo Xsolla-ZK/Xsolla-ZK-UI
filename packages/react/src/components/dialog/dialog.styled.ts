@@ -1,7 +1,4 @@
 import { isWeb, Stack, styled, View } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { SheetBody, SheetFooter, SheetHeader, SheetOverlay } from '../sheet/sheet.styled';
-import { Typography } from '../typography';
 import {
   DIALOG_CLOSE_COMPONENT_NAME,
   DIALOG_CONTENT_COMPONENT_NAME,
@@ -13,6 +10,9 @@ import {
   DIALOG_TITLE_COMPONENT_NAME,
   DIALOG_TRIGGER_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
+import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { SheetBody, SheetFooter, SheetHeader, SheetOverlay } from '../sheet/sheet.styled';
+import { Typography } from '../typography';
 import type { DialogSizes } from './dialog.types';
 
 export const DialogTriggerFrame = styled(View, {
