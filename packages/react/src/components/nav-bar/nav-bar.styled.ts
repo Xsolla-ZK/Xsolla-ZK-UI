@@ -4,7 +4,7 @@ import {
   NAV_BAR_END_SLOT_COMPONENT_NAME,
   NAV_BAR_START_SLOT_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { createElement } from 'react';
+import { createElement, useRef } from 'react';
 import { getComponentsConfig, getMappedStyles, getTypographyPreset } from '../../utils';
 import { Typography } from '../typography';
 import { NavBarContext, NavBarStateContext } from './nav-bar.context';
@@ -175,6 +175,7 @@ export function createNavBarSlot(
   }) {
     const { slotMaxWidth, onChangeSlotMaxWidth } = context.useStyledContext();
     const ctx = NavBarContext.useStyledContext();
+    const updateTimeoutRef = useRef<number | null>(null);
 
     return createElement(
       styled(Stack, {
@@ -201,7 +202,18 @@ export function createNavBarSlot(
         onLayout: composeEventHandlers(props.onLayout, (e) => {
           const next = e.nativeEvent.layout.width;
           if (next !== slotMaxWidth) {
-            onChangeSlotMaxWidth(next);
+            // Cancel previous scheduled update if it exists
+            if (updateTimeoutRef.current !== null) {
+              cancelAnimationFrame(updateTimeoutRef.current);
+            }
+
+            // Use requestAnimationFrame for layout-related updates to prevent layout thrashing
+            // This ensures the state update is synchronized with the browser's repaint cycle,
+            // avoiding unnecessary layout recalculations and visual flickering
+            updateTimeoutRef.current = requestAnimationFrame(() => {
+              updateTimeoutRef.current = null;
+              onChangeSlotMaxWidth(next);
+            });
           }
         }),
       },
