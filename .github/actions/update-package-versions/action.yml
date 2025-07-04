@@ -1,0 +1,53 @@
+name: 'Update Package Versions'
+description: 'Updates version in package.json files'
+
+inputs:
+  new-version:
+    description: 'New version to set'
+    required: true
+  packages:
+    description: 'JSON array of package folders to update'
+    required: true
+  update-root:
+    description: 'Whether to update root package.json'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 🔄 Update Root Package Version
+      if: inputs.update-root == 'true'
+      shell: bash
+      run: |
+        NEW_VERSION="${{ inputs.new-version }}"
+        echo "📦 Updating root package.json to version: $NEW_VERSION"
+
+        node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.version = '$NEW_VERSION';
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+        "
+
+    - name: 🔄 Update Package Versions
+      shell: bash
+      run: |
+        NEW_VERSION="${{ inputs.new-version }}"
+        PACKAGES=$(echo '${{ inputs.packages }}' | jq -r '.[]')
+
+        echo "🔄 Updating packages to version: $NEW_VERSION"
+
+        for pkg_folder in $PACKAGES; do
+          if [[ -f "${pkg_folder}/package.json" ]]; then
+            echo "📦 Updating ${pkg_folder}/package.json"
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('${pkg_folder}/package.json', 'utf8'));
+              pkg.version = '$NEW_VERSION';
+              fs.writeFileSync('${pkg_folder}/package.json', JSON.stringify(pkg, null, 2) + '\n');
+            "
+          else
+            echo "⚠️ Warning: ${pkg_folder}/package.json not found"
+          fi
+        done

@@ -1,0 +1,38 @@
+name: 'Setup Node.js & PNPM'
+description: 'Sets up Node.js and PNPM with caching'
+
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '20.x'
+  pnpm-version:
+    description: 'PNPM version to use'
+    required: false
+    default: '10.3.0'
+  cache-dependency-path:
+    description: 'Path to dependency file for caching'
+    required: false
+    default: 'pnpm-lock.yaml'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: ⚙️ Setup PNPM
+      uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        always-auth: true
+
+    - name: 📋 Display versions
+      shell: bash
+      run: |
+        echo "📦 Node.js version: $(node --version)"
+        echo "📦 PNPM version: $(pnpm --version)"

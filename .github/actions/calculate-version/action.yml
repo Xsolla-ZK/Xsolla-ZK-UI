@@ -1,0 +1,51 @@
+name: 'Calculate New Version'
+description: 'Calculates new version based on version type'
+
+inputs:
+  version-type:
+    description: 'Version bump type (major, minor, patch)'
+    required: true
+    default: 'patch'
+  current-version:
+    description: 'Current version (optional, will read from package.json if not provided)'
+    required: false
+
+outputs:
+  new-version:
+    description: 'Calculated new version'
+    value: ${{ steps.calculate.outputs.new-version }}
+  current-version:
+    description: 'Current version'
+    value: ${{ steps.calculate.outputs.current-version }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 🔢 Calculate Version
+      id: calculate
+      shell: bash
+      run: |
+        if [[ -n "${{ inputs.current-version }}" ]]; then
+          ROOT_VERSION="${{ inputs.current-version }}"
+        else
+          ROOT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
+        fi
+
+        VERSION_TYPE="${{ inputs.version-type }}"
+
+        IFS='.' read -ra VERSION_PARTS <<< "$ROOT_VERSION"
+        MAJOR=${VERSION_PARTS[0]}
+        MINOR=${VERSION_PARTS[1]}
+        PATCH=${VERSION_PARTS[2]}
+
+        case "$VERSION_TYPE" in
+          "major") MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+          "minor") MINOR=$((MINOR + 1)); PATCH=0 ;;
+          "patch") PATCH=$((PATCH + 1)) ;;
+        esac
+
+        NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+
+        echo "🔄 Version bump: $ROOT_VERSION -> $NEW_VERSION ($VERSION_TYPE)"
+        echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "current-version=$ROOT_VERSION" >> $GITHUB_OUTPUT
