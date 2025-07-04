@@ -3,7 +3,5 @@ export declare const SemanticText: import("@tamagui/web").TamaguiComponent<impor
     variant?: "headerXl" | "headerL" | "headerM" | "headerS" | "headerXs" | "paragraphL" | "paragraphM" | "paragraphS" | undefined;
 }>, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps & void, import("@tamagui/web").TextStylePropsBase, {
     variant?: "headerXl" | "headerL" | "headerM" | "headerS" | "headerXs" | "paragraphL" | "paragraphM" | "paragraphS" | undefined;
-}, {
-    acceptsClassName: true;
-}>;
+}, import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=semantic-text.d.ts.map

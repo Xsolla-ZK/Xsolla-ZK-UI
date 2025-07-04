@@ -5,7 +5,7 @@
 import { createCollection } from '@tamagui/collection';
 import { useComposedRefs } from '@tamagui/compose-refs';
 import { isWeb } from '@tamagui/constants';
-import { Stack, useEvent, View } from '@tamagui/core';
+import { Stack, View } from '@tamagui/core';
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { useDirection } from '@tamagui/use-direction';
@@ -344,7 +344,6 @@ const AccordionTrigger = AccordionTriggerFrame.styleable<
           aria-disabled={(itemContext.open && !collapsibleContext.toggleable) || undefined}
           data-orientation={accordionContext.orientation}
           id={itemContext.triggerId}
-          asChild
           {...triggerProps}
           ref={forwardedRef}
         />
@@ -386,15 +385,17 @@ const HeightAnimator = View.styleable<ViewProps>(
     const { children, ...rest } = props as PropsWithChildren<Omit<ViewProps, 'children'>>;
     const [height, setHeight] = useState(0);
 
-    const onLayout = useEvent(({ nativeEvent }: LayoutChangeEvent) => {
-      if (nativeEvent.layout.height) {
-        setHeight(nativeEvent.layout.height);
-      }
-    });
-
     return (
       <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
-        <View position="absolute" width="100%" onLayout={onLayout}>
+        <View
+          position="absolute"
+          width="100%"
+          onLayout={({ nativeEvent }) => {
+            if (nativeEvent.layout.height) {
+              setHeight(nativeEvent.layout.height);
+            }
+          }}
+        >
           {children}
         </View>
       </View>

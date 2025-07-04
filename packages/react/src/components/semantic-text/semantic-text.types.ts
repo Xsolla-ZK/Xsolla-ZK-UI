@@ -6,4 +6,8 @@ export type SemanticTextVariants = keyof ComponentsConfig['semanticText'];
 
 type TextProps = GetProps<typeof SemanticTextRoot>;
 
-export interface SemanticTextProps extends TextProps {}
+export interface SemanticTextBaseProps {
+  typographyOnly?: boolean;
+}
+
+export interface SemanticTextProps extends TextProps, SemanticTextBaseProps {}

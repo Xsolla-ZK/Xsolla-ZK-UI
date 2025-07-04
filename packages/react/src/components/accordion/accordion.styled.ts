@@ -11,6 +11,8 @@ import type { VariantSpreadExtras } from '@tamagui/core';
 export const AccordionItemFrame = styled(Collapsible, {
   name: ACCORDION_ITEM_COMPONENT_NAME,
 
+  overflow: 'hidden',
+
   variants: {
     withBoard: {
       true: {},
