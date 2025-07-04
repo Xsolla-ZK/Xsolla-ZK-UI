@@ -23,12 +23,12 @@
     "generate": "node src/index.mjs generate"
   },
   "dependencies": {
-    "prettier": "catalog:"
+    "prettier": "catalog:",
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
     "chalk": "^5.4.1",
     "color": "^5.0.0",
-    "dotenv": "^16.4.7",
     "fs-extra": "^11.3.0",
     "yargs": "^17.7.2"
   }
