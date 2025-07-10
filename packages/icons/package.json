@@ -5,8 +5,9 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "files": [
     "src",
     "types",
@@ -40,5 +41,550 @@
     "@xsolla-zk/icons-generator": "workspace:*",
     "react-native-svg": "catalog:",
     "typescript": "catalog:"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./icons/ArrowBidirectionalHorizontal": {
+      "import": "./dist/esm/icons/ArrowBidirectionalHorizontal.mjs",
+      "require": "./dist/cjs/icons/ArrowBidirectionalHorizontal.cjs"
+    },
+    "./icons/ArrowBidirectionalVertical": {
+      "import": "./dist/esm/icons/ArrowBidirectionalVertical.mjs",
+      "require": "./dist/cjs/icons/ArrowBidirectionalVertical.cjs"
+    },
+    "./icons/ArrowDown": {
+      "import": "./dist/esm/icons/ArrowDown.mjs",
+      "require": "./dist/cjs/icons/ArrowDown.cjs"
+    },
+    "./icons/ArrowLeft": {
+      "import": "./dist/esm/icons/ArrowLeft.mjs",
+      "require": "./dist/cjs/icons/ArrowLeft.cjs"
+    },
+    "./icons/ArrowRight": {
+      "import": "./dist/esm/icons/ArrowRight.mjs",
+      "require": "./dist/cjs/icons/ArrowRight.cjs"
+    },
+    "./icons/ArrowUp": {
+      "import": "./dist/esm/icons/ArrowUp.mjs",
+      "require": "./dist/cjs/icons/ArrowUp.cjs"
+    },
+    "./icons/Asterisk": {
+      "import": "./dist/esm/icons/Asterisk.mjs",
+      "require": "./dist/cjs/icons/Asterisk.cjs"
+    },
+    "./icons/Backpack": {
+      "import": "./dist/esm/icons/Backpack.mjs",
+      "require": "./dist/cjs/icons/Backpack.cjs"
+    },
+    "./icons/Bag": {
+      "import": "./dist/esm/icons/Bag.mjs",
+      "require": "./dist/cjs/icons/Bag.cjs"
+    },
+    "./icons/BankCard": {
+      "import": "./dist/esm/icons/BankCard.mjs",
+      "require": "./dist/cjs/icons/BankCard.cjs"
+    },
+    "./icons/BarChart": {
+      "import": "./dist/esm/icons/BarChart.mjs",
+      "require": "./dist/cjs/icons/BarChart.cjs"
+    },
+    "./icons/BellSlash": {
+      "import": "./dist/esm/icons/BellSlash.mjs",
+      "require": "./dist/cjs/icons/BellSlash.cjs"
+    },
+    "./icons/Bell": {
+      "import": "./dist/esm/icons/Bell.mjs",
+      "require": "./dist/cjs/icons/Bell.cjs"
+    },
+    "./icons/Biometrics": {
+      "import": "./dist/esm/icons/Biometrics.mjs",
+      "require": "./dist/cjs/icons/Biometrics.cjs"
+    },
+    "./icons/Bookmark": {
+      "import": "./dist/esm/icons/Bookmark.mjs",
+      "require": "./dist/cjs/icons/Bookmark.cjs"
+    },
+    "./icons/Briefcase": {
+      "import": "./dist/esm/icons/Briefcase.mjs",
+      "require": "./dist/cjs/icons/Briefcase.cjs"
+    },
+    "./icons/Calendar": {
+      "import": "./dist/esm/icons/Calendar.mjs",
+      "require": "./dist/cjs/icons/Calendar.cjs"
+    },
+    "./icons/Camera": {
+      "import": "./dist/esm/icons/Camera.mjs",
+      "require": "./dist/cjs/icons/Camera.cjs"
+    },
+    "./icons/Cash": {
+      "import": "./dist/esm/icons/Cash.mjs",
+      "require": "./dist/cjs/icons/Cash.cjs"
+    },
+    "./icons/Chat": {
+      "import": "./dist/esm/icons/Chat.mjs",
+      "require": "./dist/cjs/icons/Chat.cjs"
+    },
+    "./icons/Checkmark": {
+      "import": "./dist/esm/icons/Checkmark.mjs",
+      "require": "./dist/cjs/icons/Checkmark.cjs"
+    },
+    "./icons/Chest": {
+      "import": "./dist/esm/icons/Chest.mjs",
+      "require": "./dist/cjs/icons/Chest.cjs"
+    },
+    "./icons/ChevronDown": {
+      "import": "./dist/esm/icons/ChevronDown.mjs",
+      "require": "./dist/cjs/icons/ChevronDown.cjs"
+    },
+    "./icons/ChevronLeft": {
+      "import": "./dist/esm/icons/ChevronLeft.mjs",
+      "require": "./dist/cjs/icons/ChevronLeft.cjs"
+    },
+    "./icons/ChevronRight": {
+      "import": "./dist/esm/icons/ChevronRight.mjs",
+      "require": "./dist/cjs/icons/ChevronRight.cjs"
+    },
+    "./icons/ChevronUp": {
+      "import": "./dist/esm/icons/ChevronUp.mjs",
+      "require": "./dist/cjs/icons/ChevronUp.cjs"
+    },
+    "./icons/Circle": {
+      "import": "./dist/esm/icons/Circle.mjs",
+      "require": "./dist/cjs/icons/Circle.cjs"
+    },
+    "./icons/Clock": {
+      "import": "./dist/esm/icons/Clock.mjs",
+      "require": "./dist/cjs/icons/Clock.cjs"
+    },
+    "./icons/Cloud": {
+      "import": "./dist/esm/icons/Cloud.mjs",
+      "require": "./dist/cjs/icons/Cloud.cjs"
+    },
+    "./icons/CollapseDiagonal": {
+      "import": "./dist/esm/icons/CollapseDiagonal.mjs",
+      "require": "./dist/cjs/icons/CollapseDiagonal.cjs"
+    },
+    "./icons/CollapseVertical": {
+      "import": "./dist/esm/icons/CollapseVertical.mjs",
+      "require": "./dist/cjs/icons/CollapseVertical.cjs"
+    },
+    "./icons/ContentCopy": {
+      "import": "./dist/esm/icons/ContentCopy.mjs",
+      "require": "./dist/cjs/icons/ContentCopy.cjs"
+    },
+    "./icons/Cross": {
+      "import": "./dist/esm/icons/Cross.mjs",
+      "require": "./dist/cjs/icons/Cross.cjs"
+    },
+    "./icons/DataTable": {
+      "import": "./dist/esm/icons/DataTable.mjs",
+      "require": "./dist/cjs/icons/DataTable.cjs"
+    },
+    "./icons/Desktop": {
+      "import": "./dist/esm/icons/Desktop.mjs",
+      "require": "./dist/cjs/icons/Desktop.cjs"
+    },
+    "./icons/Diamond": {
+      "import": "./dist/esm/icons/Diamond.mjs",
+      "require": "./dist/cjs/icons/Diamond.cjs"
+    },
+    "./icons/Document": {
+      "import": "./dist/esm/icons/Document.mjs",
+      "require": "./dist/cjs/icons/Document.cjs"
+    },
+    "./icons/Documents": {
+      "import": "./dist/esm/icons/Documents.mjs",
+      "require": "./dist/cjs/icons/Documents.cjs"
+    },
+    "./icons/DollarSlash": {
+      "import": "./dist/esm/icons/DollarSlash.mjs",
+      "require": "./dist/cjs/icons/DollarSlash.cjs"
+    },
+    "./icons/Dollar": {
+      "import": "./dist/esm/icons/Dollar.mjs",
+      "require": "./dist/cjs/icons/Dollar.cjs"
+    },
+    "./icons/DoubleArrowDown": {
+      "import": "./dist/esm/icons/DoubleArrowDown.mjs",
+      "require": "./dist/cjs/icons/DoubleArrowDown.cjs"
+    },
+    "./icons/DoubleArrowLeft": {
+      "import": "./dist/esm/icons/DoubleArrowLeft.mjs",
+      "require": "./dist/cjs/icons/DoubleArrowLeft.cjs"
+    },
+    "./icons/DoubleArrowRight": {
+      "import": "./dist/esm/icons/DoubleArrowRight.mjs",
+      "require": "./dist/cjs/icons/DoubleArrowRight.cjs"
+    },
+    "./icons/DoubleArrowUp": {
+      "import": "./dist/esm/icons/DoubleArrowUp.mjs",
+      "require": "./dist/cjs/icons/DoubleArrowUp.cjs"
+    },
+    "./icons/DoubleCheckmark": {
+      "import": "./dist/esm/icons/DoubleCheckmark.mjs",
+      "require": "./dist/cjs/icons/DoubleCheckmark.cjs"
+    },
+    "./icons/Download": {
+      "import": "./dist/esm/icons/Download.mjs",
+      "require": "./dist/cjs/icons/Download.cjs"
+    },
+    "./icons/ExpandDiagonal": {
+      "import": "./dist/esm/icons/ExpandDiagonal.mjs",
+      "require": "./dist/cjs/icons/ExpandDiagonal.cjs"
+    },
+    "./icons/ExpandVertical": {
+      "import": "./dist/esm/icons/ExpandVertical.mjs",
+      "require": "./dist/cjs/icons/ExpandVertical.cjs"
+    },
+    "./icons/ExternalLink": {
+      "import": "./dist/esm/icons/ExternalLink.mjs",
+      "require": "./dist/cjs/icons/ExternalLink.cjs"
+    },
+    "./icons/EyeSlash": {
+      "import": "./dist/esm/icons/EyeSlash.mjs",
+      "require": "./dist/cjs/icons/EyeSlash.cjs"
+    },
+    "./icons/Eye": {
+      "import": "./dist/esm/icons/Eye.mjs",
+      "require": "./dist/cjs/icons/Eye.cjs"
+    },
+    "./icons/Eyes": {
+      "import": "./dist/esm/icons/Eyes.mjs",
+      "require": "./dist/cjs/icons/Eyes.cjs"
+    },
+    "./icons/Face": {
+      "import": "./dist/esm/icons/Face.mjs",
+      "require": "./dist/cjs/icons/Face.cjs"
+    },
+    "./icons/Fire": {
+      "import": "./dist/esm/icons/Fire.mjs",
+      "require": "./dist/cjs/icons/Fire.cjs"
+    },
+    "./icons/Folder": {
+      "import": "./dist/esm/icons/Folder.mjs",
+      "require": "./dist/cjs/icons/Folder.cjs"
+    },
+    "./icons/Gamepad": {
+      "import": "./dist/esm/icons/Gamepad.mjs",
+      "require": "./dist/cjs/icons/Gamepad.cjs"
+    },
+    "./icons/Gas": {
+      "import": "./dist/esm/icons/Gas.mjs",
+      "require": "./dist/cjs/icons/Gas.cjs"
+    },
+    "./icons/Globe": {
+      "import": "./dist/esm/icons/Globe.mjs",
+      "require": "./dist/cjs/icons/Globe.cjs"
+    },
+    "./icons/Graph": {
+      "import": "./dist/esm/icons/Graph.mjs",
+      "require": "./dist/cjs/icons/Graph.cjs"
+    },
+    "./icons/Grid2x2": {
+      "import": "./dist/esm/icons/Grid2x2.mjs",
+      "require": "./dist/cjs/icons/Grid2x2.cjs"
+    },
+    "./icons/Grid3x3": {
+      "import": "./dist/esm/icons/Grid3x3.mjs",
+      "require": "./dist/cjs/icons/Grid3x3.cjs"
+    },
+    "./icons/Heart": {
+      "import": "./dist/esm/icons/Heart.mjs",
+      "require": "./dist/cjs/icons/Heart.cjs"
+    },
+    "./icons/Home": {
+      "import": "./dist/esm/icons/Home.mjs",
+      "require": "./dist/cjs/icons/Home.cjs"
+    },
+    "./icons/IdCard": {
+      "import": "./dist/esm/icons/IdCard.mjs",
+      "require": "./dist/cjs/icons/IdCard.cjs"
+    },
+    "./icons/Image": {
+      "import": "./dist/esm/icons/Image.mjs",
+      "require": "./dist/cjs/icons/Image.cjs"
+    },
+    "./icons/Info": {
+      "import": "./dist/esm/icons/Info.mjs",
+      "require": "./dist/cjs/icons/Info.cjs"
+    },
+    "./icons/Key": {
+      "import": "./dist/esm/icons/Key.mjs",
+      "require": "./dist/cjs/icons/Key.cjs"
+    },
+    "./icons/Laptop": {
+      "import": "./dist/esm/icons/Laptop.mjs",
+      "require": "./dist/cjs/icons/Laptop.cjs"
+    },
+    "./icons/Lifebuoy": {
+      "import": "./dist/esm/icons/Lifebuoy.mjs",
+      "require": "./dist/cjs/icons/Lifebuoy.cjs"
+    },
+    "./icons/Link": {
+      "import": "./dist/esm/icons/Link.mjs",
+      "require": "./dist/cjs/icons/Link.cjs"
+    },
+    "./icons/ListHorizontal": {
+      "import": "./dist/esm/icons/ListHorizontal.mjs",
+      "require": "./dist/cjs/icons/ListHorizontal.cjs"
+    },
+    "./icons/ListVertical": {
+      "import": "./dist/esm/icons/ListVertical.mjs",
+      "require": "./dist/cjs/icons/ListVertical.cjs"
+    },
+    "./icons/Lock": {
+      "import": "./dist/esm/icons/Lock.mjs",
+      "require": "./dist/cjs/icons/Lock.cjs"
+    },
+    "./icons/Login": {
+      "import": "./dist/esm/icons/Login.mjs",
+      "require": "./dist/cjs/icons/Login.cjs"
+    },
+    "./icons/Logout": {
+      "import": "./dist/esm/icons/Logout.mjs",
+      "require": "./dist/cjs/icons/Logout.cjs"
+    },
+    "./icons/Mail": {
+      "import": "./dist/esm/icons/Mail.mjs",
+      "require": "./dist/cjs/icons/Mail.cjs"
+    },
+    "./icons/Menu": {
+      "import": "./dist/esm/icons/Menu.mjs",
+      "require": "./dist/cjs/icons/Menu.cjs"
+    },
+    "./icons/Mic": {
+      "import": "./dist/esm/icons/Mic.mjs",
+      "require": "./dist/cjs/icons/Mic.cjs"
+    },
+    "./icons/Minus": {
+      "import": "./dist/esm/icons/Minus.mjs",
+      "require": "./dist/cjs/icons/Minus.cjs"
+    },
+    "./icons/Moon": {
+      "import": "./dist/esm/icons/Moon.mjs",
+      "require": "./dist/cjs/icons/Moon.cjs"
+    },
+    "./icons/MoreHorizontal": {
+      "import": "./dist/esm/icons/MoreHorizontal.mjs",
+      "require": "./dist/cjs/icons/MoreHorizontal.cjs"
+    },
+    "./icons/MoreVertical": {
+      "import": "./dist/esm/icons/MoreVertical.mjs",
+      "require": "./dist/cjs/icons/MoreVertical.cjs"
+    },
+    "./icons/NavChevronLeft": {
+      "import": "./dist/esm/icons/NavChevronLeft.mjs",
+      "require": "./dist/cjs/icons/NavChevronLeft.cjs"
+    },
+    "./icons/NavChevronRight": {
+      "import": "./dist/esm/icons/NavChevronRight.mjs",
+      "require": "./dist/cjs/icons/NavChevronRight.cjs"
+    },
+    "./icons/OpenWith": {
+      "import": "./dist/esm/icons/OpenWith.mjs",
+      "require": "./dist/cjs/icons/OpenWith.cjs"
+    },
+    "./icons/Orbit": {
+      "import": "./dist/esm/icons/Orbit.mjs",
+      "require": "./dist/cjs/icons/Orbit.cjs"
+    },
+    "./icons/PaperClip": {
+      "import": "./dist/esm/icons/PaperClip.mjs",
+      "require": "./dist/cjs/icons/PaperClip.cjs"
+    },
+    "./icons/Pause": {
+      "import": "./dist/esm/icons/Pause.mjs",
+      "require": "./dist/cjs/icons/Pause.cjs"
+    },
+    "./icons/Pencil": {
+      "import": "./dist/esm/icons/Pencil.mjs",
+      "require": "./dist/cjs/icons/Pencil.cjs"
+    },
+    "./icons/People": {
+      "import": "./dist/esm/icons/People.mjs",
+      "require": "./dist/cjs/icons/People.cjs"
+    },
+    "./icons/Phone": {
+      "import": "./dist/esm/icons/Phone.mjs",
+      "require": "./dist/cjs/icons/Phone.cjs"
+    },
+    "./icons/PieChart": {
+      "import": "./dist/esm/icons/PieChart.mjs",
+      "require": "./dist/cjs/icons/PieChart.cjs"
+    },
+    "./icons/Pin": {
+      "import": "./dist/esm/icons/Pin.mjs",
+      "require": "./dist/cjs/icons/Pin.cjs"
+    },
+    "./icons/Play": {
+      "import": "./dist/esm/icons/Play.mjs",
+      "require": "./dist/cjs/icons/Play.cjs"
+    },
+    "./icons/Plus": {
+      "import": "./dist/esm/icons/Plus.mjs",
+      "require": "./dist/cjs/icons/Plus.cjs"
+    },
+    "./icons/QrCode": {
+      "import": "./dist/esm/icons/QrCode.mjs",
+      "require": "./dist/cjs/icons/QrCode.cjs"
+    },
+    "./icons/Question": {
+      "import": "./dist/esm/icons/Question.mjs",
+      "require": "./dist/cjs/icons/Question.cjs"
+    },
+    "./icons/Repeat": {
+      "import": "./dist/esm/icons/Repeat.mjs",
+      "require": "./dist/cjs/icons/Repeat.cjs"
+    },
+    "./icons/Rocket": {
+      "import": "./dist/esm/icons/Rocket.mjs",
+      "require": "./dist/cjs/icons/Rocket.cjs"
+    },
+    "./icons/Search": {
+      "import": "./dist/esm/icons/Search.mjs",
+      "require": "./dist/cjs/icons/Search.cjs"
+    },
+    "./icons/Settings": {
+      "import": "./dist/esm/icons/Settings.mjs",
+      "require": "./dist/cjs/icons/Settings.cjs"
+    },
+    "./icons/Share": {
+      "import": "./dist/esm/icons/Share.mjs",
+      "require": "./dist/cjs/icons/Share.cjs"
+    },
+    "./icons/ShieldCheckmark": {
+      "import": "./dist/esm/icons/ShieldCheckmark.mjs",
+      "require": "./dist/cjs/icons/ShieldCheckmark.cjs"
+    },
+    "./icons/Shield": {
+      "import": "./dist/esm/icons/Shield.mjs",
+      "require": "./dist/cjs/icons/Shield.cjs"
+    },
+    "./icons/ShoppingCart": {
+      "import": "./dist/esm/icons/ShoppingCart.mjs",
+      "require": "./dist/cjs/icons/ShoppingCart.cjs"
+    },
+    "./icons/Smartphone": {
+      "import": "./dist/esm/icons/Smartphone.mjs",
+      "require": "./dist/cjs/icons/Smartphone.cjs"
+    },
+    "./icons/SortDown": {
+      "import": "./dist/esm/icons/SortDown.mjs",
+      "require": "./dist/cjs/icons/SortDown.cjs"
+    },
+    "./icons/SortUp": {
+      "import": "./dist/esm/icons/SortUp.mjs",
+      "require": "./dist/cjs/icons/SortUp.cjs"
+    },
+    "./icons/Star": {
+      "import": "./dist/esm/icons/Star.mjs",
+      "require": "./dist/cjs/icons/Star.cjs"
+    },
+    "./icons/Stop": {
+      "import": "./dist/esm/icons/Stop.mjs",
+      "require": "./dist/cjs/icons/Stop.cjs"
+    },
+    "./icons/Sun": {
+      "import": "./dist/esm/icons/Sun.mjs",
+      "require": "./dist/cjs/icons/Sun.cjs"
+    },
+    "./icons/SwapDiagonal": {
+      "import": "./dist/esm/icons/SwapDiagonal.mjs",
+      "require": "./dist/cjs/icons/SwapDiagonal.cjs"
+    },
+    "./icons/SwapHorizontal": {
+      "import": "./dist/esm/icons/SwapHorizontal.mjs",
+      "require": "./dist/cjs/icons/SwapHorizontal.cjs"
+    },
+    "./icons/SwapVertical": {
+      "import": "./dist/esm/icons/SwapVertical.mjs",
+      "require": "./dist/cjs/icons/SwapVertical.cjs"
+    },
+    "./icons/Sync": {
+      "import": "./dist/esm/icons/Sync.mjs",
+      "require": "./dist/cjs/icons/Sync.cjs"
+    },
+    "./icons/Tablet": {
+      "import": "./dist/esm/icons/Tablet.mjs",
+      "require": "./dist/cjs/icons/Tablet.cjs"
+    },
+    "./icons/Tag": {
+      "import": "./dist/esm/icons/Tag.mjs",
+      "require": "./dist/cjs/icons/Tag.cjs"
+    },
+    "./icons/ThumbDown": {
+      "import": "./dist/esm/icons/ThumbDown.mjs",
+      "require": "./dist/cjs/icons/ThumbDown.cjs"
+    },
+    "./icons/ThumbUp": {
+      "import": "./dist/esm/icons/ThumbUp.mjs",
+      "require": "./dist/cjs/icons/ThumbUp.cjs"
+    },
+    "./icons/Trash": {
+      "import": "./dist/esm/icons/Trash.mjs",
+      "require": "./dist/cjs/icons/Trash.cjs"
+    },
+    "./icons/TripleArrowDownLeft": {
+      "import": "./dist/esm/icons/TripleArrowDownLeft.mjs",
+      "require": "./dist/cjs/icons/TripleArrowDownLeft.cjs"
+    },
+    "./icons/TripleArrowDown": {
+      "import": "./dist/esm/icons/TripleArrowDown.mjs",
+      "require": "./dist/cjs/icons/TripleArrowDown.cjs"
+    },
+    "./icons/TripleArrowLeft": {
+      "import": "./dist/esm/icons/TripleArrowLeft.mjs",
+      "require": "./dist/cjs/icons/TripleArrowLeft.cjs"
+    },
+    "./icons/TripleArrowRight": {
+      "import": "./dist/esm/icons/TripleArrowRight.mjs",
+      "require": "./dist/cjs/icons/TripleArrowRight.cjs"
+    },
+    "./icons/TripleArrowUpRight": {
+      "import": "./dist/esm/icons/TripleArrowUpRight.mjs",
+      "require": "./dist/cjs/icons/TripleArrowUpRight.cjs"
+    },
+    "./icons/TripleArrowUp": {
+      "import": "./dist/esm/icons/TripleArrowUp.mjs",
+      "require": "./dist/cjs/icons/TripleArrowUp.cjs"
+    },
+    "./icons/Tune": {
+      "import": "./dist/esm/icons/Tune.mjs",
+      "require": "./dist/cjs/icons/Tune.cjs"
+    },
+    "./icons/Unlock": {
+      "import": "./dist/esm/icons/Unlock.mjs",
+      "require": "./dist/cjs/icons/Unlock.cjs"
+    },
+    "./icons/Video": {
+      "import": "./dist/esm/icons/Video.mjs",
+      "require": "./dist/cjs/icons/Video.cjs"
+    },
+    "./icons/VolumeSlash": {
+      "import": "./dist/esm/icons/VolumeSlash.mjs",
+      "require": "./dist/cjs/icons/VolumeSlash.cjs"
+    },
+    "./icons/VolumeUp": {
+      "import": "./dist/esm/icons/VolumeUp.mjs",
+      "require": "./dist/cjs/icons/VolumeUp.cjs"
+    },
+    "./icons/Wallet": {
+      "import": "./dist/esm/icons/Wallet.mjs",
+      "require": "./dist/cjs/icons/Wallet.cjs"
+    },
+    "./icons/Warning": {
+      "import": "./dist/esm/icons/Warning.mjs",
+      "require": "./dist/cjs/icons/Warning.cjs"
+    }
   }
 }
