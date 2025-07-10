@@ -2,7 +2,7 @@ import { getTokenValue, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { useIconsPosition } from '../../hooks';
 import { getComponentsConfig } from '../../utils';
-import { Loader } from '../loader/loader';
+import { Loader } from '../loader';
 import { ButtonContext, ButtonFrame, ButtonIcon, ButtonText } from './button.styled';
 import type { ButtonContextType, ButtonProps } from './button.types';
 import type { LoaderProps } from '../loader/loader.types';

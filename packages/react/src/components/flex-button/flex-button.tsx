@@ -1,7 +1,7 @@
 import { getTokenValue, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { getComponentsConfig } from '../../utils';
-import { Loader } from '../loader/loader';
+import { Loader } from '../loader';
 import {
   FlexButtonContext,
   FlexButtonFrame,

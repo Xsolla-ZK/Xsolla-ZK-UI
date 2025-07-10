@@ -1,7 +1,7 @@
 import { styled, Text } from '@tamagui/core';
 import { SEMANTIC_TEXT_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import type { SemanticTextBaseProps, SemanticTextVariants } from './semantic-text.types';
+import type { SemanticTextVariants } from './semantic-text.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 
 export const SemanticTextRoot = styled(Text, {
@@ -11,8 +11,9 @@ export const SemanticTextRoot = styled(Text, {
   color: '$color',
 
   variants: {
+    typographyOnly: (_val: boolean) => ({}),
     variant: (val: SemanticTextVariants, extras) => {
-      const { props } = extras as VariantSpreadExtras<SemanticTextBaseProps>;
+      const { props } = extras as VariantSpreadExtras<{ typographyOnly?: boolean }>;
       const config = getComponentsConfig();
       const semanticTextProps = config.semanticText[val];
       if (!semanticTextProps) {

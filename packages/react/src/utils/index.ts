@@ -6,5 +6,4 @@ export * from './get-mapped-styles';
 export * from './get-safe-token-value';
 export * from './get-typography-preset';
 export * from './valid-props';
-// export * from './theme';
 export * from './mask-utils';
