@@ -24,6 +24,8 @@ const packageJson = JSON.parse(
 );
 const version = packageJson.version;
 
+const packageJsonExports = {};
+
 const svgoConfig = {
   plugins: [
     {
@@ -167,6 +169,47 @@ function transformSvg(svg) {
   };
 }
 
+// Update package.json with exports
+async function updatePackageJsonExports(projectDir) {
+  const packageJsonPath = path.join(projectDir, 'package.json');
+
+  if (!(await fse.pathExists(packageJsonPath))) {
+    logger.warning(`package.json not found in ${packageJsonPath}`);
+    return;
+  }
+
+  try {
+    const packageJson = JSON.parse(await fse.readFile(packageJsonPath, 'utf-8'));
+
+    // Update the exports section
+    // First, remove all existing icon exports to avoid dead exports for deleted icons
+    packageJson.exports = {
+      ...Object.fromEntries(
+        Object.entries(packageJson.exports || {}).flatMap((entry) => {
+          if (entry[0].startsWith('./icons')) {
+            return [];
+          }
+          return [entry];
+        }),
+      ),
+      ...packageJsonExports,
+    };
+
+    // Save the updated package.json
+    const formattedPackageJson = JSON.stringify(packageJson, null, 2);
+    await fse.writeFile(packageJsonPath, formattedPackageJson);
+
+    logger.success(
+      `Updated exports in ${packageJsonPath} (${Object.keys(packageJsonExports).length} icons)`,
+    );
+  } catch (error) {
+    logger.error(`Error updating package.json: ${error.message}`);
+  }
+
+  // Clean up the exports object for the next usage
+  Object.keys(packageJsonExports).forEach((key) => delete packageJsonExports[key]);
+}
+
 // Main logic of icons generation
 async function generateIcons({ input, output }) {
   const iconsDir = path.resolve(input);
@@ -226,6 +269,10 @@ async function generateIcons({ input, output }) {
     await fse.writeFile(location, formattedCode);
     const targetDirName = path.basename(outDir);
     iconExports.push(`export { ${cname} } from './${targetDirName}/${id}'`);
+    packageJsonExports[`./icons/${cname}`] = {
+      import: `./dist/esm/icons/${cname + '.mjs'}`,
+      require: `./dist/cjs/icons/${cname + '.cjs'}`,
+    };
 
     logger.success(`Generated: ${fileName}`);
   }
@@ -234,6 +281,9 @@ async function generateIcons({ input, output }) {
   const formattedIndex = await formatCode(iconExports.join('\n'));
   await fse.writeFile(indexFile, formattedIndex);
   logger.success(`Generated index file at: ${indexFile}`);
+
+  // Update package.json with exports
+  await updatePackageJsonExports(process.cwd());
 }
 
 // CLI configuration
