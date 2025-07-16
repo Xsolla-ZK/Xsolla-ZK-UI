@@ -12,6 +12,7 @@ export const switchTheme = createComponentTheme(
     active: (tokens) => ({
       background: tokens['background.brand-high'],
       borderColor: tokens['border.brand-primary'],
+      outlineColor: tokens['border.brand-secondary'],
     }),
   },
 );

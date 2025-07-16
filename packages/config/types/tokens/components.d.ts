@@ -1448,6 +1448,17 @@ export declare const toast: {
         };
     };
 };
+export declare const tooltip: {
+    frame: {
+        borderRadius: string;
+        minHeight: string;
+        padding: string;
+        gap: string;
+    };
+    label: {
+        typography: string;
+    };
+};
 export declare const components: {
     accordion: {
         size: {
@@ -2893,6 +2904,17 @@ export declare const components: {
                 paddingLeft: string;
                 gap: string;
             };
+        };
+    };
+    tooltip: {
+        frame: {
+            borderRadius: string;
+            minHeight: string;
+            padding: string;
+            gap: string;
+        };
+        label: {
+            typography: string;
         };
     };
 };

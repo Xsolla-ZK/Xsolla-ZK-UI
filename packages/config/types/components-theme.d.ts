@@ -405,10 +405,12 @@ declare const componentsTheme: {
         light_active_Switch: {
             background: string;
             borderColor: string;
+            outlineColor: string;
         };
         dark_active_Switch: {
             background: string;
             borderColor: string;
+            outlineColor: string;
         };
     };
     switchKnobTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {

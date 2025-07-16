@@ -1,1 +1,1 @@
-{"version":3,"file":"switch.d.ts","sourceRoot":"","sources":["../../src/components-theme/switch.ts"],"names":[],"mappings":"AAGA,eAAO,MAAM,WAAW;;;;;;;;;;;;;;;;;;;CAavB,CAAC;AAEF,eAAO,MAAM,eAAe;;;;;;;;;;;;;CAU3B,CAAC"}
+{"version":3,"file":"switch.d.ts","sourceRoot":"","sources":["../../src/components-theme/switch.ts"],"names":[],"mappings":"AAGA,eAAO,MAAM,WAAW;;;;;;;;;;;;;;;;;;;;;CAcvB,CAAC;AAEF,eAAO,MAAM,eAAe;;;;;;;;;;;;;CAU3B,CAAC"}

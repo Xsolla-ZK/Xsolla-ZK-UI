@@ -775,10 +775,12 @@ export declare const iosConfig: {
         light_active_Switch: {
             background: string;
             borderColor: string;
+            outlineColor: string;
         };
         dark_active_Switch: {
             background: string;
             borderColor: string;
+            outlineColor: string;
         };
     } & {
         light_SwitchKnob: {
