@@ -26,7 +26,7 @@ export const PimpleFrame = styled(Stack, {
       }
       return getMappedStyles(pimple.frame);
     },
-  },
+  } as const,
 });
 
 export const PimpleText = styled(Text, {
@@ -43,7 +43,7 @@ export const PimpleText = styled(Text, {
       }
       return getMappedStyles(pimple.label);
     },
-  },
+  } as const,
 });
 
 export const PimpleIcon = createIconComponent(PIMPLE_COMPONENT_NAME, PimpleContext, 'pimple');

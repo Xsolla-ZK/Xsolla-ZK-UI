@@ -1,14 +1,19 @@
 import type { RadioGroupIndicatorProps } from './radio-group.types';
 import type { TamaguiElement } from '@tamagui/core';
 export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
-}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+}>, "native" | "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }>> & {
     value?: string;
@@ -20,14 +25,19 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     native?: boolean;
     accentColor?: string;
 } & import("react").RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
-}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+}>, "native" | "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }>> & {
     value?: string;
@@ -38,11 +48,14 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     name?: string;
     native?: boolean;
     accentColor?: string;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }>> & {
     value?: string;
@@ -54,17 +67,23 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     native?: boolean;
     accentColor?: string;
 }, import("@tamagui/web").StackStyleBase, {
+    size?: import("./radio-group.types").RadioGroupSizes | undefined;
     orientation?: "vertical" | "horizontal" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
-    }>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }>, "native" | "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | "accentColor" | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase | "orientation" | "defaultValue" | "onValueChange" | "required" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     }>> & {
         value?: string;
@@ -75,11 +94,14 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
         name?: string;
         native?: boolean;
         accentColor?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     }>> & {
         value?: string;
@@ -91,6 +113,7 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
         native?: boolean;
         accentColor?: string;
     }, import("@tamagui/web").StackStyleBase, {
+        size?: import("./radio-group.types").RadioGroupSizes | undefined;
         orientation?: "vertical" | "horizontal" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {

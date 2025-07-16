@@ -1,6 +1,5 @@
 import { createElement, isValidElement, useMemo } from 'react';
 import { cloneElement } from 'react';
-import { useContext } from 'react';
 import { getComponentsConfig } from './components-config';
 import { pickByDotNotation } from './objects/pick-by-dot-notation';
 import type { ComponentsConfig } from './components-config';
@@ -29,7 +28,7 @@ export function createIconComponent<ContextType extends { size: string }, Config
   const { getColorFn = () => '$color' } = extra;
 
   return function IconComponent({ children, icon, ...rest }: XORIconProps) {
-    const ctx = useContext(context.context);
+    const ctx = context.useStyledContext();
 
     if (!ctx) {
       throw new Error(

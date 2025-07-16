@@ -1,1 +1,1 @@
-{"version":3,"file":"pimple.d.ts","sourceRoot":"","sources":["../../../src/components/pimple/pimple.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAClD,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,eAAe,CAAC;AAcpD,eAAO,MAAM,MAAM;;;;;;;;;;;;;;;;;;;;;CAIjB,CAAC"}
+{"version":3,"file":"pimple.d.ts","sourceRoot":"","sources":["../../../src/components/pimple/pimple.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAClD,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,eAAe,CAAC;AAiBpD,eAAO,MAAM,MAAM;;;;;;;;;;;;;;;;;;;;;CAIjB,CAAC"}

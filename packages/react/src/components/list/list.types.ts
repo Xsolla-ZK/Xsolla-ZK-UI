@@ -10,12 +10,6 @@ export type ListContextValue = {
 };
 
 export type ListBaseProps = Omit<GetProps<typeof ListFrame>, 'withBoard'>;
-export type ListBoardProps = Omit<GetProps<typeof ListBoardFrame>, 'withBoard'>;
+export type ListBoardProps = GetProps<typeof ListBoardFrame>;
 
-export type ListProps =
-  | ({
-      withBoard: true;
-    } & ListBoardProps)
-  | ({
-      withBoard?: never;
-    } & ListBaseProps);
+export type ListProps = ListBoardProps & ListBaseProps;

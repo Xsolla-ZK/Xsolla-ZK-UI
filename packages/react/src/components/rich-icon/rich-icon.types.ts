@@ -4,20 +4,21 @@ import type { ComponentsConfig } from '../../utils';
 import type { GetProps, UnionableString } from '@tamagui/core';
 import type { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
 
-export type RichIconShape = keyof typeof RICH_ICON_SHAPES;
+export type RichIconShapes = keyof typeof RICH_ICON_SHAPES;
 export type RichIconSizes = keyof ComponentsConfig['richIcon'] | (string & {});
+
+export type RichIconShape = RichIconShapes | false | UnionableString;
 
 export type RichIconContextType = {
   size: RichIconSizes;
   color: ColorType;
   backgroundColor: ColorType;
-  noShape: boolean;
+  shape: RichIconShape;
 };
 
 export type RichIconSharedProps = GetProps<typeof RichIconFrame>;
 
 export interface RichIconProps extends RichIconSharedProps {
-  shape?: RichIconShape | false | UnionableString;
   backdropProps?: GetProps<typeof RichIconShapePath>;
   imageSrc?: string;
   color?: RichIconContextType['color'];

@@ -10,12 +10,6 @@ export type CellContextValue = {
 };
 
 export type CellBaseProps = Omit<GetProps<typeof CellFrame>, 'withBoard'>;
-export type CellBoardProps = Omit<GetProps<typeof CellBoardFrame>, 'withBoard'>;
+export type CellBoardProps = GetProps<typeof CellBoardFrame>;
 
-export type CellProps =
-  | ({
-      withBoard: true;
-    } & CellBoardProps)
-  | ({
-      withBoard?: never;
-    } & CellBaseProps);
+export type CellProps = CellBaseProps & CellBoardProps;

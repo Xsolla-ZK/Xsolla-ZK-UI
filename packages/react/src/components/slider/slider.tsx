@@ -11,6 +11,7 @@ import {
   isClient,
   isWeb,
   useComposedRefs,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core';
 import { useControllableState } from '@tamagui/use-controllable-state';
@@ -542,12 +543,12 @@ const SliderComponent = forwardRef((props: SliderScopedProps<SliderProps>, forwa
     defaultValue = [min],
     value,
     onValueChange = () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-    size: sizeProp = '$500',
     onSlideEnd,
     onSlideMove,
     onSlideStart,
-    ...sliderProps
+    ...propsIn
   } = props;
+  const { size: sizeProp = '$500', ...sliderProps } = useProps(propsIn);
   const sliderRef = useRef<View>(null);
   const composedRefs = useComposedRefs(sliderRef, forwardedRef);
   const thumbRefs = useRef<SliderContextType['thumbs']>(new Map());

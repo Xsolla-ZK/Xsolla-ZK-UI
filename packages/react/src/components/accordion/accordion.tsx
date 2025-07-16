@@ -44,7 +44,6 @@ import type {
 } from './accordion.types';
 import type { TamaguiElement, ViewProps } from '@tamagui/core';
 import type { ForwardedRef, PropsWithChildren } from 'react';
-import type { LayoutChangeEvent } from 'react-native';
 
 const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION_NAME);
 

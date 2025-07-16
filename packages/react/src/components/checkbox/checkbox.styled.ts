@@ -1,7 +1,7 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
 import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
 import { CHECKBOX_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { cloneElement, createElement, isValidElement, useContext } from 'react';
+import { cloneElement, createElement, isValidElement } from 'react';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
 import type {
   CheckboxContextType,
@@ -118,7 +118,7 @@ export const CheckboxOverlay = styled(Stack, {
 
 export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
   const { children, icon, forceMount, disablePassStyles, ...indicatorProps } = props;
-  const ctx = useContext(CheckboxContext.context);
+  const ctx = CheckboxContext.useStyledContext();
 
   const config = getComponentsConfig();
   const componentProps = config.checkbox[ctx.size as keyof typeof config.checkbox];

@@ -1,4 +1,4 @@
-import { getTokenValue, withStaticProperties } from '@tamagui/core';
+import { getTokenValue, useProps, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { getComponentsConfig } from '../../utils';
 import { Loader } from '../loader';
@@ -15,8 +15,9 @@ import type { ColorTokens, TamaguiElement, ThemeName, Token } from '@tamagui/cor
 import type { ForwardedRef } from 'react';
 
 const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
-  forwardRef(
-    ({ children, isLoading, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => (
+  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const { tone = 'brand', isLoading, ...props } = useProps(propsIn);
+    return (
       <FlexButtonFrame
         group={!props.disabled}
         isLoading={isLoading}
@@ -28,8 +29,8 @@ const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
         {!props.disabled && <FlexButtonOverlay />}
         {isLoading ? <FlexButtonLoader /> : children}
       </FlexButtonFrame>
-    ),
-  ),
+    );
+  }),
   {
     disableTheme: true,
   },

@@ -1,4 +1,4 @@
-import { withStaticProperties } from '@tamagui/core';
+import { useProps, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { useIconsPosition } from '../../hooks';
 
@@ -8,7 +8,8 @@ import type { TamaguiElement, ThemeName } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
 export const BadgeComponent = BadgeFrame.styleable<BadgeProps>(
-  forwardRef(({ children, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const { tone = 'brand', ...props } = useProps(propsIn);
     const iconsPosition = useIconsPosition(children, BadgeIcon);
 
     return (

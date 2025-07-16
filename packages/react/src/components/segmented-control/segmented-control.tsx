@@ -3,6 +3,7 @@ import {
   composeRefs,
   isWeb,
   useEvent,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
@@ -35,77 +36,84 @@ function makeSegmentId(baseId: string, value: string) {
 const SegmentedControlComponent = SegmentedControlFrame.styleable<
   SegmentedControlScopedProps<SegmentedControlProps>
 >(
-  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const {
-      __scopeSegmentedControl,
-      value: valueProp,
-      onValueChange,
-      defaultValue,
-      orientation = 'horizontal',
-      dir,
-      activationMode = 'manual',
-      size = '$500',
-      loop = true,
-      ...restProps
-    } = props;
-    const direction = useDirection(dir);
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      onChange: onValueChange,
-      defaultProp: defaultValue ?? '',
-    });
-    const [segments, setSegments] = useState<Record<string, number>>({});
-    const registerSegment = useEvent((value: string) => {
-      setSegments((prev) => ({
-        ...prev,
-        [value]: Object.keys(prev).length,
-      }));
-    });
-    const unregisterSegment = useEvent((value: string) => {
-      setSegments((prev) => {
-        const newSegments = { ...prev };
-        delete newSegments[value];
-        return newSegments;
+  forwardRef(
+    (
+      {
+        __scopeSegmentedControl,
+        value: valueProp,
+        onValueChange,
+        defaultValue,
+        dir,
+        activationMode = 'manual',
+        ...propsIn
+      },
+      forwardedRef: ForwardedRef<TamaguiElement>,
+    ) => {
+      const {
+        orientation = 'horizontal',
+        size = '$500',
+        loop = true,
+        ...props
+      } = useProps(propsIn);
+      const direction = useDirection(dir);
+      const [value, setValue] = useControllableState({
+        prop: valueProp,
+        onChange: onValueChange,
+        defaultProp: defaultValue ?? '',
       });
-    });
-    const ref = useRef<TamaguiElement>(null);
+      const [segments, setSegments] = useState<Record<string, number>>({});
+      const registerSegment = useEvent((value: string) => {
+        setSegments((prev) => ({
+          ...prev,
+          [value]: Object.keys(prev).length,
+        }));
+      });
+      const unregisterSegment = useEvent((value: string) => {
+        setSegments((prev) => {
+          const newSegments = { ...prev };
+          delete newSegments[value];
+          return newSegments;
+        });
+      });
+      const ref = useRef<TamaguiElement>(null);
 
-    return (
-      <SegmentedControlProvider
-        scope={__scopeSegmentedControl}
-        baseId={useId()}
-        value={value}
-        onChange={setValue}
-        orientation={orientation}
-        dir={direction}
-        activationMode={activationMode}
-        size={size}
-        registerSegment={registerSegment}
-        unregisterSegment={unregisterSegment}
-        segments={segments}
-        containerRef={ref}
-      >
-        <RovingFocusGroup
-          __scopeRovingFocusGroup={__scopeSegmentedControl || SEGMENTED_CONTROL_CONTEXT}
+      return (
+        <SegmentedControlProvider
+          scope={__scopeSegmentedControl}
+          baseId={useId()}
+          value={value}
+          onChange={setValue}
           orientation={orientation}
           dir={direction}
-          loop={loop}
-          asChild
+          activationMode={activationMode}
+          size={size}
+          registerSegment={registerSegment}
+          unregisterSegment={unregisterSegment}
+          segments={segments}
+          containerRef={ref}
         >
-          <SegmentedControlFrame
-            role="tablist"
-            direction={direction}
-            data-orientation={orientation}
-            aria-orientation={orientation}
+          <RovingFocusGroup
+            __scopeRovingFocusGroup={__scopeSegmentedControl || SEGMENTED_CONTROL_CONTEXT}
             orientation={orientation}
-            size={size}
-            {...restProps}
-            ref={composeRefs(forwardedRef, ref)}
-          />
-        </RovingFocusGroup>
-      </SegmentedControlProvider>
-    );
-  }),
+            dir={direction}
+            loop={loop}
+            asChild
+          >
+            <SegmentedControlFrame
+              role="tablist"
+              direction={direction}
+              data-orientation={orientation}
+              aria-orientation={orientation}
+              orientation={orientation}
+              size={size}
+              {...props}
+              ref={composeRefs(forwardedRef, ref)}
+            />
+          </RovingFocusGroup>
+        </SegmentedControlProvider>
+      );
+    },
+  ),
 );
 
 const SegmentedControlSegment = SegmentedControlSegmentFrame.styleable<

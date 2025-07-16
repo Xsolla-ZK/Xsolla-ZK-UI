@@ -1,4 +1,4 @@
-import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
+import { useProps, withStaticProperties, type TamaguiElement } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { CellBoardFrame, CellContent, CellContext, CellFrame, CellSlot } from './cell.styled';
 import type { CellBaseProps, CellBoardProps, CellProps } from './cell.types';
@@ -23,18 +23,15 @@ const CellWithoutBoard = CellFrame.styleable(
   },
 );
 
-const CellComponent = forwardRef<TamaguiElement, CellProps>((_props, forwardedRef) => {
-  const { size = 'medium', withBoard = false, ...props } = _props;
-
-  const withBoardProps = props as CellBoardProps;
-  const withoutBoardProps = props as CellBaseProps;
+const CellComponent = forwardRef<TamaguiElement, CellProps>((propsIn, forwardedRef) => {
+  const { size = 'medium', withBoard = false, ...props } = useProps(propsIn);
 
   return (
     <CellContext.Provider {...{ size, withBoard }}>
       {withBoard ? (
-        <CellWithBoard size={size} {...withBoardProps} ref={forwardedRef} />
+        <CellWithBoard size={size} {...(props as CellBoardProps)} ref={forwardedRef} />
       ) : (
-        <CellWithoutBoard size={size} {...withoutBoardProps} ref={forwardedRef} />
+        <CellWithoutBoard size={size} {...(props as CellBaseProps)} ref={forwardedRef} />
       )}
     </CellContext.Provider>
   );

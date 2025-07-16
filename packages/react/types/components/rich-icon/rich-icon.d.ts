@@ -4,28 +4,28 @@ export declare const RichIcon: import("react").ForwardRefExoticComponent<Omit<im
     size?: import("./rich-icon.types").RichIconSizes | undefined;
     backgroundColor?: unknown;
     pressable?: boolean | undefined;
-    noShape?: boolean | undefined;
+    shape?: import("./rich-icon.types").RichIconShape | undefined;
 }>, keyof RichIconProps> & RichIconProps & import("react").RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: import("./rich-icon.types").RichIconSizes | undefined;
     backgroundColor?: unknown;
     pressable?: boolean | undefined;
-    noShape?: boolean | undefined;
+    shape?: import("./rich-icon.types").RichIconShape | undefined;
 }>, keyof RichIconProps> & RichIconProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & RichIconProps, import("@tamagui/web").StackStyleBase, {
     size?: import("./rich-icon.types").RichIconSizes | undefined;
     backgroundColor?: unknown;
     pressable?: boolean | undefined;
-    noShape?: boolean | undefined;
+    shape?: import("./rich-icon.types").RichIconShape | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("./rich-icon.types").RichIconSizes | undefined;
         backgroundColor?: unknown;
         pressable?: boolean | undefined;
-        noShape?: boolean | undefined;
+        shape?: import("./rich-icon.types").RichIconShape | undefined;
     }>, keyof RichIconProps> & RichIconProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & RichIconProps, import("@tamagui/web").StackStyleBase, {
         size?: import("./rich-icon.types").RichIconSizes | undefined;
         backgroundColor?: unknown;
         pressable?: boolean | undefined;
-        noShape?: boolean | undefined;
+        shape?: import("./rich-icon.types").RichIconShape | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Props: import("react").ProviderExoticComponent<Partial<import("./rich-icon.types").RichIconContextType> & {

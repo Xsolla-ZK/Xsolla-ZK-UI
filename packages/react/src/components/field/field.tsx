@@ -1,5 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { withStaticProperties } from '@tamagui/core';
+import { useProps, withStaticProperties } from '@tamagui/core';
 import { useId, useMemo, forwardRef, cloneElement, Children, isValidElement } from 'react';
 import { useChildrenArray } from '../../hooks';
 import { Input } from '../input';
@@ -97,8 +97,8 @@ const FieldErrorValueComponent = FieldHintValue.styleable<FieldHintValueProps>(
 );
 
 const FieldComponent = FieldFrame.styleable<FieldProps>(
-  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
-    const { id: propId, error, size = '$500', ...restProps } = props;
+  forwardRef(({ id: propId, error, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const { size = '$500', ...props } = useProps(propsIn);
 
     const generatedId = useId();
     const id = propId || generatedId;
@@ -115,7 +115,7 @@ const FieldComponent = FieldFrame.styleable<FieldProps>(
     return (
       <FieldContext.Provider {...value}>
         <FieldFrame
-          {...restProps}
+          {...props}
           size={size}
           role="group"
           aria-invalid={Boolean(error)}

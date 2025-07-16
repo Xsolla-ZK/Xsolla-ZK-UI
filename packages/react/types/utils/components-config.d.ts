@@ -1446,6 +1446,17 @@ export declare const defaultComponentsConfig: {
             };
         };
     };
+    tooltip: {
+        frame: {
+            borderRadius: string;
+            minHeight: string;
+            padding: string;
+            gap: string;
+        };
+        label: {
+            typography: string;
+        };
+    };
 };
 type DefaultComponentsConfig = typeof defaultComponentsConfig;
 export interface ComponentsCustomConfig {

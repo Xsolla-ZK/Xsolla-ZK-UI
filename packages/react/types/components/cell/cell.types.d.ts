@@ -7,10 +7,6 @@ export type CellContextValue = {
     withBoard: boolean;
 };
 export type CellBaseProps = Omit<GetProps<typeof CellFrame>, 'withBoard'>;
-export type CellBoardProps = Omit<GetProps<typeof CellBoardFrame>, 'withBoard'>;
-export type CellProps = ({
-    withBoard: true;
-} & CellBoardProps) | ({
-    withBoard?: never;
-} & CellBaseProps);
+export type CellBoardProps = GetProps<typeof CellBoardFrame>;
+export type CellProps = CellBaseProps & CellBoardProps;
 //# sourceMappingURL=cell.types.d.ts.map

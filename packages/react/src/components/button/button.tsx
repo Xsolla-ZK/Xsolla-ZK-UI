@@ -1,4 +1,4 @@
-import { getTokenValue, withStaticProperties } from '@tamagui/core';
+import { getTokenValue, useProps, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { useIconsPosition } from '../../hooks';
 import { getComponentsConfig } from '../../utils';
@@ -10,24 +10,23 @@ import type { ColorTokens, TamaguiElement, ThemeName, Token } from '@tamagui/cor
 import type { ForwardedRef } from 'react';
 
 const ButtonComponent = ButtonFrame.styleable<ButtonProps>(
-  forwardRef(
-    ({ children, isLoading, tone = 'brand', ...props }, ref: ForwardedRef<TamaguiElement>) => {
-      const iconsPosition = useIconsPosition(children, ButtonIcon);
+  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const { tone = 'brand', isLoading, ...props } = useProps(propsIn);
+    const iconsPosition = useIconsPosition(children, ButtonIcon);
 
-      return (
-        <ButtonFrame
-          isLoading={isLoading}
-          theme={tone as unknown as ThemeName}
-          tone={tone}
-          {...iconsPosition}
-          {...props}
-          ref={ref}
-        >
-          {isLoading ? <ButtonLoader /> : children}
-        </ButtonFrame>
-      );
-    },
-  ),
+    return (
+      <ButtonFrame
+        isLoading={isLoading}
+        theme={tone as unknown as ThemeName}
+        tone={tone}
+        {...iconsPosition}
+        {...props}
+        ref={ref}
+      >
+        {isLoading ? <ButtonLoader /> : children}
+      </ButtonFrame>
+    );
+  }),
   {
     disableTheme: true,
   },

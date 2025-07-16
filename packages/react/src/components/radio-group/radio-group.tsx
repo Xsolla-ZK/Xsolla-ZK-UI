@@ -1,7 +1,7 @@
 // rework tamagui implementation of RadioGroup component - @tamagui/radio-headless based
 // https://github.com/tamagui/tamagui/blob/main/code/ui/radio-group/src/createRadioGroup.tsx
 
-import { isWeb, withStaticProperties } from '@tamagui/core';
+import { isWeb, useProps, withStaticProperties } from '@tamagui/core';
 import { themed } from '@tamagui/helpers-icon';
 import {
   useRadioGroup,
@@ -36,48 +36,68 @@ const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
 });
 
 const RadioGroupComponent = RadioGroupFrame.styleable<RadioGroupProps>(
-  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
-    const {
-      value,
-      defaultValue,
-      onValueChange,
-      required = false,
-      disabled = false,
-      name,
-      native,
-      accentColor,
-      orientation = 'vertical',
-      ...rest
-    } = props;
+  forwardRef(
+    (
+      {
+        value,
+        defaultValue,
+        onValueChange,
+        name,
+        native,
+        required = false,
+        disabled = false,
+        ...propsIn
+      },
+      ref: ForwardedRef<TamaguiElement>,
+    ) => {
+      const { size = '$500', accentColor, orientation = 'vertical', ...props } = useProps(propsIn);
 
-    const { providerValue, frameAttrs, rovingFocusGroupAttrs } = useRadioGroup({
-      orientation,
-      name,
-      defaultValue,
-      value,
-      onValueChange,
-      required,
-      disabled,
-      native,
-      accentColor,
-    });
+      const { providerValue, frameAttrs, rovingFocusGroupAttrs } = useRadioGroup({
+        orientation,
+        name,
+        defaultValue,
+        value,
+        onValueChange,
+        required,
+        disabled,
+        native,
+        accentColor,
+      });
 
-    return (
-      <RadioGroupContext.Provider {...providerValue}>
-        <RovingFocusGroup {...rovingFocusGroupAttrs}>
-          <RadioGroupFrame {...frameAttrs} ref={ref} {...rest} />
-        </RovingFocusGroup>
-      </RadioGroupContext.Provider>
-    );
-  }),
+      return (
+        <RadioGroupContext.Provider
+          {...{
+            ...providerValue,
+            size,
+          }}
+        >
+          <RovingFocusGroup {...rovingFocusGroupAttrs}>
+            <RadioGroupFrame {...frameAttrs} ref={ref} {...props} />
+          </RovingFocusGroup>
+        </RadioGroupContext.Provider>
+      );
+    },
+  ),
 );
 
 const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProps>(
-  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
-    const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props;
+  forwardRef(
+    (
+      { value, labelledBy, onPress, onKeyDown, disabled, id, ...propsIn },
+      ref: ForwardedRef<TamaguiElement>,
+    ) => {
+      const { size: sizeCtx } = RadioGroupContext.useStyledContext();
+      const props = useProps(propsIn);
+      const size = props.size ?? sizeCtx;
 
-    const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl, native } =
-      useRadioGroupItem({
+      const {
+        providerValue,
+        bubbleInput,
+        rovingFocusGroupAttrs,
+        frameAttrs,
+        isFormControl,
+        native,
+      } = useRadioGroupItem({
         radioGroupContext: RadioGroupContext as unknown as Context<RadioGroupContextValue>,
         value,
         id,
@@ -87,30 +107,32 @@ const RadioGroupItemComponent = RadioGroupItemFrame.styleable<RadioGroupItemProp
         onKeyDown,
       });
 
-    return (
-      <RadioGroupItemContext.Provider value={providerValue}>
-        {isWeb && native ? (
-          bubbleInput
-        ) : (
-          <>
-            <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
-              <RadioGroupItemFrame
-                group
-                theme={providerValue.checked ? 'active' : undefined}
-                {...frameAttrs}
-                ref={ref}
-                {...rest}
-              >
-                {!frameAttrs.disabled && <RadioGroupOverlay />}
-                {props.children}
-              </RadioGroupItemFrame>
-            </RovingFocusGroup.Item>
-            {isFormControl && bubbleInput}
-          </>
-        )}
-      </RadioGroupItemContext.Provider>
-    );
-  }),
+      return (
+        <RadioGroupItemContext.Provider value={providerValue}>
+          {isWeb && native ? (
+            bubbleInput
+          ) : (
+            <>
+              <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
+                <RadioGroupItemFrame
+                  group
+                  theme={providerValue.checked ? 'active' : undefined}
+                  {...frameAttrs}
+                  ref={ref}
+                  size={size}
+                  {...props}
+                >
+                  {!frameAttrs.disabled && <RadioGroupOverlay />}
+                  {props.children}
+                </RadioGroupItemFrame>
+              </RovingFocusGroup.Item>
+              {isFormControl && bubbleInput}
+            </>
+          )}
+        </RadioGroupItemContext.Provider>
+      );
+    },
+  ),
   {
     disableTheme: true,
   },

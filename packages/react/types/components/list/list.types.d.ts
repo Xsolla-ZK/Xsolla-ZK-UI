@@ -7,10 +7,6 @@ export type ListContextValue = {
     withBoard: boolean;
 };
 export type ListBaseProps = Omit<GetProps<typeof ListFrame>, 'withBoard'>;
-export type ListBoardProps = Omit<GetProps<typeof ListBoardFrame>, 'withBoard'>;
-export type ListProps = ({
-    withBoard: true;
-} & ListBoardProps) | ({
-    withBoard?: never;
-} & ListBaseProps);
+export type ListBoardProps = GetProps<typeof ListBoardFrame>;
+export type ListProps = ListBoardProps & ListBaseProps;
 //# sourceMappingURL=list.types.d.ts.map

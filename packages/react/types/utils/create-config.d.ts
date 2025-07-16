@@ -1449,6 +1449,17 @@ export declare function createConfig<T extends Parameters<typeof createTamagui>[
                 };
             };
         } & C["toast"];
+        tooltip: {
+            frame: {
+                borderRadius: string;
+                minHeight: string;
+                padding: string;
+                gap: string;
+            };
+            label: {
+                typography: string;
+            };
+        } & C["tooltip"];
     };
 };
 //# sourceMappingURL=create-config.d.ts.map

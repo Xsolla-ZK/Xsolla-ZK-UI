@@ -3,6 +3,7 @@ import {
   createStyledContext,
   isWeb,
   useEvent,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core';
 import { ScrollView } from '@tamagui/scroll-view';
@@ -36,11 +37,10 @@ const { Provider: ChipsContextProvider, useStyledContext: useChipsContextProvide
 const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
   forwardRef(
     (
-      {
-        children,
-        value: valueProp,
-        onValueChange,
-        defaultValue,
+      { children, value: valueProp, onValueChange, defaultValue, ...propsIn },
+      ref: ForwardedRef<TamaguiElement>,
+    ) => {
+      const {
         tone = 'brand',
         variant = 'primary',
         size = '$500',
@@ -48,9 +48,7 @@ const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
         scrollable = false,
         singleMode = false,
         ...props
-      },
-      ref: ForwardedRef<TamaguiElement>,
-    ) => {
+      } = useProps(propsIn);
       const [chipsCount, setChipsCount] = useState(0);
       const registerChip = useEvent(() => setChipsCount((v) => v + 1));
       const unregisterChip = useEvent(() => setChipsCount((v) => v - 1));
@@ -137,7 +135,8 @@ const ChipsComponent = ChipsFrame.styleable<ChipsProps>(
 );
 
 const ChipComponent = ChipFrame.styleable<ChipProps>(
-  forwardRef(({ children, tone, value, variant, ...props }, ref: ForwardedRef<TamaguiElement>) => {
+  forwardRef(({ children, value, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const { tone, variant, ...props } = useProps(propsIn);
     const iconsPosition = useIconsPosition(children, ChipIcon);
     const ctx = useChipsContextProvider();
 

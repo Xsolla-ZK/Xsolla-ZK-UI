@@ -1,10 +1,10 @@
 import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
 import { type IconProps } from '@tamagui/helpers-icon';
 import { RICH_ICON_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { cloneElement, createElement, isValidElement, useContext } from 'react';
+import { cloneElement, createElement, isValidElement } from 'react';
 import { Path as _Path, Svg as _Svg } from 'react-native-svg';
 import { getComponentsConfig, getMappedStyles } from '../../utils';
-import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
+import type { RichIconContextType, RichIconShape, RichIconSizes } from './rich-icon.types';
 import type { XORIconProps } from '../../types';
 import type { GetProps } from '@tamagui/core';
 
@@ -12,7 +12,7 @@ export const RichIconContext = createStyledContext<RichIconContextType>({
   size: '$500',
   color: '$color',
   backgroundColor: '$background',
-  noShape: false,
+  shape: 'circle',
 });
 
 export const RichIconFrame = styled(Stack, {
@@ -29,9 +29,7 @@ export const RichIconFrame = styled(Stack, {
     backgroundColor: () => ({
       backgroundColor: 'transparent',
     }),
-    noShape: {
-      false: {},
-    },
+    shape: (_val: RichIconShape) => ({}),
     pressable: {
       true: {
         tag: 'button',
@@ -65,7 +63,7 @@ export const RichIconFrame = styled(Stack, {
     },
   } as const,
   defaultVariants: {
-    noShape: false,
+    shape: 'circle',
     size: '$500',
     backgroundColor: '$background',
     pressable: false,
@@ -78,7 +76,7 @@ const Svg = styled(_Svg, {
 });
 
 export const RichIconShapeSvg = (props: Omit<GetProps<typeof Svg>, 'width' | 'height'>) => {
-  const { size, backgroundColor } = useContext(RichIconContext.context);
+  const { size, backgroundColor } = RichIconContext.useStyledContext();
 
   const config = getComponentsConfig();
   const componentProps = config.richIcon[size as keyof typeof config.richIcon];
@@ -106,7 +104,7 @@ export const RichIconShapePath = styled(
 );
 
 export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
-  const ctx = useContext(RichIconContext.context);
+  const ctx = RichIconContext.useStyledContext();
 
   if (!ctx) {
     throw new Error(
@@ -123,7 +121,7 @@ export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
     );
   }
 
-  const iconSize = ctx.noShape ? componentProps.frame.minSize : componentProps.icon.size;
+  const iconSize = ctx.shape ? componentProps.icon.size : componentProps.frame.minSize;
 
   if (icon) {
     return createElement(icon, {
@@ -151,12 +149,6 @@ export const RichIconContent = styled(Stack, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-
-  variants: {
-    noShape: () => ({
-      backgroundColor: 'transparent',
-    }),
-  } as const,
 });
 
 export const RichIconText = styled(Text, {

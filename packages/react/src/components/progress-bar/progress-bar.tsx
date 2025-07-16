@@ -1,4 +1,4 @@
-import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
+import { useProps, withStaticProperties, type TamaguiElement } from '@tamagui/core';
 import { forwardRef } from 'react';
 import {
   ProgressBarActiveTrack,
@@ -9,12 +9,12 @@ import type { ProgressBarActiveTrackProps, ProgressBarProps } from './progress-b
 import type { ForwardedRef } from 'react';
 
 const ProgressBarComponent = forwardRef(
-  (props: ProgressBarProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const { value, size = '$500', ...progressBarProps } = props;
+  ({ value, ...propsIn }: ProgressBarProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
+    const { size = '$500', ...props } = useProps(propsIn);
 
     return (
       <ProgressBarContext.Provider {...{ size, value }}>
-        <ProgressBarFrame {...progressBarProps} ref={forwardedRef} />
+        <ProgressBarFrame {...props} ref={forwardedRef} />
       </ProgressBarContext.Provider>
     );
   },

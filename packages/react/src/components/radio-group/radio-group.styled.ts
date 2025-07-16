@@ -19,6 +19,7 @@ export const RadioGroupFrame = styled(Stack, {
   // context: RadioGroupContext,
 
   variants: {
+    size: (_val: RadioGroupSizes) => ({}),
     orientation: {
       horizontal: {
         flexDirection: 'row',

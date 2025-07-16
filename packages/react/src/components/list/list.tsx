@@ -1,4 +1,4 @@
-import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
+import { useProps, withStaticProperties, type TamaguiElement } from '@tamagui/core';
 import { forwardRef } from 'react';
 import {
   ListBoardFrame,
@@ -32,18 +32,15 @@ const ListWithoutBoard = ListFrame.styleable(
   },
 );
 
-const ListComponent = forwardRef<TamaguiElement, ListProps>((_props, forwardedRef) => {
-  const { size = '$500', withBoard = false, ...props } = _props;
-
-  const withBoardProps = props as ListBoardProps;
-  const withoutBoardProps = props as ListBaseProps;
+const ListComponent = forwardRef<TamaguiElement, ListProps>((propsIn, forwardedRef) => {
+  const { size = '$500', withBoard = false, ...props } = useProps(propsIn);
 
   return (
     <ListContext.Provider {...{ size, withBoard }}>
       {withBoard ? (
-        <ListWithBoard size={size} {...withBoardProps} ref={forwardedRef} />
+        <ListWithBoard size={size} {...(props as ListBoardProps)} ref={forwardedRef} />
       ) : (
-        <ListWithoutBoard size={size} {...withoutBoardProps} ref={forwardedRef} />
+        <ListWithoutBoard size={size} {...(props as ListBaseProps)} ref={forwardedRef} />
       )}
     </ListContext.Provider>
   );

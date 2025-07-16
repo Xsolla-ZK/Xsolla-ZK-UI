@@ -7,6 +7,7 @@ import {
   composeEventHandlers,
   isWeb,
   shouldRenderNativePlatform,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
@@ -27,17 +28,10 @@ const { Provider: SwitchProvider, useStyledContext: useSwitchContext } = SwitchC
 const SwitchComponent = SwitchFrame.styleable<SwitchProps>(
   forwardRef(
     (
-      {
-        size,
-        native,
-        nativeProps,
-        checked: checkedProp,
-        defaultChecked,
-        onCheckedChange,
-        ...props
-      },
+      { native, nativeProps, checked: checkedProp, defaultChecked, onCheckedChange, ...propsIn },
       forwardedRef: ForwardedRef<TamaguiElement>,
     ) => {
+      const { size = '$600', ...props } = useProps(propsIn);
       const [checked, setChecked] = useControllableState({
         prop: checkedProp,
         defaultProp: defaultChecked || false,
@@ -71,13 +65,14 @@ const SwitchComponent = SwitchFrame.styleable<SwitchProps>(
       }
 
       const disabled = Boolean(props.disabled);
-      const value = useMemo(() => ({ checked, disabled }), [checked, disabled]);
+      const providerValue = useMemo(() => ({ checked, disabled, size }), [checked, disabled, size]);
 
       return (
-        <SwitchProvider {...value}>
+        <SwitchProvider {...providerValue}>
           <SwitchFrame
             ref={switchRef}
             tag="button"
+            size={size}
             {...(isWeb && { type: 'button' })}
             {...props}
             {...switchProps}

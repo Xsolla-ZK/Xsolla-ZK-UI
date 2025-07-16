@@ -1,4 +1,4 @@
-import { useTheme, withStaticProperties } from '@tamagui/core';
+import { useProps, useTheme, withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import { LoaderContext, LoaderFrame, LoaderSpin, LoaderText } from './loader.styled';
@@ -8,26 +8,23 @@ import type { ForwardedRef } from 'react';
 import type { ColorValue } from 'react-native';
 
 const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
-  forwardRef(
-    (
-      {
-        children,
-        size = 24,
-        tone = 'brand',
-        mainColor = '$color',
-        spinColor = '$spinColor',
-        ...props
-      },
-      ref: ForwardedRef<TamaguiElement>,
-    ) => (
+  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
+    const {
+      size = 24,
+      tone = 'brand',
+      mainColor = '$color',
+      spinColor = '$spinColor',
+      ...props
+    } = useProps(propsIn);
+    return (
       <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
         <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
           <LoaderSpinner />
           {children}
         </LoaderFrame>
       </LoaderContext.Provider>
-    ),
-  ),
+    );
+  }),
   { disableTheme: true },
 );
 

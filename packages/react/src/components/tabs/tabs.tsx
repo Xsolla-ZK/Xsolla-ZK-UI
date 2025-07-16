@@ -8,6 +8,7 @@ import {
   composeRefs,
   isWeb,
   useEvent,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
@@ -51,58 +52,61 @@ function makeContentId(baseId: string, value: string) {
 }
 
 const TabsComponent = TabsFrame.styleable<TabsScopedProps<TabsProps>>(
-  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const {
-      __scopeTabs,
-      value: valueProp,
-      onValueChange,
-      defaultValue,
-      orientation = 'horizontal',
-      dir,
-      activationMode = 'manual',
-      size = '$500',
-      ...tabsProps
-    } = props;
-    const direction = useDirection(dir);
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      onChange: onValueChange,
-      defaultProp: defaultValue ?? '',
-    });
-    const [tabsCount, setTabsCount] = useState(0);
-    const [tabLayout, setTabLayout] = useState<TabLayout>();
-    const registerTab = useEvent(() => setTabsCount((v) => v + 1));
-    const unregisterTab = useEvent(() => setTabsCount((v) => v - 1));
-    const setActiveTabLayout = useEvent((layout: TabLayout) => setTabLayout(layout));
-    const ref = useRef<TamaguiElement>(null);
+  forwardRef(
+    (
+      {
+        __scopeTabs,
+        value: valueProp,
+        onValueChange,
+        defaultValue,
+        dir,
+        activationMode = 'manual',
+        ...propsIn
+      },
+      forwardedRef: ForwardedRef<TamaguiElement>,
+    ) => {
+      const { orientation = 'horizontal', size = '$500', ...props } = useProps(propsIn);
+      const direction = useDirection(dir);
+      const [value, setValue] = useControllableState({
+        prop: valueProp,
+        onChange: onValueChange,
+        defaultProp: defaultValue ?? '',
+      });
+      const [tabsCount, setTabsCount] = useState(0);
+      const [tabLayout, setTabLayout] = useState<TabLayout>();
+      const registerTab = useEvent(() => setTabsCount((v) => v + 1));
+      const unregisterTab = useEvent(() => setTabsCount((v) => v - 1));
+      const setActiveTabLayout = useEvent((layout: TabLayout) => setTabLayout(layout));
+      const ref = useRef<TamaguiElement>(null);
 
-    return (
-      <TabsProvider
-        scope={__scopeTabs}
-        baseId={useId()}
-        value={value}
-        onChange={setValue}
-        orientation={orientation}
-        dir={direction}
-        activationMode={activationMode}
-        size={size}
-        registerTab={registerTab}
-        tabsCount={tabsCount}
-        unregisterTab={unregisterTab}
-        activeTabLayout={tabLayout}
-        containerRef={ref}
-        setActiveTabLayout={setActiveTabLayout}
-      >
-        <TabsFrame
-          direction={direction}
+      return (
+        <TabsProvider
+          scope={__scopeTabs}
+          baseId={useId()}
+          value={value}
+          onChange={setValue}
           orientation={orientation}
-          data-orientation={orientation}
-          {...tabsProps}
-          ref={composeRefs(forwardedRef, ref)}
-        />
-      </TabsProvider>
-    );
-  }),
+          dir={direction}
+          activationMode={activationMode}
+          size={size}
+          registerTab={registerTab}
+          tabsCount={tabsCount}
+          unregisterTab={unregisterTab}
+          activeTabLayout={tabLayout}
+          containerRef={ref}
+          setActiveTabLayout={setActiveTabLayout}
+        >
+          <TabsFrame
+            direction={direction}
+            orientation={orientation}
+            data-orientation={orientation}
+            {...props}
+            ref={composeRefs(forwardedRef, ref)}
+          />
+        </TabsProvider>
+      );
+    },
+  ),
 );
 
 const TabsList = forwardRef<TamaguiElement, TabsScopedProps<TabsListProps>>(
