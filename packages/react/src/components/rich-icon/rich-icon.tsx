@@ -42,7 +42,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
                 />
               </ClipPath>
             </Defs>
-            {imageSrc ? (
+            {imageSrc && (
               <>
                 <Rect
                   width="100%"
@@ -59,15 +59,14 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
                   />
                 </G>
               </>
-            ) : (
-              <RichIconShapePath
-                d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
-                strokeWidth={shapeStrokeWidth}
-                {...restBackdropProps}
-                fill="currentColor"
-                clipPath={`url(#icon-clip-${shape}`}
-              />
             )}
+            <RichIconShapePath
+              d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
+              strokeWidth={shapeStrokeWidth}
+              {...restBackdropProps}
+              fill="currentColor"
+              clipPath={`url(#icon-clip-${shape}`}
+            />
           </RichIconShapeSvg>
         )}
         {shape ? <RichIconContent>{children}</RichIconContent> : children}
