@@ -41,6 +41,7 @@
     "pagefind": "^1.3.0",
     "react-native": "catalog:reactNative",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:typescript-eslint"
+    "typescript-eslint": "catalog:typescript-eslint",
+    "webpack": "5.101.1"
   }
 }

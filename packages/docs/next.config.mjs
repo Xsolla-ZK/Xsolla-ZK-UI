@@ -32,7 +32,7 @@ export default () => {
     typescript: {
       ignoreBuildErrors: true,
     },
-    transpilePackages: ['react-native-web'],
+    transpilePackages: ['react-native-web', 'react-native-reanimated'],
     images: {
       unoptimized: true,
     },

@@ -449,7 +449,7 @@ importers:
         version: 9.34.0
       '@tamagui/next-plugin':
         specifier: catalog:tamagui
-        version: 1.132.23(@babel/core@7.28.3)(next@15.3.3(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.3)
+        version: 1.132.23(@babel/core@7.28.3)(next@15.3.3(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.1)
       '@types/node':
         specifier: 'catalog:'
         version: 22.18.1
@@ -489,6 +489,9 @@ importers:
       typescript-eslint:
         specifier: catalog:typescript-eslint
         version: 8.32.1(eslint@9.34.0)(typescript@5.8.3)
+      webpack:
+        specifier: 5.101.1
+        version: 5.101.1
 
   packages/icons:
     dependencies:
@@ -8753,8 +8756,8 @@ packages:
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
-  webpack@5.101.3:
-    resolution: {integrity: sha512-7b0dTKR3Ed//AD/6kkx/o7duS8H3f1a4w3BYpIriX4BzIhjkn4teo05cptsxvLesHFKK5KObnadmCHBwGc+51A==}
+  webpack@5.101.1:
+    resolution: {integrity: sha512-rHY3vHXRbkSfhG6fH8zYQdth/BtDgXXuR2pHF++1f/EBkI8zkgM5XWfsC3BvOoW9pr1CvZ1qQCxhCEsbNgT50g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -11583,21 +11586,21 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@tamagui/next-plugin@1.132.23(@babel/core@7.28.3)(next@15.3.3(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.3)':
+  '@tamagui/next-plugin@1.132.23(@babel/core@7.28.3)(next@15.3.3(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.1)':
     dependencies:
       '@babel/preset-react': 7.27.1(@babel/core@7.28.3)
       '@tamagui/proxy-worm': 1.132.23
       '@tamagui/react-native-svg': 1.132.23
       '@tamagui/static': 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)
-      babel-loader: 9.2.1(@babel/core@7.28.3)(webpack@5.101.3)
+      babel-loader: 9.2.1(@babel/core@7.28.3)(webpack@5.101.1)
       browserslist: 4.25.4
-      css-loader: 6.11.0(webpack@5.101.3)
-      esbuild-loader: 4.3.0(webpack@5.101.3)
-      file-loader: 6.2.0(webpack@5.101.3)
-      html-webpack-plugin: 5.6.4(webpack@5.101.3)
+      css-loader: 6.11.0(webpack@5.101.1)
+      esbuild-loader: 4.3.0(webpack@5.101.1)
+      file-loader: 6.2.0(webpack@5.101.1)
+      html-webpack-plugin: 5.6.4(webpack@5.101.1)
       next: 15.3.3(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      tamagui-loader: 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.3)
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.101.3))(webpack@5.101.3)
+      tamagui-loader: 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.1)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.101.1))(webpack@5.101.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@rspack/core'
@@ -13041,12 +13044,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-loader@9.2.1(@babel/core@7.28.3)(webpack@5.101.3):
+  babel-loader@9.2.1(@babel/core@7.28.3)(webpack@5.101.1):
     dependencies:
       '@babel/core': 7.28.3
       find-cache-dir: 4.0.0
       schema-utils: 4.3.2
-      webpack: 5.101.3
+      webpack: 5.101.1
 
   babel-plugin-istanbul@6.1.1:
     dependencies:
@@ -13596,7 +13599,7 @@ snapshots:
     dependencies:
       hyphenate-style-name: 1.1.0
 
-  css-loader@6.11.0(webpack@5.101.3):
+  css-loader@6.11.0(webpack@5.101.1):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.6)
       postcss: 8.5.6
@@ -13607,7 +13610,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.7.2
     optionalDependencies:
-      webpack: 5.101.3
+      webpack: 5.101.1
 
   css-select@4.3.0:
     dependencies:
@@ -14000,7 +14003,7 @@ snapshots:
 
   dotenv-expand@11.0.7:
     dependencies:
-      dotenv: 16.4.7
+      dotenv: 16.6.1
 
   dotenv@16.4.7: {}
 
@@ -14157,12 +14160,12 @@ snapshots:
       esast-util-from-estree: 2.0.0
       vfile-message: 4.0.3
 
-  esbuild-loader@4.3.0(webpack@5.101.3):
+  esbuild-loader@4.3.0(webpack@5.101.1):
     dependencies:
       esbuild: 0.25.9
       get-tsconfig: 4.10.1
       loader-utils: 2.0.4
-      webpack: 5.101.3
+      webpack: 5.101.1
       webpack-sources: 1.4.3
 
   esbuild-plugin-es5@2.1.1(esbuild@0.25.9):
@@ -14697,11 +14700,11 @@ snapshots:
     dependencies:
       flat-cache: 4.0.1
 
-  file-loader@6.2.0(webpack@5.101.3):
+  file-loader@6.2.0(webpack@5.101.1):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0
-      webpack: 5.101.3
+      webpack: 5.101.1
 
   fill-range@7.1.1:
     dependencies:
@@ -15164,7 +15167,7 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
-  html-webpack-plugin@5.6.4(webpack@5.101.3):
+  html-webpack-plugin@5.6.4(webpack@5.101.1):
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
@@ -15172,7 +15175,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.2.3
     optionalDependencies:
-      webpack: 5.101.3
+      webpack: 5.101.1
 
   htmlparser2@6.1.0:
     dependencies:
@@ -18343,13 +18346,13 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  tamagui-loader@1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.3):
+  tamagui-loader@1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(webpack@5.101.1):
     dependencies:
       '@tamagui/cli-color': 1.132.23
       '@tamagui/core': 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)
       '@tamagui/static': 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)
       '@tamagui/web': 1.132.23(react-dom@19.1.0(react@19.1.0))(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)
-      esbuild-loader: 4.3.0(webpack@5.101.3)
+      esbuild-loader: 4.3.0(webpack@5.101.1)
       esm-resolve: 1.0.11
       fs-extra: 11.3.1
       loader-utils: 3.3.1
@@ -18379,14 +18382,14 @@ snapshots:
       ansi-escapes: 4.3.2
       supports-hyperlinks: 2.3.0
 
-  terser-webpack-plugin@5.3.14(webpack@5.101.3):
+  terser-webpack-plugin@5.3.14(webpack@5.101.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.30
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
       terser: 5.44.0
-      webpack: 5.101.3
+      webpack: 5.101.1
 
   terser@5.44.0:
     dependencies:
@@ -18744,14 +18747,14 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  url-loader@4.1.1(file-loader@6.2.0(webpack@5.101.3))(webpack@5.101.3):
+  url-loader@4.1.1(file-loader@6.2.0(webpack@5.101.1))(webpack@5.101.1):
     dependencies:
       loader-utils: 2.0.4
       mime-types: 2.1.35
       schema-utils: 3.3.0
-      webpack: 5.101.3
+      webpack: 5.101.1
     optionalDependencies:
-      file-loader: 6.2.0(webpack@5.101.3)
+      file-loader: 6.2.0(webpack@5.101.1)
 
   use-sync-external-store@1.5.0(react@19.1.0):
     dependencies:
@@ -19031,7 +19034,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.101.3:
+  webpack@5.101.1:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -19055,7 +19058,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.3
-      terser-webpack-plugin: 5.3.14(webpack@5.101.3)
+      terser-webpack-plugin: 5.3.14(webpack@5.101.1)
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
