@@ -1,10 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs';
+import { isClient, isWeb, View, type GetRef } from '@tamagui/core';
 import { ScrollView } from '@tamagui/scroll-view';
+import { useControllableState } from '@tamagui/use-controllable-state';
 import { SHEET_SCROLL_VIEW_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { useSheetContext } from './sheet.context';
 import type { SheetScopedProps } from './sheet.types';
-import type { GetRef } from '@tamagui/core';
 import type { ScrollViewProps } from '@tamagui/scroll-view';
 import type { ScrollView as RNScrollView } from 'react-native';
 
@@ -14,13 +15,17 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
       __scopeSheet,
       children,
       onScroll,
-      scrollEnabled,
+      scrollEnabled: scrollEnabledProp,
       ...props
     }: SheetScopedProps<ScrollViewProps>,
     ref,
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_COMPONENT_NAME, __scopeSheet);
-    const { scrollBridge, scrollEnabled: scrollEnabled_, setHasScrollView } = context;
+    const { scrollBridge, setHasScrollView } = context;
+    const [scrollEnabled, setScrollEnabled_] = useControllableState({
+      prop: scrollEnabledProp,
+      defaultProp: true,
+    });
     const scrollRef = useRef<RNScrollView | null>(null);
 
     // could make it so it has negative bottom margin and then pads the bottom content
@@ -28,19 +33,19 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
     // or more ideally could use context to register if it has a scrollview and change behavior
     // const offscreenSize = useSheetOffscreenSize(context)
 
-    // const setScrollEnabled = (next: boolean) => {
-    //   scrollRef.current?.setNativeProps?.({
-    //     scrollEnabled: next,
-    //   })
-    //   setScrollEnabled_(next)
-    // }
+    const setScrollEnabled = (next: boolean) => {
+      scrollRef.current?.setNativeProps?.({
+        scrollEnabled: next,
+      });
+      setScrollEnabled_(next);
+    };
 
     const state = useRef({
       lastPageY: 0,
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
       isScrolling: false,
-      isDragging: false,
+      isDraggingScrollArea: false,
     });
 
     useEffect(() => {
@@ -51,13 +56,14 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
     }, []);
 
     const release = () => {
-      if (!state.current.isDragging) {
+      if (!state.current.isDraggingScrollArea) {
         return;
       }
-      state.current.isDragging = false;
+      state.current.isDraggingScrollArea = false;
       scrollBridge.scrollStartY = -1;
+      scrollBridge.scrollLock = false;
       state.current.isScrolling = false;
-      // setScrollEnabled(true)
+      setScrollEnabled(true);
       let vy = 0;
       if (state.current.dys.length) {
         const recentDys = state.current.dys.slice(-10);
@@ -72,11 +78,70 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
       });
     };
 
-    // Override scrollEnabled if provided
-    const scrollable = scrollEnabled ?? scrollEnabled_;
+    const scrollable = scrollEnabled;
+
+    useEffect(() => {
+      if (!isClient) return;
+      if (!scrollRef.current) return;
+
+      const controller = new AbortController();
+
+      const node = scrollRef.current?.getScrollableNode() as HTMLElement | undefined;
+
+      if (!node) {
+        return;
+      }
+
+      // this is unfortuantely the only way to prevent a scroll once a scroll already started
+      // we just keep setting it back to the last value - it should only ever be 0 as this only
+      // ever runs when you  scroll down, then back to top and start dragging, then back to scroll
+      node.addEventListener(
+        'touchmove',
+        (e) => {
+          if (scrollBridge.isParentDragging) {
+            node.scrollTo({
+              top: scrollBridge.y,
+              behavior: 'instant',
+            });
+            // can't preventdefault its not cancellable
+          }
+        },
+        {
+          signal: controller.signal,
+          passive: false,
+        },
+      );
+
+      const disposeBridgeListen = scrollBridge.onParentDragging((val) => {
+        // if (val) {}
+      });
+
+      return () => {
+        disposeBridgeListen();
+        controller.abort();
+      };
+    }, [scrollRef]);
+
+    const [hasScrollableContent, setHasScrollableContent] = useState(true);
+    const parentHeight = useRef(0);
+    const contentHeight = useRef(0);
+
+    const setIsScrollable = () => {
+      if (parentHeight.current && contentHeight.current) {
+        setHasScrollableContent(contentHeight.current > parentHeight.current);
+      }
+    };
+
+    useEffect(() => {
+      scrollBridge.hasScrollableContent = hasScrollableContent;
+    }, [hasScrollableContent]);
 
     return (
       <ScrollView
+        onLayout={(e) => {
+          parentHeight.current = Math.ceil(e.nativeEvent.layout.height);
+          setIsScrollable();
+        }}
         ref={composeRefs(scrollRef, ref)}
         flex={1}
         scrollEventThrottle={8}
@@ -89,6 +154,10 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset;
           scrollBridge.y = y;
+
+          if (isWeb) {
+            scrollBridge.scrollLock = y > 0;
+          }
           if (y > 0) {
             scrollBridge.scrollStartY = -1;
           }
@@ -106,47 +175,74 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
         }}
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1;
-          state.current.isDragging = true;
+          state.current.isDraggingScrollArea = true;
           return scrollable;
         }}
         // setting to false while onResponderMove is disabled
-        onMoveShouldSetResponder={() => scrollable}
-        // somehow disabling works better, regression, no more nice drag continue scroll
-        // onResponderMove={(e) => {
-        //   const { pageY } = e.nativeEvent
+        onMoveShouldSetResponder={(e) => scrollable}
+        contentContainerStyle={{
+          minHeight: '100%',
+        }}
+        onResponderMove={(e) => {
+          // limiting to web as its tested on web
+          if (isWeb) {
+            const { pageY } = e.nativeEvent;
 
-        //   if (state.current.isScrolling) {
-        //     return
-        //   }
+            if (!state.current.isScrolling) {
+              if (scrollBridge.scrollStartY === -1) {
+                scrollBridge.scrollStartY = pageY;
+                state.current.lastPageY = pageY;
+              }
+            }
 
-        //   if (scrollBridge.scrollStartY === -1) {
-        //     scrollBridge.scrollStartY = pageY
-        //     state.current.lastPageY = pageY
-        //   }
+            const dragAt = pageY - scrollBridge.scrollStartY;
+            const dy = pageY - state.current.lastPageY;
+            state.current.lastPageY = pageY; // after dy
+            const isDraggingUp = dy < 0;
+            const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY;
 
-        //   const dragAt = pageY - scrollBridge.scrollStartY
-        //   const dy = pageY - state.current.lastPageY
-        //   state.current.lastPageY = pageY // after dy
-        //   const isDraggingUp = dy < 0
-        //   const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+            const shouldScrollLock =
+              hasScrollableContent && (dy === 0 || isDraggingUp) && isPaneAtTop;
 
-        //   if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
-        //     state.current.isScrolling = true
-        //     setScrollEnabled(true)
-        //     return
-        //   }
+            if (shouldScrollLock && !state.current.isScrolling) {
+              state.current.isScrolling = true;
+              scrollBridge.scrollLock = true;
+              setScrollEnabled(true);
+              return;
+            }
 
-        //   setScrollEnabled(false)
-        //   scrollBridge.drag(dragAt)
-        //   state.current.dragAt = dragAt
-        //   state.current.dys.push(dy)
-        //   // only do every so often, cut down to 10 again
-        //   if (state.current.dys.length > 100) {
-        //     state.current.dys = state.current.dys.slice(-10)
-        //   }
-        // }}
+            const isDraggingUpFromTopOnFirstScroll =
+              !state.current.isScrolling && dy > 0 && scrollBridge.y === 0;
+
+            if (!isDraggingUpFromTopOnFirstScroll && scrollBridge.y >= 0) {
+              return;
+            }
+
+            setScrollEnabled(false);
+            scrollBridge.drag(dragAt);
+            state.current.dragAt = dragAt;
+            state.current.dys.push(dy);
+            // only do every so often, cut down to 10 again
+            if (state.current.dys.length > 100) {
+              state.current.dys = state.current.dys.slice(-10);
+            }
+          }
+        }}
         {...props}
       >
+        {/* content height measurer */}
+        <View
+          position="absolute"
+          inset={0}
+          pointerEvents="none"
+          zIndex={-1}
+          onLayout={(e) => {
+            // found that contentHeight can be 0.x higher than parent when not scrollable
+            contentHeight.current = Math.floor(e.nativeEvent.layout.height);
+            setIsScrollable();
+          }}
+        />
+
         {children}
       </ScrollView>
     );

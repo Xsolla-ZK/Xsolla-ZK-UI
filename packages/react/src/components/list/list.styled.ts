@@ -1,4 +1,4 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   LIST_BOARD_COMPONENT_NAME,
   LIST_COMPONENT_NAME,
@@ -6,20 +6,27 @@ import {
   LIST_TITLE_COMPONENT_NAME,
   LIST_TITLE_VALUE_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { Board } from '../board';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
+import { withBoardStyled } from '../board';
 import { Typography } from '../typography';
 import type { ListContextValue, ListSizes } from './list.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 
-export const ListContext = createStyledContext<ListContextValue>({
-  size: '$500',
-  withBoard: false,
-});
+export const ListContext = createStyledMediaContext(
+  {
+    size: '$500',
+    withBoard: false,
+  } as ListContextValue,
+  ['size'],
+);
 
-export const ListFrame = styled(Stack, {
+export const ListFrame = smartContextStyled(Stack, {
   name: LIST_COMPONENT_NAME,
-  context: ListContext,
 
   justifyContent: 'center',
 
@@ -52,32 +59,35 @@ export const ListFrame = styled(Stack, {
   },
 });
 
-export const ListBoardFrame = styled(Board, {
-  name: LIST_BOARD_COMPONENT_NAME,
-  context: ListContext,
+export const ListBoardFrame = withBoardStyled(
+  {
+    name: LIST_BOARD_COMPONENT_NAME,
 
-  justifyContent: 'center',
-  backgroundColor: '$background',
+    justifyContent: 'center',
+    backgroundColor: '$background',
 
-  variants: {
-    withBoard: {
-      true: {},
-      false: {},
-    },
-    size: (val: ListSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.list.board[val as keyof typeof config.list.board];
+    variants: {
+      withBoard: {
+        true: {},
+        false: {},
+      },
+      size: (val: ListSizes) => {
+        const config = getComponentsConfig();
+        const componentProps = config.list.board[val as keyof typeof config.list.board];
 
-      if (!componentProps) {
-        return {};
-      }
-      return getMappedStyles(componentProps.frame);
-    },
-  } as const,
-});
+        if (!componentProps) {
+          return {};
+        }
+        return getMappedStyles(componentProps.frame);
+      },
+    } as const,
+  },
+  undefined,
+  'list',
+);
 
-export const ListRow = styled(Stack, {
-  context: ListContext,
+export const ListRow = smartContextStyled(Stack, {
+  // context: ListContext,
 
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -97,7 +107,7 @@ export const ListRow = styled(Stack, {
   } as const,
 });
 
-export const ListTitle = styled(Typography, {
+export const ListTitle = smartContextStyled(Typography, {
   name: LIST_TITLE_COMPONENT_NAME,
   context: ListContext,
 
@@ -119,14 +129,14 @@ export const ListTitle = styled(Typography, {
   } as const,
 });
 
-export const ListTitleValue = styled(ListTitle, {
+export const ListTitleValue = smartContextStyled(ListTitle, {
   name: LIST_TITLE_VALUE_COMPONENT_NAME,
 
   fontWeight: '$numeric',
   color: '$color',
 });
 
-export const ListSubtitle = styled(Typography, {
+export const ListSubtitle = smartContextStyled(Typography, {
   name: LIST_SUBTITLE_COMPONENT_NAME,
   context: ListContext,
 
@@ -148,6 +158,6 @@ export const ListSubtitle = styled(Typography, {
   } as const,
 });
 
-export const ListSubtitleValue = styled(ListSubtitle, {
+export const ListSubtitleValue = smartContextStyled(ListSubtitle, {
   fontWeight: '$numeric',
 });

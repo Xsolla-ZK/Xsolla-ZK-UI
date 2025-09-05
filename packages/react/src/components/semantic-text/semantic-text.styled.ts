@@ -1,10 +1,10 @@
-import { styled, Text } from '@tamagui/core';
+import { Text } from '@tamagui/core';
 import { SEMANTIC_TEXT_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { SemanticTextVariants } from './semantic-text.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 
-export const SemanticTextRoot = styled(Text, {
+export const SemanticTextRoot = smartContextStyled(Text, {
   name: SEMANTIC_TEXT_COMPONENT_NAME,
   tag: 'span',
   display: 'block',

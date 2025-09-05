@@ -1,4 +1,4 @@
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   SHEET_COMPONENT_NAME,
   SHEET_BODY_COMPONENT_NAME,
@@ -8,11 +8,11 @@ import {
   SHEET_HEADER_COMPONENT_NAME,
   SHEET_OVERLAY_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { SheetPresets, SheetSizes } from './sheet.types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 
-export const SheetFrame = styled(Stack, {
+export const SheetFrame = smartContextStyled(Stack, {
   name: SHEET_COMPONENT_NAME,
   flex: 1,
   backgroundColor: '$background',
@@ -69,7 +69,7 @@ export const SheetFrame = styled(Stack, {
   },
 });
 
-export const SheetHandle = styled(Stack, {
+export const SheetHandle = smartContextStyled(Stack, {
   name: SHEET_HANDLE_COMPONENT_NAME,
 
   // height: 10,
@@ -100,7 +100,7 @@ export const SheetHandle = styled(Stack, {
   defaultVariants: {},
 });
 
-export const SheetHeader = styled(Stack, {
+export const SheetHeader = smartContextStyled(Stack, {
   name: SHEET_HEADER_COMPONENT_NAME,
 
   variants: {
@@ -128,7 +128,7 @@ export const SheetHeader = styled(Stack, {
   },
 });
 
-export const SheetBody = styled(Stack, {
+export const SheetBody = smartContextStyled(Stack, {
   name: SHEET_BODY_COMPONENT_NAME,
 
   variants: {
@@ -149,7 +149,7 @@ export const SheetBody = styled(Stack, {
   },
 });
 
-export const SheetFooter = styled(Stack, {
+export const SheetFooter = smartContextStyled(Stack, {
   name: SHEET_FOOTER_COMPONENT_NAME,
 
   variants: {
@@ -177,7 +177,7 @@ export const SheetFooter = styled(Stack, {
   },
 });
 
-export const SheetOverlay = styled(Stack, {
+export const SheetOverlay = smartContextStyled(Stack, {
   name: SHEET_OVERLAY_COMPONENT_NAME,
   position: 'absolute',
   top: 0,

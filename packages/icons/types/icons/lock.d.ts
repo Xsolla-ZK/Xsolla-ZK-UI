@@ -1,3 +1,3 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Lock: import("react").NamedExoticComponent<IconProps>;
+import type { IconProps } from '@xsolla-zk/ui-primitives';
+export declare const Lock: import("react").MemoExoticComponent<(props: IconProps) => import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=lock.d.ts.map

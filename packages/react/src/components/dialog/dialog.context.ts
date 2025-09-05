@@ -1,3 +1,4 @@
+import { createStyledContext } from '@tamagui/core';
 import { createContext, createContextScope } from '@tamagui/create-context';
 import {
   DIALOG_COMPONENT_NAME,
@@ -10,8 +11,13 @@ import type { DialogContextValue, PortalContextValue } from './dialog.types';
 
 const [createDialogContext, _createDialogScope] = createContextScope(DIALOG_COMPONENT_NAME);
 
-export const [DialogProvider, useDialogContext] =
-  createDialogContext<DialogContextValue>(DIALOG_COMPONENT_NAME);
+export const DialogContext = createStyledContext<DialogContextValue>(
+  // since we always provide this we can avoid setting here
+  {} as DialogContextValue,
+  'Dialog__',
+);
+
+export const { useStyledContext: useDialogContext, Provider: DialogProvider } = DialogContext;
 
 export const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValue>(
   DIALOG_PORTAL_COMPONENT_NAME,

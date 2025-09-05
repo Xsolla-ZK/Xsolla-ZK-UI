@@ -1,6 +1,6 @@
 {
   "name": "@xsolla-zk/monorepo",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "private": true,
   "author": {
     "email": "knuckleswolf@gmail.com",
@@ -8,10 +8,10 @@
     "url": "https://github.com/knuckleswolf"
   },
   "scripts": {
-    "publish:all": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' run publish --no-git-checks",
+    "publish:all": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/constants' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' --filter='@xsolla-zk/primitives' --filter='@xsolla-zk/utils' run publish --no-git-checks",
     "publish:tokens": "pnpm --filter @xsolla-zk/tokens publish --no-git-checks",
     "publish:react": "pnpm --filter @xsolla-zk/react publish --no-git-checks",
-    "build": "pnpm --filter='@xsolla-zk/constants' --filter='@xsolla-zk/config' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' run build",
+    "build": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/constants' --filter='@xsolla-zk/config' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/primitives' --filter='@xsolla-zk/utils' run build",
     "build:publish": "pnpm generate:all && pnpm build",
     "build:storybook:react": "pnpm --filter @xsolla-zk/react storybook:build -o ../../storybook-build/react",
     "build:docs": "pnpm --filter @xsolla-zk/docs build",
@@ -23,9 +23,9 @@
     "generate:tokens": "node ./scripts/root-exec.mjs tokens generate",
     "lint": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' run lint",
     "lint:react": "pnpm --filter @xsolla-zk/react lint",
-    "version:patch": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' exec pnpm version patch --no-git-tag-version",
-    "version:minor": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' exec pnpm version minor --no-git-tag-version",
-    "version:major": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' exec pnpm version major --no-git-tag-version",
+    "version:patch": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/constants' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' --filter='@xsolla-zk/primitives' --filter='@xsolla-zk/utils' exec pnpm version patch --no-git-tag-version",
+    "version:minor": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/constants' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' --filter='@xsolla-zk/primitives' --filter='@xsolla-zk/utils' exec pnpm version minor --no-git-tag-version",
+    "version:major": "pnpm -r --workspace-concurrency=1 --filter='@xsolla-zk/constants' --filter='@xsolla-zk/icons' --filter='@xsolla-zk/react' --filter='@xsolla-zk/tokens' --filter='@xsolla-zk/icons-generator' --filter='@xsolla-zk/config' --filter='@xsolla-zk/primitives' --filter='@xsolla-zk/utils' exec pnpm version major --no-git-tag-version",
     "preinstall": "npx only-allow pnpm",
     "publish": "pnpm -r --workspace-concurrency=1 run publish",
     "release": "pnpm build && pnpm publish",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@eslint/js": "catalog:eslint9",
     "@types/node": "catalog:",
-    "@types/react": "*",
+    "@types/react": "catalog:react19",
     "@typescript-eslint/eslint-plugin": "catalog:typescript-eslint",
     "@typescript-eslint/parser": "catalog:typescript-eslint",
     "cross-env": "^7.0.3",

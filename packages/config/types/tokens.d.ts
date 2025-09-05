@@ -1,25 +1,4 @@
 export declare const tokens: {
-    color: {
-        background: string;
-        backgroundHover: string;
-        backgroundPress: string;
-        backgroundFocus: string;
-        color: string;
-        colorHover: string;
-        colorPress: string;
-        colorFocus: string;
-        borderColor: string;
-        borderColorHover: string;
-        borderColorPress: string;
-        borderColorFocus: string;
-        shadowColor: string;
-        shadowColorHover: string;
-        shadowColorPress: string;
-        shadowColorFocus: string;
-        placeholderColor: string;
-        outlineColor: string;
-        spinColor: string;
-    };
     opacity: {
         'content.secondary.light': number;
         'content.secondary.dark': number;

@@ -1,1 +1,1 @@
-{"version":3,"file":"orbit.d.ts","sourceRoot":"","sources":["../../src/icons/orbit.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAqBvD,eAAO,MAAM,KAAK,iDAA2D,CAAC"}
+{"version":3,"file":"orbit.d.ts","sourceRoot":"","sources":["../../src/icons/orbit.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAgB1D,eAAO,MAAM,KAAK,8CAdG,SAAS,6CAcC,CAAC"}

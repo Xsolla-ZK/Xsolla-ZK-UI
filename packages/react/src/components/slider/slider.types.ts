@@ -1,6 +1,7 @@
+import type { SliderFrame, SliderKnobFrame } from './slider.styled';
 import type { ComponentsConfig } from '../../utils';
-import type { GestureReponderEvent, StackProps, TamaguiElement, ViewProps } from '@tamagui/core';
-import type { AriaAttributes, KeyboardEvent, MutableRefObject } from 'react';
+import type { GestureReponderEvent, GetProps, StackProps, TamaguiElement } from '@tamagui/core';
+import type { AriaAttributes, KeyboardEvent, RefObject } from 'react';
 
 export type SliderSizes = keyof ComponentsConfig['slider'] | (string & {});
 
@@ -10,7 +11,7 @@ export type SliderContextType = {
   min: number;
   max: number;
   values: number[];
-  valueIndexToChangeRef: MutableRefObject<number>;
+  valueIndexToChangeRef: RefObject<number>;
   thumbs: Map<TamaguiElement, number>;
   orientation: SliderProps['orientation'];
 };
@@ -32,7 +33,7 @@ type SliderImplPrivateProps = {
   onStepKeyDown: (event: KeyboardEvent) => void;
 };
 
-export type SliderTrackProps = ViewProps;
+export type SliderTrackProps = GetProps<typeof SliderFrame>;
 
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
   dir?: Direction;
@@ -87,6 +88,6 @@ interface SliderKnobExtraProps {
   index: number;
 }
 
-export interface SliderKnobProps extends StackProps, SliderKnobExtraProps {
+export interface SliderKnobProps extends GetProps<typeof SliderKnobFrame>, SliderKnobExtraProps {
   size?: SliderSizes;
 }

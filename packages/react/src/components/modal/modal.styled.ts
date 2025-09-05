@@ -49,9 +49,8 @@ export const ModalHeaderContent = styled(Stack, {
 export const ModalHeaderTitle = styled(Text, {
   name: MODAL_HEADER_COMPONENT_NAME,
   context: ModalContext,
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
   color: '$color',
   // compact.400.accent
 });

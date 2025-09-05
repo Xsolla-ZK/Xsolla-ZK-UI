@@ -1,9 +1,9 @@
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { TOAST_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { ToastSizes } from './toast.types';
 
-export const ToastFrame = styled(Stack, {
+export const ToastFrame = smartContextStyled(Stack, {
   name: TOAST_COMPONENT_NAME,
 
   flexDirection: 'row',

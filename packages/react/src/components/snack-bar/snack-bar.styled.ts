@@ -1,16 +1,23 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { SNACK_BAR_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig } from '../../utils';
-import { getMappedStyles } from '../../utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import type { SnackBarContextType, SnackBarSizes } from './snack-bar.types';
 
-export const SnackBarContext = createStyledContext<SnackBarContextType>({
-  size: '$500',
-});
+export const SnackBarContext = createStyledMediaContext(
+  {
+    size: '$500',
+  } as SnackBarContextType,
+  ['size'],
+);
 
-export const SnackBarFrame = styled(Stack, {
+export const SnackBarFrame = smartContextStyled(Stack, {
   name: SNACK_BAR_COMPONENT_NAME,
-  context: SnackBarContext,
+  // context: SnackBarContext,
 
   position: 'relative',
   backgroundColor: '$background',
@@ -32,8 +39,8 @@ export const SnackBarFrame = styled(Stack, {
   },
 });
 
-export const SnackBarContentFrame = styled(Stack, {
-  context: SnackBarContext,
+export const SnackBarContentFrame = smartContextStyled(Stack, {
+  // context: SnackBarContext,
 
   flexDirection: 'row',
   alignItems: 'flex-start',
@@ -52,8 +59,8 @@ export const SnackBarContentFrame = styled(Stack, {
   defaultVariants: {},
 });
 
-export const SnackBarContentDescriptionFrame = styled(Stack, {
-  context: SnackBarContext,
+export const SnackBarContentDescriptionFrame = smartContextStyled(Stack, {
+  // context: SnackBarContext,
   flex: 1,
   variants: {
     size: (val: SnackBarSizes) => {
@@ -69,8 +76,8 @@ export const SnackBarContentDescriptionFrame = styled(Stack, {
   defaultVariants: {},
 });
 
-export const SnackBarContentDescriptionListFrame = styled(Stack, {
-  context: SnackBarContext,
+export const SnackBarContentDescriptionListFrame = smartContextStyled(Stack, {
+  // context: SnackBarContext,
   variants: {
     size: (val: SnackBarSizes) => {
       const config = getComponentsConfig();
@@ -85,8 +92,8 @@ export const SnackBarContentDescriptionListFrame = styled(Stack, {
   defaultVariants: {},
 });
 
-export const SnackBarContentDescriptionActionsFrame = styled(Stack, {
-  context: SnackBarContext,
+export const SnackBarContentDescriptionActionsFrame = smartContextStyled(Stack, {
+  // context: SnackBarContext,
 
   flexDirection: 'row',
   alignItems: 'center',

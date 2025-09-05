@@ -1,23 +1,31 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
-import { type IconProps } from '@tamagui/helpers-icon';
+import { isWeb, Stack, Text } from '@tamagui/core';
 import { RICH_ICON_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { cloneElement, createElement, isValidElement } from 'react';
-import { Path as _Path, Svg as _Svg } from 'react-native-svg';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
-import type { RichIconContextType, RichIconShape, RichIconSizes } from './rich-icon.types';
+import { type IconProps } from '@xsolla-zk/ui-primitives';
+import { Svg } from 'react-native-svg';
+import {
+  createIconComponent,
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+  smartContextStyled,
+} from '../../utils';
+import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
 import type { XORIconProps } from '../../types';
-import type { GetProps } from '@tamagui/core';
+import type { ColorTokens } from '@tamagui/core';
 
-export const RichIconContext = createStyledContext<RichIconContextType>({
-  size: '$500',
-  color: '$color',
-  backgroundColor: '$background',
-  shape: 'circle',
-});
+export const RichIconContext = createStyledMediaContext(
+  {
+    size: '$500',
+    color: '$color',
+    backgroundColor: '$background',
+    shape: 'circle',
+  } as RichIconContextType,
+  ['size', 'color', 'backgroundColor'],
+);
 
-export const RichIconFrame = styled(Stack, {
+export const RichIconFrame = smartContextStyled(Stack, {
   name: RICH_ICON_COMPONENT_NAME,
-  context: RichIconContext,
   position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
@@ -26,10 +34,10 @@ export const RichIconFrame = styled(Stack, {
   borderWidth: 0,
 
   variants: {
-    backgroundColor: () => ({
-      backgroundColor: 'transparent',
-    }),
-    shape: (_val: RichIconShape) => ({}),
+    color: () => ({}),
+    // backgroundColor: () => ({}),
+    backgroundColor: () => ({}),
+    // shape: (_val: RichIconShape) => ({}),
     pressable: {
       true: {
         tag: 'button',
@@ -63,47 +71,38 @@ export const RichIconFrame = styled(Stack, {
     },
   } as const,
   defaultVariants: {
-    shape: 'circle',
     size: '$500',
-    backgroundColor: '$background',
     pressable: false,
   },
 });
 
-const Svg = styled(_Svg, {
-  position: 'relative',
-  userSelect: 'none',
-});
-
-export const RichIconShapeSvg = (props: Omit<GetProps<typeof Svg>, 'width' | 'height'>) => {
-  const { size, backgroundColor } = RichIconContext.useStyledContext();
-
-  const config = getComponentsConfig();
-  const componentProps = config.richIcon[size as keyof typeof config.richIcon];
-
-  if (!componentProps) {
-    return null;
-  }
-
-  return createElement(Svg, {
-    width: componentProps.frame.minSize,
-    height: componentProps.frame.minSize,
-    color: backgroundColor,
-    ...props,
-  });
-};
-
-export const RichIconShapePath = styled(
-  _Path,
-  {},
+export const RichIconShapeSvg = smartContextStyled(
+  Svg,
   {
-    accept: {
-      stroke: 'color',
+    position: 'relative',
+    userSelect: 'none',
+    context: RichIconContext,
+    variants: {
+      backgroundColor: (val) => ({
+        color: val as ColorTokens,
+      }),
+      size: (val: RichIconSizes) => {
+        const componentsConfig = getComponentsConfig();
+        const componentProps =
+          componentsConfig.richIcon[val as keyof typeof componentsConfig.richIcon];
+        return {
+          width: componentProps.frame.minSize,
+          height: componentProps.frame.minSize,
+        };
+      },
     } as const,
+  },
+  {
+    isReactNative: !isWeb,
   },
 );
 
-export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
+export const RichIconIcon = (props: XORIconProps) => {
   const ctx = RichIconContext.useStyledContext();
 
   if (!ctx) {
@@ -112,35 +111,29 @@ export const RichIconIcon = ({ children, icon, ...rest }: XORIconProps) => {
     );
   }
 
-  const config = getComponentsConfig();
-  const componentProps = config.richIcon[ctx.size as keyof typeof config.richIcon];
+  const { size, color, shape } = ctx;
 
-  if (!componentProps) {
-    throw new Error(
-      `Xsolla-ZK UI: ${RICH_ICON_COMPONENT_NAME} component props for size ${ctx.size} not found.`,
-    );
-  }
+  const iconProps = processMediaValues(
+    { size, shape, color },
+    {
+      size: (val, { props, config }) => {
+        const componentProps = config.richIcon[val as keyof typeof config.richIcon];
 
-  const iconSize = ctx.shape ? componentProps.icon.size : componentProps.frame.minSize;
+        if (!componentProps) {
+          return {};
+        }
+        return {
+          size: props.shape ? componentProps.icon.size : componentProps.frame.minSize,
+        };
+      },
+      color: (val) => ({ color: val }),
+    },
+  ) as IconProps;
 
-  if (icon) {
-    return createElement(icon, {
-      size: iconSize,
-      color: ctx.color,
-      ...rest,
-    } as IconProps);
-  }
-
-  return isValidElement(children)
-    ? cloneElement(children, {
-        size: iconSize,
-        color: ctx.color,
-        ...rest,
-      } as {})
-    : null;
+  return createIconComponent({ ...iconProps, ...props });
 };
 
-export const RichIconContent = styled(Stack, {
+export const RichIconContent = smartContextStyled(Stack, {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -151,7 +144,7 @@ export const RichIconContent = styled(Stack, {
   justifyContent: 'center',
 });
 
-export const RichIconText = styled(Text, {
+export const RichIconText = smartContextStyled(Text, {
   name: RICH_ICON_COMPONENT_NAME,
   context: RichIconContext,
 
@@ -162,9 +155,11 @@ export const RichIconText = styled(Text, {
 
   variants: {
     backgroundColor: () => ({}),
+    color: (val) => ({ color: val as ColorTokens }),
     size: (val: RichIconSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.richIcon[val as keyof typeof config.richIcon];
+      const componentsConfig = getComponentsConfig();
+      const componentProps =
+        componentsConfig.richIcon[val as keyof typeof componentsConfig.richIcon];
       if (!componentProps) {
         return {};
       }
@@ -172,6 +167,46 @@ export const RichIconText = styled(Text, {
     },
   } as const,
 });
+
+// color: (val: ColorTokens | Record<string, ColorTokens>) => {
+//   if (typeof val === 'string') {
+//     return { color: val };
+//   }
+//   const result: Record<string, unknown> = {};
+//   Object.keys(val).forEach((key) => {
+//     if (key === 'base') {
+//       Object.assign(result, { color: val[key] });
+//     } else {
+//       result[key] = { color: val[key] };
+//     }
+//   });
+//   return result;
+// },
+// size: (val: RichIconSizes | Record<string, RichIconSizes>) => {
+//   const config = getComponentsConfig();
+
+//   if (typeof val === 'string') {
+//     const componentProps = config.richIcon[val as keyof typeof config.richIcon];
+//     if (!componentProps) {
+//       return {};
+//     }
+//     return getMappedStyles(componentProps.label);
+//   }
+
+//   const result: Record<string, unknown> = {};
+//   Object.keys(val).forEach((key) => {
+//     const componentProps = config.richIcon[val[key] as keyof typeof config.richIcon];
+//     if (componentProps) {
+//       if (key === 'base') {
+//         Object.assign(result, getMappedStyles(componentProps.label));
+//       } else {
+//         result[key] = getMappedStyles(componentProps.label);
+//       }
+//     }
+//   });
+//   return result;
+// },
+// } as const,
 
 // const pimpleSizeMap: Record<RichIconSizes, PimpleSizes> = {
 //   $100: '$200',

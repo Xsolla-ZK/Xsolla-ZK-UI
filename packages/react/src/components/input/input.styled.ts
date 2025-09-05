@@ -1,4 +1,4 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   INPUT_COMPONENT_NAME,
   INPUT_END_SLOT_COMPONENT_NAME,
@@ -6,22 +6,30 @@ import {
 } from '@xsolla-zk/constants';
 import { createElement } from 'react';
 import { TextInput } from 'react-native';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import { inputSharedStyledOptions } from './input.shared';
 import type { InputContextType, InputSizes } from './input.types';
 import type { GetProps, StyledContext } from '@tamagui/core';
 import type { ReactNode } from 'react';
 
-export const InputContext = createStyledContext<InputContextType>({
-  size: '$500',
-  error: false,
-  disabled: false,
-  focused: false,
-});
+export const InputContext = createStyledMediaContext(
+  {
+    size: '$500',
+    error: false,
+    disabled: false,
+    focused: false,
+  } as InputContextType,
+  ['size'],
+);
 
-export const InputFrame = styled(Stack, {
+export const InputFrame = smartContextStyled(Stack, {
   name: INPUT_COMPONENT_NAME,
-  context: InputContext,
+  // context: InputContext,
 
   display: 'flex',
   flexDirection: 'row',
@@ -81,11 +89,11 @@ export const InputStartSlot = createInputSlot(INPUT_START_SLOT_COMPONENT_NAME, I
 
 export const InputEndSlot = createInputSlot(INPUT_END_SLOT_COMPONENT_NAME, InputContext);
 
-export const InputElement = styled(
+export const InputElement = smartContextStyled(
   TextInput,
   {
     name: INPUT_COMPONENT_NAME,
-    context: InputContext,
+    // context: InputContext,
 
     alignSelf: 'stretch',
     borderRadius: 0,
@@ -129,13 +137,14 @@ export function createInputSlot(name: string, context: StyledContext<InputContex
     children,
     ...props
   }: Omit<GetProps<typeof Stack>, 'children'> & {
-    children: ReactNode | ((context: InputContextType) => ReactNode);
+    children: ReactNode | ((context: Omit<InputContextType, 'size'>) => ReactNode);
   }) {
-    const ctx = context.useStyledContext();
+    const { size, ...ctx } = context.useStyledContext();
 
     return createElement(
-      styled(Stack, {
+      smartContextStyled(Stack, {
         name,
+        context,
         ...slotStyles,
       }),
       {

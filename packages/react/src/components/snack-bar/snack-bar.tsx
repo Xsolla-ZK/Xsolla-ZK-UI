@@ -1,5 +1,5 @@
-import { useProps, withStaticProperties } from '@tamagui/core';
-import { forwardRef } from 'react';
+import { withStaticProperties } from '@tamagui/core';
+import { withStyledMediaContext } from '../../utils';
 import {
   SnackBarContentDescriptionActionsFrame,
   SnackBarContentDescriptionFrame,
@@ -9,20 +9,27 @@ import {
   SnackBarFrame,
 } from './snack-bar.styled';
 import type { SnackBarProps } from './snack-bar.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 
-const SnackBarFrameComponent = SnackBarFrame.styleable<SnackBarProps>(
-  forwardRef((propsIn, ref: ForwardedRef<TamaguiElement>) => {
-    const { size = '$500', ...props } = useProps(propsIn);
-    return <SnackBarFrame size={size} {...props} ref={ref} />;
-  }),
+const ContentComponent = withStyledMediaContext(SnackBarContentFrame, SnackBarContext);
+const DescriptionComponent = withStyledMediaContext(
+  SnackBarContentDescriptionFrame,
+  SnackBarContext,
+);
+const ListComponent = withStyledMediaContext(SnackBarContentDescriptionListFrame, SnackBarContext);
+const ActionsComponent = withStyledMediaContext(
+  SnackBarContentDescriptionActionsFrame,
+  SnackBarContext,
 );
 
+const SnackBarFrameComponent = SnackBarFrame.styleable<SnackBarProps>((propsIn, ref) => (
+  <SnackBarContext.Provider componentProps={propsIn}>
+    <SnackBarFrame {...propsIn} ref={ref} />
+  </SnackBarContext.Provider>
+));
+
 export const SnackBar = withStaticProperties(SnackBarFrameComponent, {
-  Props: SnackBarContext.Provider,
-  Content: SnackBarContentFrame,
-  Description: SnackBarContentDescriptionFrame,
-  List: SnackBarContentDescriptionListFrame,
-  Actions: SnackBarContentDescriptionActionsFrame,
+  Content: ContentComponent,
+  Description: DescriptionComponent,
+  List: ListComponent,
+  Actions: ActionsComponent,
 });

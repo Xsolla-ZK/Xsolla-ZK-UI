@@ -1,8 +1,8 @@
-import { styled } from '@tamagui/core';
 import { LABEL_COMPONENT_NAME } from '@xsolla-zk/constants';
+import { smartContextStyled } from '../../utils';
 import { Typography } from '../typography/typography';
 
-export const LabelFrame = styled(
+export const LabelFrame = smartContextStyled(
   Typography,
   {
     name: LABEL_COMPONENT_NAME,

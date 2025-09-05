@@ -1,8 +1,8 @@
-import { Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { Stack } from '@tamagui/core';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { MarkdownVariant } from './markdown.types';
 
-export const MarkdownFrame = styled(Stack, {
+export const MarkdownFrame = smartContextStyled(Stack, {
   variants: {
     variant: (val: MarkdownVariant) => {
       const config = getComponentsConfig();

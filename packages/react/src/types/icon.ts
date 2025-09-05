@@ -1,19 +1,17 @@
 import type { useIconsPosition } from '../hooks/use-icons-position';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { NamedExoticComponent, ReactNode } from 'react';
+import type { IconComponent, IconProps } from '@xsolla-zk/ui-primitives';
+import type { ReactNode } from 'react';
 
-export type IconProp = NamedExoticComponent<IconProps>;
-
-export type XORIconProps = (
-  | {
-      children?: never;
-      icon: IconProp;
-    }
-  | {
-      children: ReactNode;
-      icon?: never;
-    }
-) &
-  IconProps;
+export type XORIconProps = Omit<IconProps, 'children'> &
+  (
+    | {
+        children?: never;
+        icon: IconComponent;
+      }
+    | {
+        children: ReactNode;
+        icon?: never;
+      }
+  );
 
 export type IconsPosition = ReturnType<typeof useIconsPosition>;

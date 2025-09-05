@@ -1,28 +1,14 @@
-export declare const tabBarItemTitleTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
-    light_TabBarItemTitle: {
+export declare const tabBarItemTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+    light_TabBarItem: {
         color: string;
     };
-    dark_TabBarItemTitle: {
+    dark_TabBarItem: {
         color: string;
     };
-    light_selected_TabBarItemTitle: {
+    light_selected_TabBarItem: {
         color: string;
     };
-    dark_selected_TabBarItemTitle: {
-        color: string;
-    };
-};
-export declare const tabBarItemIconTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
-    light_TabBarItemIcon: {
-        color: string;
-    };
-    dark_TabBarItemIcon: {
-        color: string;
-    };
-    light_selected_TabBarItemIcon: {
-        color: string;
-    };
-    dark_selected_TabBarItemIcon: {
+    dark_selected_TabBarItem: {
         color: string;
     };
 };

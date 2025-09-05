@@ -1,33 +1,33 @@
-import { composeEventHandlers, Stack, styled } from '@tamagui/core';
+import { composeEventHandlers, Stack } from '@tamagui/core';
 import {
   NAV_BAR_COMPONENT_NAME,
   NAV_BAR_END_SLOT_COMPONENT_NAME,
   NAV_BAR_START_SLOT_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
 import { createElement, useRef } from 'react';
-import { getComponentsConfig, getMappedStyles, getTypographyPreset } from '../../utils';
+import {
+  getComponentsConfig,
+  getMappedStyles,
+  getTypographyPreset,
+  smartContextStyled,
+} from '../../utils';
 import { Typography } from '../typography';
 import { NavBarContext, NavBarStateContext } from './nav-bar.context';
-import type {
-  NavBarContextType,
-  NavBarPresets,
-  NavBarSizes,
-  NavBarStateContextType,
-} from './nav-bar.types';
+import type { NavBarPresets, NavBarSizes, NavBarStateContextType } from './nav-bar.types';
 import type { GetProps, StyledContext } from '@tamagui/core';
 import type { ReactNode } from 'react';
 
-export const NavBarFrame = styled(Stack, {
+export const NavBarFrame = smartContextStyled(Stack, {
   name: NAV_BAR_COMPONENT_NAME,
-  context: NavBarContext,
-
   width: '100%',
   justifyContent: 'center',
 
   variants: {
+    preset: (_val: NavBarPresets) => ({}),
     size: (val: NavBarSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
+      const componentsConfig = getComponentsConfig();
+      const componentProps =
+        componentsConfig.navBar.size[val as keyof typeof componentsConfig.navBar.size];
 
       if (!componentProps) {
         return {};
@@ -60,8 +60,9 @@ export const NavBarEndSlot = createNavBarSlot(
   NavBarStateContext,
 );
 
-export const NavBarContent = styled(Stack, {
+export const NavBarContent = smartContextStyled(Stack, {
   name: NAV_BAR_COMPONENT_NAME,
+  // context: NavBarContext,
 
   flexDirection: 'row',
   width: '100%',
@@ -71,8 +72,9 @@ export const NavBarContent = styled(Stack, {
 
   variants: {
     size: (val: NavBarSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
+      const componentsConfig = getComponentsConfig();
+      const componentProps =
+        componentsConfig.navBar.size[val as keyof typeof componentsConfig.navBar.size];
 
       if (!componentProps) {
         return {};
@@ -83,16 +85,15 @@ export const NavBarContent = styled(Stack, {
   } as const,
 });
 
-export const NavBarCenter = styled(Stack, {
+export const NavBarCenter = smartContextStyled(Stack, {
   name: NAV_BAR_COMPONENT_NAME,
-  context: NavBarContext,
 
   flex: 1,
 
   variants: {
     preset: (val: NavBarPresets) => {
-      const config = getComponentsConfig();
-      const componentProps = config.navBar.center[val];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.navBar.center[val];
 
       if (!componentProps) {
         return {};
@@ -106,24 +107,23 @@ export const NavBarCenter = styled(Stack, {
   } as const,
 });
 
-export const NavBarTitle = styled(Typography, {
+export const NavBarTitle = smartContextStyled(Typography, {
   name: NAV_BAR_COMPONENT_NAME,
   context: NavBarContext,
 
   userSelect: 'none',
   maxWidth: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
 
   variants: {
     preset: (val: NavBarPresets) => {
+      const componentsConfig = getComponentsConfig();
       if (val !== 'default' && val !== 'prominent') {
         return getTypographyPreset(val);
       }
 
-      const config = getComponentsConfig();
-      const componentProps = config.navBar.center[val];
+      const componentProps = componentsConfig.navBar.center[val];
 
       if (!componentProps) {
         return {};
@@ -134,24 +134,23 @@ export const NavBarTitle = styled(Typography, {
   } as const,
 });
 
-export const NavBarSubtitle = styled(Typography, {
+export const NavBarSubtitle = smartContextStyled(Typography, {
   name: NAV_BAR_COMPONENT_NAME,
   context: NavBarContext,
 
   userSelect: 'none',
   maxWidth: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
 
   variants: {
     preset: (val: NavBarPresets) => {
+      const componentsConfig = getComponentsConfig();
       if (val !== 'default' && val !== 'prominent') {
         return getTypographyPreset(val);
       }
 
-      const config = getComponentsConfig();
-      const componentProps = config.navBar.center[val];
+      const componentProps = componentsConfig.navBar.center[val];
 
       if (!componentProps) {
         return {};
@@ -171,21 +170,22 @@ export function createNavBarSlot(
     children,
     ...props
   }: Omit<GetProps<typeof Stack>, 'children'> & {
-    children: ReactNode | ((context: NavBarContextType) => ReactNode);
+    children?: ReactNode;
   }) {
     const { slotMaxWidth, onChangeSlotMaxWidth } = context.useStyledContext();
-    const ctx = NavBarContext.useStyledContext();
     const updateTimeoutRef = useRef<number | null>(null);
 
     return createElement(
-      styled(Stack, {
+      smartContextStyled(Stack, {
         name,
+        context: NavBarContext,
         ...slotStyles,
         justifyContent: side === 'left' ? 'flex-start' : 'flex-end',
         variants: {
           size: (val: NavBarSizes) => {
-            const config = getComponentsConfig();
-            const componentProps = config.navBar.size[val as keyof typeof config.navBar.size];
+            const componentsConfig = getComponentsConfig();
+            const componentProps =
+              componentsConfig.navBar.size[val as keyof typeof componentsConfig.navBar.size];
 
             if (!componentProps) {
               return {};
@@ -196,7 +196,7 @@ export function createNavBarSlot(
         } as const,
       }),
       {
-        children: typeof children === 'function' ? children(ctx) : children,
+        children,
         width: slotMaxWidth > 0 ? slotMaxWidth : undefined,
         ...props,
         onLayout: composeEventHandlers(props.onLayout, (e) => {

@@ -1,25 +1,21 @@
-import { themed } from '@tamagui/helpers-icon';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
 import { memo } from 'react';
-import { Svg, Path } from 'react-native-svg';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { ComponentProps, FC } from 'react';
+import { Path } from 'react-native-svg';
 
-type Props = ComponentProps<typeof Svg> & {
-  size: number;
-};
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-const Icon: FC = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props as Props;
+const Icon = (props: IconProps) => {
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
-    <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
+    <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
-        fill={color}
+        fill="currentColor"
         fillRule="evenodd"
         d="M3.304 11.519 3 3h18l-.304 8.519a10 10 0 0 1-4.924 8.262L12 22l-3.772-2.219a10 10 0 0 1-4.924-8.262M11 15l-3-3 1-1 2 1 4-3 1 1z"
         clipRule="evenodd"
       />
-    </Svg>
+    </SvgThemed>
   );
 };
 
-export const ShieldCheckmark = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const ShieldCheckmark = memo(Icon);

@@ -1,23 +1,19 @@
-import { themed } from '@tamagui/helpers-icon';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
 import { memo } from 'react';
-import { Svg, Path } from 'react-native-svg';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { ComponentProps, FC } from 'react';
+import { Path } from 'react-native-svg';
 
-type Props = ComponentProps<typeof Svg> & {
-  size: number;
-};
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-const Icon: FC = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props as Props;
+const Icon = (props: IconProps) => {
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
-    <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
+    <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
-        fill={color}
+        fill="currentColor"
         d="M10.295 9.047 11 2h2l.705 7.047 6.455-2.913 1 1.732L15.41 12l5.75 4.134-1 1.732-6.455-2.913L13 22h-2l-.705-7.047-6.455 2.913-1-1.732L8.59 12 2.84 7.866l1-1.732z"
       />
-    </Svg>
+    </SvgThemed>
   );
 };
 
-export const Asterisk = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const Asterisk = memo(Icon);

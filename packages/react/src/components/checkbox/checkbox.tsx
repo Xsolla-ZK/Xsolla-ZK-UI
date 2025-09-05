@@ -1,13 +1,11 @@
 // rework tamagui implementation of Checkbox component - @tamagui/switch-headless based
 // https://github.com/tamagui/tamagui/blob/main/code/ui/checkbox/src/createCheckbox.tsx
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless';
-import { shouldRenderNativePlatform, useProps, withStaticProperties } from '@tamagui/core';
+import { shouldRenderNativePlatform, withStaticProperties } from '@tamagui/core';
 import { registerFocusable } from '@tamagui/focusable';
 import { useControllableState } from '@tamagui/use-controllable-state';
-import { forwardRef, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import {
   CheckboxContext,
@@ -20,63 +18,63 @@ import type { TamaguiElement } from '@tamagui/core';
 import type { CSSProperties, ForwardedRef, RefObject } from 'react';
 
 const CheckboxComponent = CheckboxFrame.styleable<CheckboxProps>(
-  forwardRef(
-    (
-      { checked: checkedProp, defaultChecked, onCheckedChange, native, ...props },
-      forwardedRef: ForwardedRef<TamaguiElement>,
-    ) => {
-      const propsActive = useProps(props);
+  (
+    { children, checked: checkedProp, defaultChecked, onCheckedChange, native, ...props },
+    forwardedRef: ForwardedRef<TamaguiElement>,
+  ) => {
+    const [checked = false, setChecked] = useControllableState({
+      prop: checkedProp,
+      defaultProp: defaultChecked!,
+      onChange: onCheckedChange,
+    });
 
-      const styledContext = CheckboxContext.useStyledContext();
+    const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+      // @ts-ignore: fix propsActive type
+      props,
+      [checked, setChecked],
+      forwardedRef,
+    );
 
-      const [checked = false, setChecked] = useControllableState({
-        prop: checkedProp,
-        defaultProp: defaultChecked!,
-        onChange: onCheckedChange,
-      });
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      useEffect(() => {
+        if (!props.id) return;
+        if (props.disabled) return;
 
-      const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
-        // @ts-ignore: fix propsActive type
-        propsActive,
-        [checked, setChecked],
-        forwardedRef,
-      );
+        return registerFocusable(props.id, {
+          focusAndSelect: () => {
+            setChecked?.((value) => !value);
+          },
+          focus: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+        });
+      }, [props.id, props.disabled]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
 
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        useEffect(() => {
-          if (!props.id) return;
-          if (props.disabled) return;
+    const renderNative = shouldRenderNativePlatform(native);
 
-          return registerFocusable(props.id, {
-            focusAndSelect: () => {
-              setChecked?.((value) => !value);
-            },
-            focus: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-          });
-        }, [props.id, props.disabled]); // eslint-disable-line react-hooks/exhaustive-deps
-      }
-
-      const renderNative = shouldRenderNativePlatform(native);
-
-      if (renderNative === 'web') {
-        return (
-          <input
-            type="checkbox"
-            defaultChecked={isIndeterminate(checked) ? false : checked}
-            tabIndex={-1}
-            ref={checkboxRef as unknown as RefObject<HTMLInputElement>}
-            disabled={checkboxProps.disabled}
-            style={{
-              appearance: 'auto',
-              accentColor: 'var(--background--brand-high)',
-              ...(checkboxProps.style as CSSProperties),
-            }}
-          />
-        );
-      }
-
+    if (renderNative === 'web') {
       return (
-        <>
+        <input
+          type="checkbox"
+          defaultChecked={isIndeterminate(checked) ? false : checked}
+          tabIndex={-1}
+          ref={checkboxRef as unknown as RefObject<HTMLInputElement>}
+          disabled={checkboxProps.disabled}
+          style={{
+            appearance: 'auto',
+            accentColor: 'var(--background--brand-high)',
+            ...(checkboxProps.style as CSSProperties),
+          }}
+        />
+      );
+    }
+
+    return (
+      <>
+        <CheckboxContext.Provider
+          componentProps={props}
+          checked={checked}
+          disabled={checkboxProps.disabled}
+        >
           <CheckboxFrame
             group
             tag="button"
@@ -86,24 +84,23 @@ const CheckboxComponent = CheckboxFrame.styleable<CheckboxProps>(
             checked={checked}
             disabled={checkboxProps.disabled}
             {...checkboxProps}
-            size={propsActive.size ?? styledContext?.size}
+            {...props}
             // react 76 style prop mis-match, but should be fine
             style={checkboxProps.style}
           >
             <CheckboxOverlay />
-            {propsActive.children}
+            {children}
           </CheckboxFrame>
           {bubbleInput}
-        </>
-      );
-    },
-  ),
+        </CheckboxContext.Provider>
+      </>
+    );
+  },
   {
     disableTheme: true,
   },
 );
 
 export const Checkbox = withStaticProperties(CheckboxComponent, {
-  Props: CheckboxContext.Provider,
   Indicator: CheckboxIndicator,
 });

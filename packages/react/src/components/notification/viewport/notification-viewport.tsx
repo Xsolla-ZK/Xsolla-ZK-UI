@@ -31,8 +31,8 @@ import type {
 
 const FocusProxy = forwardRef<FocusProxyElement, NotificationScopedProps<FocusProxyProps>>(
   (props, forwardedRef) => {
-    const { __scopeNotification, onFocusFromOutsideViewport, viewportName, ...proxyProps } = props;
-    const context = useNotificationProviderContext(__scopeNotification);
+    const { scope, onFocusFromOutsideViewport, viewportName, ...proxyProps } = props;
+    const context = useNotificationProviderContext(scope);
     const viewport = context.viewports[viewportName] as HTMLElement;
 
     return (
@@ -60,7 +60,7 @@ const NotificationViewport = memo(
   forwardRef<TamaguiElement, NotificationScopedProps<NotificationViewportProps>>(
     (props, forwardedRef) => {
       const {
-        __scopeNotification,
+        scope,
         hotkey = NOTIFICATION_VIEWPORT_DEFAULT_HOTKEY,
         label = 'Notifications ({hotkey})',
         name = 'default',
@@ -69,8 +69,8 @@ const NotificationViewport = memo(
         portalToRoot,
         ...viewportProps
       } = props;
-      const context = useNotificationProviderContext(__scopeNotification);
-      const getItems = useCollection(__scopeNotification || NOTIFICATION_CONTEXT);
+      const context = useNotificationProviderContext(scope);
+      const getItems = useCollection(scope || NOTIFICATION_CONTEXT);
       const headFocusProxyRef = useRef<FocusProxyElement>(null);
       const tailFocusProxyRef = useRef<FocusProxyElement>(null);
       const wrapperRef = useRef<HTMLDivElement>(null);
@@ -156,7 +156,7 @@ const NotificationViewport = memo(
         ({ tabbingDirection }: { tabbingDirection: 'forwards' | 'backwards' }) => {
           const toastItems = getItems();
           const tabbableCandidates = toastItems.map((toastItem) => {
-            const toastNode = toastItem.ref.current;
+            const toastNode = toastItem.ref.current!;
             const toastTabbableCandidates = [toastNode, ...getTabbableCandidates(toastNode)];
             return tabbingDirection === 'forwards'
               ? toastTabbableCandidates
@@ -231,7 +231,7 @@ const NotificationViewport = memo(
         >
           {hasNotifications && (
             <FocusProxy
-              __scopeNotification={__scopeNotification}
+              scope={scope}
               viewportName={name}
               ref={headFocusProxyRef}
               onFocusFromOutsideViewport={() => {
@@ -246,7 +246,7 @@ const NotificationViewport = memo(
            * tabindex on the the list so that it can be focused when items are removed. we focus
            * the list instead of the viewport so it announces number of items remaining.
            */}
-          <Collection.Slot __scopeCollection={__scopeNotification || NOTIFICATION_CONTEXT}>
+          <Collection.Slot scope={scope || NOTIFICATION_CONTEXT}>
             <NotificationViewportFrame
               focusable={context.toastCount > 0}
               ref={composedRefs}
@@ -264,7 +264,7 @@ const NotificationViewport = memo(
           </Collection.Slot>
           {hasNotifications && (
             <FocusProxy
-              __scopeNotification={__scopeNotification}
+              scope={scope}
               viewportName={name}
               ref={tailFocusProxyRef}
               onFocusFromOutsideViewport={() => {

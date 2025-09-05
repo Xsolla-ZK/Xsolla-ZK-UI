@@ -1,7 +1,7 @@
 import { createTamagui } from '@tamagui/core';
 import { initializeComponentsConfig } from './components-config';
 export declare function createConfig<T extends Parameters<typeof createTamagui>[0], C extends Parameters<typeof initializeComponentsConfig>[0]>(config: T, componentsConfig: C): {
-    tamaguiConfig: import("@tamagui/web").InferTamaguiConfig<T>;
+    tamaguiConfig: import("@tamagui/core").InferTamaguiConfig<T>;
     componentsConfig: {
         accordion: {
             size: {

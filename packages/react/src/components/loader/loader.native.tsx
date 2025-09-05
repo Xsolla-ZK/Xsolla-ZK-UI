@@ -1,33 +1,31 @@
-import { useProps, useTheme, withStaticProperties } from '@tamagui/core';
-import { forwardRef, useEffect } from 'react';
-import { Easing, useAnimatedProps, withRepeat, withTiming } from 'react-native-reanimated';
-import { useSharedValue } from 'react-native-reanimated';
-import Animated from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
+import { useTheme, withStaticProperties } from '@tamagui/core';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
+import { useEffect } from 'react';
+import Animated, {
+  Easing,
+  useAnimatedProps,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
+import { Circle } from 'react-native-svg';
+import { useStyledMediaContext } from '../../hooks';
 import { LoaderContext, LoaderFrame, LoaderText } from './loader.styled';
 import type { LoaderProps } from './loader.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 import type { ColorValue } from 'react-native';
 
 const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
-  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
-    const {
-      size = 24,
-      tone = 'brand',
-      mainColor = '$color',
-      spinColor = '$spinColor',
-      ...props
-    } = useProps(propsIn);
+  ({ children, ...propsIn }, ref) => {
+    const { tone = 'brand', mainColor = '$color', spinColor = '$spinColor', ...props } = propsIn;
     return (
-      <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
-        <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
+      <LoaderContext.Provider componentProps={props} {...{ mainColor, spinColor }}>
+        <LoaderFrame theme={tone} {...props} ref={ref}>
           <LoaderSpinner />
           {children}
         </LoaderFrame>
       </LoaderContext.Provider>
     );
-  }),
+  },
   { disableTheme: true },
 );
 
@@ -87,11 +85,11 @@ function AnimatedStrokeCircle() {
 }
 
 function LoaderSpinner() {
-  const ctx = LoaderContext.useStyledContext();
+  const { mediaContext, ...ctx } = useStyledMediaContext(LoaderContext);
   const theme = useTheme();
 
   return (
-    <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
+    <SvgThemed fill="none" {...mediaContext} viewBox="0 0 28 28">
       <Circle
         cx={14}
         cy={14}
@@ -100,11 +98,10 @@ function LoaderSpinner() {
         stroke={(theme[ctx.mainColor as keyof typeof theme]?.get() ?? ctx.mainColor) as ColorValue}
       />
       <AnimatedStrokeCircle />
-    </Svg>
+    </SvgThemed>
   );
 }
 
 export const Loader = withStaticProperties(LoaderComponent, {
-  Props: LoaderContext.Provider,
   Text: LoaderText,
 });

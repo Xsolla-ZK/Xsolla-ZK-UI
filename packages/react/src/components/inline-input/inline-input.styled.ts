@@ -1,11 +1,10 @@
-import { styled } from '@tamagui/core';
 import { INLINE_INPUT_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { TextInput } from 'react-native';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import { inputSharedStyledOptions } from '../input/input.shared';
 import type { InlineInputSizes } from './inline-input.types';
 
-export const InlineInputElement = styled(
+export const InlineInputElement = smartContextStyled(
   TextInput,
   {
     name: INLINE_INPUT_COMPONENT_NAME,

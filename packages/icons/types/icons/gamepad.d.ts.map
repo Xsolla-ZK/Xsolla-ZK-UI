@@ -1,1 +1,1 @@
-{"version":3,"file":"gamepad.d.ts","sourceRoot":"","sources":["../../src/icons/gamepad.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAqBvD,eAAO,MAAM,OAAO,iDAA2D,CAAC"}
+{"version":3,"file":"gamepad.d.ts","sourceRoot":"","sources":["../../src/icons/gamepad.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAgB1D,eAAO,MAAM,OAAO,8CAdC,SAAS,6CAcG,CAAC"}

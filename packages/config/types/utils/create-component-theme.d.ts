@@ -31,10 +31,6 @@ export declare function createTheme<C extends string | undefined = undefined, V 
  * @param subthemes - An object with generators for styles for each subtheme
  */
 export declare function createComponentTheme<C extends string, V extends SubthemeVariants, S extends StyleDefinition = StyleDefinition>(componentName: C, styleGenerator: ThemeStyleGenerator<S>, subthemes?: V): <T extends Record<ThemeNames, Record<string, string>>>(themes: T) => ThemeRecord<C, V, S>;
-type DeepMerge<T, U> = {
-    [K in keyof T | keyof U]: K extends keyof T ? K extends keyof U ? T[K] extends object ? U[K] extends object ? DeepMerge<T[K], U[K]> : T[K] : T[K] | U[K] : T[K] : K extends keyof U ? U[K] : never;
-};
-export declare function deepMerge<T extends object, U extends object>(obj1: T, obj2: U): DeepMerge<T, U>;
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 type RecordToArray<T> = T extends Record<string, unknown> ? Array<T[keyof T]> : never;
 type CreateThemesReturnType<T extends Record<ThemeNames, Record<string, string>>, B extends ReturnType<typeof createTheme>, C extends Record<string, ReturnType<typeof createTheme>>> = T & ReturnType<B> & UnionToIntersection<ReturnType<RecordToArray<C>[number]>>;

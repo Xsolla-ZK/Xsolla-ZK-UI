@@ -1,7 +1,14 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { Stack, Text } from '@tamagui/core';
 import { CHIP_COMPONENT_NAME, CHIPS_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
-import { Board } from '../board/board';
+import {
+  createIconComponent,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+  smartContextStyled,
+} from '../../utils';
+import { withBoardStyled } from '../board';
+import { ChipContext } from './chips.context';
 import type {
   ChipContextType,
   ChipSizes,
@@ -9,18 +16,11 @@ import type {
   ChipVariants,
   ChipVariantSpreadExtras,
 } from './chips.types';
-import type { ColorTokens, GetProps, VariantSpreadFunction } from '@tamagui/core';
+import type { XORIconProps } from '../../types';
+import type { ColorTokens, GetProps } from '@tamagui/core';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const ChipContext = createStyledContext<ChipContextType>({
-  size: '$500',
-  disabled: false,
-  variant: 'primary',
-  tone: 'brand',
-  hasIconLeft: undefined,
-  hasIconRight: undefined,
-});
-
-export const ChipsFrame = styled(Stack, {
+export const ChipsFrame = smartContextStyled(Stack, {
   name: CHIPS_COMPONENT_NAME,
 
   flexDirection: 'row',
@@ -46,123 +46,125 @@ export const ChipsFrame = styled(Stack, {
   },
 });
 
-const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ChipVariants> = (val, extras) => {
-  const { props } = extras as ChipVariantSpreadExtras<typeof Stack>;
-  if (val === 'secondary') {
-    return {
-      backgroundColor: `$overlay.${props.tone}`,
-    };
-  }
-  if (val === 'tertiary') {
-    return {
-      backgroundColor: 'transparent',
-    };
-  }
+export const ChipFrame = withBoardStyled(
+  {
+    name: CHIP_COMPONENT_NAME,
+    // context: ChipContext,
+    pressable: true,
+    tag: 'button',
+    role: 'button',
+    containerType: 'normal',
 
-  return {
-    backgroundColor: '$background',
-  };
-};
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderWidth: 0,
+    overflow: 'hidden',
+    cursor: 'pointer',
+    userSelect: 'none',
 
-export const ChipFrame = styled(Board, {
-  name: CHIP_COMPONENT_NAME,
-  context: ChipContext,
-  pressable: true,
-  tag: 'button',
-  role: 'button',
-  containerType: 'normal',
-
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  borderWidth: 0,
-  overflow: 'hidden',
-  cursor: 'pointer',
-  userSelect: 'none',
-
-  variants: {
-    tone: {} as Record<ChipContextType['tone'], GetProps<typeof Stack>>,
-    hasIconLeft: {
-      true: {},
-      false: {},
-    },
-    hasIconRight: {
-      true: {},
-      false: {},
-    },
-    variant: getVariant,
-    size: (val: ChipSizes, _extras) => {
-      const config = getComponentsConfig();
-      const chip = config.chip[val as keyof typeof config.chip];
-
-      if (!chip) return {};
-
-      return getMappedStyles(chip.frame);
-    },
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-        backgroundColor: '$overlay.neutral',
+    variants: {
+      tone: {} as Record<ChipContextType['tone'], GetProps<typeof Stack>>,
+      hasIconLeft: {
+        true: {},
+        false: {},
       },
-    },
-    fullWidth: {
-      true: {
-        maxWidth: '100%',
+      hasIconRight: {
+        true: {},
+        false: {},
       },
-      false: {
-        maxWidth: 'max-content',
-      },
-    },
-  } as const,
+      variant: (val: ChipVariants, extras) => {
+        const { props } = extras as ChipVariantSpreadExtras<typeof Stack>;
+        if (val === 'secondary') {
+          return {
+            backgroundColor: `$overlay.${props.tone}`,
+          };
+        }
+        if (val === 'tertiary') {
+          return {
+            backgroundColor: 'transparent',
+          };
+        }
 
-  defaultVariants: {
-    size: '$500',
-    variant: 'primary',
-    disabled: false,
-    tone: 'brand',
+        return {
+          backgroundColor: '$background',
+        };
+      },
+      size: (val: ChipSizes, _extras) => {
+        const config = getComponentsConfig();
+        const chip = config.chip[val as keyof typeof config.chip];
+
+        if (!chip) return {};
+
+        return getMappedStyles(chip.frame);
+      },
+      isSelected: {
+        true: {},
+        false: {
+          variant: 'secondary',
+        },
+      },
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+          backgroundColor: '$overlay.neutral',
+        },
+      },
+      fullWidth: {
+        true: {
+          maxWidth: '100%',
+        },
+        false: {
+          maxWidth: 'max-content',
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      size: '$500',
+      variant: 'primary',
+      disabled: false,
+      tone: 'brand',
+    },
   },
-});
+  undefined,
+  'chip',
+);
 
-const getChipTextVariant: VariantSpreadFunction<GetProps<typeof Text>, ChipVariants> = (
-  _val,
-  extras,
-) => {
-  const { props } = extras as ChipVariantSpreadExtras<typeof Text>;
-  if (props.disabled) {
-    return {
-      color: '$content.neutral-tertiary',
-    };
-  }
-
-  if (props.variant !== 'primary') {
-    return {
-      color: `$content.${props.tone}-primary`,
-    };
-  }
-
-  return {
-    color: '$color',
-  };
-};
-
-export const ChipText = styled(Text, {
+export const ChipText = smartContextStyled(Text, {
   name: CHIP_COMPONENT_NAME,
   context: ChipContext,
   tag: 'span',
   userSelect: 'none',
   maxWidth: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
 
   variants: {
-    variant: getChipTextVariant,
+    variant: (val: ChipVariants, extras) => {
+      const { props } = extras as ChipVariantSpreadExtras<typeof Text>;
+      if (props.disabled) {
+        return {
+          color: '$content.neutral-tertiary',
+        };
+      }
+
+      if (val !== 'primary') {
+        return {
+          color: `$content.${props.tone}-primary` as ColorTokens,
+        };
+      }
+
+      return {
+        color: '$color',
+      };
+    },
     size: (val: ChipSizes, extras) => {
       const { props } = extras as ChipVariantSpreadExtras<typeof Text>;
-      const config = getComponentsConfig();
-      const chip = config.chip[val as keyof typeof config.chip];
+      const componentsConfig = getComponentsConfig();
+      const chip = componentsConfig.chip[val as keyof typeof componentsConfig.chip];
 
       if (!chip) return {};
 
@@ -174,21 +176,59 @@ export const ChipText = styled(Text, {
         paddingRight: props.hasIconLeft ? paddingHorizontal : undefined,
       };
     },
+    isSelected: {
+      true: {},
+      false: {
+        variant: 'secondary',
+      },
+    },
   } as const,
 });
 
-const getIconColor = (ctx: ChipContextType): ColorTokens => {
-  if (ctx.disabled) {
-    return '$content.neutral-tertiary';
-  }
+export const ChipIcon = (props: XORIconProps) => {
+  const ctx = ChipContext.useStyledContext();
 
-  if (ctx.variant !== 'primary') {
-    return `$content.${ctx.tone}-primary` as ColorTokens;
-  }
+  const { size, tone, variant, isSelected } = ctx;
 
-  return '$color';
+  const iconProps = processMediaValues(
+    { size, tone, variant },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.chip[val as keyof typeof config.chip];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+      variant: (val, { props }) => {
+        if (ctx.disabled) {
+          return {
+            color: '$content.neutral-tertiary',
+          };
+        }
+
+        if (isSelected && val === 'secondary') {
+          return {
+            color: `$content.${props.tone}-primary`,
+          };
+        }
+
+        if (val !== 'primary') {
+          return {
+            color: `$content.${props.tone}-primary`,
+          };
+        }
+
+        return {
+          color: isSelected ? '$color' : `$content.${props.tone}-primary`,
+        };
+      },
+    },
+  ) as IconProps;
+
+  return createIconComponent({ ...iconProps, ...props });
 };
-
-export const ChipIcon = createIconComponent(CHIP_COMPONENT_NAME, ChipContext, 'chip', {
-  getColorFn: getIconColor,
-});

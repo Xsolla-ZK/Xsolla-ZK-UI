@@ -27,12 +27,15 @@ export const useSheetOpenState = (props: SheetProps) => {
     props.onOpenChange?.(val);
   };
 
+  const propVal = props.preferAdaptParentOpenState
+    ? (controller?.open ?? props.open)
+    : (props.open ?? controller?.open);
+
   const [open, setOpen] = useControllableState({
-    prop: controller?.open ?? props.open,
+    prop: propVal,
     defaultProp: props.defaultOpen ?? false,
     onChange: onOpenChangeInternal,
     strategy: 'most-recent-wins',
-    transition: true,
   });
 
   return {
@@ -41,6 +44,54 @@ export const useSheetOpenState = (props: SheetProps) => {
     isHidden,
     controller,
   };
+};
+
+export const useSheetOffscreenSize = ({
+  snapPoints,
+  position,
+  screenSize,
+  frameSize,
+  snapPointsMode,
+}: SheetContextValue) => {
+  if (snapPointsMode === 'fit') {
+    return 0;
+  }
+
+  if (snapPointsMode === 'constant') {
+    const maxSize = Number(snapPoints[0]);
+    const currentSize = Number(snapPoints[position] ?? 0);
+    const offscreenSize = maxSize - currentSize;
+    return offscreenSize;
+  }
+
+  if (snapPointsMode === 'percent') {
+    const maxPercentOpened = Number(snapPoints[0]) / 100;
+    const percentOpened = Number(snapPoints[position] ?? 0) / 100;
+    const percentHidden = maxPercentOpened - percentOpened;
+    const offscreenSize = percentHidden * screenSize;
+    return offscreenSize;
+  }
+
+  // mixed:
+  const maxSnapPoint = snapPoints[0];
+  if (maxSnapPoint === 'fit') {
+    return 0;
+  }
+
+  const maxSize =
+    typeof maxSnapPoint === 'string'
+      ? (Number(maxSnapPoint.slice(0, -1)) / 100) * screenSize
+      : maxSnapPoint;
+  const currentSnapPoint = snapPoints[position] ?? 0;
+  const currentSize =
+    typeof currentSnapPoint === 'string'
+      ? (Number(currentSnapPoint.slice(0, -1)) / 100) * screenSize
+      : currentSnapPoint;
+  const offscreenSize = maxSize - currentSize;
+  if (Number.isNaN(offscreenSize)) {
+    return 0;
+  }
+  return offscreenSize;
 };
 
 export function useSheetProviderProps(
@@ -73,7 +124,6 @@ export function useSheetProviderProps(
     defaultProp: props.defaultPosition || (state.open ? 0 : -1),
     onChange: props.onPositionChange,
     strategy: 'most-recent-wins',
-    transition: true,
   });
 
   const position = state.open === false ? -1 : position_;
@@ -161,16 +211,36 @@ export function useSheetProviderProps(
     );
   }
 
-  const scrollBridge = useConstant<ScrollBridge>(() => ({
-    enabled: false,
-    y: 0,
-    paneY: 0,
-    paneMinY: 0,
-    scrollStartY: -1,
-    drag: () => {},
-    release: () => {},
-    scrollLock: false,
-  }));
+  const scrollBridge = useConstant<ScrollBridge>(() => {
+    const parentDragListeners = new Set<(val: boolean) => void>();
+
+    const bridge: ScrollBridge = {
+      hasScrollableContent: false,
+      enabled: false,
+      y: 0,
+      paneY: 0,
+      paneMinY: 0,
+      scrollStartY: -1,
+      drag: () => {},
+      release: () => {},
+      scrollLock: false,
+      isParentDragging: false,
+      onParentDragging: (cb) => {
+        parentDragListeners.add(cb);
+        return () => {
+          parentDragListeners.delete(cb);
+        };
+      },
+      setParentDragging: (val) => {
+        if (val !== bridge.isParentDragging) {
+          bridge.isParentDragging = val;
+          parentDragListeners.forEach((cb) => cb(val));
+        }
+      },
+    };
+
+    return bridge;
+  });
 
   const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal);
 
@@ -209,51 +279,3 @@ export function useSheetProviderProps(
 
   return providerProps;
 }
-
-export const useSheetOffscreenSize = ({
-  snapPoints,
-  position,
-  screenSize,
-  frameSize,
-  snapPointsMode,
-}: SheetContextValue) => {
-  if (snapPointsMode === 'fit') {
-    return 0;
-  }
-
-  if (snapPointsMode === 'constant') {
-    const maxSize = Number(snapPoints[0]);
-    const currentSize = Number(snapPoints[position] ?? 0);
-    const offscreenSize = maxSize - currentSize;
-    return offscreenSize;
-  }
-
-  if (snapPointsMode === 'percent') {
-    const maxPercentOpened = Number(snapPoints[0]) / 100;
-    const percentOpened = Number(snapPoints[position] ?? 0) / 100;
-    const percentHidden = maxPercentOpened - percentOpened;
-    const offscreenSize = percentHidden * screenSize;
-    return offscreenSize;
-  }
-
-  // mixed:
-  const maxSnapPoint = snapPoints[0];
-  if (maxSnapPoint === 'fit') {
-    return 0;
-  }
-
-  const maxSize =
-    typeof maxSnapPoint === 'string'
-      ? (Number(maxSnapPoint.slice(0, -1)) / 100) * screenSize
-      : maxSnapPoint;
-  const currentSnapPoint = snapPoints[position] ?? 0;
-  const currentSize =
-    typeof currentSnapPoint === 'string'
-      ? (Number(currentSnapPoint.slice(0, -1)) / 100) * screenSize
-      : currentSnapPoint;
-  const offscreenSize = maxSize - currentSize;
-  if (Number.isNaN(offscreenSize)) {
-    return 0;
-  }
-  return offscreenSize;
-};

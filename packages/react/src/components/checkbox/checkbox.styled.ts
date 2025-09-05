@@ -1,8 +1,14 @@
 import { isIndeterminate } from '@tamagui/checkbox-headless';
-import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { getTokenValue, Stack } from '@tamagui/core';
 import { CHECKBOX_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { cloneElement, createElement, isValidElement } from 'react';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createIconComponent,
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+  smartContextStyled,
+} from '../../utils';
 import type {
   CheckboxContextType,
   CheckboxIndicatorProps,
@@ -10,17 +16,19 @@ import type {
   CheckboxVariantSpreadExtras,
 } from './checkbox.types';
 import type { Token } from '@tamagui/core';
-import type { IconProps } from '@tamagui/helpers-icon';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const CheckboxContext = createStyledContext<CheckboxContextType>({
-  size: '$500',
-  checked: false,
-  disabled: false,
-});
+export const CheckboxContext = createStyledMediaContext(
+  {
+    size: '$500',
+    checked: false,
+    disabled: false,
+  } as CheckboxContextType,
+  ['size'],
+);
 
-export const CheckboxFrame = styled(Stack, {
+export const CheckboxFrame = smartContextStyled(Stack, {
   name: CHECKBOX_COMPONENT_NAME,
-  context: CheckboxContext,
   tag: 'button',
   tabIndex: 0,
 
@@ -61,7 +69,7 @@ export const CheckboxFrame = styled(Stack, {
   },
 });
 
-export const CheckboxOverlay = styled(Stack, {
+export const CheckboxOverlay = smartContextStyled(Stack, {
   tag: 'span',
   position: 'absolute',
   context: CheckboxContext,
@@ -117,29 +125,30 @@ export const CheckboxOverlay = styled(Stack, {
 });
 
 export const CheckboxIndicator = (props: CheckboxIndicatorProps) => {
-  const { children, icon, forceMount, disablePassStyles, ...indicatorProps } = props;
+  const { forceMount, disablePassStyles, ...indicatorProps } = props;
   const ctx = CheckboxContext.useStyledContext();
 
-  const config = getComponentsConfig();
-  const componentProps = config.checkbox[ctx.size as keyof typeof config.checkbox];
+  const { size } = ctx;
+
+  const iconProps = processMediaValues(
+    { size },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.checkbox[val as keyof typeof config.checkbox];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+    },
+  ) as IconProps;
 
   if (forceMount || isIndeterminate(ctx.checked) || ctx.checked === true) {
-    if (icon) {
-      return createElement(icon, {
-        size: componentProps.icon.size,
-        color: '$color',
-        ...indicatorProps,
-      } as IconProps);
-    }
-
-    return isValidElement(children)
-      ? cloneElement(children, {
-          size: componentProps.icon.size,
-          color: '$color',
-          ...indicatorProps,
-        } as {})
-      : null;
+    return createIconComponent({ ...iconProps, color: '$color', ...indicatorProps });
   }
-
   return null;
 };

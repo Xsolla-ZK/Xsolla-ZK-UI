@@ -80,8 +80,9 @@
     "@tamagui/animations-react-native": "catalog:tamagui",
     "@tamagui/core": "catalog:tamagui",
     "@xsolla-zk/constants": "workspace:*",
-    "react-native-reanimated": "^3.18.0",
-    "react-native": "*"
+    "@xsolla-zk/ui-utils": "workspace:*",
+    "react-native-reanimated": "catalog:",
+    "react-native": "catalog:reactNative"
   },
   "devDependencies": {
     "@tamagui/build": "catalog:tamagui",

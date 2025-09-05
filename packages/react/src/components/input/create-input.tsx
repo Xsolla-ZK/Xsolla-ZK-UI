@@ -1,6 +1,6 @@
 import { isWeb, useComposedRefs, useTheme, type GetProps } from '@tamagui/core';
 import { registerFocusable, useFocusable } from '@tamagui/focusable';
-import { forwardRef, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { InputElementBaseProps, InputElementProps } from './input.types';
 import type { TamaguiComponent, TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef, KeyboardEvent, RefObject } from 'react';
@@ -8,7 +8,7 @@ import type { ColorValue, TextInput } from 'react-native';
 
 export function createInput<T extends TamaguiComponent>(Element: T) {
   return Element.styleable<GetProps<T>>(
-    forwardRef((_props: InputElementProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
+    (_props: InputElementProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
       const Component = Element as unknown as TamaguiComponent<InputElementBaseProps>;
       const ref = useRef<TextInput>(null);
       const composedRefs = useComposedRefs(forwardedRef, ref);
@@ -88,7 +88,7 @@ export function createInput<T extends TamaguiComponent>(Element: T) {
           ref={composedRefs}
         />
       );
-    }),
+    },
     { disableTheme: true },
   );
 }

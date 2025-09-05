@@ -1,9 +1,9 @@
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { OTP_FIELD_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { FieldSizes } from '../field/field.types';
 
-export const OTPFieldFrame = styled(Stack, {
+export const OTPFieldFrame = smartContextStyled(Stack, {
   name: OTP_FIELD_COMPONENT_NAME,
 
   display: 'flex',
@@ -19,4 +19,7 @@ export const OTPFieldFrame = styled(Stack, {
       return getMappedStyles(componentProps.inputs);
     },
   } as const,
+  defaultVariants: {
+    size: '$500',
+  },
 });

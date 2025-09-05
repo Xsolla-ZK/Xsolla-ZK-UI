@@ -1,6 +1,11 @@
-import { createStyledContext, getTokenValue, Stack, styled } from '@tamagui/core';
+import { getTokenValue, Stack } from '@tamagui/core';
 import { RADIO_GROUP_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import type {
   RadioGroupContextType,
   RadioGroupSizes,
@@ -8,13 +13,16 @@ import type {
 } from './radio-group.types';
 import type { Token } from '@tamagui/core';
 
-export const RadioGroupContext = createStyledContext<RadioGroupContextType>({
-  size: '$500',
-  checked: false,
-  disabled: false,
-});
+export const RadioGroupContext = createStyledMediaContext(
+  {
+    size: '$500',
+    checked: false,
+    disabled: false,
+  } as RadioGroupContextType,
+  ['size'],
+);
 
-export const RadioGroupFrame = styled(Stack, {
+export const RadioGroupFrame = smartContextStyled(Stack, {
   // name: RADIO_GROUP_COMPONENT_NAME,
   // context: RadioGroupContext,
 
@@ -42,11 +50,9 @@ export const RadioGroupFrame = styled(Stack, {
     //   },
     // },
   } as const,
-
-  defaultVariants: {},
 });
 
-export const RadioGroupOverlay = styled(Stack, {
+export const RadioGroupOverlay = smartContextStyled(Stack, {
   tag: 'span',
   position: 'absolute',
   context: RadioGroupContext,
@@ -101,7 +107,7 @@ export const RadioGroupOverlay = styled(Stack, {
   } as const,
 });
 
-export const RadioGroupItemFrame = styled(Stack, {
+export const RadioGroupItemFrame = smartContextStyled(Stack, {
   name: RADIO_GROUP_COMPONENT_NAME,
   context: RadioGroupContext,
   tag: 'button',

@@ -1,5 +1,6 @@
-import { useProps, withStaticProperties, type TamaguiElement } from '@tamagui/core';
+import { withStaticProperties, type TamaguiElement } from '@tamagui/core';
 import { forwardRef } from 'react';
+import { withStyledMediaContext } from '../../utils';
 import {
   ListBoardFrame,
   ListContext,
@@ -12,31 +13,26 @@ import {
 } from './list.styled';
 import type { ListBaseProps, ListBoardProps, ListProps } from './list.types';
 
-const ListWithBoard = ListBoardFrame.styleable(
-  forwardRef<TamaguiElement, ListBoardProps>(({ children, size, ...props }, ref) => (
+const ListWithoutBoard = withStyledMediaContext(ListFrame, ListContext);
+
+const ListWithBoard = ListBoardFrame.styleable<ListBoardProps>(
+  ({ children, size, ...props }, ref) => (
     <ListBoardFrame size={size} {...props} ref={ref}>
-      <ListFrame size={size}>{children}</ListFrame>
+      <ListWithoutBoard>{children}</ListWithoutBoard>
     </ListBoardFrame>
-  )),
+  ),
   {
     disableTheme: true,
   },
 );
 
-const ListWithoutBoard = ListFrame.styleable(
-  forwardRef<TamaguiElement, ListBaseProps>(({ size, ...props }, ref) => (
-    <ListFrame size={size} {...props} ref={ref} />
-  )),
-  {
-    disableTheme: true,
-  },
-);
+const ListRowComponent = withStyledMediaContext(ListRow, ListContext);
 
 const ListComponent = forwardRef<TamaguiElement, ListProps>((propsIn, forwardedRef) => {
-  const { size = '$500', withBoard = false, ...props } = useProps(propsIn);
+  const { size = '$500', withBoard = false, ...props } = propsIn;
 
   return (
-    <ListContext.Provider {...{ size, withBoard }}>
+    <ListContext.Provider componentProps={{ size, ...propsIn }} withBoard={withBoard}>
       {withBoard ? (
         <ListWithBoard size={size} {...(props as ListBoardProps)} ref={forwardedRef} />
       ) : (
@@ -47,7 +43,7 @@ const ListComponent = forwardRef<TamaguiElement, ListProps>((propsIn, forwardedR
 });
 
 export const List = withStaticProperties(ListComponent, {
-  Row: ListRow,
+  Row: ListRowComponent,
   Title: ListTitle,
   TitleValue: ListTitleValue,
   Subtitle: ListSubtitle,

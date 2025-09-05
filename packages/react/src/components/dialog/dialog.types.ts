@@ -12,23 +12,16 @@ import type {
   DialogTriggerFrame,
 } from './dialog.styled';
 import type { ComponentsConfig } from '../../utils';
-import type { GetProps, TamaguiElement } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
+import type { GetProps, ScopedProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { RemoveScroll } from '@tamagui/remove-scroll';
 import type { PropsWithChildren, ReactNode, RefObject } from 'react';
-import type { ComponentProps } from 'react';
 
 export type DialogSizes = keyof ComponentsConfig['modal'] | (string & {});
 
 export type DialogPresets = SheetPresets;
 
-export type DialogScopedProps<P> = P & { __scopeDialog?: Scope };
-
-type RemoveScrollProps = ComponentProps<typeof RemoveScroll>;
-
-export interface DialogProps {
+export type DialogProps = ScopedProps<{
   children?: ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
@@ -41,16 +34,12 @@ export interface DialogProps {
   disableRemoveScroll?: boolean;
 
   /**
-   * @see https://github.com/theKashey/react-remove-scroll#usage
-   */
-  allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
-
-  /**
    * The size of the dialog
    */
   size?: DialogSizes;
-}
+}>;
 
+type DialogScopes = string;
 type NonNull<A> = Exclude<A, void | null>;
 
 export type DialogContextValue = {
@@ -64,9 +53,10 @@ export type DialogContextValue = {
   open: NonNull<DialogProps['open']>;
   onOpenChange: NonNull<DialogProps['onOpenChange']>;
   modal: NonNull<DialogProps['modal']>;
-  allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
-  scopeKey: string;
-  adaptName: string;
+  forceMount?: boolean;
+  dialogScope: DialogScopes;
+  adaptScope: string;
+
   size: DialogSizes;
 };
 

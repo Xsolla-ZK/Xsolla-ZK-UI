@@ -1,23 +1,31 @@
-import { createStyledContext, Stack, styled, View } from '@tamagui/core';
+import { createStyledContext, Stack, View } from '@tamagui/core';
 import {
-  SLIDER_TRACK_ACTIVE_NAME,
-  SLIDER_KNOB_NAME,
-  SLIDER_TRACK_NAME,
   SLIDER_COMPONENT_NAME,
+  SLIDER_KNOB_NAME,
+  SLIDER_TRACK_ACTIVE_NAME,
+  SLIDER_TRACK_NAME,
 } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import type { SliderContextType, SliderSizes } from './slider.types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
 
-export const SliderContext = createStyledContext<SliderContextType>({
-  size: '$500',
-  min: 0,
-  max: 100,
-  values: [],
-  valueIndexToChangeRef: { current: 0 },
-  thumbs: new Map(),
-  orientation: 'horizontal',
-});
+export const SliderContext = createStyledMediaContext(
+  {
+    size: '$500',
+    min: 0,
+    max: 100,
+    values: [],
+    valueIndexToChangeRef: { current: 0 },
+    thumbs: new Map(),
+    orientation: 'horizontal',
+  } as SliderContextType,
+  ['size'],
+);
 
 export const {
   Provider: SliderOrientationProvider,
@@ -36,7 +44,7 @@ export const {
   direction: 1,
 });
 
-export const SliderFrame = styled(View, {
+export const SliderFrame = smartContextStyled(View, {
   name: SLIDER_COMPONENT_NAME,
   position: 'relative',
 
@@ -79,7 +87,7 @@ export const SliderFrame = styled(View, {
   } as const,
 });
 
-export const SliderTrackFrame = styled(SliderFrame, {
+export const SliderTrackFrame = smartContextStyled(SliderFrame, {
   name: SLIDER_TRACK_NAME,
   height: '100%',
   width: '100%',
@@ -113,14 +121,14 @@ export const SliderTrackFrame = styled(SliderFrame, {
   defaultVariants: {},
 });
 
-export const SliderTrackActiveFrame = styled(SliderFrame, {
+export const SliderTrackActiveFrame = smartContextStyled(SliderFrame, {
   name: SLIDER_TRACK_ACTIVE_NAME,
   backgroundColor: '$background',
   position: 'absolute',
   pointerEvents: 'box-none',
 });
 
-export const SliderKnobFrame = styled(Stack, {
+export const SliderKnobFrame = smartContextStyled(Stack, {
   name: SLIDER_KNOB_NAME,
 
   position: 'absolute',

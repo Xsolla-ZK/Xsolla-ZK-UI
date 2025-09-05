@@ -1,10 +1,12 @@
-import type { AccordionContentFrame, AccordionHeaderFrame, AccordionTriggerFrame } from './accordion.styled';
+import type { AccordionContentFrame, AccordionHeaderFrame, AccordionItemFrame, AccordionTriggerFrame } from './accordion.styled';
 import type { ComponentsConfig } from '../../utils';
 import type { Collapsible } from '@tamagui/collapsible';
-import type { GetProps, GetRef, ScopedProps, Stack } from '@tamagui/core';
+import type { GetProps, GetRef } from '@tamagui/core';
 import type { AriaAttributes, ComponentPropsWithoutRef, ComponentRef, ReactNode } from 'react';
 export type AccordionSizes = keyof ComponentsConfig['accordion']['board'] | (string & {});
-export type AccordionScopedProps<P> = ScopedProps<P, 'Accordion'>;
+export type AccordionScopedProps<P> = P & {
+    __scopeAccordion?: string;
+};
 export type AccordionImplContextValue = {
     disabled?: boolean;
     direction: AccordionImplProps['dir'];
@@ -73,7 +75,7 @@ export interface AccordionImplMultipleProps extends AccordionImplProps {
      */
     onValueChange?: (value: string[]) => void;
 }
-type PrimitiveDivProps = ComponentPropsWithoutRef<typeof Stack>;
+type PrimitiveDivProps = ComponentPropsWithoutRef<typeof AccordionItemFrame>;
 export interface AccordionImplProps extends PrimitiveDivProps {
     /**
      * Whether or not an accordion is disabled from user interaction.
@@ -99,8 +101,6 @@ export interface AccordionImplProps extends PrimitiveDivProps {
      * Web-only: The callback that fires when a key is pressed.
      */
     onKeyDown?: (event: KeyboardEvent) => void;
-    size?: AccordionSizes;
-    withBoard?: boolean;
 }
 export interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpen' | 'onOpenChange'> {
     /**

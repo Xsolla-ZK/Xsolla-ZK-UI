@@ -1,5 +1,5 @@
 import type { TypographyPresets } from '../types/typography';
-import type { SizeKeys, ThemeValueGet } from '@tamagui/core';
+import type { SizeKeys, stylePropsAll, ThemeValueGet } from '@tamagui/core';
 export declare const validProps: {
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
@@ -37,8 +37,9 @@ export declare const validProps: {
 };
 export type ValidKeys = keyof typeof validProps;
 export type ValidExtraKeys = keyof typeof validExtraProps;
-export type ValidBaseProps = {
-    [K in ValidKeys]?: ThemeValueGet<K>;
+export type ValidAllKeys = keyof typeof stylePropsAll;
+export type GetValidPropsByKeys<Keys extends string> = {
+    [K in Keys]?: ThemeValueGet<K>;
 };
 export type ValidExtraProps = Partial<{
     size: ThemeValueGet<SizeKeys>;
@@ -46,7 +47,10 @@ export type ValidExtraProps = Partial<{
     maxSize: ThemeValueGet<SizeKeys>;
     typography: TypographyPresets;
 }>;
-export type ValidProps = ValidBaseProps & ValidExtraProps;
+export type ValidBaseProps = GetValidPropsByKeys<ValidKeys>;
+export type ValidPropsWithExtra = ValidBaseProps & ValidExtraProps;
+export type ValidAllProps = GetValidPropsByKeys<ValidAllKeys>;
+export type ValidAllPropsWithExtra = ValidAllProps & ValidExtraProps;
 export declare const validExtraProps: {
     size: boolean;
     minSize: boolean;

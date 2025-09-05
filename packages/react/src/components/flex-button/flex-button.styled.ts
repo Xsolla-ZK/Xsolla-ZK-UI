@@ -1,18 +1,29 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { Stack, Text } from '@tamagui/core';
 import { FLEX_BUTTON_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
+import {
+  getComponentsConfig,
+  getMappedStyles,
+  createIconComponent,
+  processMediaValues,
+  createStyledMediaContext,
+  smartContextStyled,
+} from '../../utils';
 import type { FlexButtonContextType, FlexButtonSizes, FlexButtonTone } from './flex-button.types';
+import type { XORIconProps } from '../../types';
 import type { GetProps } from '@tamagui/core';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const FlexButtonContext = createStyledContext<FlexButtonContextType>({
-  size: '$500',
-  tone: 'brand',
-  disabled: false,
-});
+export const FlexButtonContext = createStyledMediaContext(
+  {
+    size: '$500',
+    tone: 'brand',
+    disabled: false,
+  } as FlexButtonContextType,
+  ['size'],
+);
 
-export const FlexButtonFrame = styled(Stack, {
+export const FlexButtonFrame = smartContextStyled(Stack, {
   name: FLEX_BUTTON_COMPONENT_NAME,
-  context: FlexButtonContext,
   tag: 'button',
   role: 'button',
   containerType: 'normal',
@@ -62,10 +73,11 @@ export const FlexButtonFrame = styled(Stack, {
   } as const,
   defaultVariants: {
     size: '$500',
+    fullWidth: false,
   },
 });
 
-export const FlexButtonOverlay = styled(Stack, {
+export const FlexButtonOverlay = smartContextStyled(Stack, {
   name: FLEX_BUTTON_COMPONENT_NAME,
 
   position: 'absolute',
@@ -90,7 +102,7 @@ export const FlexButtonOverlay = styled(Stack, {
   },
 });
 
-export const FlexButtonText = styled(Text, {
+export const FlexButtonText = smartContextStyled(Text, {
   name: FLEX_BUTTON_COMPONENT_NAME,
   context: FlexButtonContext,
   color: '$color',
@@ -114,8 +126,25 @@ export const FlexButtonText = styled(Text, {
   } as const,
 });
 
-export const FlexButtonIcon = createIconComponent(
-  FLEX_BUTTON_COMPONENT_NAME,
-  FlexButtonContext,
-  'flexButton',
-);
+export const FlexButtonIcon = (props: XORIconProps) => {
+  const ctx = FlexButtonContext.useStyledContext();
+
+  const iconProps = processMediaValues(
+    { size: ctx.size },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.flexButton[val as keyof typeof config.flexButton];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+    },
+  ) as IconProps;
+
+  return createIconComponent({ ...iconProps, color: '$color', ...props });
+};

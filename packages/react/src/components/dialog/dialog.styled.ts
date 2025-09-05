@@ -1,25 +1,26 @@
-import { isWeb, Stack, styled, View } from '@tamagui/core';
+import { Stack, View } from '@tamagui/core';
 import {
+  DIALOG_BODY_COMPONENT_NAME,
   DIALOG_CLOSE_COMPONENT_NAME,
   DIALOG_CONTENT_COMPONENT_NAME,
   DIALOG_DESCRIPTION_COMPONENT_NAME,
   DIALOG_FOOTER_COMPONENT_NAME,
   DIALOG_HEADER_COMPONENT_NAME,
   DIALOG_OVERLAY_COMPONENT_NAME,
-  DIALOG_BODY_COMPONENT_NAME,
   DIALOG_TITLE_COMPONENT_NAME,
   DIALOG_TRIGGER_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import { SheetBody, SheetFooter, SheetHeader, SheetOverlay } from '../sheet/sheet.styled';
 import { Typography } from '../typography';
 import type { DialogSizes } from './dialog.types';
 
-export const DialogTriggerFrame = styled(View, {
+export const DialogTriggerFrame = smartContextStyled(View, {
   name: DIALOG_TRIGGER_COMPONENT_NAME,
 });
 
-export const DialogPortalFrame = styled(Stack, {
+export const DialogPortalFrame = smartContextStyled(Stack, {
+  tag: 'dialog',
   position: 'absolute',
   top: 0,
   bottom: 0,
@@ -28,21 +29,27 @@ export const DialogPortalFrame = styled(Stack, {
   pointerEvents: 'none',
   alignItems: 'center',
   justifyContent: 'center',
-  ...(isWeb && {
+
+  '$platform-web': {
+    // undo dialog styles
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    // color: 'inherit',
+    maxInlineSize: 'none',
+    margin: 0,
+    width: 'auto',
+    height: 'auto',
+    // ensure always in frame and right height
     maxHeight: '100vh',
     position: 'fixed' as never,
-  }),
-
-  variants: {} as const,
-
-  defaultVariants: {},
+  },
 });
 
-export const DialogOverlayFrame = styled(SheetOverlay, {
+export const DialogOverlayFrame = smartContextStyled(SheetOverlay, {
   name: DIALOG_OVERLAY_COMPONENT_NAME,
 });
 
-export const DialogContentFrame = styled(Stack, {
+export const DialogContentFrame = smartContextStyled(Stack, {
   name: DIALOG_CONTENT_COMPONENT_NAME,
   tag: 'dialog',
   position: 'relative',
@@ -63,27 +70,27 @@ export const DialogContentFrame = styled(Stack, {
   } as const,
 });
 
-export const DialogHeaderFrame = styled(SheetHeader, {
+export const DialogHeaderFrame = smartContextStyled(SheetHeader, {
   name: DIALOG_HEADER_COMPONENT_NAME,
 });
 
-export const DialogBodyFrame = styled(SheetBody, {
+export const DialogBodyFrame = smartContextStyled(SheetBody, {
   name: DIALOG_BODY_COMPONENT_NAME,
 });
 
-export const DialogFooterFrame = styled(SheetFooter, {
+export const DialogFooterFrame = smartContextStyled(SheetFooter, {
   name: DIALOG_FOOTER_COMPONENT_NAME,
 });
 
-export const DialogTitleFrame = styled(Typography, {
+export const DialogTitleFrame = smartContextStyled(Typography, {
   name: DIALOG_TITLE_COMPONENT_NAME,
 });
 
-export const DialogDescriptionFrame = styled(Typography, {
+export const DialogDescriptionFrame = smartContextStyled(Typography, {
   name: DIALOG_DESCRIPTION_COMPONENT_NAME,
 });
 
-export const DialogCloseFrame = styled(View, {
+export const DialogCloseFrame = smartContextStyled(View, {
   name: DIALOG_CLOSE_COMPONENT_NAME,
   tag: 'button',
 });

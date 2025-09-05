@@ -109,31 +109,20 @@ output-directory/
 ### Example Generated Component
 
 ```tsx
-import React, { memo } from 'react';
-import { Svg, Path } from 'react-native-svg';
-import type { IconProps } from '@tamagui/helpers-icon';
+import { SvgThemed, SvgPath } from '@xsolla-zk/ui-primitives';
+import { memo } from 'react';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-const ChevronUp = memo<IconProps>(({ size = 24, color = 'black', ...props }) => (
-  <Svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    {...props}
-  >
-    <Path
-      d="M18 15L12 9L6 15"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Svg>
-));
+const Icon = (props: IconProps) => {
+  const { color = 'black', size = 24, ...otherProps } = props;
+  return (
+    <SvgThemed fill="none" size={size} color={color} {...otherProps}>
+      <SvgPath fill="currentColor" d="m18 14-6-6-6 6 1 2 5-3 5 3z" />
+    </SvgThemed>
+  );
+};
 
-ChevronUp.displayName = 'ChevronUp';
-
-export { ChevronUp };
+export const ChevronUp = memo(Icon);
 ```
 
 ### Generated Index File
@@ -268,7 +257,7 @@ For optimal results, your SVG files should meet these requirements:
 Generated components include full TypeScript support:
 
 ```tsx
-import type { IconProps } from '@tamagui/helpers-icon';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
 // All icons accept these props
 interface GeneratedIconProps extends IconProps {
@@ -396,7 +385,7 @@ pnpm build
 
 - **@xsolla-zk/icons** - Generated icon library
 - **@xsolla-zk/react** - React component library
-- **@tamagui/helpers-icon** - Icon helper utilities
+- **@xsolla-zk/ui-primitives** - UI primitives
 
 ## License
 

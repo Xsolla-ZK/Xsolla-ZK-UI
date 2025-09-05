@@ -34,7 +34,16 @@ const svgoConfig = {
     {
       name: 'removeAttrs',
       params: {
-        attrs: ['class', 'data-name', 'id', 'style', 'stroke:(?!none)', 'fill:(?!none)'],
+        attrs: [
+          'class',
+          'data-name',
+          'id',
+          'style',
+          'stroke:(?!none)',
+          'fill:(?!none)',
+          'width',
+          'height',
+        ],
       },
     },
     {
@@ -58,14 +67,19 @@ const svgoConfig = {
     {
       name: 'addAttributesToSVGElement',
       params: {
-        attributes: [{ width: '24' }, { height: '24' }],
+        attributes: [{ viewBox: '0 0 24 24', size: '24', color: 'black' }],
+        // attributes: [{ width: '24' }, { height: '24' }],
       },
     },
   ],
 };
 
 const SVG_COMPONENT_MAP = {
-  svg: { component: 'Svg', close: true, special: (tag, attrs) => `<Svg${attrs} {...otherProps}>` },
+  svg: {
+    component: 'SvgThemed',
+    close: true,
+    special: (tag, attrs) => `<SvgThemed${attrs} {...otherProps}>`,
+  },
   circle: { component: '_Circle', close: true },
   ellipse: { component: 'Ellipse', close: true },
   g: { component: 'G', close: true },
@@ -126,14 +140,15 @@ async function formatCode(code) {
 }
 
 function transformSvg(svg) {
-  const usedComponents = new Set(['Svg']); // Svg is always needed
+  const usedComponents = new Set([]); // Svg is always needed
 
   const transformedSvg = svg
     // Replace attributes
-    .replace(/(?:fill|stroke)="currentColor"/g, (match) =>
-      match.replace('"currentColor"', '{color}'),
-    )
-    .replace(/(?:width|height)="24"/g, (match) => match.replace('"24"', '{size}'))
+    // .replace(/(?:fill|stroke)="currentColor"/g, (match) =>
+    //   match.replace('"currentColor"', '{color}'),
+    // )
+    .replace(/(?:color)="black"/g, (match) => match.replace('"black"', '{color}'))
+    .replace(/(?:width|height|size)="24"/g, (match) => match.replace('"24"', '{size}'))
     .replace(/px/g, '')
     // Camelize kebab-case attributes (simpler approach)
     .replace(/([a-z])-([a-z])/gi, (_match, p1, p2) => p1 + p2.toUpperCase())
@@ -146,7 +161,7 @@ function transformSvg(svg) {
 
         // Add component to Set when the opening tag appears for the first time
         if (!slash) {
-          usedComponents.add(config.component);
+          if (config.component !== 'SvgThemed') usedComponents.add(config.component);
         }
 
         // If this is a closing tag
@@ -245,24 +260,20 @@ async function generateIcons({ input, output }) {
     const cname = capitalizeFirstLetter(camelize(id));
 
     const componentCode = `
-      import { themed } from '@tamagui/helpers-icon'
+      import { SvgThemed } from '@xsolla-zk/ui-primitives'
       import { memo } from 'react'
       import {
         ${componentImports}
       } from 'react-native-svg'
-      import type { IconProps } from '@tamagui/helpers-icon'
-      import type { ComponentProps, FC } from 'react'
 
-      type Props = ComponentProps<typeof Svg> & {
-        size: number
-      }
+      import type { IconProps } from '@xsolla-zk/ui-primitives'
 
-      const Icon: FC = (props) => {
-        const { color = 'black', size = 24, ...otherProps } = props as Props
+      const Icon = (props: IconProps) => {
+        const { color = 'black', size = 24, ...otherProps } = props;
         return ${svgContent}
       }
 
-      export const ${cname} = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }))
+      export const ${cname} = memo(Icon)
     `;
 
     const formattedCode = await formatCode(componentCode);

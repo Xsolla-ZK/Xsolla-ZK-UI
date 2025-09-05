@@ -1,5 +1,7 @@
-import { components, deepMerge } from '@xsolla-zk/config';
-import type { ValidProps } from './valid-props';
+import { components } from '@xsolla-zk/config';
+import { deepMerge } from '@xsolla-zk/ui-utils';
+import type { ReturnTypeConfig } from '../types';
+import type { ValidPropsWithExtra } from './valid-props';
 
 export const defaultComponentsConfig = components;
 
@@ -20,8 +22,8 @@ type ExtendableDeepRecord = {
 type InitialConfig<T> = {
   [K in keyof T]?: T[K] extends object
     ? InitialConfig<T[K]>
-    : K extends keyof ValidProps
-      ? ValidProps[K]
+    : K extends keyof ValidPropsWithExtra
+      ? ValidPropsWithExtra[K]
       : never;
 };
 
@@ -48,14 +50,6 @@ export function initializeComponentsConfig<
   //   return acc;
   // }, {} as MergeConfig<T>);
 }
-
-type ReturnTypeConfig<T> = {
-  [K in keyof T]: T[K] extends object
-    ? ReturnTypeConfig<T[K]>
-    : K extends keyof ValidProps
-      ? ValidProps[K]
-      : never;
-};
 
 export function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>() {
   return currentComponentConfig as T;

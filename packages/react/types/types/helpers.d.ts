@@ -19,4 +19,10 @@ export type BoundProps<T, K extends keyof T> = Omit<T, K> & {
     [Key in K]: BoundMethod<T[Key]>;
 };
 export type IsLiteralString<T> = T extends string ? T extends `${infer _P}_${infer Middle}_${infer _S}` ? string extends Middle ? false : true : true : false;
+export type Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
+export type ExtractValues<T> = {
+    [K in keyof T]: T[K] extends object ? T[K][keyof T[K]] : T[K];
+};
 //# sourceMappingURL=helpers.d.ts.map

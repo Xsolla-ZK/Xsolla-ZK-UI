@@ -82,7 +82,6 @@ export const InlineInput = InlineInputBase.styleable(
 
     return (
       <InlineInputElement
-        {...rest}
         size={size}
         style={
           {
@@ -94,6 +93,7 @@ export const InlineInput = InlineInputBase.styleable(
             resize: 'none',
           } as Record<string, unknown>
         }
+        {...rest}
         multiline
         onLayout={handleLayout}
         onContentSizeChange={handleContentSizeChange}

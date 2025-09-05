@@ -1,3 +1,3 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const People: import("react").NamedExoticComponent<IconProps>;
+import type { IconProps } from '@xsolla-zk/ui-primitives';
+export declare const People: import("react").MemoExoticComponent<(props: IconProps) => import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=people.d.ts.map

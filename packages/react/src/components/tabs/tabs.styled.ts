@@ -1,5 +1,4 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { Text } from '@tamagui/core';
+import { Stack, Text } from '@tamagui/core';
 import {
   TABS_COMPONENT_NAME,
   TABS_LIST_COMPONENT_NAME,
@@ -7,24 +6,36 @@ import {
   TABS_PANEL_COMPONENT_NAME,
   TABS_TAB_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createIconComponent,
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+  smartContextStyled,
+} from '../../utils';
 import type { TabsContextType, TabsSizes } from './tabs.types';
+import type { XORIconProps } from '../../types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const TabsContext = createStyledContext<TabsContextType>({
-  size: '$500',
-  baseId: '',
-  onChange: () => ({}),
-  registerTab: () => ({}),
-  unregisterTab: () => ({}),
-  tabsCount: 0,
-  setActiveTabLayout: () => ({}),
-  containerRef: null,
-});
+export const TabsContext = createStyledMediaContext(
+  {
+    size: '$500',
+    baseId: '',
+    onChange: () => ({}),
+    registerTab: () => ({}),
+    unregisterTab: () => ({}),
+    tabsCount: 0,
+    setActiveTabLayout: () => ({}),
+    containerRef: null,
+    orientation: 'horizontal',
+  } as TabsContextType,
+  ['size'],
+);
 
-export const TabsFrame = styled(Stack, {
+export const TabsFrame = smartContextStyled(Stack, {
   name: TABS_COMPONENT_NAME,
-  context: TabsContext,
   display: 'flex',
   overflow: 'hidden',
 
@@ -41,7 +52,7 @@ export const TabsFrame = styled(Stack, {
   } as const,
 });
 
-export const TabsListFrame = styled(Stack, {
+export const TabsListFrame = smartContextStyled(Stack, {
   name: TABS_LIST_COMPONENT_NAME,
 
   position: 'relative',
@@ -49,8 +60,8 @@ export const TabsListFrame = styled(Stack, {
 
   variants: {
     size: (val: TabsSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.tabs[val as keyof typeof config.tabs];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.tabs[val as keyof typeof componentsConfig.tabs];
 
       if (!componentProps) return {};
 
@@ -67,7 +78,7 @@ export const TabsListFrame = styled(Stack, {
   } as const,
 });
 
-export const TabsTabFrame = styled(Stack, {
+export const TabsTabFrame = smartContextStyled(Stack, {
   name: TABS_TAB_COMPONENT_NAME,
   tag: 'button',
 
@@ -85,17 +96,17 @@ export const TabsTabFrame = styled(Stack, {
   cursor: 'pointer',
 
   // pressStyle: {
-  //   backgroundColor: '$backgroundPress',
+  //   backgroundColor: 'red',
   // },
 
   // focusStyle: {
-  //   backgroundColor: '$backgroundFocus',
+  //   backgroundColor: 'green',
   // },
 
   variants: {
     size: (val: TabsSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.tab[val as keyof typeof config.tab];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.tab[val as keyof typeof componentsConfig.tab];
 
       if (!componentProps) return {};
 
@@ -120,11 +131,9 @@ export const TabsTabFrame = styled(Stack, {
       },
     },
   } as const,
-
-  defaultVariants: {},
 });
 
-export const TabsTabContent = styled(Stack, {
+export const TabsTabContent = smartContextStyled(Stack, {
   name: TABS_TAB_COMPONENT_NAME,
   padding: 4,
   borderRadius: '$300',
@@ -145,9 +154,8 @@ export const TabsTabContent = styled(Stack, {
   },
 });
 
-export const TabsContentFrame = styled(Stack, {
+export const TabsContentFrame = smartContextStyled(Stack, {
   name: TABS_PANEL_COMPONENT_NAME,
-  context: TabsContext,
   role: 'tabpanel',
   flex: 1,
 
@@ -168,21 +176,20 @@ const reverseProps = {
   borderBottomLeftRadius: 'borderBottomRightRadius',
 } as const;
 
-export const TabsListIndicator = styled(Stack, {
+export const TabsListIndicator = smartContextStyled(Stack, {
   name: TABS_LIST_INDICATOR_COMPONENT_NAME,
-  context: TabsContext,
   position: 'absolute',
   backgroundColor: '$background',
   // animation: 'tabSwitch',
   // animateOnly: ['width', 'transform'],
 
   variants: {
-    size: (val: TabsSizes, extras): ReturnType<typeof getMappedStyles> => {
+    size: (val: TabsSizes, extras) => {
       const { props } = extras as VariantSpreadExtras<
         GetProps<typeof Stack> & Pick<TabsContextType, 'orientation'>
       >;
-      const config = getComponentsConfig();
-      const componentProps = config.tab[val as keyof typeof config.tab];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.tab[val as keyof typeof componentsConfig.tab];
 
       if (!componentProps) return {};
 
@@ -214,19 +221,18 @@ export const TabsListIndicator = styled(Stack, {
   },
 });
 
-export const TabsTabText = styled(Text, {
+export const TabsTabText = smartContextStyled(Text, {
   name: TABS_TAB_COMPONENT_NAME,
   context: TabsContext,
 
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
   color: '$color',
 
   variants: {
     size: (val: TabsSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.tab[val as keyof typeof config.tab];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.tab[val as keyof typeof componentsConfig.tab];
 
       if (!componentProps) return {};
 
@@ -235,4 +241,25 @@ export const TabsTabText = styled(Text, {
   } as const,
 });
 
-export const TabsTabIcon = createIconComponent(TABS_TAB_COMPONENT_NAME, TabsContext, 'tab');
+export const TabsTabIcon = (props: XORIconProps) => {
+  const ctx = TabsContext.useStyledContext();
+
+  const iconProps = processMediaValues(
+    { size: ctx.size },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.tab[val as keyof typeof config.tab];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+    },
+  ) as IconProps;
+
+  return createIconComponent({ ...iconProps, color: '$color', ...props });
+};

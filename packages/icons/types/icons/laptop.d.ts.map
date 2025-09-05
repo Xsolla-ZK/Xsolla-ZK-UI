@@ -1,1 +1,1 @@
-{"version":3,"file":"laptop.d.ts","sourceRoot":"","sources":["../../src/icons/laptop.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAuBvD,eAAO,MAAM,MAAM,iDAA2D,CAAC"}
+{"version":3,"file":"laptop.d.ts","sourceRoot":"","sources":["../../src/icons/laptop.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAkB1D,eAAO,MAAM,MAAM,8CAhBE,SAAS,6CAgBE,CAAC"}

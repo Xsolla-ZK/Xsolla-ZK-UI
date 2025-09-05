@@ -1,39 +1,33 @@
-import { useProps, useTheme, withStaticProperties } from '@tamagui/core';
-import { forwardRef } from 'react';
-import Svg, { Circle } from 'react-native-svg';
+import { useTheme, withStaticProperties } from '@tamagui/core';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
+import { Circle } from 'react-native-svg';
+import { useStyledMediaContext } from '../../hooks';
 import { LoaderContext, LoaderFrame, LoaderSpin, LoaderText } from './loader.styled';
 import type { LoaderProps } from './loader.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 import type { ColorValue } from 'react-native';
 
 const LoaderComponent = LoaderFrame.styleable<LoaderProps>(
-  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
-    const {
-      size = 24,
-      tone = 'brand',
-      mainColor = '$color',
-      spinColor = '$spinColor',
-      ...props
-    } = useProps(propsIn);
+  ({ children, ...propsIn }, ref) => {
+    const { tone = 'brand', mainColor = '$color', spinColor = '$spinColor', ...props } = propsIn;
+
     return (
-      <LoaderContext.Provider {...{ size, mainColor, spinColor }}>
-        <LoaderFrame size={size} theme={tone} {...props} ref={ref}>
+      <LoaderContext.Provider componentProps={props} {...{ mainColor, spinColor }}>
+        <LoaderFrame theme={tone} {...props} ref={ref}>
           <LoaderSpinner />
           {children}
         </LoaderFrame>
       </LoaderContext.Provider>
     );
-  }),
+  },
   { disableTheme: true },
 );
 
 function LoaderSpinner() {
-  const ctx = LoaderContext.useStyledContext();
+  const { mediaContext, ...ctx } = useStyledMediaContext(LoaderContext);
   const theme = useTheme();
 
   return (
-    <Svg fill="none" width={ctx.size} height={ctx.size} viewBox="0 0 28 28">
+    <SvgThemed fill="none" {...mediaContext} viewBox="0 0 28 28">
       <Circle
         cx={14}
         cy={14}
@@ -65,11 +59,10 @@ function LoaderSpinner() {
           repeatCount="indefinite"
         />
       </LoaderSpin>
-    </Svg>
+    </SvgThemed>
   );
 }
 
 export const Loader = withStaticProperties(LoaderComponent, {
-  Props: LoaderContext.Provider,
   Text: LoaderText,
 });

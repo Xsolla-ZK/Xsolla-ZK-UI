@@ -1,29 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { getMedia, type MediaPropKeys, type WithThemeShorthandsPseudosMedia } from '@tamagui/core';
+import { getMedia } from '@tamagui/core';
+import { isPlainObject } from '@xsolla-zk/ui-utils';
 import { propsMap } from './valid-props';
-import type { ValidBaseProps, ValidExtraKeys, ValidProps } from './valid-props';
+import type { MediaUnion, ValidStylesReturn } from '../types';
+import type { ValidExtraKeys, ValidPropsWithExtra } from './valid-props';
 import type { TypographyPresets } from '../types/typography';
 
-type Result = WithThemeShorthandsPseudosMedia<ValidBaseProps>;
-
 type GetMappedStylesResult = {
-  flat: Result;
-  media: Result;
+  flat: ValidStylesReturn;
+  media: Record<string, ValidStylesReturn>;
 };
-
-type TemplateMediaUnion = MediaPropKeys | 'base';
 
 type MappedMediaStyles<T> = {
-  [K in TemplateMediaUnion]?: T;
+  [K in MediaUnion]?: T;
 };
 
-type GetMappedStyles<T extends ValidProps> = {
+type GetMappedStyles<T extends ValidPropsWithExtra> = {
   [K in keyof T]?: T[K] | MappedMediaStyles<T[K]>;
 };
 
-function processNested<T extends ValidProps[keyof ValidProps]>(
+function processNested<T extends ValidPropsWithExtra[keyof ValidPropsWithExtra]>(
   originalProp: string,
   nestedValue: MappedMediaStyles<T>,
   result: GetMappedStylesResult,
@@ -38,9 +35,9 @@ function processNested<T extends ValidProps[keyof ValidProps]>(
 
   for (const bp in media) {
     const bpKey = `$${bp}`;
-    if (nestedValue[bpKey as TemplateMediaUnion]) {
+    if (nestedValue[bpKey as MediaUnion]) {
       // @ts-ignore
-      result.media[bpKey] ??= {} as Result;
+      result.media[bpKey] ??= {} as ValidStylesReturn;
       // @ts-ignore
       processScalar(originalProp, nestedValue[bpKey as keyof T], result.media[bpKey]);
     }
@@ -49,7 +46,11 @@ function processNested<T extends ValidProps[keyof ValidProps]>(
   return result;
 }
 
-function processScalar(key: string, value: ValidProps[keyof ValidProps], result: Result) {
+function processScalar(
+  key: string,
+  value: ValidPropsWithExtra[keyof ValidPropsWithExtra],
+  result: ValidStylesReturn,
+) {
   const mappedKey = propsMap[key as ValidExtraKeys];
   if (mappedKey) {
     if (Array.isArray(mappedKey)) {
@@ -70,22 +71,26 @@ function processScalar(key: string, value: ValidProps[keyof ValidProps], result:
   return result;
 }
 
-export function getMappedStyles<T extends ValidProps>(obj: GetMappedStyles<T>) {
+export function getMappedStyles<T extends ValidPropsWithExtra>(obj: GetMappedStyles<T>) {
   const result = {
     flat: {},
     media: {},
   } as GetMappedStylesResult;
 
   for (const [key, value] of Object.entries(obj)) {
-    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-      processNested(key, value as MappedMediaStyles<ValidProps[keyof ValidProps]>, result);
+    if (isPlainObject(value)) {
+      processNested(
+        key,
+        value as MappedMediaStyles<ValidPropsWithExtra[keyof ValidPropsWithExtra]>,
+        result,
+      );
     } else {
-      processScalar(key, value as ValidProps[keyof ValidProps], result.flat);
+      processScalar(key, value as ValidPropsWithExtra[keyof ValidPropsWithExtra], result.flat);
     }
   }
 
   return {
     ...result.flat,
     ...result.media,
-  } as Result;
+  } as ValidStylesReturn;
 }

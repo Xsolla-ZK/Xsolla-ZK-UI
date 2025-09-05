@@ -1,1 +1,1 @@
-{"version":3,"file":"chevron-left.d.ts","sourceRoot":"","sources":["../../src/icons/chevron-left.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAgBvD,eAAO,MAAM,WAAW,iDAA2D,CAAC"}
+{"version":3,"file":"chevron-left.d.ts","sourceRoot":"","sources":["../../src/icons/chevron-left.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAW1D,eAAO,MAAM,WAAW,8CATH,SAAS,6CASO,CAAC"}

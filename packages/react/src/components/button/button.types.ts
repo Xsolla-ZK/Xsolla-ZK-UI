@@ -1,5 +1,5 @@
 import type { ButtonFrame } from './button.styled';
-import type { IconsPosition, GetComponentTone } from '../../types';
+import type { GetComponentTone, IconsPosition } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { BUTTON_COMPONENT_NAME } from '@xsolla-zk/constants';
@@ -18,8 +18,4 @@ export type ButtonContextType = Partial<IconsPosition> & {
   tone: ButtonTone;
 };
 
-type ButtonSharedProps = GetProps<typeof ButtonFrame>;
-
-export type ButtonProps = ButtonSharedProps & {
-  // type?: HTMLButtonElement['type'];
-};
+export type ButtonProps = GetProps<typeof ButtonFrame>;

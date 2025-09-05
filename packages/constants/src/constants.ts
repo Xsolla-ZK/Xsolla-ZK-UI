@@ -162,8 +162,6 @@ export const SWITCH_KNOB_COMPONENT_NAME = 'SwitchKnob';
 
 export const TAB_BAR_COMPONENT_NAME = 'TabBar';
 export const TAB_BAR_ITEM_COMPONENT_NAME = 'TabBarItem';
-export const TAB_BAR_ITEM_TITLE_COMPONENT_NAME = 'TabBarItemTitle';
-export const TAB_BAR_ITEM_ICON_COMPONENT_NAME = 'TabBarItemIcon';
 
 export const TABS_COMPONENT_NAME = 'Tabs';
 export const TABS_TAB_COMPONENT_NAME = 'TabsTab';
@@ -174,3 +172,8 @@ export const TABS_LIST_INDICATOR_COMPONENT_NAME = 'TabsListIndicator';
 export const TABS_CONTEXT = 'TabsContext';
 
 export const TOAST_COMPONENT_NAME = 'Toast';
+
+export const DROPDOWN_COMPONENT_NAME = 'Dropdown';
+export const DROPDOWN_CONTENT_COMPONENT_NAME = 'DropdownContent';
+
+export const TOOLTIP_COMPONENT_NAME = 'Tooltip';

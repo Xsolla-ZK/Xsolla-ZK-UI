@@ -1,3 +1,48 @@
+import { createTheme } from './utils/create-component-theme';
+export declare const baseTheme: <T extends Record<"light" | "dark", Record<string, string>>>(themes: T) => {
+    light: {
+        background: string;
+        color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
+    };
+    dark: {
+        background: string;
+        color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
+    };
+};
 export declare const themes: {
     light: {
         'brand.100': string;
@@ -305,95 +350,69 @@ export declare const themes: {
     light: {
         background: string;
         color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
     };
     dark: {
         background: string;
         color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
     };
 } & {
-    [x: `light_${string}_ListTitle`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    [x: `dark_${string}_ListTitle`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    light_ListTitle: {
-        color: string;
-    };
-    dark_ListTitle: {
-        color: string;
-    };
-} & {
-    [x: `light_${string}_ListTitleValue`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    [x: `dark_${string}_ListTitleValue`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    light_ListTitleValue: {
-        color: string;
-    };
-    dark_ListTitleValue: {
-        color: string;
-    };
-} & {
-    [x: `light_${string}_ListSubtitle`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    [x: `dark_${string}_ListSubtitle`]: {
-        [x: string]: string;
-    } | {
-        color: string;
-    };
-    light_ListSubtitle: {
-        color: string;
-    };
-    dark_ListSubtitle: {
-        color: string;
-    };
-} & {
-    [x: `light_${string}_ListBoard`]: {
+    [x: `light_${string}_Tooltip`]: {
         [x: string]: string;
     } | {
         background: string;
+        borderColor: string;
+        color: string;
     };
-    [x: `dark_${string}_ListBoard`]: {
+    [x: `dark_${string}_Tooltip`]: {
         [x: string]: string;
     } | {
         background: string;
+        borderColor: string;
+        color: string;
     };
-    light_ListBoard: {
+    light_Tooltip: {
         background: string;
+        borderColor: string;
+        color: string;
     };
-    dark_ListBoard: {
+    dark_Tooltip: {
         background: string;
-    };
-} & {
-    [x: `light_${string}_CellBoard`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    [x: `dark_${string}_CellBoard`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    light_CellBoard: {
-        background: string;
-    };
-    dark_CellBoard: {
-        background: string;
+        borderColor: string;
+        color: string;
     };
 } & {
     [x: `light_${string}_Toast`]: {
@@ -413,201 +432,106 @@ export declare const themes: {
         background: string;
     };
 } & {
-    light_InlineInput: {
-        borderColorFocus: string;
-        placeholderColor: string;
+    [x: `light_${string}_TabsTab`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+        backgroundHover: string;
+    };
+    [x: `dark_${string}_TabsTab`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+        backgroundHover: string;
+    };
+    light_TabsTab: {
+        background: string;
+        backgroundHover: string;
+    };
+    dark_TabsTab: {
+        background: string;
+        backgroundHover: string;
+    };
+} & {
+    [x: `light_${string}_TabsListIndicator`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_TabsListIndicator`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_TabsListIndicator: {
+        background: string;
+    };
+    dark_TabsListIndicator: {
+        background: string;
+    };
+} & {
+    light_TabBarItem: {
         color: string;
     };
-    dark_InlineInput: {
-        borderColorFocus: string;
-        placeholderColor: string;
+    dark_TabBarItem: {
         color: string;
     };
-    light_error_InlineInput: {
-        placeholderColor: string;
+    light_selected_TabBarItem: {
         color: string;
     };
-    dark_error_InlineInput: {
-        placeholderColor: string;
-        color: string;
-    };
-    light_readonly_InlineInput: {
-        placeholderColor: string;
-        color: string;
-    };
-    dark_readonly_InlineInput: {
-        placeholderColor: string;
+    dark_selected_TabBarItem: {
         color: string;
     };
 } & {
-    [x: `light_${string}_SegmentedControl`]: {
-        [x: string]: string;
-    } | {
+    light_Switch: {
         background: string;
         borderColor: string;
+        outlineColor: string;
     };
-    [x: `dark_${string}_SegmentedControl`]: {
-        [x: string]: string;
-    } | {
+    dark_Switch: {
         background: string;
         borderColor: string;
+        outlineColor: string;
     };
-    light_SegmentedControl: {
+    light_active_Switch: {
         background: string;
         borderColor: string;
+        outlineColor: string;
     };
-    dark_SegmentedControl: {
+    dark_active_Switch: {
         background: string;
         borderColor: string;
+        outlineColor: string;
     };
 } & {
-    light_SegmentedControlSegment: {
-        background: string;
-        borderColor: string;
-        color: string;
-    };
-    dark_SegmentedControlSegment: {
-        background: string;
-        borderColor: string;
-        color: string;
-    };
-    light_active_SegmentedControlSegment: {
-        background: string;
-        borderColor: string;
-        color: string;
-    };
-    dark_active_SegmentedControlSegment: {
-        background: string;
-        borderColor: string;
-        color: string;
-    };
-} & {
-    [x: `light_${string}_ProgressBar`]: {
-        [x: string]: string;
-    } | {
+    light_SwitchKnob: {
         background: string;
     };
-    [x: `dark_${string}_ProgressBar`]: {
-        [x: string]: string;
-    } | {
+    dark_SwitchKnob: {
         background: string;
     };
-    light_ProgressBar: {
+    light_active_SwitchKnob: {
         background: string;
     };
-    dark_ProgressBar: {
+    dark_active_SwitchKnob: {
         background: string;
     };
 } & {
-    [x: `light_${string}_ProgressBarActiveTrack`]: {
+    [x: `light_${string}_SnackBar`]: {
         [x: string]: string;
     } | {
         background: string;
     };
-    [x: `dark_${string}_ProgressBarActiveTrack`]: {
+    [x: `dark_${string}_SnackBar`]: {
         [x: string]: string;
     } | {
         background: string;
     };
-    light_ProgressBarActiveTrack: {
+    light_SnackBar: {
         background: string;
     };
-    dark_ProgressBarActiveTrack: {
+    dark_SnackBar: {
         background: string;
-    };
-} & {
-    [x: `light_${string}_DialogContent`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    [x: `dark_${string}_DialogContent`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    light_DialogContent: {
-        background: string;
-    };
-    dark_DialogContent: {
-        background: string;
-    };
-} & {
-    [x: `light_${string}_DialogOverlay`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    [x: `dark_${string}_DialogOverlay`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    light_DialogOverlay: {
-        background: string;
-    };
-    dark_DialogOverlay: {
-        background: string;
-    };
-} & {
-    [x: `light_${string}_Sheet`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    [x: `dark_${string}_Sheet`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    light_Sheet: {
-        background: string;
-    };
-    dark_Sheet: {
-        background: string;
-    };
-} & {
-    [x: `light_${string}_SheetOverlay`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    [x: `dark_${string}_SheetOverlay`]: {
-        [x: string]: string;
-    } | {
-        background: string;
-    };
-    light_SheetOverlay: {
-        background: string;
-    };
-    dark_SheetOverlay: {
-        background: string;
-    };
-} & {
-    light_TabBarItemTitle: {
-        color: string;
-    };
-    dark_TabBarItemTitle: {
-        color: string;
-    };
-    light_selected_TabBarItemTitle: {
-        color: string;
-    };
-    dark_selected_TabBarItemTitle: {
-        color: string;
-    };
-} & {
-    light_TabBarItemIcon: {
-        color: string;
-    };
-    dark_TabBarItemIcon: {
-        color: string;
-    };
-    light_selected_TabBarItemIcon: {
-        color: string;
-    };
-    dark_selected_TabBarItemIcon: {
-        color: string;
     };
 } & {
     [x: `light_${string}_Slider`]: {
@@ -682,76 +606,80 @@ export declare const themes: {
         borderColor: string;
     };
 } & {
-    light_Switch: {
-        background: string;
-        borderColor: string;
-        outlineColor: string;
-    };
-    dark_Switch: {
-        background: string;
-        borderColor: string;
-        outlineColor: string;
-    };
-    light_active_Switch: {
-        background: string;
-        borderColor: string;
-        outlineColor: string;
-    };
-    dark_active_Switch: {
-        background: string;
-        borderColor: string;
-        outlineColor: string;
-    };
-} & {
-    light_SwitchKnob: {
+    [x: `light_${string}_Sheet`]: {
+        [x: string]: string;
+    } | {
         background: string;
     };
-    dark_SwitchKnob: {
+    [x: `dark_${string}_Sheet`]: {
+        [x: string]: string;
+    } | {
         background: string;
     };
-    light_active_SwitchKnob: {
+    light_Sheet: {
         background: string;
     };
-    dark_active_SwitchKnob: {
+    dark_Sheet: {
         background: string;
     };
 } & {
-    [x: `light_${string}_TabsTab`]: {
+    [x: `light_${string}_SheetOverlay`]: {
         [x: string]: string;
     } | {
         background: string;
-        backgroundHover: string;
     };
-    [x: `dark_${string}_TabsTab`]: {
+    [x: `dark_${string}_SheetOverlay`]: {
         [x: string]: string;
     } | {
         background: string;
-        backgroundHover: string;
     };
-    light_TabsTab: {
+    light_SheetOverlay: {
         background: string;
-        backgroundHover: string;
     };
-    dark_TabsTab: {
+    dark_SheetOverlay: {
         background: string;
-        backgroundHover: string;
     };
 } & {
-    [x: `light_${string}_TabsListIndicator`]: {
+    [x: `light_${string}_SegmentedControl`]: {
         [x: string]: string;
     } | {
         background: string;
+        borderColor: string;
     };
-    [x: `dark_${string}_TabsListIndicator`]: {
+    [x: `dark_${string}_SegmentedControl`]: {
         [x: string]: string;
     } | {
         background: string;
+        borderColor: string;
     };
-    light_TabsListIndicator: {
+    light_SegmentedControl: {
         background: string;
+        borderColor: string;
     };
-    dark_TabsListIndicator: {
+    dark_SegmentedControl: {
         background: string;
+        borderColor: string;
+    };
+} & {
+    light_SegmentedControlSegment: {
+        background: string;
+        borderColor: string;
+        color: string;
+    };
+    dark_SegmentedControlSegment: {
+        background: string;
+        borderColor: string;
+        color: string;
+    };
+    light_active_SegmentedControlSegment: {
+        background: string;
+        borderColor: string;
+        color: string;
+    };
+    dark_active_SegmentedControlSegment: {
+        background: string;
+        borderColor: string;
+        color: string;
     };
 } & {
     [x: `light_${string}_RichIcon`]: {
@@ -796,24 +724,231 @@ export declare const themes: {
         color: string;
     };
 } & {
-    light_Checkbox: {
+    [x: `light_${string}_ProgressBar`]: {
+        [x: string]: string;
+    } | {
         background: string;
-        borderColor: string;
+    };
+    [x: `dark_${string}_ProgressBar`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_ProgressBar: {
+        background: string;
+    };
+    dark_ProgressBar: {
+        background: string;
+    };
+} & {
+    [x: `light_${string}_ProgressBarActiveTrack`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_ProgressBarActiveTrack`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_ProgressBarActiveTrack: {
+        background: string;
+    };
+    dark_ProgressBarActiveTrack: {
+        background: string;
+    };
+} & {
+    [x: `light_${string}_Pimple`]: {
+        [x: string]: string;
+    } | {
+        background: string;
         color: string;
     };
-    dark_Checkbox: {
+    [x: `dark_${string}_Pimple`]: {
+        [x: string]: string;
+    } | {
         background: string;
-        borderColor: string;
         color: string;
     };
-    light_active_Checkbox: {
+    light_Pimple: {
         background: string;
-        borderColor: string;
         color: string;
     };
-    dark_active_Checkbox: {
+    dark_Pimple: {
+        background: string;
+        color: string;
+    };
+} & {
+    light_Loader: {
+        color: string;
+        spinColor: string;
+    };
+    dark_Loader: {
+        color: string;
+        spinColor: string;
+    };
+    "light_on-light_Loader": {
+        color: string;
+        spinColor: string;
+    };
+    "dark_on-light_Loader": {
+        color: string;
+        spinColor: string;
+    };
+    "light_on-dark_Loader": {
+        color: string;
+        spinColor: string;
+    };
+    "dark_on-dark_Loader": {
+        color: string;
+        spinColor: string;
+    };
+    "light_on-brand_Loader": {
+        color: string;
+        spinColor: string;
+    };
+    "dark_on-brand_Loader": {
+        color: string;
+        spinColor: string;
+    };
+} & {
+    [x: `light_${string}_ListTitle`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    [x: `dark_${string}_ListTitle`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    light_ListTitle: {
+        color: string;
+    };
+    dark_ListTitle: {
+        color: string;
+    };
+} & {
+    [x: `light_${string}_ListTitleValue`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    [x: `dark_${string}_ListTitleValue`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    light_ListTitleValue: {
+        color: string;
+    };
+    dark_ListTitleValue: {
+        color: string;
+    };
+} & {
+    [x: `light_${string}_ListSubtitle`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    [x: `dark_${string}_ListSubtitle`]: {
+        [x: string]: string;
+    } | {
+        color: string;
+    };
+    light_ListSubtitle: {
+        color: string;
+    };
+    dark_ListSubtitle: {
+        color: string;
+    };
+} & {
+    [x: `light_${string}_ListBoard`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_ListBoard`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_ListBoard: {
+        background: string;
+    };
+    dark_ListBoard: {
+        background: string;
+    };
+} & {
+    light_Input: {
+        background: string;
+        backgroundFocus: string;
+        borderColor: string;
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    dark_Input: {
+        background: string;
+        backgroundFocus: string;
+        borderColor: string;
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    light_error_Input: {
+        background: string;
+        backgroundFocus: string;
+        borderColor: string;
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    dark_error_Input: {
+        background: string;
+        backgroundFocus: string;
+        borderColor: string;
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    light_readonly_Input: {
         background: string;
         borderColor: string;
+        placeholderColor: string;
+        color: string;
+    };
+    dark_readonly_Input: {
+        background: string;
+        borderColor: string;
+        placeholderColor: string;
+        color: string;
+    };
+} & {
+    light_InlineInput: {
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    dark_InlineInput: {
+        borderColorFocus: string;
+        placeholderColor: string;
+        color: string;
+    };
+    light_error_InlineInput: {
+        placeholderColor: string;
+        color: string;
+    };
+    dark_error_InlineInput: {
+        placeholderColor: string;
+        color: string;
+    };
+    light_readonly_InlineInput: {
+        placeholderColor: string;
+        color: string;
+    };
+    dark_readonly_InlineInput: {
+        placeholderColor: string;
         color: string;
     };
 } & {
@@ -902,6 +1037,70 @@ export declare const themes: {
         color: string;
     };
 } & {
+    light_Field: {
+        color: string;
+    };
+    dark_Field: {
+        color: string;
+    };
+    light_error_Field: {
+        color: string;
+    };
+    dark_error_Field: {
+        color: string;
+    };
+} & {
+    [x: `light_${string}_Dropdown`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_Dropdown`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_Dropdown: {
+        background: string;
+    };
+    dark_Dropdown: {
+        background: string;
+    };
+} & {
+    [x: `light_${string}_DialogContent`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_DialogContent`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_DialogContent: {
+        background: string;
+    };
+    dark_DialogContent: {
+        background: string;
+    };
+} & {
+    [x: `light_${string}_DialogOverlay`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    [x: `dark_${string}_DialogOverlay`]: {
+        [x: string]: string;
+    } | {
+        background: string;
+    };
+    light_DialogOverlay: {
+        background: string;
+    };
+    dark_DialogOverlay: {
+        background: string;
+    };
+} & {
     light_Chip: {
         background: string;
         color: string;
@@ -961,160 +1160,42 @@ export declare const themes: {
         color: string;
     };
 } & {
-    light_Input: {
+    light_Checkbox: {
         background: string;
-        backgroundFocus: string;
         borderColor: string;
-        borderColorFocus: string;
-        placeholderColor: string;
         color: string;
     };
-    dark_Input: {
+    dark_Checkbox: {
         background: string;
-        backgroundFocus: string;
         borderColor: string;
-        borderColorFocus: string;
-        placeholderColor: string;
         color: string;
     };
-    light_error_Input: {
+    light_active_Checkbox: {
         background: string;
-        backgroundFocus: string;
         borderColor: string;
-        borderColorFocus: string;
-        placeholderColor: string;
         color: string;
     };
-    dark_error_Input: {
-        background: string;
-        backgroundFocus: string;
-        borderColor: string;
-        borderColorFocus: string;
-        placeholderColor: string;
-        color: string;
-    };
-    light_readonly_Input: {
+    dark_active_Checkbox: {
         background: string;
         borderColor: string;
-        placeholderColor: string;
-        color: string;
-    };
-    dark_readonly_Input: {
-        background: string;
-        borderColor: string;
-        placeholderColor: string;
         color: string;
     };
 } & {
-    [x: `light_${string}_Pimple`]: {
+    [x: `light_${string}_CellBoard`]: {
         [x: string]: string;
     } | {
         background: string;
-        color: string;
     };
-    [x: `dark_${string}_Pimple`]: {
+    [x: `dark_${string}_CellBoard`]: {
         [x: string]: string;
     } | {
         background: string;
-        color: string;
     };
-    light_Pimple: {
+    light_CellBoard: {
         background: string;
-        color: string;
     };
-    dark_Pimple: {
+    dark_CellBoard: {
         background: string;
-        color: string;
-    };
-} & {
-    light_Loader: {
-        color: string;
-        spinColor: string;
-    };
-    dark_Loader: {
-        color: string;
-        spinColor: string;
-    };
-    "light_on-light_Loader": {
-        color: string;
-        spinColor: string;
-    };
-    "dark_on-light_Loader": {
-        color: string;
-        spinColor: string;
-    };
-    "light_on-dark_Loader": {
-        color: string;
-        spinColor: string;
-    };
-    "dark_on-dark_Loader": {
-        color: string;
-        spinColor: string;
-    };
-    "light_on-brand_Loader": {
-        color: string;
-        spinColor: string;
-    };
-    "dark_on-brand_Loader": {
-        color: string;
-        spinColor: string;
-    };
-} & {
-    light_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_Badge: {
-        background: string;
-        color: string;
-    };
-    light_neutral_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_neutral_Badge: {
-        background: string;
-        color: string;
-    };
-    light_positive_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_positive_Badge: {
-        background: string;
-        color: string;
-    };
-    light_warning_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_warning_Badge: {
-        background: string;
-        color: string;
-    };
-    light_info_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_info_Badge: {
-        background: string;
-        color: string;
-    };
-    light_negative_Badge: {
-        background: string;
-        color: string;
-    };
-    dark_negative_Badge: {
-        background: string;
-        color: string;
-    };
-    "light_brand-extra_Badge": {
-        background: string;
-        color: string;
-    };
-    "dark_brand-extra_Badge": {
-        background: string;
-        color: string;
     };
 } & {
     light_Button: {
@@ -1175,5 +1256,106 @@ export declare const themes: {
         background: string;
         color: string;
     };
+} & {
+    light_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_Badge: {
+        background: string;
+        color: string;
+    };
+    light_neutral_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_neutral_Badge: {
+        background: string;
+        color: string;
+    };
+    light_positive_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_positive_Badge: {
+        background: string;
+        color: string;
+    };
+    light_warning_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_warning_Badge: {
+        background: string;
+        color: string;
+    };
+    light_info_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_info_Badge: {
+        background: string;
+        color: string;
+    };
+    light_negative_Badge: {
+        background: string;
+        color: string;
+    };
+    dark_negative_Badge: {
+        background: string;
+        color: string;
+    };
+    "light_brand-extra_Badge": {
+        background: string;
+        color: string;
+    };
+    "dark_brand-extra_Badge": {
+        background: string;
+        color: string;
+    };
 };
+export declare function themesInitializer<T extends Record<string, Record<string, string>>, C extends Record<string, ReturnType<typeof createTheme>>>(themes: T, componentsTheme: C): T & {
+    light: {
+        background: string;
+        color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
+    };
+    dark: {
+        background: string;
+        color: string;
+        backgroundHover: string;
+        backgroundPress: string;
+        backgroundFocus: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
+        placeholderColor: string;
+        outlineColor: string;
+        spinColor: string;
+    };
+} & ((ReturnType<(C extends Record<string, unknown> ? C[keyof C][] : never)[number]> extends infer T_1 ? T_1 extends ReturnType<(C extends Record<string, unknown> ? C[keyof C][] : never)[number]> ? T_1 extends unknown ? (k: T_1) => void : never : never : never) extends (k: infer I) => void ? I : never);
 //# sourceMappingURL=themes.d.ts.map

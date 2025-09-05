@@ -1,6 +1,6 @@
-export declare const LabelFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     preset?: import("../..").TypographyPresets | undefined;
-}, import("@tamagui/web").StaticConfigPublic & {
+}, import("@tamagui/core").StaticConfigPublic & {
     neverFlatten: true;
 }>;
 //# sourceMappingURL=label.styled.d.ts.map

@@ -1,29 +1,45 @@
-import { type IconProps } from '@tamagui/helpers-icon';
-import { Path as _Path, Svg as _Svg } from 'react-native-svg';
-import type { RichIconContextType, RichIconShape, RichIconSizes } from './rich-icon.types';
+import { Svg } from 'react-native-svg';
+import type { RichIconContextType, RichIconSizes } from './rich-icon.types';
 import type { XORIconProps } from '../../types';
-import type { GetProps } from '@tamagui/core';
-export declare const RichIconContext: import("@tamagui/web").StyledContext<RichIconContextType>;
-export declare const RichIconFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+import type { ColorTokens } from '@tamagui/core';
+export declare const RichIconContext: import("react").Context<RichIconContextType> & {
+    context: import("react").Context<RichIconContextType>;
+    props: Object | undefined;
+    Provider: import("react").ProviderExoticComponent<Partial<RichIconContextType> & {
+        children?: import("react").ReactNode;
+        scope?: string;
+    }>;
+    useStyledContext: (scope?: string) => RichIconContextType;
+} & Omit<{
+    contextMediaProps: ("color" | "size" | "backgroundColor")[];
+    Provider: <P extends Record<string, unknown>>({ children, componentProps, ...restProps }: {
+        componentProps?: P | undefined;
+        children?: import("react").ReactNode;
+        scope?: string;
+    } & Partial<RichIconContextType>) => import("react/jsx-runtime").JSX.Element;
+}, "contextMediaProps"> & {
+    readonly __contextMediaProps: ("color" | "size" | "backgroundColor")[];
+};
+export declare const RichIconFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    color?: unknown;
     size?: RichIconSizes | undefined;
     backgroundColor?: unknown;
     pressable?: boolean | undefined;
-    shape?: RichIconShape | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-declare const Svg: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, _Svg, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native-svg").SvgProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
-export declare const RichIconShapeSvg: (props: Omit<GetProps<typeof Svg>, "width" | "height">) => import("react").FunctionComponentElement<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native-svg").SvgProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & import("react").RefAttributes<_Svg>> | null;
-export declare const RichIconShapePath: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, _Path, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native-svg").PathProps, import("@tamagui/web").StackStyleBase & {
-    readonly stroke?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-}, {}, {
-    accept: {
-        readonly stroke: "color";
-    };
+}, import("@tamagui/core").StaticConfigPublic>;
+export declare const RichIconShapeSvg: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, Svg, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native-svg").SvgProps, import("@tamagui/core").StackStyleBase, {
+    size?: RichIconSizes | undefined;
+    backgroundColor?: any;
+}, {
+    isReactNative: boolean;
 }>;
-export declare const RichIconIcon: ({ children, icon, ...rest }: XORIconProps) => import("react").ReactElement<unknown, string | import("react").JSXElementConstructor<any>> | import("react").FunctionComponentElement<IconProps> | null;
-export declare const RichIconContent: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
-export declare const RichIconText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const RichIconIcon: (props: XORIconProps) => import("react").ReactElement<unknown, string | import("react").JSXElementConstructor<any>> | import("react").FunctionComponentElement<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native-svg").SvgProps, import("@tamagui/core").StackStyleBase, {
+    color?: (ColorTokens | (string & {})) | undefined;
+    size?: (number | import("@tamagui/core").SizeTokens) | undefined;
+}>> | null;
+export declare const RichIconContent: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+export declare const RichIconText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    color?: any;
     size?: RichIconSizes | undefined;
     backgroundColor?: unknown;
-}, import("@tamagui/web").StaticConfigPublic>;
-export {};
+}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=rich-icon.styled.d.ts.map

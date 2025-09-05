@@ -3,40 +3,35 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable max-lines */
-import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt';
+import {
+  Adapt,
+  AdaptParent,
+  AdaptPortalContents,
+  ProvideAdaptContext,
+  useAdaptContext,
+  useAdaptIsActive,
+} from '@tamagui/adapt';
 import { AnimatePresence } from '@tamagui/animate-presence';
-import { hideOthers } from '@tamagui/aria-hidden';
 import {
   composeEventHandlers,
+  composeRefs,
   getExpandedShorthand,
+  isAndroid,
+  isIos,
   isWeb,
   Theme,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
   useThemeName,
-  View,
   withStaticProperties,
 } from '@tamagui/core';
 import { Dismissable } from '@tamagui/dismissable';
 import { FocusScope } from '@tamagui/focus-scope';
-import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal';
+import { Portal, PortalItem, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { useControllableState } from '@tamagui/use-controllable-state';
 import { StackZIndexContext } from '@tamagui/z-index-stack';
-import {
-  DIALOG_BODY_COMPONENT_NAME,
-  DIALOG_CLOSE_COMPONENT_NAME,
-  DIALOG_CONTENT_COMPONENT_NAME,
-  DIALOG_DESCRIPTION_COMPONENT_NAME,
-  DIALOG_DESCRIPTION_WARNING_NAME,
-  DIALOG_FOOTER_COMPONENT_NAME,
-  DIALOG_HEADER_COMPONENT_NAME,
-  DIALOG_OVERLAY_COMPONENT_NAME,
-  DIALOG_PORTAL_COMPONENT_NAME,
-  DIALOG_SHEET_CONTROLLER_COMPONENT_NAME,
-  DIALOG_TITLE_COMPONENT_NAME,
-  DIALOG_TITLE_WARNING_NAME,
-  DIALOG_TRIGGER_COMPONENT_NAME,
-} from '@xsolla-zk/constants';
+import { DIALOG_DESCRIPTION_WARNING_NAME, DIALOG_TITLE_WARNING_NAME } from '@xsolla-zk/constants';
 import {
   forwardRef,
   useCallback,
@@ -48,13 +43,7 @@ import {
 } from 'react';
 import { Sheet } from '../sheet/sheet';
 import { SheetController } from '../sheet/sheet-controller';
-import {
-  DialogProvider,
-  PortalProvider,
-  useDialogContext,
-  usePortalContext,
-  useWarningContext,
-} from './dialog.context';
+import { DialogProvider, useDialogContext, useWarningContext } from './dialog.context';
 import {
   DialogBodyFrame,
   DialogCloseFrame,
@@ -70,7 +59,6 @@ import {
 import type {
   DescriptionWarningProps,
   DialogBodyProps,
-  DialogCloseExtraProps,
   DialogCloseProps,
   DialogContentImplProps,
   DialogContentProps,
@@ -82,20 +70,21 @@ import type {
   DialogOverlayProps,
   DialogPortalProps,
   DialogProps,
-  DialogScopedProps,
   DialogTitleProps,
   DialogTriggerProps,
   TitleWarningProps,
 } from './dialog.types';
-import type { TamaguiElement, ViewProps } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
-import type { Dispatch, ForwardedRef, PropsWithChildren, ReactNode, SetStateAction } from 'react';
+import type { ScopedProps, TamaguiElement, ViewProps } from '@tamagui/core';
+import type { Dispatch, PropsWithChildren, ReactNode, SetStateAction } from 'react';
 
-const PassthroughTheme = ({ children }: PropsWithChildren) => {
+const PassthroughTheme = ({
+  children,
+  passThrough,
+}: PropsWithChildren<{ passThrough?: boolean }>) => {
   const themeName = useThemeName();
 
   return (
-    <Theme name={themeName} forceClassName>
+    <Theme passThrough={passThrough} name={themeName} forceClassName>
       {children}
     </Theme>
   );
@@ -103,49 +92,59 @@ const PassthroughTheme = ({ children }: PropsWithChildren) => {
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogTrigger = DialogTriggerFrame.styleable(
-  forwardRef(
-    (props: DialogScopedProps<DialogTriggerProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
-      const { __scopeDialog, ...triggerProps } = props;
-      const context = useDialogContext(DIALOG_TRIGGER_COMPONENT_NAME, __scopeDialog);
-      const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
-      return (
-        <DialogTriggerFrame
-          aria-haspopup="dialog"
-          aria-expanded={context.open}
-          aria-controls={context.contentId}
-          data-state={getState(context.open)}
-          {...triggerProps}
-          ref={composedTriggerRef}
-          onPress={composeEventHandlers(props.onPress, context.onOpenToggle)}
-        />
-      );
-    },
-  ),
+const DialogTrigger = DialogTriggerFrame.styleable<DialogTriggerProps>(
+  (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
+    const { scope, ...triggerProps } = props;
+    // const isInsideButton = useContext(ButtonNestingContext)
+    const context = useDialogContext(scope);
+    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+    return (
+      // <ButtonNestingContext.Provider value={true}>
+      <DialogTriggerFrame
+        // tag={isInsideButton ? 'span' : 'button'}
+        aria-haspopup="dialog"
+        aria-expanded={context.open}
+        aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...triggerProps}
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress, context.onOpenToggle)}
+      />
+      // {/* </ButtonNestingContext.Provider> */}
+    );
+  },
 );
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogPortalItem = (props: DialogScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, children } = props;
+const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL);
 
+const DialogPortalItem = ({
+  context,
+  children,
+}: ScopedProps<DialogPortalProps & { context: DialogContextValue }>) => {
   const themeName = useThemeName();
-  const context = useDialogContext(DIALOG_PORTAL_COMPONENT_NAME, __scopeDialog);
-  const isAdapted = useAdaptIsActive();
+  const isAdapted = useAdaptIsActive(context.adaptScope);
+  const adaptContext = useAdaptContext(context.adaptScope);
 
-  const content = (
-    <DialogProvider scope={__scopeDialog} {...context}>
-      <Theme name={themeName}>{children}</Theme>
-    </DialogProvider>
-  );
+  let content = <Theme name={themeName}>{children}</Theme>;
+
+  // not just adapted - both sheet and portal for modal need it
+  if (needsRepropagation) {
+    content = (
+      <ProvideAdaptContext {...adaptContext}>
+        <DialogProvider {...context}>{content}</DialogProvider>
+      </ProvideAdaptContext>
+    );
+  }
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
   return isAdapted ? (
-    <AdaptPortalContents>{content}</AdaptPortalContents>
+    <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
-    <PortalItem hostName={context.modal ? 'root' : context.adaptName}>{content}</PortalItem>
+    <PortalItem hostName={context.modal ? 'root' : context.adaptScope}>{content}</PortalItem>
   ) : (
     content
   );
@@ -153,99 +152,125 @@ const DialogPortalItem = (props: DialogScopedProps<DialogPortalProps>) => {
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogPortal = (props: DialogScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, forceMount, children, ...frameProps } = props;
+const DialogPortal = forwardRef<TamaguiElement, DialogPortalProps>(
+  (props: ScopedProps<DialogPortalProps>, forwardRef) => {
+    const { scope, forceMount, children, ...frameProps } = props;
+    const dialogRef = useRef<TamaguiElement>(null);
+    const ref = composeRefs(dialogRef, forwardRef);
 
-  const context = useDialogContext(DIALOG_PORTAL_COMPONENT_NAME, __scopeDialog);
-  const isShowing = forceMount || context.open;
-  const [isFullyHidden, setIsFullyHidden] = useState(!isShowing);
-  const isAdapted = useAdaptIsActive();
+    const context = useDialogContext(scope);
+    const isMountedOrOpen = forceMount || context.open;
+    const [isFullyHidden, setIsFullyHidden] = useState(!isMountedOrOpen);
+    const isAdapted = useAdaptIsActive(context.adaptScope);
+    const isVisible = isMountedOrOpen ? true : !isFullyHidden;
 
-  if (isShowing && isFullyHidden) {
-    setIsFullyHidden(false);
-  }
+    if (isMountedOrOpen && isFullyHidden) {
+      setIsFullyHidden(false);
+    }
 
-  const handleExitComplete = useCallback(() => {
-    setIsFullyHidden(true);
-  }, []);
+    if (isWeb) {
+      useIsomorphicLayoutEffect(() => {
+        const node = dialogRef.current;
+        if (!(node instanceof HTMLDialogElement)) return;
+        if (isVisible) {
+          // not showModal because then we need to handle Select and Popover inside dialog
+          // we can do that later in v2
+          node.show();
+        } else {
+          node.close();
+        }
+      }, [isVisible]);
+    }
 
-  const zIndex = getExpandedShorthand('zIndex', props) as ViewProps['zIndex'];
+    const handleExitComplete = useCallback(() => {
+      setIsFullyHidden(true);
+    }, []);
 
-  const contents = (
-    <StackZIndexContext zIndex={resolveViewZIndex(zIndex) as number}>
-      <AnimatePresence onExitComplete={handleExitComplete}>
-        {isShowing || isAdapted ? children : null}
-      </AnimatePresence>
-    </StackZIndexContext>
-  );
+    const zIndex = getExpandedShorthand('zIndex', props) as ViewProps['zIndex'];
 
-  if (isFullyHidden && !isAdapted) {
-    return null;
-  }
+    const contents = (
+      <StackZIndexContext zIndex={resolveViewZIndex(zIndex) as number}>
+        <AnimatePresence passThrough={isAdapted} onExitComplete={handleExitComplete}>
+          {isMountedOrOpen || isAdapted ? children : null}
+        </AnimatePresence>
+      </StackZIndexContext>
+    );
 
-  const framedContents = (
-    <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-      <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+    if (isFullyHidden && !isAdapted) {
+      return null;
+    }
+
+    const framedContents = (
+      <DialogPortalFrame
+        ref={ref}
+        {...(isWeb &&
+          isMountedOrOpen && {
+            'aria-modal': true,
+          })}
+        // passThrough={isAdapted}
+        pointerEvents={isMountedOrOpen ? 'auto' : 'none'}
+        {...frameProps}
+        className={`_no_backdrop ` + (frameProps.className || '')}
+      >
         {contents}
       </DialogPortalFrame>
-    </PortalProvider>
-  );
-
-  if (isWeb) {
-    return (
-      <Portal
-        zIndex={zIndex}
-        // set to 1000 which "boosts" it 1000 above baseline for current context
-        // this makes sure its above (this first 1k) popovers on the same layer
-        stackZIndex={1000}
-      >
-        <PassthroughTheme>{framedContents}</PassthroughTheme>
-      </Portal>
     );
-  }
 
-  return isAdapted ? (
-    framedContents
-  ) : (
-    <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
-  );
-};
+    if (isWeb) {
+      return (
+        <Portal
+          zIndex={zIndex as number}
+          // set to 1000 which "boosts" it 1000 above baseline for current context
+          // this makes sure its above (this first 1k) popovers on the same layer
+          stackZIndex={1000}
+          passThrough={isAdapted}
+        >
+          <PassthroughTheme passThrough={isAdapted}>{framedContents}</PassthroughTheme>
+        </Portal>
+      );
+    }
+
+    return isAdapted ? (
+      framedContents
+    ) : (
+      <DialogPortalItem context={context}>{framedContents}</DialogPortalItem>
+    );
+  },
+);
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogOverlay = DialogOverlayFrame.styleable(
-  forwardRef<TamaguiElement, DialogOverlayProps>(
-    ({ __scopeDialog, ...props }: DialogScopedProps<DialogOverlayProps>, forwardedRef) => {
-      const portalContext = usePortalContext(DIALOG_OVERLAY_COMPONENT_NAME, __scopeDialog);
-      const { forceMount = portalContext.forceMount, ...overlayProps } = props;
-      const context = useDialogContext(DIALOG_OVERLAY_COMPONENT_NAME, __scopeDialog);
-      const isAdapted = useAdaptIsActive();
+const DialogOverlay = DialogOverlayFrame.styleable<DialogOverlayProps>(function DialogOverlay(
+  { scope, ...props }: ScopedProps<DialogOverlayProps>,
+  forwardedRef,
+) {
+  const context = useDialogContext(scope);
+  const { forceMount = context.forceMount, ...overlayProps } = props;
+  const isAdapted = useAdaptIsActive(context.adaptScope);
 
-      if (!forceMount) {
-        if (!context.modal || isAdapted) {
-          return null;
-        }
-      }
+  if (!forceMount) {
+    if (!context.modal || isAdapted) {
+      return null;
+    }
+  }
 
-      // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
-      // ie. when `Overlay` and `Content` are siblings
-      return (
-        <DialogOverlayFrame
-          data-state={getState(context.open)}
-          // TODO: this will be apply for v2
-          // onPress={() => {
-          //   // if the overlay is pressed, close the dialog
-          //   context.onOpenChange(false)
-          // }}
-          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-          pointerEvents={context.open ? 'auto' : 'none'}
-          {...overlayProps}
-          ref={forwardedRef}
-        />
-      );
-    },
-  ),
-);
+  // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
+  // ie. when `Overlay` and `Content` are siblings
+  return (
+    <DialogOverlayFrame
+      data-state={getState(context.open)}
+      // TODO: this will be apply for v2
+      // onPress={() => {
+      //   // if the overlay is pressed, close the dialog
+      //   context.onOpenChange(false)
+      // }}
+      // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+      pointerEvents={context.open ? 'auto' : 'none'}
+      {...overlayProps}
+      ref={forwardedRef}
+    />
+  );
+});
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -301,9 +326,8 @@ const DescriptionWarning = ({ contentRef, descriptionId }: DescriptionWarningPro
 /* -----------------------------------------------------------------------------------------------*/
 
 const DialogContentImpl = forwardRef<TamaguiElement, DialogContentImplProps>(
-  (props: DialogScopedProps<DialogContentImplProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const {
-      __scopeDialog,
       trapFocus,
       onOpenAutoFocus,
       onCloseAutoFocus,
@@ -318,7 +342,7 @@ const DialogContentImpl = forwardRef<TamaguiElement, DialogContentImplProps>(
 
     const contentRef = useRef<TamaguiElement>(null);
     const composedRefs = useComposedRefs(forwardedRef, contentRef);
-    const isAdapted = useAdaptIsActive();
+    const isAdapted = useAdaptIsActive(context.adaptScope);
 
     // TODO this will re-parent, ideally we would not change tree structure
 
@@ -327,11 +351,12 @@ const DialogContentImpl = forwardRef<TamaguiElement, DialogContentImplProps>(
         return null;
       }
 
-      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>;
+      return <DialogPortalItem context={context}>{contentProps.children}</DialogPortalItem>;
     }
 
     const contents = (
       <DialogContentFrame
+        ref={composedRefs}
         id={context.contentId}
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
@@ -355,8 +380,6 @@ const DialogContentImpl = forwardRef<TamaguiElement, DialogContentImplProps>(
           onFocusOutside={onFocusOutside}
           onInteractOutside={onInteractOutside}
           onDismiss={() => context?.onOpenChange?.(false)}
-          // @ts-ignore: TamaguiElement it's ok here
-          ref={composedRefs}
         >
           <FocusScope
             loop
@@ -383,17 +406,9 @@ const DialogContentImpl = forwardRef<TamaguiElement, DialogContentImplProps>(
 /* -----------------------------------------------------------------------------------------------*/
 
 const DialogContentModal = forwardRef<TamaguiElement, DialogContentTypeProps>(
-  ({ children, context, ...props }: DialogScopedProps<DialogContentTypeProps>, forwardedRef) => {
+  ({ children, context, ...props }, forwardedRef) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
-
-    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    useEffect(() => {
-      if (!isWeb) return;
-      if (!context.open) return;
-      const content = contentRef.current;
-      if (content) return hideOthers(content);
-    }, [context.open]);
 
     return (
       <DialogContentImpl
@@ -431,7 +446,7 @@ const DialogContentModal = forwardRef<TamaguiElement, DialogContentTypeProps>(
 /* -----------------------------------------------------------------------------------------------*/
 
 const DialogContentNonModal = forwardRef<TamaguiElement, DialogContentTypeProps>(
-  (props: DialogScopedProps<DialogContentTypeProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const hasInteractedOutsideRef = useRef(false);
 
     return (
@@ -475,119 +490,95 @@ const DialogContentNonModal = forwardRef<TamaguiElement, DialogContentTypeProps>
   },
 );
 
-const DialogContent = DialogContentFrame.styleable(
-  forwardRef<TamaguiElement, DialogContentProps>(
-    ({ __scopeDialog, ...props }: DialogScopedProps<DialogContentProps>, forwardedRef) => {
-      const portalContext = usePortalContext(DIALOG_CONTENT_COMPONENT_NAME, __scopeDialog);
-      const { forceMount = portalContext.forceMount, ...contentProps } = props;
-      const context = useDialogContext(DIALOG_CONTENT_COMPONENT_NAME, __scopeDialog);
+const DialogContent = DialogContentFrame.styleable<DialogContentProps>(
+  ({ scope, ...props }: ScopedProps<DialogContentProps>, forwardedRef) => {
+    const context = useDialogContext(scope);
+    const { forceMount = context.forceMount, ...contentProps } = props;
 
-      const contents = (
-        <>
-          {context.modal ? (
-            <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
-          ) : (
-            <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
-          )}
-        </>
-      );
+    const contents = (
+      <>
+        {context.modal ? (
+          <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+        ) : (
+          <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+        )}
+      </>
+    );
 
-      if (!isWeb || context.disableRemoveScroll) {
-        return contents;
-      }
+    if (!isWeb || context.disableRemoveScroll) {
+      return contents;
+    }
 
-      return (
-        <RemoveScroll
-          forwardProps
-          enabled={context.open}
-          allowPinchZoom={context.allowPinchZoom}
-          shards={[context.contentRef]}
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-        >
-          <View data-remove-scroll-container className="_dsp_contents">
-            {contents}
-          </View>
-        </RemoveScroll>
-      );
-    },
-  ),
+    return (
+      <RemoveScroll enabled={context.open}>
+        <div data-remove-scroll-container className="_dsp_contents">
+          {contents}
+        </div>
+      </RemoveScroll>
+    );
+  },
 );
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogTitle = DialogTitleFrame.styleable(
-  forwardRef<TamaguiElement, DialogTitleProps>(
-    (props: DialogScopedProps<DialogTitleProps>, forwardedRef) => {
-      const { __scopeDialog, ...titleProps } = props;
-      const context = useDialogContext(DIALOG_TITLE_COMPONENT_NAME, __scopeDialog);
-      return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />;
-    },
-  ),
-);
+const DialogTitle = DialogTitleFrame.styleable<DialogTitleProps>(function DialogTitle(
+  props: ScopedProps<DialogTitleProps>,
+  forwardedRef,
+) {
+  const { scope, ...titleProps } = props;
+  const context = useDialogContext(scope);
+  return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />;
+});
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogDescription = DialogDescriptionFrame.styleable(
-  forwardRef<TamaguiElement, DialogDescriptionProps>(
-    (props: DialogScopedProps<DialogDescriptionProps>, forwardedRef) => {
-      const { __scopeDialog, ...descriptionProps } = props;
-      const context = useDialogContext(DIALOG_DESCRIPTION_COMPONENT_NAME, __scopeDialog);
-      return (
-        <DialogDescriptionFrame
-          id={context.descriptionId}
-          {...descriptionProps}
-          ref={forwardedRef}
-        />
-      );
-    },
-  ),
+const DialogDescription = DialogDescriptionFrame.styleable<DialogDescriptionProps>(
+  function DialogDescription(props: ScopedProps<DialogDescriptionProps>, forwardedRef) {
+    const { scope, ...descriptionProps } = props;
+    const context = useDialogContext(scope);
+    return (
+      <DialogDescriptionFrame id={context.descriptionId} {...descriptionProps} ref={forwardedRef} />
+    );
+  },
 );
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
-  forwardRef(
-    (props: DialogScopedProps<DialogCloseProps>, forwardedRef: ForwardedRef<TamaguiElement>) => {
-      const { __scopeDialog, displayWhenAdapted, ...closeProps } = props;
-      const context = useDialogContext(DIALOG_CLOSE_COMPONENT_NAME, __scopeDialog, {
-        warn: false,
-        fallback: {},
-      });
-      const isAdapted = useAdaptIsActive();
+const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
+  (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
+    const { scope, displayWhenAdapted, ...closeProps } = props;
+    const context = useDialogContext(scope);
+    const isAdapted = useAdaptIsActive(context.adaptScope);
+    // const isInsideButton = React.useContext(ButtonNestingContext);
 
-      if (isAdapted && !displayWhenAdapted) {
-        return null;
-      }
+    if (isAdapted && !displayWhenAdapted) {
+      return null;
+    }
 
-      return (
-        <DialogCloseFrame
-          aria-label="Dialog Close"
-          {...closeProps}
-          ref={forwardedRef}
-          onPress={composeEventHandlers(props.onPress, () => {
-            context.onOpenChange(false);
-          })}
-        />
-      );
-    },
-  ),
+    return (
+      <DialogCloseFrame
+        aria-label="Dialog Close"
+        // tag={isInsideButton ? 'span' : 'button'}
+        {...closeProps}
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress, () => {
+          context.onOpenChange(false);
+        })}
+      />
+    );
+  },
 );
 
 function getState(open: boolean) {
   return open ? 'open' : 'closed';
 }
 
-function getAdaptName({ scopeKey, contentId }: Pick<DialogContextValue, 'scopeKey' | 'contentId'>) {
-  return `${scopeKey || contentId}DialogAdapt`;
-}
-
 const DialogSheetController = (
-  props: DialogScopedProps<{
+  props: ScopedProps<{
     children: ReactNode;
     onOpenChange: Dispatch<SetStateAction<boolean>>;
   }>,
 ) => {
-  const context = useDialogContext(DIALOG_SHEET_CONTROLLER_COMPONENT_NAME, props.__scopeDialog);
-  const isAdapted = useAdaptIsActive();
+  const context = useDialogContext(props.scope);
+  const isAdapted = useAdaptIsActive(context.adaptScope);
 
   return (
     <SheetController
@@ -604,34 +595,28 @@ const DialogSheetController = (
   );
 };
 
-const DialogHeader = DialogHeaderFrame.styleable(
-  forwardRef<TamaguiElement, DialogHeaderProps>(
-    (props: DialogScopedProps<DialogHeaderProps>, forwardedRef) => {
-      const { __scopeDialog, ...headerProps } = props;
-      const context = useDialogContext(DIALOG_HEADER_COMPONENT_NAME, __scopeDialog);
-      return <DialogHeaderFrame size={context.size} {...headerProps} ref={forwardedRef} />;
-    },
-  ),
+const DialogHeader = DialogHeaderFrame.styleable<DialogHeaderProps>(
+  (props: ScopedProps<DialogHeaderProps>, forwardedRef) => {
+    const { scope, ...headerProps } = props;
+    const context = useDialogContext(scope);
+    return <DialogHeaderFrame size={context.size} {...headerProps} ref={forwardedRef} />;
+  },
 );
 
-const DialogBody = DialogBodyFrame.styleable(
-  forwardRef<TamaguiElement, DialogBodyProps>(
-    (props: DialogScopedProps<DialogBodyProps>, forwardedRef) => {
-      const { __scopeDialog, ...bodyProps } = props;
-      const context = useDialogContext(DIALOG_BODY_COMPONENT_NAME, __scopeDialog);
-      return <DialogBodyFrame size={context.size} {...bodyProps} ref={forwardedRef} />;
-    },
-  ),
+const DialogBody = DialogBodyFrame.styleable<DialogBodyProps>(
+  (props: ScopedProps<DialogBodyProps>, forwardedRef) => {
+    const { scope, ...bodyProps } = props;
+    const context = useDialogContext(scope);
+    return <DialogBodyFrame size={context.size} {...bodyProps} ref={forwardedRef} />;
+  },
 );
 
-const DialogFooter = DialogFooterFrame.styleable(
-  forwardRef<TamaguiElement, DialogFooterProps>(
-    (props: DialogScopedProps<DialogFooterProps>, forwardedRef) => {
-      const { __scopeDialog, ...footerProps } = props;
-      const context = useDialogContext(DIALOG_FOOTER_COMPONENT_NAME, __scopeDialog);
-      return <DialogFooterFrame size={context.size} {...footerProps} ref={forwardedRef} />;
-    },
-  ),
+const DialogFooter = DialogFooterFrame.styleable<DialogFooterProps>(
+  (props: ScopedProps<DialogFooterProps>, forwardedRef) => {
+    const { scope, ...footerProps } = props;
+    const context = useDialogContext(scope);
+    return <DialogFooterFrame size={context.size} {...footerProps} ref={forwardedRef} />;
+  },
 );
 
 /* -------------------------------------------------------------------------------------------------
@@ -640,26 +625,24 @@ const DialogFooter = DialogFooterFrame.styleable(
 
 export const Dialog = withStaticProperties(
   forwardRef<{ open: (val: boolean) => void }, DialogProps>(
-    (props: DialogScopedProps<DialogProps>, ref) => {
+    (props: ScopedProps<DialogProps>, ref) => {
       const {
-        __scopeDialog,
+        scope = '',
         children,
         open: openProp,
         defaultOpen = false,
         onOpenChange,
         modal = true,
-        allowPinchZoom = false,
         disableRemoveScroll = false,
         size = '$500',
       } = props;
 
       const baseId = useId();
-      const scopeId = `scope-${baseId}`;
-      const contentId = `content-${baseId}`;
-      const titleId = `title-${baseId}`;
-      const descriptionId = `description-${baseId}`;
-      const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId;
-      const adaptName = getAdaptName({ scopeKey, contentId });
+      const dialogId = `Dialog-${scope}-${baseId}`;
+      const contentId = `${dialogId}-content`;
+      const titleId = `${dialogId}-title`;
+      const descriptionId = `${dialogId}-description`;
+
       const triggerRef = useRef<TamaguiElement>(null);
       const contentRef = useRef<TamaguiElement>(null);
 
@@ -673,9 +656,11 @@ export const Dialog = withStaticProperties(
         setOpen((prevOpen) => !prevOpen);
       }, [setOpen]);
 
+      const adaptScope = `DialogAdapt${scope}`;
+
       const context = {
-        scope: __scopeDialog,
-        scopeKey,
+        dialogScope: scope,
+        adaptScope,
         triggerRef,
         contentRef,
         contentId,
@@ -685,11 +670,9 @@ export const Dialog = withStaticProperties(
         onOpenChange: setOpen,
         onOpenToggle,
         modal,
-        allowPinchZoom,
         disableRemoveScroll,
-        adaptName,
         size,
-      } satisfies DialogContextValue & { scope?: Scope };
+      } satisfies DialogContextValue;
 
       useImperativeHandle(
         ref,
@@ -701,13 +684,13 @@ export const Dialog = withStaticProperties(
 
       return (
         <AdaptParent
-          scope={adaptName}
+          scope={adaptScope}
           portal={{
             forwardProps: props,
           }}
         >
-          <DialogProvider {...context}>
-            <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
+          <DialogProvider scope={scope} {...context}>
+            <DialogSheetController onOpenChange={setOpen} scope={scope}>
               {children}
             </DialogSheetController>
           </DialogProvider>

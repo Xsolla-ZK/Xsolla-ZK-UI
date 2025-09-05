@@ -25,12 +25,11 @@ import type {
   NotificationScopedProps,
 } from './notification.types';
 import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 
 const NotificationClose = forwardRef<TamaguiElement, NotificationCloseProps>(
   (props: NotificationScopedProps<NotificationCloseProps>, forwardedRef) => {
-    const { __scopeNotification, ...closeProps } = props;
-    const interactiveContext = useNotificationInteractiveContext(__scopeNotification);
+    const { scope, ...closeProps } = props;
+    const interactiveContext = useNotificationInteractiveContext(scope);
 
     return (
       <NotificationAnnounceExclude asChild>
@@ -59,7 +58,7 @@ const NotificationAction = forwardRef<
 });
 
 const NotificationComponent = NotificationImplFrame.styleable<NotificationExtraProps>(
-  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+  (props, forwardedRef) => {
     const {
       forceMount,
       open: openProp,
@@ -106,7 +105,7 @@ const NotificationComponent = NotificationImplFrame.styleable<NotificationExtraP
         ) : null}
       </AnimatePresence>
     );
-  }),
+  },
 );
 
 export const Notification = withStaticProperties(NotificationComponent, {

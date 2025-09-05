@@ -5,10 +5,12 @@
     "composite": true,
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["types"],
+  "exclude": ["types", "tamagui.config.ts"],
   "references": [
     { "path": "../config" },
+    { "path": "../constants" },
     { "path": "../icons" },
-    { "path": "../constants" }
+    { "path": "../primitives" },
+    { "path": "../utils" }
   ]
 }

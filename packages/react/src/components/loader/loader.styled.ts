@@ -1,6 +1,7 @@
-import { createStyledContext, Stack, styled, Text } from '@tamagui/core';
+import { Stack, Text } from '@tamagui/core';
 import { LOADER_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { Circle } from 'react-native-svg';
+import { createStyledMediaContext, smartContextStyled } from '../../utils';
 import type { LoaderContextType } from './loader.types';
 import type { ThemeTokens } from '@tamagui/core';
 
@@ -31,13 +32,16 @@ import type { ThemeTokens } from '@tamagui/core';
 //   }
 // `;
 
-export const LoaderContext = createStyledContext<LoaderContextType>({
-  size: 24,
-  mainColor: '$color',
-  spinColor: '$spinColor',
-});
+export const LoaderContext = createStyledMediaContext(
+  {
+    size: 24,
+    mainColor: '$color',
+    spinColor: '$spinColor',
+  } as LoaderContextType,
+  ['size'],
+);
 
-export const LoaderFrame = styled(Stack, {
+export const LoaderFrame = smartContextStyled(Stack, {
   name: LOADER_COMPONENT_NAME,
   display: 'inline-flex',
   flexDirection: 'row',
@@ -56,11 +60,12 @@ export const LoaderFrame = styled(Stack, {
     },
   } as const,
   defaultVariants: {
+    size: 24,
     vertical: false,
   },
 });
 
-export const LoaderText = styled(Text, {
+export const LoaderText = smartContextStyled(Text, {
   name: LOADER_COMPONENT_NAME,
   context: LoaderContext,
   color: '$content.neutral-primary',
@@ -69,15 +74,13 @@ export const LoaderText = styled(Text, {
     mainColor: (val: ThemeTokens) => ({
       color: val,
     }),
-    size: {
-      ':number': (val, { tokens }) => ({
-        fontSize: val * 0.75,
-      }),
-    },
+    size: (val: number) => ({
+      fontSize: val * 0.75,
+    }),
   } as const,
 });
 
-export const LoaderSpin = styled(Circle, {
+export const LoaderSpin = smartContextStyled(Circle, {
   name: LOADER_COMPONENT_NAME,
   context: LoaderContext,
   transformOrigin: 'center',

@@ -1,11 +1,9 @@
-import { forwardRef } from 'react';
 import { SemanticText } from '../semantic-text';
 import { MarkdownFrame } from './markdown.styled';
 import type { MarkdownProps } from './markdown.types';
-import type { TamaguiElement } from '@tamagui/core';
 
-export const Markdown = MarkdownFrame.styleable(
-  forwardRef<TamaguiElement, MarkdownProps>(({ variant = 'p', children, ...props }, ref) => {
+export const Markdown = MarkdownFrame.styleable<MarkdownProps>(
+  ({ variant = 'p', children, ...props }, ref) => {
     if (variant === 'image') {
       return (
         <MarkdownFrame variant={variant} {...props} ref={ref}>
@@ -69,5 +67,5 @@ export const Markdown = MarkdownFrame.styleable(
         {content()}
       </MarkdownFrame>
     );
-  }),
+  },
 );

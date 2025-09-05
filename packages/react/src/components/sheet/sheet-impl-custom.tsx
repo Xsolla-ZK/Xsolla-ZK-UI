@@ -30,8 +30,7 @@ import { Dimensions, Keyboard, PanResponder, View } from 'react-native';
 import { ParentSheetContext, SheetInsideSheetContext, SheetProvider } from './sheet.context';
 import { useSheetOpenState, useSheetProviderProps } from './sheet.hooks';
 import type { SheetProps, SnapPointsMode } from './sheet.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { RefObject } from 'react';
+import type { ReactNode } from 'react';
 import type {
   Animated,
   GestureResponderEvent,
@@ -62,7 +61,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
     } = props;
 
     const state = useSheetOpenState(props);
-    const [overlayComponent, setOverlayComponent] = useState(null);
+    const [overlayComponent, setOverlayComponent] = useState<ReactNode>(null);
 
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
@@ -82,12 +81,18 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
     } = providerProps;
     const { open, controller, isHidden } = state;
 
-    const sheetRef = useRef<View>(null);
+    const sheetRef = useRef<View>(undefined as unknown as View);
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef);
 
+    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const { animationDriver } = useConfiguration();
+
+    if (!animationDriver) {
+      throw new Error(`Sheet reqiures an animation driver to be set`);
+    }
+
     const animationConfig = (() => {
-      if (animationDriver.supportsCSSVars) {
+      if (animationDriver.supportsCSS) {
         // for now this detects css driver only, which has no "config"
         return {};
       }
@@ -160,7 +165,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
     useAnimatedNumberReaction(
       {
         value: animatedNumber,
-        hostRef: sheetRef as RefObject<TamaguiElement>,
+        hostRef: sheetRef,
       },
       useCallback(
         (value) => {
@@ -194,13 +199,25 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
       });
     });
 
+    const isAbleToPosition = (() => {
+      if (disableAnimation) {
+        return false;
+      }
+
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+        return false;
+      }
+
+      return true;
+    })();
+
     useIsomorphicLayoutEffect(() => {
       // we need to do a *three* step process for the css driver
       // first render off screen for ssr safety (hiddenSize)
       // then render to bottom of screen without animation (screenSize)
       // then add the animation as it animates from screenSize to position
 
-      if (hasntMeasured && screenSize) {
+      if (hasntMeasured && screenSize && frameSize) {
         at.current = screenSize;
         animatedNumber.setValue(
           screenSize,
@@ -215,29 +232,23 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
             }, 10);
           },
         );
-        return;
       }
+    }, [hasntMeasured, screenSize, frameSize]);
 
-      if (disableAnimation) {
-        return;
-      }
-
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return;
-      }
-
-      // finally, animate
+    useIsomorphicLayoutEffect(() => {
+      if (!isAbleToPosition) return;
       animateTo(position);
-    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position]);
+
+      // reset scroll bridge
+      if (position === -1) {
+        scrollBridge.scrollLock = false;
+        scrollBridge.scrollStartY = -1;
+      }
+    }, [isAbleToPosition, position]);
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag;
     const themeName = useThemeName();
     const [isDragging, setIsDragging] = useState(false);
-    const scrollEnabled = useRef(true);
-
-    const setScrollEnabled = useCallback((val: boolean) => {
-      scrollEnabled.current = val;
-    }, []);
 
     const panResponder = useMemo(() => {
       if (disableDrag) return;
@@ -272,6 +283,11 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
       let previouslyScrolling = false;
 
       const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+        scrollBridge.setParentDragging(false);
+        if (scrollBridge.scrollLock) {
+          return;
+        }
+
         isExternalDrag = false;
         previouslyScrolling = false;
         setPanning(false);
@@ -281,6 +297,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
         const end = at + frameSize * vy * 0.2;
         let closestPoint = 0;
         let dist = Number.POSITIVE_INFINITY;
+
         for (let i = 0; i < positions.length; i++) {
           const position = positions[i];
           const curDist = end > position ? end - position : position - end;
@@ -289,10 +306,10 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
             closestPoint = i;
           }
         }
+
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint);
         animateTo(closestPoint);
-        setScrollEnabled(closestPoint === 0 && dragAt <= 0);
       };
 
       const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
@@ -302,41 +319,60 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
         });
       };
 
-      const onMoveShouldSet = (e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-        // if dragging handle always allow:
-        if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
-          return true;
-        }
-
-        const isScrolled = scrollBridge.y !== 0;
-
-        // Update the dragging direction
-        const isDraggingUp = dy < 0;
-
-        // we can treat near top instead of exactly to avoid trouble with springs
-        const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY;
-        if (isScrolled) {
-          previouslyScrolling = true;
-          return false;
-        }
-        // prevent drag once at top and pulling up
-        if (isNearTop) {
-          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
-            return false;
+      const onMoveShouldSet = (
+        e: GestureResponderEvent,
+        { dy }: PanResponderGestureState,
+      ): boolean => {
+        function getShouldSet() {
+          // if dragging handle always allow:
+          if (e.target === providerProps.handleRef.current) {
+            return true;
           }
+
+          if (scrollBridge.hasScrollableContent === true) {
+            if (scrollBridge.scrollLock) {
+              return false;
+            }
+
+            const isScrolled = scrollBridge.y !== 0;
+
+            // Update the dragging direction
+            const isDraggingUp = dy < 0;
+
+            // we can treat near top instead of exactly to avoid trouble with springs
+            const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY;
+            if (isScrolled) {
+              previouslyScrolling = true;
+              return false;
+            }
+            // prevent drag once at top and pulling up
+            if (isNearTop) {
+              if (hasScrollView.current && isDraggingUp) {
+                return false;
+              }
+            }
+          }
+
+          // we could do some detection of other touchables and cancel here..
+          return Math.abs(dy) > 10;
         }
-        // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 10;
+
+        const granted = getShouldSet();
+
+        // console.log('DEBUG', { granted, dy }, { ...scrollBridge })
+
+        if (granted) {
+          scrollBridge.setParentDragging(true);
+        }
+
+        return granted;
       };
 
       const grant = () => {
-        setScrollEnabled(false);
         setPanning(true);
         stopSpring();
         startY = at.current;
       };
-
-      isExternalDrag = false;
 
       scrollBridge.drag = (dy) => {
         if (!isExternalDrag) {
@@ -355,6 +391,15 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
         onPanResponderMove: (_e, { dy }) => {
           const toFull = dy + startY;
           const to = resisted(toFull, minY);
+
+          // handles the case where you hand off back and forth more than once
+          const isAtTop = to <= minY;
+          if (isAtTop) {
+            scrollBridge.setParentDragging(false);
+          } else {
+            scrollBridge.setParentDragging(true);
+          }
+
           animatedNumber.setValue(to, { type: 'direct' });
         },
         onPanResponderEnd: finish,
@@ -386,9 +431,12 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet';
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const translateY = frameSize === 0 ? hiddenSize : val;
+
       return {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        transform: [{ translateY: frameSize === 0 ? hiddenSize : val }],
+        transform: [{ translateY }],
       };
     });
 
@@ -460,11 +508,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
 
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider
-          {...providerProps}
-          scrollEnabled={scrollEnabled.current}
-          setHasScrollView={setHasScrollView}
-        >
+        <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
@@ -485,13 +529,12 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
           )}
 
           <AnimatedView
+            ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            {...(!isDragging && {
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation: disableAnimation ? null : animation,
-            })}
-            // @ts-ignore need for web
+            // @ts-ignore for CSS driver this is necessary to attach the transition
+            // also motion driver at least though i suspect all drivers?
+            animation={isDragging || disableAnimation ? null : animation}
             disableClassName
             style={[
               {
@@ -507,7 +550,6 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
               },
               animatedStyle,
             ]}
-            ref={ref}
           >
             {/* <AdaptProvider>{props.children}</AdaptProvider> */}
             {props.children}
@@ -517,6 +559,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
     );
 
     if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {
+      // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext();
       contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>;
     }
@@ -529,7 +572,7 @@ export const SheetImplCustom = forwardRef<View, SheetProps>(
         <Portal stackZIndex={zIndex} {...portalProps}>
           {shouldMountChildren && (
             <ContainerComponent>
-              <Theme forceClassName name={themeName}>
+              <Theme contain forceClassName name={themeName}>
                 {contents}
               </Theme>
             </ContainerComponent>

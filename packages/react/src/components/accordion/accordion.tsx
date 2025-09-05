@@ -16,6 +16,7 @@ import {
   ACCORDION_NAME,
 } from '@xsolla-zk/constants';
 import { forwardRef, useCallback, useId, useRef, useState } from 'react';
+import { useStyledMediaContext } from '../../hooks';
 import {
   AccordionCollapsibleContext,
   AccordionImplContext,
@@ -46,9 +47,6 @@ import type { TamaguiElement, ViewProps } from '@tamagui/core';
 import type { ForwardedRef, PropsWithChildren } from 'react';
 
 const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION_NAME);
-
-const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext } =
-  AccordionImplContext;
 
 const { Provider: AccordionValueProvider, useStyledContext: useAccordionValueContext } =
   AccordionValueContext;
@@ -153,15 +151,14 @@ const AccordionImpl = forwardRef<TamaguiElement, AccordionImplProps>(
     });
 
     return (
-      <AccordionImplProvider
+      <AccordionImplContext.Provider
+        componentProps={{ size, withBoard, ...accordionProps }}
         scope={__scopeAccordion}
         disabled={disabled}
         direction={dir}
         orientation={orientation}
-        size={size}
-        withBoard={withBoard}
       >
-        <Collection.Slot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
+        <Collection.Slot scope={__scopeAccordion || ACCORDION_CONTEXT}>
           <Stack
             data-orientation={orientation}
             ref={composedRef}
@@ -171,7 +168,7 @@ const AccordionImpl = forwardRef<TamaguiElement, AccordionImplProps>(
             })}
           />
         </Collection.Slot>
-      </AccordionImplProvider>
+      </AccordionImplContext.Provider>
     );
   },
 );
@@ -260,9 +257,12 @@ const AccordionImplMultiple = forwardRef<
 /* -----------------------------------------------------------------------------------------------*/
 
 const AccordionItem = AccordionItemFrame.styleable<AccordionScopedProps<AccordionItemProps>>(
-  forwardRef((props, forwardedRef: ForwardedRef<AccordionItemElement>) => {
+  (props, forwardedRef: ForwardedRef<AccordionItemElement>) => {
     const { __scopeAccordion, value, ...accordionItemProps } = props;
-    const accordionContext = useAccordionContext(__scopeAccordion);
+    const { mediaContext, ...accordionContext } = useStyledMediaContext(
+      AccordionImplContext,
+      __scopeAccordion,
+    );
     const valueContext = useAccordionValueContext(__scopeAccordion);
     const triggerId = useId();
     const open = (value && valueContext.value.includes(value)) || false;
@@ -276,11 +276,10 @@ const AccordionItem = AccordionItemFrame.styleable<AccordionScopedProps<Accordio
         triggerId={triggerId}
       >
         <AccordionItemFrame
-          size={accordionContext.size}
-          withBoard={accordionContext.withBoard}
           data-orientation={accordionContext.orientation}
           data-state={open ? 'open' : 'closed'}
           __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+          {...mediaContext}
           {...accordionItemProps}
           ref={forwardedRef}
           disabled={disabled}
@@ -295,7 +294,7 @@ const AccordionItem = AccordionItemFrame.styleable<AccordionScopedProps<Accordio
         />
       </AccordionItemProvider>
     );
-  }),
+  },
 );
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -304,7 +303,10 @@ const AccordionHeader = AccordionHeaderFrame.styleable(
   forwardRef<AccordionHeaderElement, AccordionHeaderProps>(
     (props: AccordionScopedProps<AccordionHeaderProps>, forwardedRef) => {
       const { __scopeAccordion, ...headerProps } = props;
-      const accordionContext = useAccordionContext(__scopeAccordion);
+      const { mediaContext, ...accordionContext } = useStyledMediaContext(
+        AccordionImplContext,
+        __scopeAccordion,
+      );
       const itemContext = useAccordionItemContext(__scopeAccordion);
 
       return (
@@ -312,8 +314,7 @@ const AccordionHeader = AccordionHeaderFrame.styleable(
           data-orientation={accordionContext.orientation}
           data-state={getState(itemContext.open)}
           data-disabled={itemContext.disabled ? '' : undefined}
-          size={accordionContext.size}
-          withBoard={accordionContext.withBoard}
+          {...mediaContext}
           {...headerProps}
           ref={forwardedRef}
         />
@@ -328,79 +329,75 @@ AccordionHeader.displayName = ACCORDION_HEADER_NAME;
 
 const AccordionTrigger = AccordionTriggerFrame.styleable<
   AccordionScopedProps<AccordionTriggerProps>
->(
-  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const { __scopeAccordion, ...triggerProps } = props;
-    const accordionContext = useAccordionContext(__scopeAccordion);
-    const itemContext = useAccordionItemContext(__scopeAccordion);
-    const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion);
+>((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+  const { __scopeAccordion, ...triggerProps } = props;
+  const accordionContext = AccordionImplContext.useStyledContext(__scopeAccordion);
+  const itemContext = useAccordionItemContext(__scopeAccordion);
+  const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion);
 
-    return (
-      <Collection.ItemSlot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
-        <AccordionTriggerFrame
-          // @ts-ignore: collapsible scope
-          __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
-          aria-disabled={(itemContext.open && !collapsibleContext.toggleable) || undefined}
-          data-orientation={accordionContext.orientation}
-          id={itemContext.triggerId}
-          {...triggerProps}
-          ref={forwardedRef}
-        />
-      </Collection.ItemSlot>
-    );
-  }),
-);
+  return (
+    <Collection.ItemSlot scope={__scopeAccordion || ACCORDION_CONTEXT}>
+      <AccordionTriggerFrame
+        // @ts-ignore: collapsible scope
+        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+        aria-disabled={(itemContext.open && !collapsibleContext.toggleable) || undefined}
+        data-orientation={accordionContext.orientation}
+        id={itemContext.triggerId}
+        {...triggerProps}
+        ref={forwardedRef}
+      />
+    </Collection.ItemSlot>
+  );
+});
 
 /* -----------------------------------------------------------------------------------------------*/
 
 const AccordionContent = AccordionContentFrame.styleable<
   AccordionScopedProps<AccordionContentProps>
->(
-  forwardRef((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
-    const { __scopeAccordion, ...contentProps } = props;
-    const accordionContext = useAccordionContext(__scopeAccordion);
-    const itemContext = useAccordionItemContext(__scopeAccordion);
-    return (
-      <AccordionContentFrame
-        role="region"
-        aria-labelledby={itemContext.triggerId}
-        data-orientation={accordionContext.orientation}
-        size={accordionContext.size}
-        withBoard={accordionContext.withBoard}
-        // @ts-ignore: collapsible scope
-        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
-        {...contentProps}
-        ref={forwardedRef}
-      />
-    );
-  }),
-);
+>((props, forwardedRef: ForwardedRef<TamaguiElement>) => {
+  const { __scopeAccordion, ...contentProps } = props;
+  const { mediaContext, ...accordionContext } = useStyledMediaContext(
+    AccordionImplContext,
+    __scopeAccordion,
+  );
 
+  const itemContext = useAccordionItemContext(__scopeAccordion);
+  return (
+    <AccordionContentFrame
+      role="region"
+      aria-labelledby={itemContext.triggerId}
+      data-orientation={accordionContext.orientation}
+      // @ts-ignore: collapsible scope
+      __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+      {...mediaContext}
+      {...contentProps}
+      ref={forwardedRef}
+    />
+  );
+});
 /* -----------------------------------------------------------------------------------------------*/
 
-const HeightAnimator = View.styleable<ViewProps>(
-  forwardRef((props, ref: ForwardedRef<TamaguiElement>) => {
-    const itemContext = useAccordionItemContext();
-    const { children, ...rest } = props as PropsWithChildren<Omit<ViewProps, 'children'>>;
-    const [height, setHeight] = useState(0);
+const HeightAnimator = View.styleable<ViewProps>((props, ref: ForwardedRef<TamaguiElement>) => {
+  const itemContext = useAccordionItemContext();
+  const { children, ...rest } = props as PropsWithChildren<Omit<ViewProps, 'children'>>;
+  const [height, setHeight] = useState(0);
 
-    return (
-      <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
-        <View
-          position="absolute"
-          width="100%"
-          onLayout={({ nativeEvent }) => {
-            if (nativeEvent.layout.height) {
-              setHeight(nativeEvent.layout.height);
-            }
-          }}
-        >
-          {children}
-        </View>
+  return (
+    <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
+      <View
+        position="absolute"
+        width="100%"
+        onLayout={({ nativeEvent }) => {
+          if (nativeEvent.layout.height) {
+            setHeight(nativeEvent.layout.height);
+          }
+        }}
+      >
+        {children}
       </View>
-    );
-  }),
-);
+    </View>
+  );
+});
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -411,7 +408,7 @@ const AccordionComponent = forwardRef<TamaguiElement, AccordionScopedProps<Accor
     const multipleProps = accordionProps as AccordionImplMultipleProps;
 
     return (
-      <Collection.Provider __scopeCollection={props.__scopeAccordion || ACCORDION_CONTEXT}>
+      <Collection.Provider scope={props.__scopeAccordion || ACCORDION_CONTEXT}>
         {type === 'multiple' ? (
           <AccordionImplMultiple size={size} {...multipleProps} ref={forwardedRef} />
         ) : (

@@ -1,33 +1,45 @@
-import { createStyledContext, Stack } from '@tamagui/core';
-import { styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   SEGMENTED_CONTROL_COMPONENT_NAME,
   SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { createIconComponent, getComponentsConfig, getMappedStyles } from '../../utils';
+import { useMemo } from 'react';
+import {
+  createIconComponent,
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+  smartContextStyled,
+} from '../../utils';
 import { Typography } from '../typography';
 import type {
   SegmentedControlContextValue,
   SegmentedControlSegmentPlacement,
   SegmentedControlSizes,
 } from './segmented-control.types';
+import type { XORIconProps } from '../../types';
 import type { GetProps, VariantSpreadExtras } from '@tamagui/core';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const SegmentedControlContext = createStyledContext<SegmentedControlContextValue>({
-  baseId: '',
-  value: '',
-  onChange: () => {},
-  orientation: 'horizontal',
-  dir: 'ltr',
-  activationMode: 'manual',
-  size: '$500',
-  registerSegment: () => {},
-  unregisterSegment: () => {},
-  segments: {},
-  containerRef: null,
-});
+export const SegmentedControlContext = createStyledMediaContext(
+  {
+    baseId: '',
+    value: '',
+    onChange: () => {},
+    orientation: 'horizontal',
+    dir: 'ltr',
+    activationMode: 'manual',
+    size: '$500',
+    registerSegment: () => {},
+    unregisterSegment: () => {},
+    segments: {},
+    containerRef: null,
+  } as SegmentedControlContextValue,
+  ['size'],
+);
 
-export const SegmentedControlFrame = styled(Stack, {
+export const SegmentedControlFrame = smartContextStyled(Stack, {
   name: SEGMENTED_CONTROL_COMPONENT_NAME,
   display: 'flex',
   flexDirection: 'row',
@@ -63,7 +75,7 @@ export const SegmentedControlFrame = styled(Stack, {
   },
 });
 
-export const SegmentedControlSegmentFrame = styled(Stack, {
+export const SegmentedControlSegmentFrame = smartContextStyled(Stack, {
   name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
   tag: 'button',
 
@@ -95,8 +107,8 @@ export const SegmentedControlSegmentFrame = styled(Stack, {
       const { props } = extras as VariantSpreadExtras<
         GetProps<typeof Stack> & { placement?: SegmentedControlSegmentPlacement; active?: boolean }
       >;
-      const config = getComponentsConfig();
-      const componentProps = config.segment[val as keyof typeof config.segment];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.segment[val as keyof typeof componentsConfig.segment];
       if (!componentProps) {
         return {};
       }
@@ -151,16 +163,17 @@ export const SegmentedControlSegmentFrame = styled(Stack, {
 //   },
 // });
 
-export const SegmentedControlSegmentText = styled(Typography, {
+export const SegmentedControlSegmentText = smartContextStyled(Typography, {
   name: SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
   color: '$color',
   userSelect: 'none',
+  context: SegmentedControlContext,
   // animation: 'colorChange',
 
   variants: {
     size: (val: SegmentedControlSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.segment[val as keyof typeof config.segment];
+      const componentsConfig = getComponentsConfig();
+      const componentProps = componentsConfig.segment[val as keyof typeof componentsConfig.segment];
       if (!componentProps) {
         return {};
       }
@@ -169,8 +182,29 @@ export const SegmentedControlSegmentText = styled(Typography, {
   } as const,
 });
 
-export const SegmentedControlSegmentIcon = createIconComponent(
-  SEGMENTED_CONTROL_SEGMENT_COMPONENT_NAME,
-  SegmentedControlContext,
-  'segment',
-);
+export const SegmentedControlSegmentIcon = (props: XORIconProps) => {
+  const ctx = SegmentedControlContext.useStyledContext();
+
+  const iconProps = useMemo(
+    () =>
+      processMediaValues(
+        { size: ctx.size },
+        {
+          size: (val, { config }) => {
+            const componentProps = config.segment[val as keyof typeof config.segment];
+
+            if (!componentProps) {
+              return {};
+            }
+
+            return {
+              size: componentProps.icon.size,
+            };
+          },
+        },
+      ) as IconProps,
+    [ctx.size],
+  );
+
+  return createIconComponent({ ...iconProps, color: '$color', ...props });
+};

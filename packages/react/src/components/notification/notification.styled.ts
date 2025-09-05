@@ -1,38 +1,37 @@
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   NOTIFICATION_CLOSE_COMPONENT_NAME,
   NOTIFICATION_DESCRIPTION_COMPONENT_NAME,
   NOTIFICATION_TITLE_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
+import { smartContextStyled } from '../../utils';
 import { Typography } from '../typography';
 
-export const NotificationTitle = styled(Typography, {
+export const NotificationTitle = smartContextStyled(Typography, {
   name: NOTIFICATION_TITLE_COMPONENT_NAME,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
 
   variants: {} as const,
 
   defaultVariants: {},
 });
 
-export const NotificationDescription = styled(Typography, {
+export const NotificationDescription = smartContextStyled(Typography, {
   name: NOTIFICATION_DESCRIPTION_COMPONENT_NAME,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
 
   variants: {} as const,
 
   defaultVariants: {},
 });
 
-export const NotificationCloseFrame = styled(Stack, {
+export const NotificationCloseFrame = smartContextStyled(Stack, {
   name: NOTIFICATION_CLOSE_COMPONENT_NAME,
 });
 
-export const VisuallyHidden = styled(Stack, {
+export const VisuallyHidden = smartContextStyled(Stack, {
   position: 'absolute',
   width: 1,
   height: 1,

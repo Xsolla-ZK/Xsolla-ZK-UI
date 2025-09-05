@@ -30,16 +30,17 @@
   },
   "peerDependencies": {
     "@tamagui/core": "catalog:tamagui",
+    "@xsolla-zk/ui-primitives": "workspace:*",
     "react-native-svg": "catalog:"
   },
   "dependencies": {
     "@tamagui/core": "catalog:tamagui",
-    "@tamagui/helpers-icon": "catalog:tamagui"
+    "@xsolla-zk/ui-primitives": "workspace:*",
+    "react-native-svg": "catalog:"
   },
   "devDependencies": {
     "@tamagui/build": "catalog:tamagui",
     "@xsolla-zk/icons-generator": "workspace:*",
-    "react-native-svg": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {

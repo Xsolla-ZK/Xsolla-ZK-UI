@@ -52,3 +52,9 @@ export type IsLiteralString<T> = T extends string
       : true
     : true
   : false;
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+export type ExtractValues<T> = { [K in keyof T]: T[K] extends object ? T[K][keyof T[K]] : T[K] };

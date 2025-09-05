@@ -1,18 +1,26 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { FIELD_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import { Label } from '../label/label';
 import { Typography } from '../typography/typography';
 import type { FieldContextType, FieldSizes } from './field.types';
 
-export const FieldContext = createStyledContext<FieldContextType>({
-  size: '$500',
-  error: false,
-});
+export const FieldContext = createStyledMediaContext(
+  {
+    size: '$500',
+    error: false,
+  } as FieldContextType,
+  ['size'],
+);
 
-export const FieldFrame = styled(Stack, {
+export const FieldFrame = smartContextStyled(Stack, {
   name: FIELD_COMPONENT_NAME,
-  context: FieldContext,
+  // context: FieldContext,
 
   display: 'flex',
   flexDirection: 'column',
@@ -37,9 +45,9 @@ export const FieldFrame = styled(Stack, {
   },
 });
 
-export const FieldRow = styled(Stack, {
+export const FieldRow = smartContextStyled(Stack, {
   name: FIELD_COMPONENT_NAME,
-  context: FieldContext,
+  // context: FieldContext,
 
   display: 'flex',
   flexDirection: 'row',
@@ -59,11 +67,16 @@ export const FieldRow = styled(Stack, {
   } as const,
 });
 
-export const FieldLabel = styled(Label, {
+export const FieldLabel = smartContextStyled(Label, {
   name: FIELD_COMPONENT_NAME,
+  context: FieldContext,
   color: '$color',
 
   variants: {
+    error: {
+      true: {},
+      false: {},
+    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val as keyof typeof config.field];
@@ -75,7 +88,7 @@ export const FieldLabel = styled(Label, {
   } as const,
 });
 
-export const FieldLabelValue = styled(Typography, {
+export const FieldLabelValue = smartContextStyled(Typography, {
   name: FIELD_COMPONENT_NAME,
   context: FieldContext,
 
@@ -96,17 +109,13 @@ export const FieldLabelValue = styled(Typography, {
   } as const,
 });
 
-export const FieldHint = styled(Typography, {
+export const FieldHint = smartContextStyled(Typography, {
   name: FIELD_COMPONENT_NAME,
   context: FieldContext,
 
   color: '$color',
 
   variants: {
-    error: {
-      true: {},
-      false: {},
-    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val as keyof typeof config.field];
@@ -118,7 +127,7 @@ export const FieldHint = styled(Typography, {
   } as const,
 });
 
-export const FieldHintValue = styled(Typography, {
+export const FieldHintValue = smartContextStyled(Typography, {
   name: FIELD_COMPONENT_NAME,
   context: FieldContext,
 
@@ -126,10 +135,6 @@ export const FieldHintValue = styled(Typography, {
   color: '$color',
 
   variants: {
-    error: {
-      true: {},
-      false: {},
-    },
     size: (val: FieldSizes) => {
       const config = getComponentsConfig();
       const componentProps = config.field[val as keyof typeof config.field];

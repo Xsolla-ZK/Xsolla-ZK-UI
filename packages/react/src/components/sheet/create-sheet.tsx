@@ -32,7 +32,6 @@ import type {
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
 import type { View } from 'react-native';
 
 type SharedSheetProps = {
@@ -71,77 +70,67 @@ export function createSheet<
   E extends Record<string, TamaguiComponent> = Record<string, TamaguiComponent>,
 >({ Handle, Content, Overlay }: CreateSheetProps, extra: E = {} as E) {
   const SheetHandle = Handle.styleable<GetProps<CreateSheetProps['Handle']>>(
-    forwardRef(
-      (
-        _props: SheetScopedProps<GetProps<CreateSheetProps['Handle']>>,
-        forwardedRef: ForwardedRef<TamaguiElement>,
-      ) => {
-        const { __scopeSheet, ...props } = _props;
-        const context = useSheetContext(SHEET_HANDLE_COMPONENT_NAME, __scopeSheet);
-        const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef);
+    (_props: SheetScopedProps<GetProps<CreateSheetProps['Handle']>>, forwardedRef) => {
+      const { __scopeSheet, ...props } = _props;
+      const context = useSheetContext(SHEET_HANDLE_COMPONENT_NAME, __scopeSheet);
+      const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef);
 
-        if (context.onlyShowFrame) {
-          return null;
-        }
+      if (context.onlyShowFrame) {
+        return null;
+      }
 
-        return (
-          <Handle
-            ref={composedRef}
-            onPress={() => {
-              // don't toggle to the bottom snap position when dismissOnSnapToBottom set
-              const max = context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0);
-              const nextPos = (context.position + 1) % max;
-              context.setPosition(nextPos);
-            }}
-            open={context.open}
-            {...props}
-          />
-        );
-      },
-    ),
+      return (
+        <Handle
+          ref={composedRef}
+          onPress={() => {
+            // don't toggle to the bottom snap position when dismissOnSnapToBottom set
+            const max = context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0);
+            const nextPos = (context.position + 1) % max;
+            context.setPosition(nextPos);
+          }}
+          open={context.open}
+          {...props}
+        />
+      );
+    },
   );
 
   const SheetOverlay = Overlay.styleable<GetProps<CreateSheetProps['Overlay']>>(
-    forwardRef(
-      (
-        _props: SheetScopedProps<GetProps<CreateSheetProps['Overlay']>>,
-        forwardedRef: ForwardedRef<TamaguiElement>,
-      ) => {
-        const { __scopeSheet, ...props } = _props;
-        const context = useSheetContext(SHEET_OVERLAY_COMPONENT_NAME, __scopeSheet);
+    (_props: SheetScopedProps<GetProps<CreateSheetProps['Overlay']>>, forwardedRef) => {
+      const { __scopeSheet, ...props } = _props;
+      const context = useSheetContext(SHEET_OVERLAY_COMPONENT_NAME, __scopeSheet);
 
-        // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
-        // so we just pass it up to context
+      // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
+      // so we just pass it up to context
 
-        const element = useMemo(
-          () => (
-            <Overlay
-              {...props}
-              onPress={composeEventHandlers(
-                props.onPress,
-                context.dismissOnOverlayPress
-                  ? () => {
-                      context.setOpen(false);
-                    }
-                  : undefined,
-              )}
-              ref={forwardedRef}
-            />
-          ),
-          [props.onPress, props.opacity, context.dismissOnOverlayPress],
-        );
+      const element = useMemo(
+        () => (
+          <Overlay
+            {...props}
+            onPress={composeEventHandlers(
+              props.onPress,
+              context.dismissOnOverlayPress
+                ? () => {
+                    context.setOpen(false);
+                  }
+                : undefined,
+            )}
+            ref={forwardedRef}
+          />
+        ),
+        [props.onPress, props.opacity, context.dismissOnOverlayPress],
+      );
 
-        useIsomorphicLayoutEffect(() => {
-          context.onOverlayComponent?.(element);
-        }, [element]);
+      useIsomorphicLayoutEffect(() => {
+        context.onOverlayComponent?.(element);
+      }, [element]);
 
-        if (context.onlyShowFrame) {
-          return null;
-        }
-
+      if (context.onlyShowFrame) {
         return null;
-      },
-    ),
+      }
+
+      return null;
+    },
     {
       disableTheme: true,
       staticConfig: {
@@ -151,77 +140,66 @@ export function createSheet<
   );
 
   const SheetFrame = Content.styleable<SheetFrameWithExtraProps>(
-    forwardRef(
-      (
-        {
-          __scopeSheet,
-          adjustPaddingForOffscreenContent,
-          disableHideBottomOverflow,
-          children,
-          ...props
-        }: SheetFrameWithExtraProps,
-        forwardedRef: ForwardedRef<TamaguiElement>,
-      ) => {
-        const context = useSheetContext(SHEET_COMPONENT_NAME, __scopeSheet);
-        const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context;
-        const composedContentRef = useComposedRefs(forwardedRef, contentRef);
-        const offscreenSize = useSheetOffscreenSize(context);
+    (
+      {
+        __scopeSheet,
+        adjustPaddingForOffscreenContent,
+        disableHideBottomOverflow,
+        children,
+        ...props
+      }: SheetFrameWithExtraProps,
+      forwardedRef,
+    ) => {
+      const context = useSheetContext(SHEET_COMPONENT_NAME, __scopeSheet);
+      const { hasFit, removeScrollEnabled = true, frameSize, contentRef, open } = context;
+      const composedContentRef = useComposedRefs(forwardedRef, contentRef);
+      const offscreenSize = useSheetOffscreenSize(context);
 
-        const sheetContents = useMemo(
-          () => (
-            <Content
-              ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
-              pointerEvents={open ? 'auto' : 'none'}
-              {...props}
-            >
-              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex) as number}>
-                {children}
-              </StackZIndexContext>
+      const sheetContents = useMemo(
+        () => (
+          <Content
+            ref={composedContentRef}
+            flex={hasFit ? 0 : 1}
+            height={hasFit ? undefined : frameSize}
+            pointerEvents={open ? 'auto' : 'none'}
+            {...props}
+          >
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex) as number}>
+              {children}
+            </StackZIndexContext>
 
-              {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              )}
-            </Content>
-          ),
-          [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit],
-        );
-
-        return (
-          <>
-            <RemoveScroll
-              forwardProps
-              enabled={removeScrollEnabled}
-              allowPinchZoom
-              shards={[contentRef]}
-              // causes lots of bugs on touch web on site
-              removeScrollBar={false}
-            >
-              {sheetContents}
-            </RemoveScroll>
-
-            {/* below frame hide when bouncing past 100% */}
-            {!disableHideBottomOverflow && (
-              <Content
-                {...props}
-                componentName={SHEET_COVER_COMPONENT_NAME}
-                children={null}
-                position="absolute"
-                bottom="-100%"
-                zIndex={-1}
-                height={context.frameSize}
-                left={0}
-                right={0}
-                borderWidth={0}
-                borderRadius={0}
-                shadowOpacity={0}
-              />
+            {adjustPaddingForOffscreenContent && (
+              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             )}
-          </>
-        );
-      },
-    ),
+          </Content>
+        ),
+        [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit],
+      );
+
+      return (
+        <>
+          <RemoveScroll enabled={removeScrollEnabled && context.open}>{sheetContents}</RemoveScroll>
+
+          {/* below frame hide when bouncing past 100% */}
+          {!disableHideBottomOverflow && (
+            <Content
+              {...props}
+              componentName={SHEET_COVER_COMPONENT_NAME}
+              children={null}
+              position="absolute"
+              bottom="-100%"
+              zIndex={-1}
+              height={context.frameSize}
+              left={0}
+              right={0}
+              borderWidth={0}
+              borderRadius={0}
+              shadowOpacity={0}
+            />
+          )}
+        </>
+      );
+    },
   );
 
   const Sheet = forwardRef<View, SheetProps>((props, ref) => {

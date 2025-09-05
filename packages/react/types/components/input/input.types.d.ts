@@ -33,11 +33,11 @@ export type InputElementProps = DetailedInputProps & InputElementBaseProps & Omi
     selectionColor?: string;
     caretColor?: string;
 };
-export interface InputProps extends InputElementProps {
+export type InputProps = Omit<InputElementProps, 'children'> & {
     frameStyles?: StackStyle;
     isFocused?: boolean;
     onFocusChange?: (value: boolean) => void;
     children?: ReactNode;
-}
+};
 export {};
 //# sourceMappingURL=input.types.d.ts.map

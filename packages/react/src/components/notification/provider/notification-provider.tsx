@@ -19,7 +19,7 @@ const { Provider: NotificationProviderProvider, useStyledContext: useNotificatio
 
 const NotificationProvider = (props: NotificationScopedProps<NotificationProviderProps>) => {
   const {
-    __scopeNotification,
+    scope,
     id: providedId,
     burntOptions,
     native,
@@ -56,9 +56,9 @@ const NotificationProvider = (props: NotificationScopedProps<NotificationProvide
   );
 
   return (
-    <Collection.Provider __scopeCollection={__scopeNotification || NOTIFICATION_CONTEXT}>
+    <Collection.Provider scope={scope || NOTIFICATION_CONTEXT}>
       <NotificationProviderProvider
-        scope={__scopeNotification}
+        scope={scope}
         id={id}
         label={label}
         duration={duration}
@@ -96,7 +96,7 @@ export function ReprogapateNotificationProvider(
 ) {
   const { children, context } = props;
   return (
-    <Collection.Provider __scopeCollection={NOTIFICATION_CONTEXT}>
+    <Collection.Provider scope={NOTIFICATION_CONTEXT}>
       <NotificationProviderProvider {...context}>
         <NotificationImperativeProvider options={context.options}>
           {children}

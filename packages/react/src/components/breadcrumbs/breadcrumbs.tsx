@@ -1,13 +1,13 @@
 import { withStaticProperties } from '@tamagui/core';
-import { Fragment, cloneElement, isValidElement, forwardRef } from 'react';
+import { Fragment, cloneElement, isValidElement } from 'react';
 import { useChildrenArray } from '../../hooks';
-import { BreadcrumbsFrame, BreadcrumbsItem } from './breadcrumbs.styled';
+import { BreadcrumbsContext, BreadcrumbsFrame, BreadcrumbsItem } from './breadcrumbs.styled';
 import type { BreadcrumbsItemProps, BreadcrumbsProps } from './breadcrumbs.types';
 import type { TamaguiElement } from '@tamagui/core';
 import type { ForwardedRef } from 'react';
 
 const BreadcrumbsComponent = BreadcrumbsFrame.styleable<BreadcrumbsProps>(
-  forwardRef(({ children, delimiter, ...props }, ref: ForwardedRef<TamaguiElement>) => {
+  ({ children, delimiter, ...props }, ref: ForwardedRef<TamaguiElement>) => {
     const childrenArray = useChildrenArray(children);
 
     const childrensWithDelimiters = childrenArray.map((child, index) => (
@@ -23,11 +23,13 @@ const BreadcrumbsComponent = BreadcrumbsFrame.styleable<BreadcrumbsProps>(
     ));
 
     return (
-      <BreadcrumbsFrame {...props} ref={ref}>
-        {childrensWithDelimiters}
-      </BreadcrumbsFrame>
+      <BreadcrumbsContext.Provider componentProps={props}>
+        <BreadcrumbsFrame {...props} ref={ref}>
+          {childrensWithDelimiters}
+        </BreadcrumbsFrame>
+      </BreadcrumbsContext.Provider>
     );
-  }),
+  },
 );
 
 export const Breadcrumbs = withStaticProperties(BreadcrumbsComponent, {

@@ -1,18 +1,25 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { Stack, styled } from '@tamagui/core';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import { FlexButton } from '../flex-button/flex-button';
-import type { BreadcrumbsContextType } from './breadcrumbs.types';
-import type { BreadcrumbsSizes } from './breadcrumbs.types';
+import type { BreadcrumbsContextType, BreadcrumbsSizes } from './breadcrumbs.types';
 
 export const BREADCRUMBS_COMPONENT_NAME = 'Breadcrumbs';
 
-export const BreadcrumbsContext = createStyledContext<BreadcrumbsContextType>({
-  size: '$500',
-});
+export const BreadcrumbsContext = createStyledMediaContext(
+  {
+    size: '$500',
+  } as BreadcrumbsContextType,
+  ['size'],
+);
 
-export const BreadcrumbsFrame = styled(Stack, {
+export const BreadcrumbsFrame = smartContextStyled(Stack, {
   name: BREADCRUMBS_COMPONENT_NAME,
-  context: BreadcrumbsContext,
+  // context: BreadcrumbsContext,
 
   flexDirection: 'row',
   alignItems: 'center',

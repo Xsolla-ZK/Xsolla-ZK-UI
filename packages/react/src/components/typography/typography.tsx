@@ -1,8 +1,8 @@
-import { styled, Text } from '@tamagui/core';
-import { getTypographyPreset } from '../../utils';
+import { Text } from '@tamagui/core';
+import { getTypographyPreset, smartContextStyled } from '../../utils';
 import type { TypographyPresets } from '../../types';
 
-export const Typography = styled(Text, {
+export const Typography = smartContextStyled(Text, {
   color: '$color',
   tag: 'span',
 

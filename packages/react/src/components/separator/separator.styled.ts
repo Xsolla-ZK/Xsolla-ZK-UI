@@ -1,9 +1,10 @@
-import { isWeb, Stack, styled } from '@tamagui/core';
+import { isWeb, Stack } from '@tamagui/core';
 import { SEPARATOR_COMPONENT_NAME } from '@xsolla-zk/constants';
+import { smartContextStyled } from '../../utils';
 import type { ColorType } from '../../types';
 import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/core';
 
-export const Separator = styled(Stack, {
+export const Separator = smartContextStyled(Stack, {
   name: SEPARATOR_COMPONENT_NAME,
   flexShrink: 0,
   flex: 1,

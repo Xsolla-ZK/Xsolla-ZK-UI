@@ -1,7 +1,14 @@
-import { createStyledContext, styled, Text } from '@tamagui/core';
 import { BUTTON_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles, createIconComponent } from '../../utils';
-import { Board } from '../board/board';
+import {
+  createIconComponent,
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  processMediaValues,
+} from '../../utils';
+import { smartContextStyled } from '../../utils';
+import { withBoardStyled } from '../board/board.utils';
+import { Typography } from '../typography';
 import type {
   ButtonContextType,
   ButtonSizes,
@@ -9,139 +16,142 @@ import type {
   ButtonVariants,
   ButtonVariantSpreadExtras,
 } from './button.types';
-import type { ColorTokens, GetProps, VariantSpreadFunction, Stack } from '@tamagui/core';
+import type { XORIconProps } from '../../types';
+import type { ColorTokens, Text, Stack } from '@tamagui/core';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-export const ButtonContext = createStyledContext<ButtonContextType>({
-  size: '$500',
-  disabled: false,
-  variant: 'primary',
-  tone: 'brand',
-  hasIconLeft: undefined,
-  hasIconRight: undefined,
-});
-
-const getVariant: VariantSpreadFunction<GetProps<typeof Stack>, ButtonVariants> = (val, extras) => {
-  const { props } = extras as ButtonVariantSpreadExtras<typeof Stack>;
-  if (val === 'secondary') {
-    return {
-      backgroundColor: `$overlay.${props.tone}`,
-    };
-  }
-  if (val === 'tertiary') {
-    return {
-      backgroundColor: 'transparent',
-    };
-  }
-
-  return {
-    backgroundColor: '$background',
-  };
-};
-
-export const ButtonFrame = styled(Board, {
-  name: BUTTON_COMPONENT_NAME,
-  context: ButtonContext,
-  pressable: true,
-  tag: 'button',
-  role: 'button',
-  containerType: 'normal',
-
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  borderWidth: 0,
-  overflow: 'hidden',
-  cursor: 'pointer',
-  userSelect: 'none',
-
-  variants: {
-    tone: (_val: ButtonTone) => ({}),
-    hasIconLeft: {
-      true: {},
-      false: {},
-    },
-    hasIconRight: {
-      true: {},
-      false: {},
-    },
-    variant: getVariant,
-    size: (val: ButtonSizes, _extras) => {
-      const config = getComponentsConfig();
-      const button = config.button[val as keyof typeof config.button];
-
-      if (!button) return {};
-
-      return getMappedStyles(button.frame);
-    },
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-        backgroundColor: '$overlay.neutral',
-      },
-    },
-    isLoading: {
-      true: {
-        pointerEvents: 'none',
-      },
-    },
-    fullWidth: {
-      true: {
-        width: '100%',
-      },
-      false: {
-        maxWidth: 'max-content',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
+export const ButtonContext = createStyledMediaContext(
+  {
     size: '$500',
-    variant: 'primary',
     disabled: false,
+    variant: 'primary',
     tone: 'brand',
+    hasIconLeft: undefined,
+    hasIconRight: undefined,
+  } as ButtonContextType,
+  ['size', 'variant'],
+);
+
+export const ButtonFrame = withBoardStyled(
+  {
+    name: BUTTON_COMPONENT_NAME,
+    pressable: true,
+    tag: 'button',
+    role: 'button',
+    containerType: 'normal',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderWidth: 0,
+    overflow: 'hidden',
+    cursor: 'pointer',
+    userSelect: 'none',
+
+    variants: {
+      tone: (_val: ButtonTone) => ({}),
+      hasIconLeft: {
+        true: {},
+        false: {},
+      },
+      hasIconRight: {
+        true: {},
+        false: {},
+      },
+      variant: (val: ButtonVariants, extras) => {
+        const { props } = extras as ButtonVariantSpreadExtras<typeof Stack>;
+
+        if (props.disabled && val !== 'tertiary') {
+          return { backgroundColor: '$overlay.neutral' };
+        }
+        if (val === 'secondary') {
+          return {
+            backgroundColor: `$overlay.${props.tone}`,
+          };
+        }
+        if (val === 'tertiary') {
+          return {
+            backgroundColor: 'transparent',
+          };
+        }
+
+        return {
+          backgroundColor: '$background',
+        };
+      },
+      size: (val: ButtonSizes, _extras) => {
+        const config = getComponentsConfig();
+        const button = config.button[val as keyof typeof config.button];
+
+        if (!button) return {};
+
+        return getMappedStyles(button.frame);
+      },
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+          backgroundColor: '$overlay.neutral',
+        },
+      },
+      isLoading: {
+        true: {
+          pointerEvents: 'none',
+        },
+      },
+      fullWidth: {
+        true: {
+          width: '100%',
+        },
+        false: {
+          maxWidth: 'max-content',
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      size: '$500',
+      variant: 'primary',
+      disabled: false,
+      tone: 'brand',
+    },
   },
-});
+  undefined,
+  'button',
+);
 
-const getButtonTextVariant: VariantSpreadFunction<GetProps<typeof Text>, ButtonVariants> = (
-  _val,
-  extras,
-) => {
-  const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
-  if (props.disabled) {
-    return {
-      color: '$content.neutral-tertiary',
-    };
-  }
-
-  if (props.variant !== 'primary') {
-    return {
-      color: `$content.${props.tone}-primary`,
-    };
-  }
-
-  return {
-    color: '$color',
-  };
-};
-
-export const ButtonText = styled(Text, {
+export const ButtonText = smartContextStyled(Typography, {
   name: BUTTON_COMPONENT_NAME,
-  context: ButtonContext,
   tag: 'span',
   userSelect: 'none',
   maxWidth: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsizeMode: 'tail',
+  numberOfLines: 1,
+  context: ButtonContext,
 
   variants: {
-    variant: getButtonTextVariant,
+    variant: (val: ButtonVariants, extras) => {
+      const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
+      if (props.disabled) {
+        return {
+          color: '$content.neutral-tertiary',
+        };
+      }
+
+      if (val !== 'primary') {
+        return {
+          color: `$content.${props.tone}-primary` as ColorTokens,
+        };
+      }
+
+      return {
+        color: '$color',
+      };
+    },
     size: (val: ButtonSizes, extras) => {
       const { props } = extras as ButtonVariantSpreadExtras<typeof Text>;
-      const config = getComponentsConfig();
-      const button = config.button[val as keyof typeof config.button];
+      const componentsConfig = getComponentsConfig();
+      const button = componentsConfig.button[val as keyof typeof componentsConfig.button];
 
       if (!button) return {};
 
@@ -156,48 +166,44 @@ export const ButtonText = styled(Text, {
   } as const,
 });
 
-const getIconColor = (ctx: ButtonContextType): ColorTokens => {
-  if (ctx.disabled) {
-    return '$content.neutral-tertiary';
-  }
+export const ButtonIcon = (props: XORIconProps) => {
+  const ctx = ButtonContext.useStyledContext();
 
-  if (ctx.variant !== 'primary') {
-    return `$content.${ctx.tone}-primary` as ColorTokens;
-  }
+  const { size, tone, variant } = ctx;
 
-  return '$color';
+  const iconProps = processMediaValues(
+    { size, tone, variant },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.button[val as keyof typeof config.button];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+      variant: (val, { props }) => {
+        if (ctx.disabled) {
+          return {
+            color: '$content.neutral-tertiary',
+          };
+        }
+
+        if (val !== 'primary') {
+          return {
+            color: `$content.${props.tone}-primary`,
+          };
+        }
+
+        return {
+          color: '$color',
+        };
+      },
+    },
+  ) as IconProps;
+
+  return createIconComponent({ ...iconProps, ...props });
 };
-
-// export const ButtonIcon = ({ children, icon, ...rest }: XORIconProps) => {
-//   const ctx = useContext(ButtonContext.context);
-
-//   if (!ctx) {
-//     throw new Error(
-//       'Xsolla-ZK UI: ButtonContext is missing. Button parts must be placed within <Button>.',
-//     );
-//   }
-//   const config = getComponentsConfig();
-//   const button = config.button[ctx.size];
-
-//   if (icon) {
-//     return createElement(icon, {
-//       name: BUTTON_COMPONENT_NAME,
-//       size: button.icon.size,
-//       color: getIconColor(ctx),
-//       ...rest,
-//     } as IconProps);
-//   }
-
-//   return isValidElement(children)
-//     ? cloneElement(children, {
-//         name: BUTTON_COMPONENT_NAME,
-//         size: button.icon.size,
-//         color: getIconColor(ctx),
-//         ...rest,
-//       } as {})
-//     : null;
-// };
-
-export const ButtonIcon = createIconComponent(BUTTON_COMPONENT_NAME, ButtonContext, 'button', {
-  getColorFn: getIconColor,
-});

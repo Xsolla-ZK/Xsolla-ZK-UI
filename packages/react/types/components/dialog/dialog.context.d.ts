@@ -1,11 +1,9 @@
 import type { DialogContextValue, PortalContextValue } from './dialog.types';
-export declare const DialogProvider: (props: DialogContextValue & {
-    scope: import("@tamagui/create-context").Scope<DialogContextValue>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, useDialogContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<DialogContextValue | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<DialogContextValue> | undefined;
-} | undefined) => DialogContextValue;
+export declare const DialogContext: import("@tamagui/core").StyledContext<DialogContextValue>;
+export declare const useDialogContext: (scope?: string) => DialogContextValue, DialogProvider: import("react").Provider<DialogContextValue> & import("react").ProviderExoticComponent<Partial<DialogContextValue> & {
+    children?: import("react").ReactNode;
+    scope?: string;
+}>;
 export declare const PortalProvider: (props: PortalContextValue & {
     scope: import("@tamagui/create-context").Scope<PortalContextValue>;
     children: React.ReactNode;
@@ -19,7 +17,7 @@ export declare const DialogWarningProvider: (props: {
     docsSlug: string;
 } & {
     children: React.ReactNode;
-}) => JSX.Element, useWarningContext: (consumerName: string) => {
+}) => React.JSX.Element, useWarningContext: (consumerName: string) => {
     contentName: string;
     titleName: string;
     docsSlug: string;

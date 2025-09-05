@@ -41,7 +41,7 @@ const {
 const NotificationImpl = forwardRef<TamaguiElement, NotificationImplProps>(
   (props: NotificationScopedProps<NotificationImplProps>, forwardedRef) => {
     const {
-      __scopeNotification,
+      scope,
       type = 'foreground',
       duration: durationProp,
       open,
@@ -57,7 +57,7 @@ const NotificationImpl = forwardRef<TamaguiElement, NotificationImplProps>(
       ...toastProps
     } = props;
     const isPresent = useIsPresent();
-    const context = useNotificationProviderContext(__scopeNotification);
+    const context = useNotificationProviderContext(scope);
     const [node, setNode] = useState<TamaguiElement | null>(null);
     const composedRefs = useComposedRefs(forwardedRef, setNode);
     const duration = durationProp || context.duration;
@@ -211,7 +211,7 @@ const NotificationImpl = forwardRef<TamaguiElement, NotificationImplProps>(
       <>
         {announceTextContent && (
           <NotificationAnnounce
-            __scopeNotification={__scopeNotification}
+            scope={scope}
             // Notifications are always role=status to avoid stuttering issues with role=alert in SRs.
             role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
@@ -224,7 +224,7 @@ const NotificationImpl = forwardRef<TamaguiElement, NotificationImplProps>(
         <PortalItem hostName={viewportName ?? 'default'}>
           <NotificationInteractiveProvider
             key={props.id}
-            scope={__scopeNotification}
+            scope={scope}
             size={toastProps.size}
             onClose={() => {
               handleClose();
@@ -244,9 +244,7 @@ const NotificationImpl = forwardRef<TamaguiElement, NotificationImplProps>(
                   {...panResponder?.panHandlers}
                   style={[{ margin: 'auto', maxWidth: '100%' }, animatedStyles]}
                 >
-                  <Collection.ItemSlot
-                    __scopeCollection={__scopeNotification || NOTIFICATION_CONTEXT}
-                  >
+                  <Collection.ItemSlot scope={scope || NOTIFICATION_CONTEXT}>
                     <NotificationImplFrame
                       // Ensure toasts are announced as status list or status when focused
                       role="status"

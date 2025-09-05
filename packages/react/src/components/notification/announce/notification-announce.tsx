@@ -32,8 +32,8 @@ const NotificationAnnounceExclude = forwardRef<
 });
 
 const NotificationAnnounce = (props: NotificationScopedProps<NotificationAnnounceProps>) => {
-  const { __scopeNotification, children, ...announceProps } = props;
-  const context = useNotificationProviderContext(__scopeNotification);
+  const { scope, children, ...announceProps } = props;
+  const context = useNotificationProviderContext(scope);
   const [renderAnnounceText, setRenderAnnounceText] = useState(false);
   const [isAnnounced, setIsAnnounced] = useState(false);
 
@@ -51,7 +51,7 @@ const NotificationAnnounce = (props: NotificationScopedProps<NotificationAnnounc
   }, []);
 
   return isAnnounced ? null : (
-    <Portal asChild>
+    <Portal>
       <VisuallyHidden {...announceProps}>
         {renderAnnounceText && (
           <Text>

@@ -1,3 +1,3 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Gamepad: import("react").NamedExoticComponent<IconProps>;
+import type { IconProps } from '@xsolla-zk/ui-primitives';
+export declare const Gamepad: import("react").MemoExoticComponent<(props: IconProps) => import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=gamepad.d.ts.map

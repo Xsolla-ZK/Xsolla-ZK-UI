@@ -1,4 +1,4 @@
-import type { ValidProps } from './valid-props';
+import type { ReturnTypeConfig } from '../types';
 export declare const defaultComponentsConfig: {
     accordion: {
         size: {
@@ -1467,9 +1467,6 @@ type MergeConfig<T extends Partial<Record<keyof DefaultComponentsConfig, unknown
     [K in keyof DefaultComponentsConfig]: DefaultComponentsConfig[K] & T[K];
 };
 export declare function initializeComponentsConfig<T extends Partial<Record<keyof DefaultComponentsConfig, unknown>>>(userConfig: T): MergeConfig<T>;
-type ReturnTypeConfig<T> = {
-    [K in keyof T]: T[K] extends object ? ReturnTypeConfig<T[K]> : K extends keyof ValidProps ? ValidProps[K] : never;
-};
 export declare function getComponentsConfig<T extends ReturnTypeConfig<ComponentsConfig>>(): T;
 export {};
 //# sourceMappingURL=components-config.d.ts.map

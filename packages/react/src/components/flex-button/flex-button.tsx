@@ -1,6 +1,6 @@
-import { getTokenValue, useProps, withStaticProperties } from '@tamagui/core';
+import { withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
-import { getComponentsConfig } from '../../utils';
+import { processMediaValues } from '../../utils';
 import { Loader } from '../loader';
 import {
   FlexButtonContext,
@@ -9,58 +9,68 @@ import {
   FlexButtonOverlay,
   FlexButtonText,
 } from './flex-button.styled';
-import type { FlexButtonContextType, FlexButtonProps } from './flex-button.types';
+import type { FlexButtonProps } from './flex-button.types';
 import type { LoaderProps } from '../loader/loader.types';
-import type { ColorTokens, TamaguiElement, ThemeName, Token } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+import type { ColorTokens, ThemeName } from '@tamagui/core';
 
 const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
-  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
-    const { tone = 'brand', isLoading, ...props } = useProps(propsIn);
+  ({ children, tone = 'brand', isLoading, disabled, ...propsIn }, ref) => {
+    const providerValue = {
+      tone,
+      disabled,
+    };
+
     return (
-      <FlexButtonFrame
-        group={!props.disabled}
-        isLoading={isLoading}
-        tone={tone}
-        theme={tone as unknown as ThemeName}
-        {...props}
-        ref={ref}
-      >
-        {!props.disabled && <FlexButtonOverlay />}
-        {isLoading ? <FlexButtonLoader /> : children}
-      </FlexButtonFrame>
+      <FlexButtonContext.Provider componentProps={propsIn} {...providerValue}>
+        <FlexButtonFrame
+          group={!disabled}
+          isLoading={isLoading}
+          tone={tone}
+          theme={tone as unknown as ThemeName}
+          {...propsIn}
+          ref={ref}
+        >
+          {!disabled && <FlexButtonOverlay />}
+          {isLoading ? <FlexButtonLoader /> : children}
+        </FlexButtonFrame>
+      </FlexButtonContext.Provider>
     );
-  }),
+  },
   {
     disableTheme: true,
   },
 );
 
-const getLoaderColors = (ctx: FlexButtonContextType): LoaderProps => {
-  const { tone } = ctx;
-
-  return {
-    mainColor: `$border.${tone}-secondary` as ColorTokens,
-    spinColor: `$content.${tone}-primary` as ColorTokens,
-  };
-};
-
 function FlexButtonLoader() {
   const ctx = FlexButtonContext.useStyledContext();
 
-  const config = getComponentsConfig();
-  const size = config.flexButton[ctx.size as keyof typeof config.flexButton];
+  const { size, tone } = ctx;
 
-  return (
-    <Loader
-      {...getLoaderColors(ctx)}
-      size={size ? (getTokenValue(size.icon.size as Token, 'size') as number) : undefined}
-    />
-  );
+  const loaderProps = processMediaValues(
+    { size, tone },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.flexButton[val as keyof typeof config.flexButton];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+      tone: (val) => ({
+        mainColor: `$border.${val}-secondary` as ColorTokens,
+        spinColor: `$content.${val}-primary` as ColorTokens,
+      }),
+    },
+  ) as LoaderProps;
+
+  return <Loader {...loaderProps} />;
 }
 
 export const FlexButton = withStaticProperties(FlexButtonComponent, {
-  Props: FlexButtonContext.Provider,
   Text: FlexButtonText,
   Icon: FlexButtonIcon,
 });

@@ -1,18 +1,25 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { CELL_BOARD_COMPONENT_NAME, CELL_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
-import { Board } from '../board';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
+import { withBoardStyled } from '../board';
 import type { CellContextValue, CellSizes } from './cell.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 
-export const CellContext = createStyledContext<CellContextValue>({
-  size: 'medium',
-  withBoard: false,
-});
+export const CellContext = createStyledMediaContext(
+  {
+    size: 'medium',
+    withBoard: false,
+  } as CellContextValue,
+  ['size'],
+);
 
-export const CellFrame = styled(Stack, {
+export const CellFrame = smartContextStyled(Stack, {
   name: CELL_COMPONENT_NAME,
-  context: CellContext,
 
   flexDirection: 'row',
   alignItems: 'center',
@@ -46,31 +53,34 @@ export const CellFrame = styled(Stack, {
   },
 });
 
-export const CellBoardFrame = styled(Board, {
-  name: CELL_BOARD_COMPONENT_NAME,
-  context: CellContext,
+export const CellBoardFrame = withBoardStyled(
+  {
+    name: CELL_BOARD_COMPONENT_NAME,
 
-  justifyContent: 'center',
-  backgroundColor: '$background',
+    justifyContent: 'center',
+    backgroundColor: '$background',
 
-  variants: {
-    withBoard: {
-      true: {},
-      false: {},
-    },
-    size: (val: CellSizes) => {
-      const config = getComponentsConfig();
-      const componentProps = config.cell.board[val as keyof typeof config.cell.board];
+    variants: {
+      withBoard: {
+        true: {},
+        false: {},
+      },
+      size: (val: CellSizes) => {
+        const config = getComponentsConfig();
+        const componentProps = config.cell.board[val as keyof typeof config.cell.board];
 
-      if (!componentProps) {
-        return {};
-      }
-      return getMappedStyles(componentProps.frame);
-    },
-  } as const,
-});
+        if (!componentProps) {
+          return {};
+        }
+        return getMappedStyles(componentProps.frame);
+      },
+    } as const,
+  },
+  undefined,
+  'cell',
+);
 
-export const CellSlot = styled(Stack, {
+export const CellSlot = smartContextStyled(Stack, {
   context: CellContext,
 
   flexDirection: 'row',
@@ -93,7 +103,7 @@ export const CellSlot = styled(Stack, {
   } as const,
 });
 
-export const CellContent = styled(Stack, {
+export const CellContent = smartContextStyled(Stack, {
   context: CellContext,
 
   justifyContent: 'center',

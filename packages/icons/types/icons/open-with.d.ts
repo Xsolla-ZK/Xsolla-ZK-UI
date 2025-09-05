@@ -1,3 +1,3 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const OpenWith: import("react").NamedExoticComponent<IconProps>;
+import type { IconProps } from '@xsolla-zk/ui-primitives';
+export declare const OpenWith: import("react").MemoExoticComponent<(props: IconProps) => import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=open-with.d.ts.map

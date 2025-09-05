@@ -1,1 +1,1 @@
-{"version":3,"file":"semantic-text.d.ts","sourceRoot":"","sources":["../../../src/components/semantic-text/semantic-text.tsx"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,uBAAuB,CAAC;AAC/D,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,eAAe,CAAC;AAGxD,eAAO,MAAM,YAAY;;;;;;6CAIxB,CAAC"}
+{"version":3,"file":"semantic-text.d.ts","sourceRoot":"","sources":["../../../src/components/semantic-text/semantic-text.tsx"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,uBAAuB,CAAC;AAE/D,eAAO,MAAM,YAAY;;;;;;8CAEvB,CAAC"}

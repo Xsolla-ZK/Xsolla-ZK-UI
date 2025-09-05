@@ -1,1 +1,1 @@
-{"version":3,"file":"progress-bar.d.ts","sourceRoot":"","sources":["../../../src/components/progress-bar/progress-bar.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAkC,KAAK,cAAc,EAAE,MAAM,eAAe,CAAC;AAiCpF,eAAO,MAAM,WAAW;;;;;;;;;;;;;;;;;;;;;;;CAEtB,CAAC"}
+{"version":3,"file":"progress-bar.d.ts","sourceRoot":"","sources":["../../../src/components/progress-bar/progress-bar.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAwB,KAAK,cAAc,EAAE,MAAM,eAAe,CAAC;AAmC1E,eAAO,MAAM,WAAW;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAEtB,CAAC"}

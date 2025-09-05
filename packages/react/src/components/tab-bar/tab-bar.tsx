@@ -2,76 +2,85 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { isWeb, withStaticProperties } from '@tamagui/core';
-import { isValidElement, useId, forwardRef } from 'react';
-import { TabBarFrame, TabBarItem, TabBarItemIcon, TabBarItemTitle } from './tab-bar.styled';
+import { isValidElement, useId } from 'react';
+import { withStyledMediaContext } from '../../utils';
+import {
+  TabBarContext,
+  TabBarFrame,
+  TabBarItem,
+  TabBarItemIcon,
+  TabBarItemTitle,
+} from './tab-bar.styled';
 import type { TabBarProps } from './tab-bar.types';
-import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+
+const TabBarItemComponent = withStyledMediaContext(TabBarItem, TabBarContext);
 
 const TabBarComponent = TabBarFrame.styleable<TabBarProps>(
-  forwardRef(({ state, descriptors, navigation, ...rest }, ref: ForwardedRef<TamaguiElement>) => {
+  ({ state, descriptors, navigation, ...rest }, ref) => {
     const uniqueId = useId();
 
     return (
-      <TabBarFrame {...rest} ref={ref}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-                ? options.title
-                : route.name;
+      <TabBarContext.Provider componentProps={rest}>
+        <TabBarFrame {...rest} ref={ref}>
+          {state.routes.map((route, index) => {
+            const { options } = descriptors[route.key];
+            const label =
+              options.tabBarLabel !== undefined
+                ? options.tabBarLabel
+                : options.title !== undefined
+                  ? options.title
+                  : route.name;
 
-          const isFocused = state.index === index;
+            const isFocused = state.index === index;
 
-          const onPress = () => {
-            if (!isWeb) {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
+            const onPress = () => {
+              if (!isWeb) {
+                const event = navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
 
-              if (!isFocused && !event.defaultPrevented) {
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              } else {
                 navigation.navigate(route.name);
               }
-            } else {
-              navigation.navigate(route.name);
-            }
-          };
+            };
 
-          const labelComponent = isValidElement(label)
-            ? label
-            : typeof label === 'function'
-              ? label({
-                  focused: isFocused,
-                  color: 'black',
-                  position: options.tabBarLabelPosition ?? 'below-icon',
-                  children: options.title ?? route.name,
-                })
-              : label;
+            const labelComponent = isValidElement(label)
+              ? label
+              : typeof label === 'function'
+                ? label({
+                    focused: isFocused,
+                    color: 'black',
+                    position: options.tabBarLabelPosition ?? 'below-icon',
+                    children: options.title ?? route.name,
+                  })
+                : label;
 
-          const icon = isValidElement(options.tabBarIcon)
-            ? options.tabBarIcon
-            : typeof options.tabBarIcon === 'function'
-              ? options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })
-              : null;
+            const icon = isValidElement(options.tabBarIcon)
+              ? options.tabBarIcon
+              : typeof options.tabBarIcon === 'function'
+                ? options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })
+                : null;
 
-          return (
-            <TabBarItem
-              key={uniqueId + index}
-              vertical={options.tabBarLabelPosition === 'below-icon'}
-              onPress={onPress}
-            >
-              {icon}
-              {options.tabBarShowLabel ? labelComponent : null}
-            </TabBarItem>
-          );
-        })}
-      </TabBarFrame>
+            return (
+              <TabBarItemComponent
+                key={uniqueId + index}
+                vertical={options.tabBarLabelPosition === 'below-icon'}
+                onPress={onPress}
+              >
+                {icon}
+                {options.tabBarShowLabel ? labelComponent : null}
+              </TabBarItemComponent>
+            );
+          })}
+        </TabBarFrame>
+      </TabBarContext.Provider>
     );
-  }),
+  },
 );
 
 export const TabBar = withStaticProperties(TabBarComponent, {
@@ -79,7 +88,7 @@ export const TabBar = withStaticProperties(TabBarComponent, {
   Icon: TabBarItemIcon,
 });
 
-// export function Tabbar() {
+// function TabBarStory(props: Omit<TabBarProps, 'state' | 'descriptors' | 'navigation'>) {
 //   const currentRouteIndex = 0;
 
 //   const [state, setState] = useState({
@@ -92,27 +101,45 @@ export const TabBar = withStaticProperties(TabBarComponent, {
 //   });
 
 //   const descriptors = {
-//     Home: { options: { title: 'Home' } },
-//     About: { options: { title: 'About' } },
-//     Contact: { options: { title: 'Contact' } },
+//     Home: {
+//       options: {
+//         title: 'Home',
+//         tabBarShowLabel: true,
+//         tabBarIcon: () => <TabBar.Icon icon={Home} />,
+//         tabBarLabel: ({children}) => <TabBar.Title>{children}</TabBar.Title>,
+//       },
+//     },
+//     About: {
+//       options: {
+//         title: 'About',
+//         tabBarShowLabel: true,
+//         tabBarIcon: () => <TabBar.Icon icon={Settings} />,
+//         tabBarLabel: ({children}) => <TabBar.Title>{children}</TabBar.Title>,
+//       },
+//     },
+//     Contact: {
+//       options: {
+//         title: 'Contact',
+//         tabBarShowLabel: true,
+//         tabBarIcon: () => <TabBar.Icon icon={Mail} />,
+//         tabBarLabel: ({children}) => <TabBar.Title>{children}</TabBar.Title>,
+//       },
+//     },
 //   };
 
 //   return (
-//     <View flexDirection="column" width="100%" minHeight={610} height="100%" maxHeight="100%">
-//       <View
+//     <Stack flexDirection="column" width="100%" minHeight={610} height="100%" maxHeight="100%">
+//       <Stack
 //         flexDirection="column"
 //         width="100%"
 //         flex={9}
 //         alignItems="center"
 //         justifyContent="center"
 //       >
-//         <Text fontSize="$8" fontWeight="$8" lineHeight="$8">
-//           {state.routes[state.index].key}
-//         </Text>
-//       </View>
-//       <CustomTabBar
-//         theme="red"
-//         alignSelf="center"
+//         <Typography>{state.routes[state.index].key}</Typography>
+//       </Stack>
+//       <TabBar
+//         {...props}
 //         state={state}
 //         descriptors={descriptors}
 //         navigation={{
@@ -128,6 +155,6 @@ export const TabBar = withStaticProperties(TabBarComponent, {
 //           },
 //         }}
 //       />
-//     </View>
+//     </Stack>
 //   );
 // }

@@ -1,10 +1,11 @@
-import { isWeb, Stack, styled } from '@tamagui/core';
+import { isWeb, Stack } from '@tamagui/core';
 import {
   NOTIFICATION_VIEWPORT_NAME,
   NOTIFICATION_VIEWPORT_WRAPPER_NAME,
 } from '@xsolla-zk/constants';
+import { smartContextStyled } from '../../../utils';
 
-export const NotificationViewportWrapperFrame = styled(Stack, {
+export const NotificationViewportWrapperFrame = smartContextStyled(Stack, {
   name: NOTIFICATION_VIEWPORT_WRAPPER_NAME,
 
   pointerEvents: 'box-none',
@@ -22,7 +23,7 @@ export const NotificationViewportWrapperFrame = styled(Stack, {
   defaultVariants: {},
 });
 
-export const NotificationViewportFrame = styled(Stack, {
+export const NotificationViewportFrame = smartContextStyled(Stack, {
   name: NOTIFICATION_VIEWPORT_NAME,
 
   pointerEvents: 'box-none',

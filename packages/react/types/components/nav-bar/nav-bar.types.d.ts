@@ -13,6 +13,5 @@ export type NavBarStateContextType = {
 };
 export type NavBarSharedProps = GetProps<typeof NavBarFrame>;
 export interface NavBarProps extends NavBarSharedProps {
-    preset?: NavBarPresets;
 }
 //# sourceMappingURL=nav-bar.types.d.ts.map

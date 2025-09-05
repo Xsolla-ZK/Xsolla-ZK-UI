@@ -3,4 +3,5 @@ export * from './utils';
 export * from './hooks';
 export type * from './types';
 export * from '@tamagui/core';
+export * from '@xsolla-zk/ui-primitives';
 //# sourceMappingURL=index.d.ts.map

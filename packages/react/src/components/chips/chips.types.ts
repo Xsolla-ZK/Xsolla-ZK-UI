@@ -1,5 +1,5 @@
 import type { ChipFrame, ChipsFrame } from './chips.styled';
-import type { IconsPosition, GetComponentTone } from '../../types';
+import type { GetComponentTone, IconsPosition } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { CHIP_COMPONENT_NAME } from '@xsolla-zk/constants';
@@ -33,6 +33,7 @@ export type ChipContextType = Partial<IconsPosition> & {
   disabled: boolean;
   variant: ChipVariants;
   tone: ChipTone;
+  isSelected: boolean;
 };
 
 type ChipsSharedProps = GetProps<typeof ChipsFrame>;

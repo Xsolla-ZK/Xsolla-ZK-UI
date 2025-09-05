@@ -16,7 +16,7 @@ export declare const SheetProvider: (props: {
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
     hidden: boolean;
     contentRef: import("react").RefObject<import("react-native").View | null>;
-    handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement | null>;
+    handleRef: import("react").RefObject<import("@tamagui/core").TamaguiElement | null>;
     frameSize: number;
     setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
@@ -32,7 +32,6 @@ export declare const SheetProvider: (props: {
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
 } & {
-    scrollEnabled: boolean;
     setHasScrollView: (val: boolean) => void;
 } & {
     scope: import("@tamagui/create-context").Scope<SheetContextValue>;

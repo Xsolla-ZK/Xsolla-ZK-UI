@@ -1,3 +1,4 @@
+import { wrapTokensWithPx } from '@xsolla-zk/ui-utils';
 import { settings } from './settings';
 import { sharedConfig } from './shared';
 import { themes } from './themes';
@@ -5,18 +6,19 @@ import { fonts } from './tokens/fonts';
 import { media } from './tokens/media/android';
 import { android } from './tokens/platform';
 import { tokens } from './tokens/tokens';
-import { typography } from './tokens/typography';
 import type { CreateTamaguiProps } from '@tamagui/core';
 
 export const androidConfig = {
   ...sharedConfig,
   fonts,
   themes,
-  tokens: {
-    ...tokens,
-    platform: android,
-    typography,
-  },
+  tokens: wrapTokensWithPx(
+    {
+      ...tokens,
+      platform: android,
+    },
+    ['platform', 'stroke'],
+  ),
   media,
   settings,
   selectionStyles: (theme) => ({

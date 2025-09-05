@@ -1,6 +1,7 @@
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
+import { smartContextStyled } from '../../utils';
 
-export const BoardFrame = styled(Stack, {
+export const BoardFrame = smartContextStyled(Stack, {
   variants: {
     pressable: {
       true: {
@@ -18,7 +19,7 @@ export const BoardFrame = styled(Stack, {
   } as const,
 });
 
-export const BoardOverlay = styled(Stack, {
+export const BoardOverlay = smartContextStyled(Stack, {
   tag: 'span',
   position: 'absolute',
   top: 0,
@@ -37,11 +38,11 @@ export const BoardOverlay = styled(Stack, {
   // animateOnly: ['opacity'],
   backgroundColor: '$overlay.static-light',
 
-  '$group-hover': {
-    opacity: 0.5,
-  },
-  '$group-press': {
-    opacity: 0.3,
-    backgroundColor: '$background.static-dark-high',
-  },
+  // '$group-hover': {
+  //   opacity: 0.5,
+  // },
+  // '$group-press': {
+  //   opacity: 0.3,
+  //   backgroundColor: '$background.static-dark-high',
+  // },
 });

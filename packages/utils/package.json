@@ -1,0 +1,48 @@
+{
+  "name": "@xsolla-zk/ui-utils",
+  "version": "1.0.1",
+  "private": false,
+  "sideEffects": false,
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Xsolla-ZK/Xsolla-ZK-UI.git",
+    "directory": "packages/utils"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/core": "catalog:tamagui"
+  },
+  "devDependencies": {
+    "@tamagui/build": "catalog:tamagui",
+    "typescript": "catalog:"
+  }
+}

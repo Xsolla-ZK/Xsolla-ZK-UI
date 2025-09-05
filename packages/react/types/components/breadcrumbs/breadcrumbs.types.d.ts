@@ -1,4 +1,4 @@
-import type { BreadcrumbsFrame } from './breadcrumbs.styled';
+import type { BreadcrumbsFrame, BreadcrumbsItem } from './breadcrumbs.styled';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps } from '@tamagui/core';
 import type { ReactNode } from 'react';
@@ -7,11 +7,10 @@ export type BreadcrumbsContextType = {
     size: BreadcrumbsSizes;
 };
 export type BreadcrumbsSharedProps = GetProps<typeof BreadcrumbsFrame>;
-export type BreadcrumbsItemSharedProps = GetProps<typeof BreadcrumbsFrame>;
-export interface BreadcrumbsProps extends BreadcrumbsSharedProps {
+export type BreadcrumbsItemSharedProps = GetProps<typeof BreadcrumbsItem>;
+export type BreadcrumbsProps = BreadcrumbsSharedProps & {
     /** The icon to be used as a delimiter */
     delimiter: ReactNode;
-}
-export interface BreadcrumbsItemProps extends BreadcrumbsItemSharedProps {
-}
+};
+export type BreadcrumbsItemProps = BreadcrumbsItemSharedProps;
 //# sourceMappingURL=breadcrumbs.types.d.ts.map

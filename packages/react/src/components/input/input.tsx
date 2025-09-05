@@ -1,7 +1,7 @@
 import { useComposedRefs, withStaticProperties } from '@tamagui/core';
 import { useControllableState } from '@tamagui/use-controllable-state';
-import { forwardRef, isValidElement, useMemo, useRef } from 'react';
-import { useChildrenArray } from '../../hooks';
+import { isValidElement, useMemo, useRef } from 'react';
+import { useChildrenArray, useExtractedProps } from '../../hooks';
 import { createInput } from './create-input';
 import {
   InputContext,
@@ -12,14 +12,13 @@ import {
 } from './input.styled';
 import type { InputProps } from './input.types';
 import type { TamaguiElement } from '@tamagui/core';
-import type { ForwardedRef, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 const InputBase = createInput(InputElement);
 
 const InputComponent = InputBase.styleable<InputProps>(
-  forwardRef((_props: InputProps, forwardedRef: ForwardedRef<TamaguiElement>) => {
+  (_props, forwardedRef) => {
     const {
-      size = '$500',
       frameStyles,
       disabled,
       children,
@@ -30,6 +29,7 @@ const InputComponent = InputBase.styleable<InputProps>(
       onFocusChange,
       ...props
     } = _props;
+    const extractedProps = useExtractedProps(props, ['size']);
     const childrenArray = useChildrenArray(children);
     const [focused, setFocused] = useControllableState({
       prop: isFocused,
@@ -60,55 +60,65 @@ const InputComponent = InputBase.styleable<InputProps>(
       };
     }, [childrenArray]);
 
-    return (
-      <InputFrame
-        size={size}
-        focused={!props.readOnly ? focused : false}
-        disabled={disabled}
-        theme={props.readOnly ? 'readonly' : error ? 'error' : undefined}
-        isTextarea={props.tag === 'textarea'}
-        onPressIn={() => {
-          isInteractingWithFrame.current = true;
-        }}
-        onPressOut={() => {
-          isInteractingWithFrame.current = false;
-        }}
-        onPress={() => {
-          if (props.readOnly) return;
-          ref.current?.focus();
-        }}
-        {...frameStyles}
-      >
-        {startSlot}
-        <InputBase
-          {...(!props.readOnly
-            ? {
-                onFocus: (e) => {
-                  setFocused(true);
-                  onFocus?.(e);
-                },
-                onBlur: (e) => {
-                  if (!isInteractingWithFrame.current) {
-                    setFocused(false);
-                    onBlur?.(e);
-                  }
-                },
-              }
-            : {})}
-          {...props}
-          ref={composedRefs}
-        />
-        {endSlot}
-      </InputFrame>
+    const providerValue = useMemo(
+      () => ({
+        error,
+        disabled,
+        focused,
+      }),
+      [error, disabled, focused],
     );
-  }),
+
+    return (
+      <InputContext.Provider componentProps={props} {...providerValue}>
+        <InputFrame
+          focused={!props.readOnly ? focused : false}
+          disabled={disabled}
+          theme={props.readOnly ? 'readonly' : error ? 'error' : undefined}
+          isTextarea={props.tag === 'textarea'}
+          onPressIn={() => {
+            isInteractingWithFrame.current = true;
+          }}
+          onPressOut={() => {
+            isInteractingWithFrame.current = false;
+          }}
+          onPress={() => {
+            if (props.readOnly) return;
+            ref.current?.focus();
+          }}
+          {...extractedProps}
+          {...frameStyles}
+        >
+          {startSlot}
+          <InputBase
+            {...(!props.readOnly
+              ? {
+                  onFocus: (e) => {
+                    setFocused(true);
+                    onFocus?.(e);
+                  },
+                  onBlur: (e) => {
+                    if (!isInteractingWithFrame.current) {
+                      setFocused(false);
+                      onBlur?.(e);
+                    }
+                  },
+                }
+              : {})}
+            {...props}
+            ref={composedRefs}
+          />
+          {endSlot}
+        </InputFrame>
+      </InputContext.Provider>
+    );
+  },
   {
     disableTheme: true,
   },
 );
 
 export const Input = withStaticProperties(InputComponent, {
-  Props: InputContext.Provider,
   StartSlot: InputStartSlot,
   EndSlot: InputEndSlot,
 });

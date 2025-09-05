@@ -1,14 +1,14 @@
 import { Collapsible } from '@tamagui/collapsible';
-import { Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import {
   ACCORDION_ITEM_COMPONENT_NAME,
   ACCORDION_TRIGGER_COMPONENT_NAME,
 } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles } from '../../utils';
+import { getComponentsConfig, getMappedStyles, smartContextStyled } from '../../utils';
 import type { AccordionImplContextValue, AccordionSizes } from './accordion.types';
 import type { VariantSpreadExtras } from '@tamagui/core';
 
-export const AccordionItemFrame = styled(Collapsible, {
+export const AccordionItemFrame = smartContextStyled(Collapsible, {
   name: ACCORDION_ITEM_COMPONENT_NAME,
 
   overflow: 'hidden',
@@ -37,7 +37,7 @@ export const AccordionItemFrame = styled(Collapsible, {
   } as const,
 });
 
-export const AccordionTriggerFrame = styled(Collapsible.Trigger, {
+export const AccordionTriggerFrame = smartContextStyled(Collapsible.Trigger, {
   name: ACCORDION_TRIGGER_COMPONENT_NAME,
   flexDirection: 'row',
   cursor: 'pointer',
@@ -45,7 +45,7 @@ export const AccordionTriggerFrame = styled(Collapsible.Trigger, {
   defaultVariants: {},
 });
 
-export const AccordionHeaderFrame = styled(Stack, {
+export const AccordionHeaderFrame = smartContextStyled(Stack, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -72,7 +72,7 @@ export const AccordionHeaderFrame = styled(Stack, {
   } as const,
 });
 
-export const AccordionContentFrame = styled(Collapsible.Content, {
+export const AccordionContentFrame = smartContextStyled(Collapsible.Content, {
   variants: {
     withBoard: {
       true: {},

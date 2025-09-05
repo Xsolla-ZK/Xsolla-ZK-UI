@@ -1,5 +1,5 @@
 import type { BadgeFrame } from './badge.styled';
-import type { IconsPosition, GetComponentTone } from '../../types';
+import type { GetComponentTone, IconsPosition } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, StylableComponent, VariantSpreadExtras } from '@tamagui/core';
 import type { BADGE_COMPONENT_NAME } from '@xsolla-zk/constants';

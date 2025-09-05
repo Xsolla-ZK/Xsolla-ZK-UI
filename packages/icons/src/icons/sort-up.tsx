@@ -1,23 +1,19 @@
-import { themed } from '@tamagui/helpers-icon';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
 import { memo } from 'react';
-import { Svg, Path } from 'react-native-svg';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { ComponentProps, FC } from 'react';
+import { Path } from 'react-native-svg';
 
-type Props = ComponentProps<typeof Svg> & {
-  size: number;
-};
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-const Icon: FC = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props as Props;
+const Icon = (props: IconProps) => {
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
-    <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
+    <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
-        fill={color}
+        fill="currentColor"
         d="m12 8.5 2-.5V6l-2-.5-2 .5v2zM12 10.5l6 .5v2l-6 .5-6-.5v-2zM21 18l-9 .5-9-.5v-2l9-.5 9 .5z"
       />
-    </Svg>
+    </SvgThemed>
   );
 };
 
-export const SortUp = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const SortUp = memo(Icon);

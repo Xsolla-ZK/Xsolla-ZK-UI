@@ -1,16 +1,25 @@
-import { createStyledContext, Stack, styled } from '@tamagui/core';
+import { Stack } from '@tamagui/core';
 import { SWITCH_COMPONENT_NAME, SWITCH_KNOB_COMPONENT_NAME } from '@xsolla-zk/constants';
-import { getComponentsConfig, getMappedStyles, getSafeTokenValue } from '../../utils';
+import { getSafeTokenValue } from '@xsolla-zk/ui-utils';
+import {
+  createStyledMediaContext,
+  getComponentsConfig,
+  getMappedStyles,
+  smartContextStyled,
+} from '../../utils';
 import { BoardOverlay } from '../board/board.styled';
 import type { SwitchContextType, SwitchSizes } from './switch.types';
 
-export const SwitchContext = createStyledContext<SwitchContextType>({
-  size: '$600',
-  checked: false,
-  disabled: false,
-});
+export const SwitchContext = createStyledMediaContext(
+  {
+    size: '$600',
+    checked: false,
+    disabled: false,
+  } as SwitchContextType,
+  ['size'],
+);
 
-export const SwitchFrame = styled(Stack, {
+export const SwitchFrame = smartContextStyled(Stack, {
   name: SWITCH_COMPONENT_NAME,
   tag: 'button',
   tabIndex: 0,
@@ -65,13 +74,14 @@ export const SwitchFrame = styled(Stack, {
   },
 });
 
-export const SwitchOverlay = styled(BoardOverlay, {
+export const SwitchOverlay = smartContextStyled(BoardOverlay, {
   borderWidth: 0,
   // animation: 'fade',
 });
 
-export const SwitchKnob = styled(Stack, {
+export const SwitchKnob = smartContextStyled(Stack, {
   name: SWITCH_KNOB_COMPONENT_NAME,
+  context: SwitchContext,
 
   backgroundColor: '$background',
   // animation: 'bounceReturn',

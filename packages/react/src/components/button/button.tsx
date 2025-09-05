@@ -1,68 +1,79 @@
-import { getTokenValue, useProps, withStaticProperties } from '@tamagui/core';
+import { withStaticProperties } from '@tamagui/core';
 import { forwardRef } from 'react';
 import { useIconsPosition } from '../../hooks';
-import { getComponentsConfig } from '../../utils';
+import { processMediaValues } from '../../utils';
 import { Loader } from '../loader';
 import { ButtonContext, ButtonFrame, ButtonIcon, ButtonText } from './button.styled';
-import type { ButtonContextType, ButtonProps } from './button.types';
+import type { ButtonProps } from './button.types';
 import type { LoaderProps } from '../loader/loader.types';
-import type { ColorTokens, TamaguiElement, ThemeName, Token } from '@tamagui/core';
-import type { ForwardedRef } from 'react';
+import type { ColorTokens, TamaguiElement, ThemeName } from '@tamagui/core';
 
-const ButtonComponent = ButtonFrame.styleable<ButtonProps>(
-  forwardRef(({ children, ...propsIn }, ref: ForwardedRef<TamaguiElement>) => {
-    const { tone = 'brand', isLoading, ...props } = useProps(propsIn);
+const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(
+  ({ children, tone = 'brand', isLoading, ...propsIn }, ref) => {
     const iconsPosition = useIconsPosition(children, ButtonIcon);
 
+    const providerValue = {
+      tone,
+      disabled: propsIn.disabled,
+      ...iconsPosition,
+    };
+
     return (
-      <ButtonFrame
-        isLoading={isLoading}
-        theme={tone as unknown as ThemeName}
-        tone={tone}
-        {...iconsPosition}
-        {...props}
-        ref={ref}
-      >
-        {isLoading ? <ButtonLoader /> : children}
-      </ButtonFrame>
+      <ButtonContext.Provider componentProps={propsIn} {...providerValue}>
+        <ButtonFrame
+          isLoading={isLoading}
+          theme={tone as unknown as ThemeName}
+          tone={tone}
+          {...iconsPosition}
+          {...propsIn}
+          ref={ref}
+        >
+          {isLoading ? <ButtonLoader /> : children}
+        </ButtonFrame>
+      </ButtonContext.Provider>
     );
-  }),
-  {
-    disableTheme: true,
   },
 );
-
-const getLoaderColors = (ctx: ButtonContextType): LoaderProps => {
-  const { tone, variant } = ctx;
-  if (variant === 'primary') {
-    return {
-      mainColor: `$border.${tone}-primary` as ColorTokens,
-      spinColor: `$content.on-${tone}` as ColorTokens,
-    };
-  }
-
-  return {
-    mainColor: `$border.${tone}-secondary` as ColorTokens,
-    spinColor: `$content.${tone}-primary` as ColorTokens,
-  };
-};
 
 function ButtonLoader() {
   const ctx = ButtonContext.useStyledContext();
 
-  const config = getComponentsConfig();
-  const size = config.button[ctx.size as keyof typeof config.button];
+  const { size, variant, tone } = ctx;
 
-  return (
-    <Loader
-      {...getLoaderColors(ctx)}
-      size={size ? (getTokenValue(size.icon.size as Token, 'size') as number) : undefined}
-    />
-  );
+  const loaderProps = processMediaValues(
+    { size, variant, tone },
+    {
+      size: (val, { config }) => {
+        const componentProps = config.button[val as keyof typeof config.button];
+
+        if (!componentProps) {
+          return {};
+        }
+
+        return {
+          size: componentProps.icon.size,
+        };
+      },
+      variant: (val, { props }) => {
+        if (val === 'primary') {
+          return {
+            mainColor: `$border.${props.tone}-primary` as ColorTokens,
+            spinColor: `$content.on-${props.tone}` as ColorTokens,
+          };
+        }
+
+        return {
+          mainColor: `$border.${props.tone}-secondary` as ColorTokens,
+          spinColor: `$content.${props.tone}-primary` as ColorTokens,
+        };
+      },
+    },
+  ) as LoaderProps;
+
+  return <Loader {...loaderProps} />;
 }
 
 export const Button = withStaticProperties(ButtonComponent, {
-  Props: ButtonContext.Provider,
   Text: ButtonText,
   Icon: ButtonIcon,
 });

@@ -4,6 +4,8 @@ import * as cellThemes from './components-theme/cell';
 import * as checkboxThemes from './components-theme/checkbox';
 import * as chipsThemes from './components-theme/chips';
 import * as dialogThemes from './components-theme/dialog';
+import * as dropdownThemes from './components-theme/dropdown';
+import * as fieldThemes from './components-theme/field';
 import * as flexButtonThemes from './components-theme/flex-button';
 import * as inlineInputThemes from './components-theme/inline-input';
 import * as inputThemes from './components-theme/input';
@@ -16,37 +18,40 @@ import * as richIconThemes from './components-theme/rich-icon';
 import * as segmentedControlThemes from './components-theme/segmented-control';
 import * as sheetThemes from './components-theme/sheet';
 import * as sliderThemes from './components-theme/slider';
+import * as snackBarThemes from './components-theme/snack-bar';
 import * as switchThemes from './components-theme/switch';
 import * as tabBarThemes from './components-theme/tab-bar';
 import * as tabsThemes from './components-theme/tabs';
 import * as toastThemes from './components-theme/toast';
+import * as tooltipThemes from './components-theme/tooltip';
 
 const componentsTheme = {
-  ...buttonThemes,
   ...badgeThemes,
+  ...buttonThemes,
   ...cellThemes,
   ...checkboxThemes,
   ...chipsThemes,
+  ...dialogThemes,
+  ...dropdownThemes,
+  ...fieldThemes,
+  ...flexButtonThemes,
+  ...inlineInputThemes,
+  ...inputThemes,
+  ...listThemes,
   ...loaderThemes,
   ...pimpleThemes,
-  ...inputThemes,
-  ...chipsThemes,
-  ...flexButtonThemes,
-  ...checkboxThemes,
+  ...progressBarThemes,
   ...radioGroupThemes,
   ...richIconThemes,
-  ...tabsThemes,
-  ...switchThemes,
-  ...sliderThemes,
-  ...tabBarThemes,
-  ...sheetThemes,
-  ...dialogThemes,
-  ...progressBarThemes,
   ...segmentedControlThemes,
-  ...inlineInputThemes,
+  ...sheetThemes,
+  ...sliderThemes,
+  ...snackBarThemes,
+  ...switchThemes,
+  ...tabBarThemes,
+  ...tabsThemes,
   ...toastThemes,
-  ...cellThemes,
-  ...listThemes,
+  ...tooltipThemes,
 };
 
 export { componentsTheme };

@@ -1,0 +1,2 @@
+export declare function useExtractedProps<Props extends Record<string, unknown>, Keys extends keyof Props>(props: Props, filteredKeys: Keys[]): Pick<Props, Keys> extends infer T ? { [K in keyof T]: Pick<Props, Keys>[K]; } : never;
+//# sourceMappingURL=use-extracted-props.d.ts.map

@@ -1,10 +1,10 @@
+import { type TamaguiElement } from '@tamagui/core';
 import type { BoardProps } from './board.types';
-import type { TamaguiElement } from '@tamagui/core';
-export declare const Board: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const Board: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     pressable?: boolean | undefined;
     blured?: boolean | undefined;
-}>, keyof BoardProps> & BoardProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BoardProps, import("@tamagui/web").StackStyleBase, {
+}>, keyof BoardProps> & BoardProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BoardProps, import("@tamagui/core").StackStyleBase, {
     pressable?: boolean | undefined;
     blured?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=board.d.ts.map

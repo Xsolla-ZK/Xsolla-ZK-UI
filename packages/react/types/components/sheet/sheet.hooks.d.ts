@@ -13,6 +13,7 @@ export declare const useSheetOpenState: (props: SheetProps) => {
     isHidden: boolean | undefined;
     controller: import("./sheet.types").SheetControllerContextValue | null;
 };
+export declare const useSheetOffscreenSize: ({ snapPoints, position, screenSize, frameSize, snapPointsMode, }: SheetContextValue) => number;
 export declare function useSheetProviderProps(props: SheetProps, state: ReturnType<typeof useSheetOpenState>, options?: {
     onOverlayComponent?: (comp: any) => void;
 }): {
@@ -41,5 +42,4 @@ export declare function useSheetProviderProps(props: SheetProps, state: ReturnTy
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
 };
-export declare const useSheetOffscreenSize: ({ snapPoints, position, screenSize, frameSize, snapPointsMode, }: SheetContextValue) => number;
 //# sourceMappingURL=sheet.hooks.d.ts.map

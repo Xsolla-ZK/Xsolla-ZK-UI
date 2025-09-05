@@ -1,27 +1,23 @@
-import { themed } from '@tamagui/helpers-icon';
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
 import { memo } from 'react';
-import { Svg, Path } from 'react-native-svg';
-import type { IconProps } from '@tamagui/helpers-icon';
-import type { ComponentProps, FC } from 'react';
+import { Path } from 'react-native-svg';
 
-type Props = ComponentProps<typeof Svg> & {
-  size: number;
-};
+import type { IconProps } from '@xsolla-zk/ui-primitives';
 
-const Icon: FC = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props as Props;
+const Icon = (props: IconProps) => {
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
-    <Svg fill="none" viewBox="0 0 24 24" width={size} height={size} {...otherProps}>
+    <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
-        fill={color}
+        fill="currentColor"
         fillRule="evenodd"
         d="M15.75 2H7v17h14V7.1zM19 8l-4-4v4z"
         clipRule="evenodd"
       />
-      <Path fill={color} d="M4 5h2v17H4z" />
-      <Path fill={color} d="M18 20v2H4v-2z" />
-    </Svg>
+      <Path fill="currentColor" d="M4 5h2v17H4z" />
+      <Path fill="currentColor" d="M18 20v2H4v-2z" />
+    </SvgThemed>
   );
 };
 
-export const Documents = memo<IconProps>(themed(Icon, { defaultStrokeWidth: 0 }));
+export const Documents = memo(Icon);

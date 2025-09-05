@@ -5,18 +5,19 @@ import type { PropsWithChildren } from 'react';
 declare const Collection: {
     readonly Provider: React.FC<{
         children?: React.ReactNode;
-        __scopeCollection: string;
+    } & {
+        scope?: any;
     }>;
     readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection").CollectionProps & {
-        __scopeCollection?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+        scope?: any;
+    } & React.RefAttributes<TamaguiElement | undefined>>;
     readonly ItemSlot: import("react").ForwardRefExoticComponent<{
         children: React.ReactNode;
     } & {
-        __scopeCollection?: string | undefined;
-    } & import("react").RefAttributes<TamaguiElement>>;
-}, useCollection: (__scopeCollection: any) => () => {
-    ref: import("react").RefObject<TamaguiElement>;
+        scope?: any;
+    } & import("react").RefAttributes<TamaguiElement | undefined>>;
+}, useCollection: (scope: string) => () => {
+    ref: import("react").RefObject<TamaguiElement | undefined>;
 }[];
 declare const useNotificationProviderContext: (scope?: string) => NotificationProviderContextValue;
 declare const NotificationProvider: (props: NotificationScopedProps<NotificationProviderProps>) => import("react/jsx-runtime").JSX.Element;

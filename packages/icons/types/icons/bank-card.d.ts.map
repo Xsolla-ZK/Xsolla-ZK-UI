@@ -1,1 +1,1 @@
-{"version":3,"file":"bank-card.d.ts","sourceRoot":"","sources":["../../src/icons/bank-card.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAsBvD,eAAO,MAAM,QAAQ,iDAA2D,CAAC"}
+{"version":3,"file":"bank-card.d.ts","sourceRoot":"","sources":["../../src/icons/bank-card.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAiB1D,eAAO,MAAM,QAAQ,8CAfA,SAAS,6CAeI,CAAC"}
