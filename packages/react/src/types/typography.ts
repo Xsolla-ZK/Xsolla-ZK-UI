@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import type { TamaguiConfig } from '@tamagui/core';
 
 type Fonts = TamaguiConfig['fonts'];
