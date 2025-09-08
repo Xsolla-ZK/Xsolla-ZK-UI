@@ -1,4 +1,4 @@
-export { animations } from './animations';
+export { animationsConfig as defaultAnimationsConfig, animations } from './animations';
 export { settings } from './settings';
 export { shorthands } from './shorthands';
 export { fonts } from './tokens/fonts';
