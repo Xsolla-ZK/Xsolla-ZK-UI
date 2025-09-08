@@ -35,9 +35,7 @@ export const RichIconFrame = smartContextStyled(Stack, {
 
   variants: {
     color: () => ({}),
-    // backgroundColor: () => ({}),
     backgroundColor: () => ({}),
-    // shape: (_val: RichIconShape) => ({}),
     pressable: {
       true: {
         tag: 'button',
@@ -167,46 +165,6 @@ export const RichIconText = smartContextStyled(Text, {
     },
   } as const,
 });
-
-// color: (val: ColorTokens | Record<string, ColorTokens>) => {
-//   if (typeof val === 'string') {
-//     return { color: val };
-//   }
-//   const result: Record<string, unknown> = {};
-//   Object.keys(val).forEach((key) => {
-//     if (key === 'base') {
-//       Object.assign(result, { color: val[key] });
-//     } else {
-//       result[key] = { color: val[key] };
-//     }
-//   });
-//   return result;
-// },
-// size: (val: RichIconSizes | Record<string, RichIconSizes>) => {
-//   const config = getComponentsConfig();
-
-//   if (typeof val === 'string') {
-//     const componentProps = config.richIcon[val as keyof typeof config.richIcon];
-//     if (!componentProps) {
-//       return {};
-//     }
-//     return getMappedStyles(componentProps.label);
-//   }
-
-//   const result: Record<string, unknown> = {};
-//   Object.keys(val).forEach((key) => {
-//     const componentProps = config.richIcon[val[key] as keyof typeof config.richIcon];
-//     if (componentProps) {
-//       if (key === 'base') {
-//         Object.assign(result, getMappedStyles(componentProps.label));
-//       } else {
-//         result[key] = getMappedStyles(componentProps.label);
-//       }
-//     }
-//   });
-//   return result;
-// },
-// } as const,
 
 // const pimpleSizeMap: Record<RichIconSizes, PimpleSizes> = {
 //   $100: '$200',

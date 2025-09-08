@@ -22,7 +22,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
     const { shape = 'circle', backdropProps = {}, image, ...props } = propsIn;
 
     return (
-      <RichIconContext.Provider componentProps={props}>
+      <RichIconContext.Provider componentProps={props} shape={shape}>
         <RichIconFrame
           tag={props.pressable ? 'button' : undefined}
           pressable={Boolean(props.pressable)}
@@ -33,9 +33,7 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
             <RichIconShapeSvg viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
               <Defs>
                 <ClipPath id={`icon-clip-${shape}`}>
-                  <RichIconShapePath
-                    d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
-                  />
+                  <Path d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape} />
                 </ClipPath>
               </Defs>
               {image && (
@@ -47,12 +45,13 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
                   </G>
                 </>
               )}
-              <RichIconShapePath
-                d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
-                {...backdropProps}
-                fill={image ? 'none' : 'currentColor'}
-                clipPath={`url(#icon-clip-${shape})`}
-              />
+              <G clipPath={`url(#icon-clip-${shape})`}>
+                <RichIconShapePath
+                  d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
+                  {...backdropProps}
+                  fill={image ? 'none' : 'currentColor'}
+                />
+              </G>
             </RichIconShapeSvg>
           )}
           {shape ? <RichIconContent>{children}</RichIconContent> : children}
@@ -62,7 +61,13 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   },
 );
 
-const PathStyled = smartContextStyled(Path);
+const PathStyled = smartContextStyled(
+  Path,
+  {},
+  {
+    accept: { strokeWidth: 'stroke' },
+  },
+);
 
 function RichIconShapePath({ strokeWidth, fill, stroke, ...props }: ShapePathProps) {
   const ctx = RichIconContext.useStyledContext();

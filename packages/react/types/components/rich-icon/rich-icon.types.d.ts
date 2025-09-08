@@ -18,7 +18,7 @@ export interface ShapePathProps extends PathProps {
     stroke?: ColorType;
     fill?: ColorType;
 }
-export interface RichIconProps extends Omit<GetProps<typeof RichIconFrame>, 'backgroundColor'> {
+export interface RichIconProps extends GetProps<typeof RichIconFrame> {
     backdropProps?: ShapePathProps;
     image?: (size: number) => ReactElement;
     color?: ColorType;

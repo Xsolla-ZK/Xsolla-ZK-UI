@@ -1,9 +1,9 @@
 import type { RichIconFrame } from './rich-icon.styled';
 import type { ColorType } from '../../types';
 import type { ComponentsConfig } from '../../utils';
-import type { ColorTokens, GetProps, UnionableString } from '@tamagui/core';
+import type { GetProps, UnionableString } from '@tamagui/core';
 import type { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import type { PathProps } from 'react-native-svg';
 
 export type RichIconShapes = keyof typeof RICH_ICON_SHAPES;
@@ -23,10 +23,9 @@ export interface ShapePathProps extends PathProps {
   fill?: ColorType;
 }
 
-export interface RichIconProps extends Omit<GetProps<typeof RichIconFrame>, 'backgroundColor'> {
+export interface RichIconProps extends GetProps<typeof RichIconFrame> {
   backdropProps?: ShapePathProps;
   image?: (size: number) => ReactElement;
   color?: ColorType;
   shape?: RichIconShape;
-  // backgroundColor?: ColorType;
 }
