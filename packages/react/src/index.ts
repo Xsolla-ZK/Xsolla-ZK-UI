@@ -4,4 +4,7 @@ export * from './hooks';
 export type * from './types';
 
 export * from '@tamagui/core';
+export * from '@tamagui/adapt';
+export * from '@tamagui/portal';
+export * from '@tamagui/animate-presence';
 export * from '@xsolla-zk/ui-primitives';

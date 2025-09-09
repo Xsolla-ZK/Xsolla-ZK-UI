@@ -27,8 +27,8 @@
     "dotenv": "^16.4.7"
   },
   "devDependencies": {
-    "chalk": "^5.4.1",
-    "color": "^5.0.0",
+    "chalk": "5.6.2",
+    "color": "5.0.0",
     "fs-extra": "^11.3.0",
     "yargs": "^17.7.2"
   }
