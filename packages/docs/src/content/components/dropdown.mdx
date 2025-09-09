@@ -1,0 +1,384 @@
+# Dropdown
+
+The `Dropdown` component displays content in a floating panel triggered by user interaction. Based on a modified version of Tamagui's Popover.
+
+## Features
+
+* Optional arrow pointing to content
+* Keeps within page bounds
+* Can be placed in 12 anchor positions
+* Mobile adaptation support via Sheet
+* Focus and scroll management
+* Hover interaction support
+* Scoping system for performance optimization
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Dropdown, Adapt } from '@xsolla-zk/react'
+
+export default () => (
+  <Dropdown>
+    <Dropdown.Trigger />
+
+    <Dropdown.FocusScope>
+      <Dropdown.Content>
+        <Dropdown.Close />
+        <Dropdown.ScrollView>
+          {/* content */}
+        </Dropdown.ScrollView>
+      </Dropdown.Content>
+    </Dropdown.FocusScope>
+
+    <Adapt when="maxMd">
+      <Dropdown.Sheet>
+        <Dropdown.Sheet.Overlay />
+        <Dropdown.Sheet.Frame>
+          <Dropdown.Sheet.ScrollView>
+            <Adapt.Contents />
+          </Dropdown.Sheet.ScrollView>
+        </Dropdown.Sheet.Frame>
+      </Dropdown.Sheet>
+    </Adapt>
+  </Dropdown>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Open menu</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Stack padding="$400">
+          <Typography>Dropdown content</Typography>
+          <Dropdown.Close asChild>
+            <Button>
+              <Button.Text>Close</Button.Text>
+            </Button>
+          </Dropdown.Close>
+        </Stack>
+      </Dropdown.Content>
+    </Dropdown>
+  )
+}
+```
+
+### With focus management
+
+```tsx
+import { Dropdown, Button, Stack } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Focus menu</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.FocusScope loop trapped focusOnIdle={true}>
+        <Dropdown.Content>
+          <Stack padding="$400" gap="$200">
+            <Button>
+              <Button.Text>First button</Button.Text>
+            </Button>
+            <Button>
+              <Button.Text>Second button</Button.Text>
+            </Button>
+            <Dropdown.Close asChild>
+              <Button>
+                <Button.Text>Close</Button.Text>
+              </Button>
+            </Dropdown.Close>
+          </Stack>
+        </Dropdown.Content>
+      </Dropdown.FocusScope>
+    </Dropdown>
+  )
+}
+```
+
+### With mobile adaptation
+
+```tsx
+import { Dropdown, Adapt, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Adaptive menu</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Stack padding="$400">
+          <Typography>Content for desktop</Typography>
+        </Stack>
+      </Dropdown.Content>
+
+      <Adapt when="maxMd">
+        <Dropdown.Sheet>
+          <Dropdown.Sheet.Overlay />
+          <Dropdown.Sheet.Frame>
+            <Dropdown.Sheet.ScrollView>
+              <Adapt.Contents />
+            </Dropdown.Sheet.ScrollView>
+          </Dropdown.Sheet.Frame>
+        </Dropdown.Sheet>
+      </Adapt>
+    </Dropdown>
+  )
+}
+```
+
+### With hover interaction
+
+```tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown hoverable>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Hover me</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Stack padding="$400">
+          <Typography>Content appears on hover</Typography>
+        </Stack>
+      </Dropdown.Content>
+    </Dropdown>
+  )
+}
+```
+
+### Controlled state
+
+```tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Dropdown open={open} onOpenChange={setOpen}>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Controlled menu</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Stack padding="$400" gap="$200">
+          <Typography>State: {open ? 'open' : 'closed'}</Typography>
+          <Button onPress={() => setOpen(false)}>
+            <Button.Text>Close</Button.Text>
+          </Button>
+        </Stack>
+      </Dropdown.Content>
+    </Dropdown>
+  )
+}
+```
+
+### With scrolling
+
+```tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown>
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Long list</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Dropdown.ScrollView maxHeight="$200">
+          {Array.from({ length: 20 }, (_, i) => (
+            <Stack key={i} padding="$200">
+              <Typography>Item {i + 1}</Typography>
+            </Stack>
+          ))}
+        </Dropdown.ScrollView>
+      </Dropdown.Content>
+    </Dropdown>
+  )
+}
+```
+
+### With custom anchor
+
+```tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Dropdown>
+      <Dropdown.Anchor>
+        <Stack>
+          <Typography>Anchor here</Typography>
+        </Stack>
+      </Dropdown.Anchor>
+
+      <Dropdown.Trigger asChild>
+        <Button>
+          <Button.Text>Trigger elsewhere</Button.Text>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Stack padding="$400">
+          <Typography>Attached to anchor, not trigger</Typography>
+        </Stack>
+      </Dropdown.Content>
+    </Dropdown>
+  )
+}
+```
+
+## Scoping
+
+Dropdown supports scoping which allows you to mount one or more Dropdown instances at the root of your app, while having a deeply nested child Trigger or Content attach to the proper parent Dropdown instance.
+
+In performance sensitive areas you may want to take advantage of this as it allows you to only render the Dropdown.Trigger inside the sensitive area.
+
+```tsx
+// layout.tsx
+import { Dropdown, Button, Stack, Typography } from '@xsolla-zk/react'
+
+export default ({ children }) => (
+  <Dropdown scope="user-menu">
+    <Dropdown.Content>
+      <Stack padding="$400" gap="$200">
+        <Typography>User menu</Typography>
+        <Dropdown.Close asChild>
+          <Button>
+            <Button.Text>Close</Button.Text>
+          </Button>
+        </Dropdown.Close>
+      </Stack>
+    </Dropdown.Content>
+
+    {children}
+  </Dropdown>
+)
+
+// UserButton.tsx
+export default () => (
+  <Dropdown.Trigger scope="user-menu" asChild>
+    <Button>
+      <Button.Text>User</Button.Text>
+    </Button>
+  </Dropdown.Trigger>
+)
+```
+
+## API
+
+### Dropdown Props
+
+Dropdown extends Tamagui stack views, inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | - | Controlled open state |
+| `defaultOpen` | `boolean` | `false` | Initial state for uncontrolled usage |
+| `onOpenChange` | `(open: boolean, via?: DropdownVia) => void` | - | Called when state changes |
+| `keepChildrenMounted` | `boolean \| 'lazy'` | `false` | Keep children in DOM when closed |
+| `hoverable` | `boolean \| UseHoverProps` | `false` | Allow opening on hover |
+| `disableFocus` | `boolean` | `false` | Disable focus behavior on open |
+| `size` | `DropdownSizes` | `'$500'` | Dropdown size |
+| `scope` | `string` | - | Scope for scoping system |
+| `placement` | `Placement` | `'bottom'` | Position relative to trigger |
+| `offset` | `OffsetOptions` | `0` | Distance from trigger |
+| `allowFlip` | `boolean \| FlipProps` | `true` | Allow flipping when out of space |
+| `stayInFrame` | `boolean \| ShiftProps` | `true` | Keep within screen bounds |
+| `resize` | `boolean \| SizeProps` | `false` | Resize to fit content |
+
+### Dropdown.Trigger Props
+
+Component for triggering dropdown open. Extends StackProps.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `scope` | `string` | - | Scope for connecting to Dropdown |
+| `asChild` | `boolean` | `false` | Use child element as trigger |
+
+### Dropdown.Content Props
+
+Component for displaying dropdown content.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `trapFocus` | `boolean` | `false` | Trap focus within content |
+| `disableFocusScope` | `boolean` | `false` | Disable focus management |
+| `onOpenAutoFocus` | `FocusScopeProps['onMountAutoFocus']` | - | Auto focus handler on open |
+| `onCloseAutoFocus` | `FocusScopeProps['onUnmountAutoFocus'] \| false` | - | Auto focus handler on close |
+| `lazyMount` | `boolean` | `false` | Lazy load content |
+| `enableAnimationForPositionChange` | `boolean` | `false` | Enable position change animation |
+
+### Dropdown.Close Props
+
+Component for closing dropdown. Extends StackProps.
+
+### Dropdown.Anchor Props
+
+Component for custom anchor. Extends StackProps.
+
+### Dropdown.ScrollView Props
+
+Component for scrolling content. Extends ScrollViewProps.
+
+### Dropdown.FocusScope Props
+
+Component for focus management.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `enabled` | `boolean` | `true` | Whether focus management is enabled |
+| `loop` | `boolean` | `false` | Loop through focusable elements |
+| `trapped` | `boolean` | `false` | Trap focus |
+| `focusOnIdle` | `boolean \| number` | `false` | Focus when idle |
+
+### Dropdown.Sheet Props
+
+Component for mobile adaptation. See Sheet documentation for details.
+
+## Types
+
+```tsx
+type DropdownVia = 'hover' | 'press'
+
+type DropdownSizes = keyof ComponentsConfig['dropdown'] | (string & {})
+
+type DropdownRect = {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+```

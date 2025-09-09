@@ -1,0 +1,426 @@
+# Tooltip
+
+The `Tooltip` component displays helpful information on hover or focus. On web platforms it shows a floating tooltip, while on native it provides accessibility output only.
+
+## Features
+
+* Doesn't open until your mouse stops moving
+* Easy to animate enter and exit
+* Customizable delay and rest timing
+* Group management for better UX
+* Auto-closes on scroll
+* Focus management support
+* Sizable, positionable, styled
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```tsx
+import { Tooltip } from '@xsolla-zk/react'
+
+export default () => (
+  <Tooltip>
+    <Tooltip.Trigger />
+    <Tooltip.Content>
+      <Tooltip.Text />
+    </Tooltip.Content>
+  </Tooltip>
+)
+```
+
+## Examples
+
+### Basic example
+
+```tsx
+import { Tooltip, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tooltip>
+      <Tooltip.Trigger asChild>
+        <Button>
+          <Button.Text>Hover me</Button.Text>
+        </Button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content>
+        <Tooltip.Text>This is a helpful tooltip</Tooltip.Text>
+      </Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+### With custom delay
+
+```tsx
+import { Tooltip, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tooltip delay={1000} restMs={200}>
+      <Tooltip.Trigger asChild>
+        <Button>
+          <Button.Text>Slow tooltip</Button.Text>
+        </Button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content>
+        <Tooltip.Text>This tooltip appears after 1 second</Tooltip.Text>
+      </Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+### With focus support
+
+```tsx
+import { Tooltip, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tooltip focus={{ enabled: true, visibleOnly: true }}>
+      <Tooltip.Trigger asChild>
+        <Button>
+          <Button.Text>Focus me too</Button.Text>
+        </Button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content>
+        <Tooltip.Text>Appears on hover and focus</Tooltip.Text>
+      </Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+### Controlled state
+
+```tsx
+import { Tooltip, Button, Stack } from '@xsolla-zk/react'
+import { useState } from 'react'
+
+function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Stack gap="$200">
+      <Tooltip open={open} onOpenChange={setOpen}>
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Controlled tooltip</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>Controlled by state</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+
+      <Button onPress={() => setOpen(!open)}>
+        <Button.Text>Toggle tooltip</Button.Text>
+      </Button>
+    </Stack>
+  )
+}
+```
+
+### With custom content
+
+```tsx
+import { Tooltip, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tooltip>
+      <Tooltip.Trigger asChild>
+        <Button>
+          <Button.Text>Rich content</Button.Text>
+        </Button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content>
+        <Stack padding="$200" gap="$100">
+          <Typography preset="text.200.bold">Title</Typography>
+          <Typography preset="text.150.default">
+            This tooltip contains rich content with multiple elements
+          </Typography>
+        </Stack>
+      </Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+### With custom anchor
+
+```tsx
+import { Tooltip, Button, Stack, Typography } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Tooltip>
+      <Tooltip.Anchor>
+        <Stack padding="$200" backgroundColor="$background">
+          <Typography>Anchor point</Typography>
+        </Stack>
+      </Tooltip.Anchor>
+
+      <Tooltip.Trigger asChild>
+        <Button>
+          <Button.Text>Trigger elsewhere</Button.Text>
+        </Button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content>
+        <Tooltip.Text>Attached to anchor, not trigger</Tooltip.Text>
+      </Tooltip.Content>
+    </Tooltip>
+  )
+}
+```
+
+### With different delays
+
+```tsx
+import { Tooltip, Button, Stack } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Stack gap="$200">
+      <Tooltip delay={{ open: 500, close: 100 }}>
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Custom open/close</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>500ms open, 100ms close</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+
+      <Tooltip delay={0}>
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Instant</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>No delay</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+    </Stack>
+  )
+}
+```
+
+### Positioning
+
+```tsx
+import { Tooltip, Button, Stack } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <Stack gap="$200">
+      <Tooltip placement="top">
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Top</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>Appears above</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+
+      <Tooltip placement="right" offset={10}>
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Right with offset</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>Appears to the right</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+    </Stack>
+  )
+}
+```
+
+## Tooltip Groups
+
+`TooltipGroup` allows you to logically group tooltips with shared timing behavior and prevents animation flicker when moving between grouped tooltips.
+
+```tsx
+import { Tooltip, TooltipGroup, Button, Stack } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <TooltipGroup delay={{ open: 500, close: 100 }} preventAnimation>
+      <Stack direction="row" gap="$200">
+        <Tooltip groupId="nav">
+          <Tooltip.Trigger asChild>
+            <Button>
+              <Button.Text>Home</Button.Text>
+            </Button>
+          </Tooltip.Trigger>
+
+          <Tooltip.Content>
+            <Tooltip.Text>Go to home page</Tooltip.Text>
+          </Tooltip.Content>
+        </Tooltip>
+
+        <Tooltip groupId="nav">
+          <Tooltip.Trigger asChild>
+            <Button>
+              <Button.Text>About</Button.Text>
+            </Button>
+          </Tooltip.Trigger>
+
+          <Tooltip.Content>
+            <Tooltip.Text>Learn about us</Tooltip.Text>
+          </Tooltip.Content>
+        </Tooltip>
+
+        <Tooltip groupId="nav">
+          <Tooltip.Trigger asChild>
+            <Button>
+              <Button.Text>Contact</Button.Text>
+            </Button>
+          </Tooltip.Trigger>
+
+          <Tooltip.Content>
+            <Tooltip.Text>Get in touch</Tooltip.Text>
+          </Tooltip.Content>
+        </Tooltip>
+      </Stack>
+    </TooltipGroup>
+  )
+}
+```
+
+## Helper Functions
+
+### closeOpenTooltips
+
+Close all currently open tooltips programmatically:
+
+```tsx
+import { closeOpenTooltips, Tooltip, Button } from '@xsolla-zk/react'
+
+function App() {
+  return (
+    <>
+      <Button onPress={closeOpenTooltips}>
+        <Button.Text>Close all tooltips</Button.Text>
+      </Button>
+
+      <Tooltip>
+        <Tooltip.Trigger asChild>
+          <Button>
+            <Button.Text>Tooltip 1</Button.Text>
+          </Button>
+        </Tooltip.Trigger>
+
+        <Tooltip.Content>
+          <Tooltip.Text>This will close when button is pressed</Tooltip.Text>
+        </Tooltip.Content>
+      </Tooltip>
+    </>
+  )
+}
+```
+
+## API
+
+### Tooltip Props
+
+Tooltip extends Tamagui Popper inheriting all standard props, plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | - | Controlled open state |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when state changes |
+| `delay` | `number \| { open?: number; close?: number }` | `400` | Show/hide delay in milliseconds |
+| `restMs` | `number` | `0` | Time cursor must rest before showing |
+| `groupId` | `string` | - | ID for tooltip groups |
+| `focus` | `{ enabled?: boolean; visibleOnly?: boolean }` | - | Focus behavior configuration |
+| `disableAutoCloseOnScroll` | `boolean` | `false` | Prevent auto-closing on scroll |
+| `placement` | `Placement` | `'top'` | Position relative to trigger |
+| `offset` | `OffsetOptions` | `0` | Distance from trigger |
+| `allowFlip` | `boolean` | `true` | Allow flipping when out of space |
+| `stayInFrame` | `boolean` | `true` | Keep within screen bounds |
+
+### Tooltip.Trigger Props
+
+Component for triggering tooltip display. Extends StackProps.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `asChild` | `boolean` | `false` | Use child element as trigger |
+
+### Tooltip.Content Props
+
+Component for displaying tooltip content. Extends DropdownContentProps.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `pointerEvents` | `string` | `'none'` | CSS pointer events |
+
+### Tooltip.Text Props
+
+Component for tooltip text content. Extends Text props with tooltip-specific styling.
+
+### Tooltip.Anchor Props
+
+Component for custom anchor positioning. Extends StackProps.
+
+### TooltipGroup Props
+
+Component for grouping tooltips with shared behavior.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `delay` | `number \| { open?: number; close?: number }` | - | Shared delay for group |
+| `preventAnimation` | `boolean` | `false` | Disable animations while group active |
+| `timeoutMs` | `number` | - | Group timeout duration |
+
+## Types
+
+```tsx
+type Delay = number | {
+  open?: number
+  close?: number
+}
+
+type TooltipProps = {
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  delay?: Delay
+  restMs?: number
+  groupId?: string
+  focus?: {
+    enabled?: boolean
+    visibleOnly?: boolean
+  }
+  disableAutoCloseOnScroll?: boolean
+}
+```
+
+## Accessibility
+
+- Uses ARIA `role="tooltip"`
+- Supports keyboard navigation and focus management
+- Screen reader compatible
+- Respects `prefers-reduced-motion`
+- Proper focus trapping when needed
+
+Note: On native platforms, Tooltip only provides accessibility output and doesn't render visual content.

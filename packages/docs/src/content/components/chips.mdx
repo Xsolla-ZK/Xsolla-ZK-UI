@@ -11,9 +11,12 @@ import { Chips } from '@xsolla-zk/react'
 
 export default () => (
   <Chips>
-    <Chips.Icon />
-    <Chips.Text />
-    <Chips.Action />
+    <Chips.Item>
+      <Chips.Item.Text>
+        {/* text */}
+      </Chips.Item.Text>
+      <Chips.Item.Icon />
+    </Chips.Item>
   </Chips>
 )
 ```
@@ -24,105 +27,22 @@ export default () => (
 
 ```tsx
 import { Chips } from '@xsolla-zk/react'
+import { ArrowRight } from '@xsolla-zk/icons'
 
 function App() {
   return (
     <Chips>
-      <Chips.Text>Tag</Chips.Text>
+      <Chips.Item value="1">
+        <Chips.Item.Text>Chip</Chips.Item.Text>
+        <Chips.Item.Icon icon={ArrowRight} />
+      </Chips.Item>
+      <Chips.Item value="2">
+        <Chips.Item.Text>Chip</Chips.Item.Text>
+        <Chips.Item.Icon icon={ArrowRight} />
+      </Chips.Item>
     </Chips>
   )
 }
-```
-
-### With icon
-
-```tsx
-import { Chips } from '@xsolla-zk/react'
-import { Star } from '@xsolla-zk/icons'
-
-function App() {
-  return (
-    <Chips>
-      <Chips.Icon>
-        <Star />
-      </Chips.Icon>
-      <Chips.Text>Favorite</Chips.Text>
-    </Chips>
-  )
-}
-```
-
-### Interactive chips
-
-```tsx
-import { Chips } from '@xsolla-zk/react'
-import { useState } from 'react'
-
-function App() {
-  const [selected, setSelected] = useState(false)
-
-  return (
-    <Chips
-      pressable
-      selected={selected}
-      onPress={() => setSelected(!selected)}
-    >
-      <Chips.Text>Selectable</Chips.Text>
-    </Chips>
-  )
-}
-```
-
-### With remove button
-
-```tsx
-import { Chips } from '@xsolla-zk/react'
-import { Cross } from '@xsolla-zk/icons'
-
-function App() {
-  return (
-    <Chips>
-      <Chips.Text>Removable tag</Chips.Text>
-      <Chips.Action onPress={() => console.log('Remove')}>
-        <Cross />
-      </Chips.Action>
-    </Chips>
-  )
-}
-```
-
-### All Sizes
-
-```tsx
-<Chips size="$200">
-  <Chips.Text>Small</Chips.Text>
-</Chips>
-
-<Chips size="$300">
-  <Chips.Text>Medium</Chips.Text>
-</Chips>
-
-<Chips size="$500">
-  <Chips.Text>Large</Chips.Text>
-</Chips>
-```
-
-### All Variants
-
-#### Default
-
-```tsx
-<Chips variant="default">
-  <Chips.Text>Default</Chips.Text>
-</Chips>
-```
-
-#### Outlined
-
-```tsx
-<Chips variant="outlined">
-  <Chips.Text>Outlined</Chips.Text>
-</Chips>
 ```
 
 ## API
@@ -133,11 +53,14 @@ Chips extends Tamagui stack views inheriting all standard props, plus:
 
 | Prop | Type | Default | Description |
 |------|------|---------|----------|
-| `variant` | `'default' \| 'outlined'` | `'default'` | Display variant |
-| `size` | `ChipsSizes` | `'$300'` | Chip size |
-| `selected` | `boolean` | `false` | Selection state |
-| `pressable` | `boolean` | `false` | Makes chip interactive |
-| `onPress` | `() => void` | - | Press handler |
+
+| `value` | `ChipsValue` | `undefined` | Chip value |
+| `defaultValue` | `ChipsValue` | `undefined` | Chip default value |
+| `onValueChange` | `(value: ChipsValue) => void` | `undefined` | Chip value change handler |
+| `singleMode` | `boolean` | `false` | Single mode |
+| `multiselect` | `boolean` | `false` | Multiselect mode |
+| `variant` | `ChipVariants` | `'brand'` | Chip variant |
+| `size` | `ChipsSizes` | `'$500'` | Chip size |
 
 ### Chips.Text Props
 

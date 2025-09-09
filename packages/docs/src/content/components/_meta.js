@@ -4,6 +4,7 @@ export default {
   checkbox: 'Checkbox',
   chips: 'Chips',
   dialog: 'Dialog',
+  dropdown: 'Dropdown',
   'flex-button': 'Flex Button',
   'inline-input': 'Inline Input',
   input: 'Input',
@@ -19,4 +20,5 @@ export default {
   'tab-bar': 'Tab Bar',
   tabs: 'Tabs',
   toast: 'Toast',
+  tooltip: 'Tooltip',
 };
