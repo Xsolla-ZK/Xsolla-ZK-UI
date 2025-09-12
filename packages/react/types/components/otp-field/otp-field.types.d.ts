@@ -6,5 +6,6 @@ export type OTPFieldProps = Omit<InputProps, 'onChange' | 'size'> & {
     length?: number;
     onChange?: (val: string) => void;
     onPasteError?: (errorCode: OTPFieldPasteErrorCodesUnion) => void;
+    onFill?: (val: string) => void;
 };
 //# sourceMappingURL=otp-field.types.d.ts.map

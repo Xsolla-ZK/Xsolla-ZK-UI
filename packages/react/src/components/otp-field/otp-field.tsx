@@ -16,6 +16,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       onChange,
       onFocus,
       onPasteError,
+      onFill,
       name,
       value,
       defaultValue,
@@ -31,6 +32,12 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
       Array(length).fill(null) as Array<HTMLInputElement | null>,
     );
     const currentValue = useRef(' '.repeat(length));
+
+    const handleFill = () => {
+      if (currentValue.current.trim().length === length) {
+        onFill?.(currentValue.current);
+      }
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
       const value = e.target.value;
@@ -48,6 +55,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
           currentValue.current = replaceAt(currentValue.current, index, value);
           onChange?.(currentValue.current);
         }
+        handleFill();
 
         if (!disabled) {
           const newTarget =
@@ -124,6 +132,7 @@ const OTPFieldComponent = OTPFieldFrame.styleable<OTPFieldProps>(
           : pastedData;
 
       onChange?.(currentValue.current);
+      handleFill();
     };
 
     const [isFocused, setIsFocused] = useState(false);

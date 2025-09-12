@@ -12,16 +12,18 @@ export declare const OTPField: import("@tamagui/core").TamaguiComponent<Omit<imp
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-}>>> | "frameStyles" | "isFocused" | "onFocusChange" | "onPasteError"> & Omit<import("..").InputProps, "size" | "onChange"> & {
+}>>> | "frameStyles" | "isFocused" | "onFocusChange" | "onPasteError" | "onFill"> & Omit<import("..").InputProps, "size" | "onChange"> & {
     size?: import("..").FieldSizes;
     length?: number;
     onChange?: (val: string) => void;
     onPasteError?: (errorCode: import("./otp-field.types").OTPFieldPasteErrorCodesUnion) => void;
+    onFill?: (val: string) => void;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("..").InputProps, "size" | "onChange"> & {
     size?: import("..").FieldSizes;
     length?: number;
     onChange?: (val: string) => void;
     onPasteError?: (errorCode: import("./otp-field.types").OTPFieldPasteErrorCodesUnion) => void;
+    onFill?: (val: string) => void;
 }, import("@tamagui/core").StackStyleBase, {
     size?: import("..").FieldSizes | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
