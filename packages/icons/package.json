@@ -399,6 +399,14 @@
       "import": "./dist/esm/icons/Orbit.mjs",
       "require": "./dist/cjs/icons/Orbit.cjs"
     },
+    "./icons/PaletteSlash": {
+      "import": "./dist/esm/icons/PaletteSlash.mjs",
+      "require": "./dist/cjs/icons/PaletteSlash.cjs"
+    },
+    "./icons/Palette": {
+      "import": "./dist/esm/icons/Palette.mjs",
+      "require": "./dist/cjs/icons/Palette.cjs"
+    },
     "./icons/PaperClip": {
       "import": "./dist/esm/icons/PaperClip.mjs",
       "require": "./dist/cjs/icons/PaperClip.cjs"
@@ -566,6 +574,10 @@
     "./icons/Unlock": {
       "import": "./dist/esm/icons/Unlock.mjs",
       "require": "./dist/cjs/icons/Unlock.cjs"
+    },
+    "./icons/Upload": {
+      "import": "./dist/esm/icons/Upload.mjs",
+      "require": "./dist/cjs/icons/Upload.cjs"
     },
     "./icons/Video": {
       "import": "./dist/esm/icons/Video.mjs",

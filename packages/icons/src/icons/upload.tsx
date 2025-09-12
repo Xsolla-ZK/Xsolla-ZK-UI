@@ -8,9 +8,10 @@ const Icon = (props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
-      <Path fill="currentColor" d="M0 20v-2h2V3h20v15h2v2zm10-2h4v-1h-4z" />
+      <Path fill="currentColor" d="m18 11 1 7H5l1-7H3v9h18v-9z" />
+      <Path fill="currentColor" d="M13 14V6.29L16.167 8 17 6.5 12 2 7 6.5 7.833 8 11 6.29V14z" />
     </SvgThemed>
   );
 };
 
-export const Laptop = memo(Icon);
+export const Upload = memo(Icon);
