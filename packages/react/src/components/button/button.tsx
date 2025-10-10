@@ -23,15 +23,14 @@ const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(
         <ButtonFrame
           isLoading={isLoading}
           onPress={(e) => {
-            onPress?.(e);
+            if (!isLoading) onPress?.(e);
           }}
           theme={tone as unknown as ThemeName}
           tone={tone}
-          // aria-disabled={isLoading}
-          // aria-busy={isLoading}
+          aria-disabled={isLoading}
+          aria-busy={isLoading}
           {...iconsPosition}
           {...propsIn}
-
           ref={ref}
         >
           {isLoading ? <ButtonLoader /> : children}
