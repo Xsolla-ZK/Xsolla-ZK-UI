@@ -451,6 +451,10 @@
       "import": "./dist/esm/icons/Question.mjs",
       "require": "./dist/cjs/icons/Question.cjs"
     },
+    "./icons/Recycle": {
+      "import": "./dist/esm/icons/Recycle.mjs",
+      "require": "./dist/cjs/icons/Recycle.cjs"
+    },
     "./icons/Repeat": {
       "import": "./dist/esm/icons/Repeat.mjs",
       "require": "./dist/cjs/icons/Repeat.cjs"

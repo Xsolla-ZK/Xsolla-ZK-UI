@@ -3,6 +3,21 @@ import { initializeComponentsConfig } from './components-config';
 export declare function createConfig<T extends Parameters<typeof createTamagui>[0], C extends Parameters<typeof initializeComponentsConfig>[0]>(config: T, componentsConfig: C): {
     tamaguiConfig: import("@tamagui/core").InferTamaguiConfig<T>;
     componentsConfig: {
+        const_shapes: {
+            'arrow-down': string;
+            'arrow-up': string;
+            'blocks-horizontal': string;
+            'blocks-vertical': string;
+            circle: string;
+            'circles-tlbr': string;
+            cross: string;
+            diamond: string;
+            hexagon: string;
+            leaf: string;
+            oval: string;
+            rhombus: string;
+            squircle: string;
+        } & C["const_shapes"];
         accordion: {
             size: {
                 medium: {
@@ -690,10 +705,7 @@ export declare function createConfig<T extends Parameters<typeof createTamagui>[
                         $lg: string;
                         $xl: string;
                     };
-                    borderRadius: {
-                        base: string;
-                        $lg: string;
-                    };
+                    borderRadius: string;
                 };
                 header: {
                     paddingTop: {

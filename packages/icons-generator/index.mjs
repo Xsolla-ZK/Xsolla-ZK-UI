@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable max-lines */
 import fse from 'fs-extra';
 import path from 'path';
 import prettier from 'prettier';
@@ -8,6 +9,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { optimize } from 'svgo';
 import chalk from 'chalk';
+import crypto from 'crypto';
+import prettierConfig from './prettier.config.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,53 +29,76 @@ const version = packageJson.version;
 
 const packageJsonExports = {};
 
-const svgoConfig = {
-  plugins: [
-    {
-      name: 'preset-default',
-    },
-    {
-      name: 'removeAttrs',
-      params: {
-        attrs: [
-          'class',
-          'data-name',
-          'id',
-          'style',
-          'stroke:(?!none)',
-          'fill:(?!none)',
-          'width',
-          'height',
-        ],
+const getSvgoConfig = (bypass = false) =>
+  /** @type {import('svgo').Config} */ ({
+    plugins: [
+      {
+        name: 'preset-default',
       },
-    },
-    {
-      name: 'convertColors',
-      params: {
-        currentColor: true,
+      {
+        name: 'removeAttrs',
+        params: {
+          attrs: [
+            'class',
+            'data-name',
+            'id',
+            'style',
+            'stroke:(?!none)',
+            'fill:(?!none)',
+            'width',
+            'height',
+          ],
+        },
+        ...(bypass
+          ? {
+              fn: (ast, params) => {
+                for (const node of ast.children) {
+                  if (node.type === 'element' && node.name === 'svg') {
+                    if (node.attributes) {
+                      for (const attr of params.attrs) {
+                        delete node.attributes[attr];
+                      }
+                    }
+                  }
+                }
+              },
+            }
+          : {}),
       },
-    },
-    {
-      name: 'removeDimensions',
-      active: true,
-    },
-    {
-      name: 'removeXMLNS',
-      active: true,
-    },
-    {
-      name: 'removeXlink',
-      active: true,
-    },
-    {
-      name: 'addAttributesToSVGElement',
-      params: {
-        attributes: [{ viewBox: '0 0 24 24', size: '24', color: 'black' }],
-        // attributes: [{ width: '24' }, { height: '24' }],
+      ...(!bypass
+        ? [
+            {
+              name: 'convertColors',
+              params: {
+                currentColor: true,
+              },
+            },
+          ]
+        : []),
+      {
+        name: 'removeDimensions',
+        active: true,
       },
-    },
-  ],
-};
+      {
+        name: 'removeXMLNS',
+        active: true,
+      },
+      {
+        name: 'removeXlink',
+        active: true,
+      },
+      {
+        name: 'addAttributesToSVGElement',
+        params: bypass
+          ? {
+              attributes: [{ viewBox: '0 0 24 24', size: '{size}' }],
+            }
+          : {
+              attributes: [{ viewBox: '0 0 24 24', size: '{size}', color: 'black' }],
+            },
+      },
+    ],
+  });
 
 const SVG_COMPONENT_MAP = {
   svg: {
@@ -83,8 +109,8 @@ const SVG_COMPONENT_MAP = {
   circle: { component: '_Circle', close: true },
   ellipse: { component: 'Ellipse', close: true },
   g: { component: 'G', close: true },
-  'linear-gradient': { component: 'LinearGradient', close: true },
-  'radial-gradient': { component: 'RadialGradient', close: true },
+  linearGradient: { component: 'LinearGradient', close: true },
+  radialGradient: { component: 'RadialGradient', close: true },
   path: { component: 'Path', close: true },
   line: { component: 'Line', close: true },
   polygon: { component: 'Polygon', close: true },
@@ -95,6 +121,8 @@ const SVG_COMPONENT_MAP = {
   use: { component: 'Use', close: true },
   defs: { component: 'Defs', close: true },
   stop: { component: 'Stop', close: true },
+  clipPath: { component: 'ClipPath', close: true },
+  mask: { component: 'Mask', close: true },
 };
 
 /**
@@ -134,24 +162,69 @@ async function findSvgFiles(dir) {
 async function formatCode(code) {
   const options = await prettier.resolveConfig(process.cwd());
   return prettier.format(code, {
-    ...options,
+    ...(options !== null ? options : prettierConfig),
     parser: 'typescript',
   });
 }
 
-function transformSvg(svg) {
-  const usedComponents = new Set([]); // Svg is always needed
+/**
+ * Convert CSS style string to React style object
+ * @param {string} styleStr - CSS style string like "fill: red; stroke-width: 2"
+ * @returns {string} - React style object string like "{fill: 'red', strokeWidth: '2'}"
+ */
+function cssToReactStyle(styleStr) {
+  const styles = styleStr
+    .split(';')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+    .map((s) => {
+      const [key, value] = s.split(':').map((p) => p.trim());
+      if (!key || !value) return null;
 
-  const transformedSvg = svg
+      // Convert kebab-case to camelCase
+      const camelKey = key.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+
+      return `${camelKey}: '${value}'`;
+    })
+    .filter((s) => s !== null);
+
+  return styles;
+}
+
+function transformSvg(svg, originalContent, bypass = false) {
+  const usedComponents = new Set([]); // Svg is always needed
+  // Create stable uniqueId based on file content hash
+  const uniqueId = crypto.createHash('md5').update(originalContent).digest('hex').substring(0, 8);
+
+  let transformedSvg = svg;
+
+  if (!bypass) {
+    transformedSvg = transformedSvg
+      // .replace(/(?:fill|stroke)="currentColor"/g, (match) =>
+      //   match.replace('"currentColor"', '{color}'),
+      // )
+      // .replace(/(?:color)="black"/g, (match) => match.replace('"black"', '{color}'))
+      .replace(/(?:color)="black"/g, (match) => match.replace('"black"', '{color}'));
+  }
+
+  transformedSvg = transformedSvg
     // Replace attributes
-    // .replace(/(?:fill|stroke)="currentColor"/g, (match) =>
-    //   match.replace('"currentColor"', '{color}'),
-    // )
-    .replace(/(?:color)="black"/g, (match) => match.replace('"black"', '{color}'))
-    .replace(/(?:width|height|size)="24"/g, (match) => match.replace('"24"', '{size}'))
+    .replace(/(?:width|height|size)="{size}"/g, (match) => match.replace('"{size}"', '{size}'))
     .replace(/px/g, '')
-    // Camelize kebab-case attributes (simpler approach)
-    .replace(/([a-z])-([a-z])/gi, (_match, p1, p2) => p1 + p2.toUpperCase())
+    .replace(/\bid="([^"]+)"/g, `id="${uniqueId}-$1"`) // id replace with uniqueId
+    .replace(/url\(#([^)]+)\)/g, `url(#${uniqueId}-$1)`) // url references to id
+    .replace(/href="#([^"]+)"/g, `href="#${uniqueId}-$1"`) // href references to id
+    .replace(/xlink:href="#([^"]+)"/g, `xlink:href="#${uniqueId}-$1"`) // xlink:href references to id
+    // style attribute to React format
+    .replace(/\bstyle="([^"]+)"/g, (_, styleStr) => {
+      const obj = cssToReactStyle(styleStr);
+      return obj ? ` style={{ ${obj} }}` : '';
+    })
+
+    // Camelize kebab-case attributes (only attribute names, not values)
+    .replace(/\b([a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)+)(?==)/gi, (match) =>
+      match.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()),
+    )
     // Replace SVG tags with React Native components
     .replace(
       new RegExp(`<(/?)(${Object.keys(SVG_COMPONENT_MAP).join('|')})([^>]*)>`, 'g'),
@@ -226,7 +299,7 @@ async function updatePackageJsonExports(projectDir) {
 }
 
 // Main logic of icons generation
-async function generateIcons({ input, output }) {
+async function generateIcons({ input, output, bypass = false }) {
   const iconsDir = path.resolve(input);
   const outDir = path.resolve(output);
   const indexFile = path.join(path.dirname(outDir), 'index.ts');
@@ -250,14 +323,22 @@ async function generateIcons({ input, output }) {
     const location = path.join(outDir, fileName);
 
     const { data: normalizedSvg } = optimize(svg, {
-      ...svgoConfig,
+      ...getSvgoConfig(bypass),
       path: undefined,
     });
 
-    const { content: svgContent, components: usedComponents } = transformSvg(normalizedSvg);
+    const { content: svgContent, components: usedComponents } = transformSvg(
+      normalizedSvg,
+      svg,
+      bypass,
+    );
 
     const componentImports = usedComponents.join(',\n');
     const cname = capitalizeFirstLetter(camelize(id));
+
+    const propsDestructuring = bypass
+      ? '{ size = 24, ...otherProps }'
+      : "{ color = 'black', size = 24, ...otherProps }";
 
     const componentCode = `
       import { SvgThemed } from '@xsolla-zk/ui-primitives'
@@ -269,7 +350,7 @@ async function generateIcons({ input, output }) {
       import type { IconProps } from '@xsolla-zk/ui-primitives'
 
       const Icon = (props: IconProps) => {
-        const { color = 'black', size = 24, ...otherProps } = props;
+        const ${propsDestructuring} = props
         return ${svgContent}
       }
 
@@ -316,6 +397,12 @@ yargs(hideBin(process.argv))
           type: 'string',
           description: 'Output directory for generated icon components',
           demandOption: true,
+        })
+        .option('bypass', {
+          alias: 'b',
+          type: 'boolean',
+          description: 'Bypass color processing and currentColor conversion',
+          default: false,
         })
         .check((argv) => {
           const resolvedOutput = path.resolve(argv.output);

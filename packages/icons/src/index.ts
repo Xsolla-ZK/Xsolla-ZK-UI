@@ -97,6 +97,7 @@ export { Play } from './icons/play';
 export { Plus } from './icons/plus';
 export { QrCode } from './icons/qr-code';
 export { Question } from './icons/question';
+export { Recycle } from './icons/recycle';
 export { Repeat } from './icons/repeat';
 export { Rocket } from './icons/rocket';
 export { Search } from './icons/search';

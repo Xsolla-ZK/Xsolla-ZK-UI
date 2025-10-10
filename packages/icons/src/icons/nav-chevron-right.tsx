@@ -8,7 +8,10 @@ const Icon = (props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
-      <Path fill="currentColor" d="M22 12 12 22l-1-1 6-9-6-9 1-1z" />
+      <Path
+        fill="currentColor"
+        d="m21.414 12-9.707 9.707-1.414-1.414L18.586 12l-8.293-8.293 1.414-1.414z"
+      />
     </SvgThemed>
   );
 };

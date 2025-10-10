@@ -2,10 +2,9 @@ import type { RichIconFrame } from './rich-icon.styled';
 import type { ColorType } from '../../types';
 import type { ComponentsConfig } from '../../utils';
 import type { GetProps, UnionableString } from '@tamagui/core';
-import type { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
 import type { ReactElement } from 'react';
 import type { PathProps } from 'react-native-svg';
-export type RichIconShapes = keyof typeof RICH_ICON_SHAPES;
+export type RichIconShapes = keyof ComponentsConfig['const_shapes'];
 export type RichIconSizes = keyof ComponentsConfig['richIcon'] | (string & {});
 export type RichIconShape = RichIconShapes | false | UnionableString;
 export type RichIconContextType = {

@@ -9,7 +9,7 @@ import type { LoaderProps } from '../loader/loader.types';
 import type { ColorTokens, TamaguiElement, ThemeName } from '@tamagui/core';
 
 const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(
-  ({ children, tone = 'brand', isLoading, ...propsIn }, ref) => {
+  ({ children, tone = 'brand', isLoading, onPress, ...propsIn }, ref) => {
     const iconsPosition = useIconsPosition(children, ButtonIcon);
 
     const providerValue = {
@@ -22,10 +22,16 @@ const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(
       <ButtonContext.Provider componentProps={propsIn} {...providerValue}>
         <ButtonFrame
           isLoading={isLoading}
+          onPress={(e) => {
+            onPress?.(e);
+          }}
           theme={tone as unknown as ThemeName}
           tone={tone}
+          // aria-disabled={isLoading}
+          // aria-busy={isLoading}
           {...iconsPosition}
           {...propsIn}
+
           ref={ref}
         >
           {isLoading ? <ButtonLoader /> : children}

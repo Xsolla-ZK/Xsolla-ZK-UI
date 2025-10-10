@@ -689,10 +689,7 @@ export declare const modal: {
                 $lg: string;
                 $xl: string;
             };
-            borderRadius: {
-                base: string;
-                $lg: string;
-            };
+            borderRadius: string;
         };
         header: {
             paddingTop: {
@@ -2147,10 +2144,7 @@ export declare const components: {
                     $lg: string;
                     $xl: string;
                 };
-                borderRadius: {
-                    base: string;
-                    $lg: string;
-                };
+                borderRadius: string;
             };
             header: {
                 paddingTop: {

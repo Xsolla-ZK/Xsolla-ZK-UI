@@ -33,10 +33,11 @@ xzkui-icons gen -i <path_to_svg_files> -o <output_path>
 
 ### Command Parameters
 
-| Parameter | Short | Description | Required |
-|-----------|-------|-------------|----------|
-| `--input` | `-i` | Directory containing SVG files | Yes |
-| `--output` | `-o` | Directory to save generated components | Yes |
+| Parameter | Short | Description | Required | Default |
+|-----------|-------|-------------|----------|---------|
+| `--input` | `-i` | Directory containing SVG files | Yes | - |
+| `--output` | `-o` | Directory to save generated components | Yes | - |
+| `--bypass` | `-b` | Bypass color processing and currentColor conversion | No | `false` |
 
 ### Examples
 
@@ -51,6 +52,12 @@ xzkui-icons gen -i ./assets/svg -o ./src/icons
 xzkui-icons generate \
   --input ./design-system/icons \
   --output ./packages/icons/src/components
+
+# Generate with bypass mode (preserve original colors)
+xzkui-icons generate --input ./assets/logos --output ./src/logos --bypass
+
+# Using short form with bypass
+xzkui-icons gen -i ./assets/colored-icons -o ./src/icons -b
 ```
 
 ### Package.json Integration
@@ -61,8 +68,10 @@ Add generation scripts to your `package.json` for easy access:
 {
   "scripts": {
     "icons:generate": "xzkui-icons generate --input ./assets/icons --output ./src/components/icons",
-    "icons:build": "npm run icons:generate && npm run build",
-    "icons:watch": "chokidar './assets/icons/*.svg' -c 'npm run icons:generate'"
+    "logos:generate": "xzkui-icons generate --input ./assets/logos --output ./src/logos --bypass",
+    "icons:build": "npm run icons:generate && npm run logos:generate && npm run build",
+    "icons:watch": "chokidar './assets/icons/*.svg' -c 'npm run icons:generate'",
+    "logos:watch": "chokidar './assets/logos/*.svg' -c 'npm run logos:generate'"
   }
 }
 ```
@@ -93,6 +102,54 @@ The generator performs comprehensive SVG transformations:
 - **Alphabetical ordering** for consistency
 - **Type-safe exports** with TypeScript
 
+## Bypass Mode
+
+The `--bypass` flag allows you to skip color processing for icons that need to preserve their original colors. This is particularly useful for:
+
+### When to Use Bypass Mode
+
+- **Brand logos** with specific colors
+- **Multi-colored icons** that shouldn't be monochrome
+- **Illustrations** with complex color schemes
+- **Icons with gradients** or multiple colors
+
+### How Bypass Mode Works
+
+When `--bypass` is enabled, the generator:
+
+1. **Preserves original colors** from SVG files
+2. **Skips `currentColor` conversion** - colors remain as defined in the source SVG
+3. **Removes `color` prop** from the generated component interface
+4. **Maintains `size` prop** for scaling
+
+### Comparison
+
+#### Standard Mode (Default)
+```tsx
+// Generated component with color support
+<Icon color="blue" size={24} />
+```
+
+#### Bypass Mode
+```tsx
+// Generated component without color prop
+<Icon size={24} />
+// Colors remain as defined in the original SVG
+```
+
+### Example Use Cases
+
+```bash
+# Generate monochrome UI icons (default behavior)
+xzkui-icons gen -i ./assets/ui-icons -o ./src/icons
+
+# Generate colored brand logos (bypass mode)
+xzkui-icons gen -i ./assets/logos -o ./src/logos --bypass
+
+# Generate colored social media icons (bypass mode)
+xzkui-icons gen -i ./assets/social -o ./src/social -b
+```
+
 ## Generated File Structure
 
 After running the generator, you'll have:
@@ -108,6 +165,7 @@ output-directory/
 
 ### Example Generated Component
 
+#### Standard Mode (with color support)
 ```tsx
 import { SvgThemed, SvgPath } from '@xsolla-zk/ui-primitives';
 import { memo } from 'react';
@@ -125,6 +183,26 @@ const Icon = (props: IconProps) => {
 export const ChevronUp = memo(Icon);
 ```
 
+#### Bypass Mode (preserves original colors)
+```tsx
+import { SvgThemed } from '@xsolla-zk/ui-primitives';
+import { memo } from 'react';
+import { Path } from 'react-native-svg';
+import type { IconProps } from '@xsolla-zk/ui-primitives';
+
+const Icon = (props: IconProps) => {
+  const { size = 24, ...otherProps } = props;
+  return (
+    <SvgThemed fill="none" size={size} {...otherProps}>
+      <Path fill="#FF0000" d="m18 14-6-6-6 6 1 2 5-3 5 3z" />
+      <Path fill="#00FF00" d="m12 8 6 6-1 2-5-3-5 3z" />
+    </SvgThemed>
+  );
+};
+
+export const ColorfulLogo = memo(Icon);
+```
+
 ### Generated Index File
 
 ```tsx
@@ -138,6 +216,7 @@ export { Settings } from './Settings';
 
 ### Basic Usage
 
+#### Standard Mode Icons
 ```tsx
 import { ChevronUp, Search, Settings } from './icons';
 
@@ -155,6 +234,26 @@ function MyComponent() {
 
       {/* Both size and color */}
       <ChevronUp size={32} color="#ff0000" />
+    </View>
+  );
+}
+```
+
+#### Bypass Mode Icons
+```tsx
+import { TwitterLogo, FacebookLogo, GoogleLogo } from './logos';
+
+function MyComponent() {
+  return (
+    <View>
+      {/* Default size (24px), colors from original SVG */}
+      <TwitterLogo />
+
+      {/* Custom size, colors preserved */}
+      <FacebookLogo size={32} />
+
+      {/* Only size prop available, no color prop */}
+      <GoogleLogo size={48} />
     </View>
   );
 }
@@ -220,9 +319,16 @@ For optimal results, your SVG files should meet these requirements:
 - **Consistent viewBox** (0 0 24 24)
 
 ### 2. Color Attributes
+
+#### Standard Mode
 - Use `fill="black"` for filled elements
 - Use `stroke="black"` for outlined elements
-- Avoid hardcoded colors that shouldn't change
+- Avoid hardcoded colors (they will be converted to `currentColor`)
+
+#### Bypass Mode
+- Use specific color values (e.g., `fill="#FF0000"`)
+- Multiple colors are preserved
+- Gradients and color stops remain intact
 
 ### 3. File Naming
 - **kebab-case** format (e.g., `chevron-up.svg`)
@@ -249,6 +355,22 @@ For optimal results, your SVG files should meet these requirements:
 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <circle cx="11" cy="11" r="8" stroke="black" strokeWidth="2" fill="none"/>
   <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m21 21-4.35-4.35"/>
+</svg>
+```
+
+```svg
+<!-- Good for bypass mode: twitter-logo.svg -->
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#1DA1F2" d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+</svg>
+```
+
+```svg
+<!-- Good for bypass mode: multi-color-logo.svg -->
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#FF0000" d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+  <path fill="#00FF00" d="M12 7l-5 3v5c0 3.33 2.31 6.44 5 7.21V7z"/>
+  <path fill="#0000FF" d="M12 7v15.21c2.69-.77 5-3.88 5-7.21V10l-5-3z"/>
 </svg>
 ```
 

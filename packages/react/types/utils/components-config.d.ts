@@ -1,5 +1,20 @@
 import type { ReturnTypeConfig } from '../types';
 export declare const defaultComponentsConfig: {
+    const_shapes: {
+        "arrow-down": string;
+        "arrow-up": string;
+        "blocks-horizontal": string;
+        "blocks-vertical": string;
+        circle: string;
+        "circles-tlbr": string;
+        cross: string;
+        diamond: string;
+        hexagon: string;
+        leaf: string;
+        oval: string;
+        rhombus: string;
+        squircle: string;
+    };
     accordion: {
         size: {
             medium: {
@@ -687,10 +702,7 @@ export declare const defaultComponentsConfig: {
                     $lg: string;
                     $xl: string;
                 };
-                borderRadius: {
-                    base: string;
-                    $lg: string;
-                };
+                borderRadius: string;
             };
             header: {
                 paddingTop: {

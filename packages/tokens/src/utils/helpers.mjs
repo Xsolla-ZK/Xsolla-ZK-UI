@@ -31,6 +31,11 @@ export function camelize(str) {
  * @returns {string}
  */
 export function kebabize(str) {
+  // Check if string is already in kebab-case (only lowercase letters, numbers, and hyphens)
+  if (/^[a-z0-9-]+$/.test(str)) {
+    return str;
+  }
+
   return str
     .split('')
     .map((letter, idx) =>
@@ -130,14 +135,21 @@ export function getOutputPath() {
 }
 
 /**
+ * @returns {string}
+ */
+export function getSourcePath() {
+  const sourceType = process.env.XSOLLA_ZK_SOURCE_TYPE;
+  const tokensPath = sourceType === 'local' ? '' : 'tokens';
+  return path.join(getInputPath(), tokensPath);
+}
+
+/**
  * @param {string} filename
  * @param {string} ext
  * @returns {string}
  */
 export function getDesignTokensFile(filename, ext = 'json') {
-  const sourceType = process.env.XSOLLA_ZK_SOURCE_TYPE;
-  const tokensPath = sourceType === 'local' ? '' : 'tokens';
-  return path.join(getInputPath(), tokensPath, `${filename}.${ext}`);
+  return path.join(getSourcePath(), `${filename}.${ext}`);
 }
 
 /**

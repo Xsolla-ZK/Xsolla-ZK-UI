@@ -1,8 +1,7 @@
 import { useTheme, withStaticProperties } from '@tamagui/core';
-import { RICH_ICON_SHAPES } from '@xsolla-zk/constants';
 import { getSafeTokenValue } from '@xsolla-zk/ui-utils';
 import { ClipPath, Defs, ForeignObject, G, Path } from 'react-native-svg';
-import { processMediaValues, smartContextStyled } from '../../utils';
+import { getComponentsConfig, processMediaValues, smartContextStyled } from '../../utils';
 import {
   RichIconContent,
   RichIconContext,
@@ -12,7 +11,7 @@ import {
   RichIconShapeSvg,
   RichIconText,
 } from './rich-icon.styled';
-import type { RichIconProps, ShapePathProps } from './rich-icon.types';
+import type { RichIconProps, RichIconShapes, ShapePathProps } from './rich-icon.types';
 import type { ColorTokens } from '@tamagui/core';
 
 const DEFAULT_SIZE = 80;
@@ -20,6 +19,7 @@ const DEFAULT_SIZE = 80;
 const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
   ({ children, ...propsIn }, ref) => {
     const { shape = 'circle', backdropProps = {}, image, ...props } = propsIn;
+    const shapePath = getComponentsConfig().const_shapes[shape as RichIconShapes] ?? shape;
 
     return (
       <RichIconContext.Provider componentProps={props} shape={shape}>
@@ -33,24 +33,16 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
             <RichIconShapeSvg viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}>
               <Defs>
                 <ClipPath id={`icon-clip-${shape}`}>
-                  <Path d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape} />
+                  <Path d={shapePath} />
                 </ClipPath>
               </Defs>
-              {image && (
-                <>
-                  <G clipPath={`url(#icon-clip-${shape})`}>
-                    <ForeignObject width="100%" height="100%">
-                      {image(DEFAULT_SIZE)}
-                    </ForeignObject>
-                  </G>
-                </>
-              )}
               <G clipPath={`url(#icon-clip-${shape})`}>
-                <RichIconShapePath
-                  d={RICH_ICON_SHAPES[shape as keyof typeof RICH_ICON_SHAPES] ?? shape}
-                  {...backdropProps}
-                  fill={image ? 'none' : 'currentColor'}
-                />
+                <RichIconShapePath d={shapePath} {...backdropProps} fill="currentColor" />
+                {image && (
+                  <ForeignObject width="100%" height="100%">
+                    {image(DEFAULT_SIZE)}
+                  </ForeignObject>
+                )}
               </G>
             </RichIconShapeSvg>
           )}

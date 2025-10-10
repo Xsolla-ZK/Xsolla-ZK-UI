@@ -1,5 +1,4 @@
 import { withStaticProperties } from '@tamagui/core';
-import { forwardRef } from 'react';
 import { processMediaValues } from '../../utils';
 import { Loader } from '../loader';
 import {
@@ -14,7 +13,7 @@ import type { LoaderProps } from '../loader/loader.types';
 import type { ColorTokens, ThemeName } from '@tamagui/core';
 
 const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
-  ({ children, tone = 'brand', isLoading, disabled, ...propsIn }, ref) => {
+  ({ children, tone = 'brand', isLoading, disabled, onPress, ...propsIn }, ref) => {
     const providerValue = {
       tone,
       disabled,
@@ -25,8 +24,13 @@ const FlexButtonComponent = FlexButtonFrame.styleable<FlexButtonProps>(
         <FlexButtonFrame
           group={!disabled}
           isLoading={isLoading}
+          onPress={(e) => {
+            if (!isLoading) onPress?.(e);
+          }}
           tone={tone}
           theme={tone as unknown as ThemeName}
+          aria-disabled={isLoading}
+          aria-busy={isLoading}
           {...propsIn}
           ref={ref}
         >

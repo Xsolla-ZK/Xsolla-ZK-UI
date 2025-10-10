@@ -21,7 +21,7 @@
     "directory": "packages/config"
   },
   "scripts": {
-    "generate": "xzkui-tokens generate -t tamagui -s https://github.com/Xsolla-ZK/Design-Tokens.git -o ./src/tokens -p",
+    "generate": "xzkui-tokens generate -t tamagui -s https://github.com/Xsolla-ZK/Design-Tokens.git -i pentagram -o ./src/tokens -p",
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",

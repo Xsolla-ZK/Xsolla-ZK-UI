@@ -7,6 +7,7 @@ import { logger } from './utils/log.mjs';
 import { getGroupMap } from './utils/parser.mjs';
 import { getTransform, getTransformGroup } from './utils/transforms.mjs';
 import { getValueRecursively } from './utils/values.mjs';
+import { processAndWriteShapes } from './utils/extract-shapes.mjs';
 
 const groupOrder = ['common', 'shared', 'platform']; // important order. platform must be after shared. shared must be after common
 
@@ -143,6 +144,9 @@ async function run() {
     }
 
     await processAllGroups(groupOrder);
+
+    // Extract shapes
+    await processAndWriteShapes();
 
     // Save the list of generated files
     await finalizeGeneration();

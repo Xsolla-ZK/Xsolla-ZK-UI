@@ -10,7 +10,9 @@ const Icon = (props: IconProps) => {
     <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
         fill="currentColor"
-        d="m9 9 1 12h4l1-12zM16 21l1-12h4v12zM8 21 7 9H3v12zM21 3H3v4h18z"
+        fillRule="evenodd"
+        d="M22 22H2V2h20zM8 20h2v-2H8zm8 0h2v-2h-2zM4 16h2v-2H4zm4 0h2v-2H8zm4 0h2v-2h-2zm-8-4h2v-2H4zm8 0h2v-2h-2zm4 0h4v-2h-4zM4 8h2V6H4zm4 0h2V6H8zm8 0h4V6h-4z"
+        clipRule="evenodd"
       />
     </SvgThemed>
   );

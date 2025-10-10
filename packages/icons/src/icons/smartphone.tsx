@@ -11,7 +11,7 @@ const Icon = (props: IconProps) => {
       <Path
         fill="currentColor"
         fillRule="evenodd"
-        d="M18 2H6v20h12zm-6 16 1.414 1.414L12 20.828l-1.414-1.414zm4-14H8v13h8z"
+        d="M18 22H6V2h12zM8 18h8V6H8z"
         clipRule="evenodd"
       />
     </SvgThemed>

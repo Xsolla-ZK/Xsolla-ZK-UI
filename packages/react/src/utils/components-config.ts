@@ -1,9 +1,9 @@
-import { components } from '@xsolla-zk/config';
+import { componentsConfig } from '@xsolla-zk/config';
 import { deepMerge } from '@xsolla-zk/ui-utils';
 import type { ReturnTypeConfig } from '../types';
 import type { ValidPropsWithExtra } from './valid-props';
 
-export const defaultComponentsConfig = components;
+export const defaultComponentsConfig = componentsConfig;
 
 type DefaultComponentsConfig = typeof defaultComponentsConfig;
 

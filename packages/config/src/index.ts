@@ -9,3 +9,5 @@ export { createCustomFont } from './utils/create-custom-font';
 export { sharedConfig } from './shared';
 export { components } from './tokens/components';
 export { componentsTheme } from './components-theme';
+export { shapes } from './tokens/shapes';
+export { componentsConfig } from './components-config';

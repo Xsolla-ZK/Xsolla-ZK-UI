@@ -10,14 +10,15 @@ const Icon = (props: IconProps) => {
     <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
       <Path
         fill="currentColor"
-        fillRule="evenodd"
-        d="M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0m-10-2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m5 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-6 2 3 3 3-3z"
-        clipRule="evenodd"
+        d="M3 16v5h5v2H1v-7zM23 23h-7v-2h5v-5h2zM9 12a1 1 0 1 1 0 2 1 1 0 0 1 0-2M15 12a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
       />
       <Path
         fill="currentColor"
-        d="M2 2h4v2H4v2H2zM6 22v-2H4v-2H2v4zM18 2h4v4h-2V4h-2zM18 22v-2h2v-2h2v4z"
+        fillRule="evenodd"
+        d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16m0 4.425A5.84 5.84 0 0 1 7.155 11h-1.07a6 6 0 1 0 11.83 0h-1.07A5.84 5.84 0 0 1 12 8.425"
+        clipRule="evenodd"
       />
+      <Path fill="currentColor" d="M8 3H3v5H1V1h7zM23 1v7h-2V3h-5V1z" />
     </SvgThemed>
   );
 };
