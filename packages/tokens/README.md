@@ -34,6 +34,7 @@ xzkui-tokens generate [options]
 | `--source` | `-s` | Token source (local or Git repository URL) | string | `local` |
 | `--input` | `-i` | Path to local tokens or branch name in repository | string | `main` |
 | `--private` | `-p` | Flag for working with private repositories | boolean | `false` |
+| `--shapes` | | Path to SVG shapes directory for icon generation | string | `''` |
 
 ### Examples
 
@@ -52,6 +53,12 @@ xzkui-tokens generate --type tamagui
 
 # Specify custom output directory
 xzkui-tokens generate --output ./src/styles/tokens
+
+# Generate tokens with custom SVG shapes for icons
+xzkui-tokens generate --shapes ./design-assets/icons
+
+# Generate with shapes and custom output
+xzkui-tokens generate --shapes ./assets/svg --output ./src/icons
 ```
 
 ## Generation Formats
@@ -155,6 +162,30 @@ xzkui-tokens generate --source local --input ./tokens --output ./src/design-syst
 xzkui-tokens generate --source local --input ./tokens --type tamagui
 ```
 
+### SVG Shapes Integration
+
+Generate icons from SVG shapes:
+
+```bash
+# Generate icons from local SVG directory
+xzkui-tokens generate --shapes ./assets/icons
+
+# Combine with token generation
+xzkui-tokens generate \
+  --source local \
+  --input ./tokens \
+  --shapes ./design-assets/svg \
+  --output ./src/design-system
+
+# Generate Tamagui tokens with shapes
+xzkui-tokens generate \
+  --type tamagui \
+  --shapes ./icons/svg \
+  --output ./src/ui
+```
+
+The shapes directory should contain SVG files that will be processed and converted into React icon components.
+
 ### Git Repository Integration
 
 For tokens stored in Git repositories:
@@ -184,6 +215,7 @@ Add token generation to your `package.json`:
     "tokens:generate": "xzkui-tokens generate --type tamagui --output ./src/design-system",
     "tokens:local": "xzkui-tokens generate --source local --input ./design-tokens",
     "tokens:remote": "xzkui-tokens generate --source https://github.com/org/tokens --input main",
+    "tokens:with-icons": "xzkui-tokens generate --shapes ./assets/icons --output ./src/design-system",
     "build": "npm run tokens:generate && next build"
   }
 }
@@ -203,11 +235,12 @@ src/
 │   ├── theme.hbs     # Theme file template
 │   └── tokens.hbs    # Token file template
 └── utils/           # Utility functions
-    ├── config.mjs   # Format configurations
-    ├── files.mjs    # File system operations
-    ├── format.mjs   # Token formatting
-    ├── parser.mjs   # Token parsing
-    └── values.mjs   # Value processing
+    ├── config.mjs         # Format configurations
+    ├── files.mjs          # File system operations
+    ├── format.mjs         # Token formatting
+    ├── parser.mjs         # Token parsing
+    ├── values.mjs         # Value processing
+    └── extract-shapes.mjs # SVG shapes processing
 ```
 
 ## Token File Structure

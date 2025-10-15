@@ -37,11 +37,14 @@ const RichIconComponent = RichIconFrame.styleable<RichIconProps>(
                 </ClipPath>
               </Defs>
               <G clipPath={`url(#icon-clip-${shape})`}>
-                <RichIconShapePath d={shapePath} {...backdropProps} fill="currentColor" />
+                <RichIconShapePath d={shapePath} fill="currentColor" />
                 {image && (
                   <ForeignObject width="100%" height="100%">
                     {image(DEFAULT_SIZE)}
                   </ForeignObject>
+                )}
+                {backdropProps.strokeWidth && (
+                  <RichIconShapePath d={shapePath} fill="none" {...backdropProps} />
                 )}
               </G>
             </RichIconShapeSvg>
@@ -58,8 +61,35 @@ const PathStyled = smartContextStyled(
   {},
   {
     accept: { strokeWidth: 'stroke' },
+    // TODO: Research and fix. This not working in web and breaks valid SVG DOM structure because path wraps span tag
+    // isReactNative: !process.env.TAMAGUI_IS_CLIENT,
   },
 );
+
+// TODO: calculate compensations by stroke width for image width/height and ForeignObject offset/padding
+// function useCompensatedStrokeBySize(
+//   strokeWidth: ShapePathProps['strokeWidth'],
+//   returnKey: 'strokeWidth' | 'padding' = 'strokeWidth',
+// ) {
+//   const ctx = RichIconContext.useStyledContext();
+
+//   const values = processMediaValues(
+//     { size: ctx.size },
+//     {
+//       size: (val, { config }) => {
+//         const componentProps = config.richIcon[val as keyof typeof config.richIcon];
+//         if (!componentProps) return {};
+
+//         const sizeRatio = DEFAULT_SIZE / getSafeTokenValue(componentProps.frame.minSize);
+//         return {
+//           [returnKey]: Math.ceil(getSafeTokenValue(strokeWidth) * 2 * sizeRatio),
+//         };
+//       },
+//     },
+//   );
+
+//   return values;
+// }
 
 function RichIconShapePath({ strokeWidth, fill, stroke, ...props }: ShapePathProps) {
   const ctx = RichIconContext.useStyledContext();

@@ -137,6 +137,20 @@ export function getOutputPath() {
 /**
  * @returns {string}
  */
+export function getShapesPath() {
+  const SHAPES_DEFAULT_FOLDER_NAME = 'shapes';
+
+  const shapePath = process.env.XSOLLA_ZK_SHAPES_PATH ?? '';
+  if (shapePath) {
+    return path.join(shapePath);
+  }
+
+  return path.join(getSourcePath(), SHAPES_DEFAULT_FOLDER_NAME);
+}
+
+/**
+ * @returns {string}
+ */
 export function getSourcePath() {
   const sourceType = process.env.XSOLLA_ZK_SOURCE_TYPE;
   const tokensPath = sourceType === 'local' ? '' : 'tokens';

@@ -3,7 +3,7 @@ import path from 'path';
 import { writeToBuildDir } from './files.mjs';
 import generateSimpleFile from '../templates/simple.mjs';
 import { logger } from './log.mjs';
-import { getSourcePath, kebabize } from './helpers.mjs';
+import { getShapesPath, kebabize } from './helpers.mjs';
 
 /**
  * Formats a number for SVG path, removing unnecessary decimals
@@ -321,14 +321,12 @@ export async function extractShapesFromFile(filePath) {
   }
 }
 
-const SHAPES_DEFAULT_FOLDER_NAME = 'shapes';
-
 /**
  * Extracts shapes from a directory and writes the result to the build directory
  * @returns {Promise<void>}
  */
 export async function processAndWriteShapes() {
-  const directoryPath = path.join(getSourcePath(), SHAPES_DEFAULT_FOLDER_NAME);
+  const directoryPath = getShapesPath();
   try {
     const shapes = await extractShapes(directoryPath);
 

@@ -1,4 +1,4 @@
-import { isWeb, Stack, Text } from '@tamagui/core';
+import { Stack, Text } from '@tamagui/core';
 import { RICH_ICON_COMPONENT_NAME } from '@xsolla-zk/constants';
 import { type IconProps } from '@xsolla-zk/ui-primitives';
 import { Svg } from 'react-native-svg';
@@ -96,7 +96,7 @@ export const RichIconShapeSvg = smartContextStyled(
     } as const,
   },
   {
-    isReactNative: !isWeb,
+    isReactNative: !process.env.TAMAGUI_IS_CLIENT,
   },
 );
 

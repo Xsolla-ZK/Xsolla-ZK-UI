@@ -1,4 +1,4 @@
-import { isWeb, styled } from '@tamagui/core';
+import { styled } from '@tamagui/core';
 import { getSafeTokenValue } from '@xsolla-zk/ui-utils';
 import { Svg } from 'react-native-svg';
 import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/core';
@@ -21,7 +21,7 @@ export const SvgThemed = styled(
     } as const,
   },
   {
-    isReactNative: !isWeb,
+    isReactNative: !process.env.TAMAGUI_IS_CLIENT,
   },
 );
 

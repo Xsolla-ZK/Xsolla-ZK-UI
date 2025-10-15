@@ -101,6 +101,11 @@ yargs(hideBin(process.argv))
             );
           },
         })
+        .option('shapes', {
+          describe: 'Shapes path',
+          type: 'string',
+          default: '',
+        })
         .option('private', {
           alias: 'p',
           describe: 'Private repository',
@@ -129,6 +134,7 @@ yargs(hideBin(process.argv))
         process.env.XSOLLA_ZK_TOKENS_INPUT_PATH = inputPath;
         process.env.XSOLLA_ZK_TOKENS_OUTPUT_PATH = outputPath;
         process.env.XSOLLA_ZK_SOURCE_TYPE = argv.source;
+        process.env.XSOLLA_ZK_SHAPES_PATH = argv.shapes;
         process.argv.push('--format', argv.type);
 
         logger.info(`Launch of token generation in the format ${chalk.cyan(argv.type)}...`);
