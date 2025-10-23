@@ -8,9 +8,14 @@ const Icon = (props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <SvgThemed fill="none" viewBox="0 0 24 24" size={size} color={color} {...otherProps}>
-      <Path fill="currentColor" d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z" />
+      <Path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="m11.997 1 10.997 11-10.997 11L1 12zM12 7a5 5 0 0 0-4.62 6.915A5 5 0 0 0 12 17.002z"
+        clipRule="evenodd"
+      />
     </SvgThemed>
   );
 };
 
-export const ListVertical = memo(Icon);
+export const Item = memo(Icon);

@@ -5,6 +5,7 @@
 export declare const shapes: {
     'arrow-down': string;
     'arrow-up': string;
+    babka: string;
     'blocks-horizontal': string;
     'blocks-vertical': string;
     circle: string;
@@ -14,6 +15,7 @@ export declare const shapes: {
     hexagon: string;
     leaf: string;
     oval: string;
+    rectangle: string;
     rhombus: string;
     squircle: string;
 };

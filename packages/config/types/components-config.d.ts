@@ -2,6 +2,7 @@ export declare const componentsConfig: {
     const_shapes: {
         'arrow-down': string;
         'arrow-up': string;
+        babka: string;
         'blocks-horizontal': string;
         'blocks-vertical': string;
         circle: string;
@@ -11,6 +12,7 @@ export declare const componentsConfig: {
         hexagon: string;
         leaf: string;
         oval: string;
+        rectangle: string;
         rhombus: string;
         squircle: string;
     };

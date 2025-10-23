@@ -83,6 +83,10 @@
       "import": "./dist/esm/icons/Asterisk.mjs",
       "require": "./dist/cjs/icons/Asterisk.cjs"
     },
+    "./icons/BabkaCheckmark": {
+      "import": "./dist/esm/icons/BabkaCheckmark.mjs",
+      "require": "./dist/cjs/icons/BabkaCheckmark.cjs"
+    },
     "./icons/Backpack": {
       "import": "./dist/esm/icons/Backpack.mjs",
       "require": "./dist/cjs/icons/Backpack.cjs"
@@ -186,6 +190,10 @@
     "./icons/Cross": {
       "import": "./dist/esm/icons/Cross.mjs",
       "require": "./dist/cjs/icons/Cross.cjs"
+    },
+    "./icons/Currency": {
+      "import": "./dist/esm/icons/Currency.mjs",
+      "require": "./dist/cjs/icons/Currency.cjs"
     },
     "./icons/DataTable": {
       "import": "./dist/esm/icons/DataTable.mjs",
@@ -319,6 +327,10 @@
       "import": "./dist/esm/icons/Info.mjs",
       "require": "./dist/cjs/icons/Info.cjs"
     },
+    "./icons/Item": {
+      "import": "./dist/esm/icons/Item.mjs",
+      "require": "./dist/cjs/icons/Item.cjs"
+    },
     "./icons/Key": {
       "import": "./dist/esm/icons/Key.mjs",
       "require": "./dist/cjs/icons/Key.cjs"
@@ -350,6 +362,10 @@
     "./icons/Login": {
       "import": "./dist/esm/icons/Login.mjs",
       "require": "./dist/cjs/icons/Login.cjs"
+    },
+    "./icons/LogoBabka": {
+      "import": "./dist/esm/icons/LogoBabka.mjs",
+      "require": "./dist/cjs/icons/LogoBabka.cjs"
     },
     "./icons/Logout": {
       "import": "./dist/esm/icons/Logout.mjs",
@@ -422,6 +438,10 @@
     "./icons/People": {
       "import": "./dist/esm/icons/People.mjs",
       "require": "./dist/cjs/icons/People.cjs"
+    },
+    "./icons/Person": {
+      "import": "./dist/esm/icons/Person.mjs",
+      "require": "./dist/cjs/icons/Person.cjs"
     },
     "./icons/Phone": {
       "import": "./dist/esm/icons/Phone.mjs",

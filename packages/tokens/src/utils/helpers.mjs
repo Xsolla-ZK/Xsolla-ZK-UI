@@ -145,7 +145,7 @@ export function getShapesPath() {
     return path.join(shapePath);
   }
 
-  return path.join(getSourcePath(), SHAPES_DEFAULT_FOLDER_NAME);
+  return path.join(getSourcePath(), 'assets', SHAPES_DEFAULT_FOLDER_NAME);
 }
 
 /**
