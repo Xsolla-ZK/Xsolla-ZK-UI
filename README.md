@@ -197,8 +197,7 @@ packages/
 ├── config/          # Tamagui configuration
 ├── tokens/          # Design token generator
 ├── icons-generator/ # Icon generation CLI
-├── docs/            # Documentation site
-└── app/             # Example application
+└── docs/            # Documentation site
 ```
 
 ### Tech Stack
